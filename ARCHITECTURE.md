@@ -71,7 +71,7 @@ melos run get
 flutter-turbo-packages/
 ├── turbo_response/           # Type-safe Success/Fail result wrapper
 ├── turbo_notifiers/          # Enhanced ValueNotifier for state
-├── turbo_mvvm/               # MVVM pattern with BaseViewModel
+├── turbo_mvvm/               # MVVM pattern with TurboViewModel
 ├── turbo_firestore_api/      # Type-safe Firestore wrapper + services
 ├── turbo_forms/              # Form configuration and validation
 ├── turbo_routing/            # Type-safe routing over go_router
@@ -132,7 +132,7 @@ Classes ending with `Service` manage application state:
 
 #### ViewModels
 Classes ending with `ViewModel` manage view/page state:
-- Extend `BaseViewModel<A>` from turbo_mvvm
+- Extend `TurboViewModel<A>` from turbo_mvvm
 - Lifecycle: `initialise()` → `dispose()`
 - State flags: `isInitialised`, `isBusy`, `hasError`
 - Use mixins: `BusyManagement`, `ErrorManagement`
@@ -176,7 +176,7 @@ Layered state management with reactive updates:
 | Layer | Tool | Purpose |
 |-------|------|---------|
 | Widget | `TurboNotifier<T>` | Local reactive state |
-| ViewModel | `BaseViewModel<A>` | Page/feature state with lifecycle |
+| ViewModel | `TurboViewModel<A>` | Page/feature state with lifecycle |
 | Service | `TurboCollectionService` | Shared collection state |
 | Global | `BusyService`, GetIt | App-wide state, DI |
 
