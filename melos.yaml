@@ -1,16 +1,12 @@
 name: flutter_turbo_packages
 
 # Versioning configuration
+# Note: Automatic versioning from conventional commits is disabled.
+# Versions must be manually updated in pubspec.yaml files.
+# Conventional commit format is still recommended for consistency.
 version:
-  # Use conventional commits for versioning
-  useConventionalCommits: true
-  
-  # Generate changelog automatically
-  changelog:
-    # Use keep-a-changelog format (matches RELEASE.md config)
-    format: markdown
-    # Include all commit types
-    includeCommitBody: true
+  # Disable automatic versioning from commits
+  useConventionalCommits: false
 
 # Publishing configuration  
 publish:

@@ -120,7 +120,7 @@ This monorepo supports **both individual and coordinated publishing**:
 
 ### Using Melos Publish
 
-Melos provides automated versioning and publishing capabilities:
+Melos provides publishing capabilities for coordinated releases:
 
 #### Dry-Run (Default)
 
@@ -132,8 +132,7 @@ melos publish
 
 This will:
 - Show what packages would be published
-- Display version changes
-- Show changelog updates
+- Display current versions from pubspec.yaml
 - **Not actually publish** to pub.dev
 - **Not create git tags**
 
@@ -146,39 +145,54 @@ melos publish --no-dry-run
 ```
 
 This will:
-- Publish packages to pub.dev
+- Publish packages to pub.dev using versions from pubspec.yaml
 - Create git tags for each package version
 - Push changes to git
-- Update CHANGELOG.md files
+
+**Note**: Melos will not automatically update versions or changelogs. These must be manually updated before publishing.
 
 ### Version Management
 
-Melos uses **conventional commits** for automatic versioning:
+**Manual Versioning**: Versions must be manually updated in each package's `pubspec.yaml` file.
 
-- `feat:` → Minor version bump (1.0.0 → 1.1.0)
-- `fix:` → Patch version bump (1.0.0 → 1.0.1)
-- `BREAKING CHANGE:` → Major version bump (1.0.0 → 2.0.0)
+1. Edit the `version:` field in `pubspec.yaml`:
+   ```yaml
+   version: 1.2.0
+   ```
+
+2. Follow semantic versioning:
+   - **Major** (2.0.0): Breaking changes
+   - **Minor** (1.1.0): New features, backwards compatible
+   - **Patch** (1.0.1): Bug fixes, backwards compatible
+
+**Conventional Commits**: While conventional commit format (`feat:`, `fix:`, etc.) is recommended for consistency and clarity, it does **not** trigger automatic versioning. You maintain full control over version bumps.
 
 ### Publishing Workflow
 
-1. **Make changes** and commit using conventional commit format
-2. **Run validation**:
+1. **Make changes** and commit using conventional commit format (for consistency)
+2. **Manually update version** in `pubspec.yaml`:
+   ```yaml
+   version: 1.2.0
+   ```
+3. **Manually update CHANGELOG.md** with new version entry
+4. **Update README.md and ARCHITECTURE.md** if needed
+5. **Run validation**:
    ```bash
    melos run format:check
    melos run analyze
    melos run test
    ```
-3. **Check 160 pub points**:
+6. **Check 160 pub points**:
    ```bash
    cd <package_directory>
    bash ../.github/scripts/check_pub_points.sh
    ```
-4. **Preview release** (dry-run):
+7. **Preview release** (dry-run):
    ```bash
    melos publish
    ```
-5. **Review** the output, check versions and changelogs
-6. **Publish** when ready:
+8. **Review** the output, verify versions and changelogs are correct
+9. **Publish** when ready:
    ```bash
    melos publish --no-dry-run
    ```
@@ -196,14 +210,53 @@ Tags are created in the monorepo repository and can be used for:
 
 ### Changelog Generation
 
-Melos automatically generates `CHANGELOG.md` files for each package based on conventional commits. The format matches the `keep-a-changelog` standard configured in this file.
+**Manual Changelog Updates**: `CHANGELOG.md` files must be manually updated before each release.
+
+1. Follow the `keep-a-changelog` format (configured in Documentation Config section)
+2. Add entries under appropriate sections:
+   - `## [Unreleased]` for upcoming changes
+   - `## [Version]` for released versions
+3. Include relevant changes:
+   - Added: New features
+   - Changed: Changes in existing functionality
+   - Deprecated: Soon-to-be removed features
+   - Removed: Removed features
+   - Fixed: Bug fixes
+   - Security: Security vulnerabilities
+
+**Example**:
+```markdown
+## [Unreleased]
+
+### Added
+- New feature description
+
+### Fixed
+- Bug fix description
+
+## [1.2.0] - 2024-01-15
+
+### Added
+- Feature added in this version
+```
+
+### README and Architecture Updates
+
+**Manual Documentation Updates**: README.md and ARCHITECTURE.md files should be manually updated as needed:
+
+- **README.md**: Update when adding features, changing usage, or updating examples
+- **ARCHITECTURE.md**: Update when making architectural changes, adding new patterns, or modifying existing designs
+
+These updates should be done as part of the development process, not automatically generated.
 
 ## Release Checklist
 - [ ] Consistency checklist reviewed and complete
-- [ ] Changelog updated with new version (or auto-generated via melos)
-- [ ] Version bumped in project config (or auto-bumped via melos)
+- [ ] Changelog manually updated with new version entry
+- [ ] Version manually bumped in `pubspec.yaml`
+- [ ] README.md updated if needed (new features, usage changes)
+- [ ] ARCHITECTURE.md updated if needed (architectural changes)
 - [ ] 160 pub points validation passed locally
 - [ ] All changes reviewed and confirmed
-- [ ] Conventional commit messages used
+- [ ] Conventional commit messages used (for consistency, not automatic versioning)
 - [ ] Dry-run publish successful (`melos publish`)
 - [ ] Ready to publish (`melos publish --no-dry-run`)
