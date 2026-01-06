@@ -1,260 +1,144 @@
-# Flutter Turbo Packages Monorepo
+# Flutter Turbo Packages
 
-A monorepo containing Flutter packages for building scalable Flutter applications.
+A monorepo of foundational Flutter/Dart packages for building scalable applications.
 
 ## Packages
 
-- **turbo_firestore_api** - A clean and efficient approach to dealing with data from Firestore
-- **turbo_forms** - Form configuration and validation system
-- **turbo_mvvm** - Lightweight MVVM state management solution
-- **turbo_notifiers** - Improved behavior of Flutter's ValueNotifier
-- **turbo_response** - Type-safe response wrapper for handling success and failure states
-- **turbo_responsiveness** - Responsive design utilities and widgets
-- **turbo_routing** - Routing abstraction layer over go_router
-- **turbo_widgets** - Common reusable UI widgets, extensions, and animation utilities
-- **turbolytics** - Efficient logging, analytics and crash reporting
+| Package | Description | Version |
+|---------|-------------|---------|
+| [turbo_response](./turbo_response) | Type-safe Success/Fail result wrapper | 1.0.0 |
+| [turbo_notifiers](./turbo_notifiers) | Enhanced ValueNotifier for reactive state | 1.0.0 |
+| [turbo_mvvm](./turbo_mvvm) | MVVM pattern with BaseViewModel and lifecycle management | 1.0.0 |
+| [turbo_firestore_api](./turbo_firestore_api) | Type-safe Firestore wrapper with collection/document services | 1.0.0 |
+| [turbo_forms](./turbo_forms) | Form configuration and validation system | 1.0.0 |
+| [turbo_routing](./turbo_routing) | Type-safe routing abstraction over go_router | 1.0.0 |
+| [turbo_widgets](./turbo_widgets) | Reusable UI components, extensions, and animations | 1.0.0 |
+| [turbo_responsiveness](./turbo_responsiveness) | Responsive design utilities and adaptive widgets | 1.0.0 |
+| [turbolytics](./turbolytics) | Unified logging, analytics, and crash reporting | 1.0.0 |
 
 ## Template
 
-- **turbo_flutter_template** - Flutter project template using all turbo packages
+| Package | Description |
+|---------|-------------|
+| [turbo_flutter_template](./turbo_flutter_template) | Flutter project template using all turbo packages |
 
-## Monorepo Management with Melos
+## Quick Start
 
-This monorepo uses [Melos](https://melos.invertase.dev/) for managing multiple interdependent packages. Melos enables local package linking during development without requiring publication to pub.dev.
+### Prerequisites
 
-### Installation
+- Dart SDK `>=3.5.0 <4.0.0`
+- Flutter SDK `>=1.17.0`
+- Melos `^7.0.0`
 
-Install Melos globally:
+### Setup
 
 ```bash
+# Install Melos
 dart pub global activate melos
-```
 
-### Bootstrap
-
-After cloning the repository, bootstrap the workspace to link local packages:
-
-```bash
+# Clone and bootstrap
+git clone https://github.com/appboypov/turbo_packages.git
+cd turbo_packages
 melos bootstrap
+
+# Configure git hooks
+git config core.hooksPath .githooks
 ```
 
-This command:
-- Links all packages in the workspace
-- Resolves dependencies from local packages first
-- Sets up the development environment
+## Development
 
-**Note:** Run `melos bootstrap` whenever you pull changes or when dependencies change.
+### Commands
 
-### Common Commands
+| Command | Description |
+|---------|-------------|
+| `melos bootstrap` | Link local packages and resolve dependencies |
+| `melos run test` | Run tests across all packages |
+| `melos run analyze` | Analyze all packages |
+| `melos run format` | Format all packages |
+| `melos run format:check` | Check formatting (CI) |
+| `melos run clean` | Clean build artifacts |
+| `melos run get` | Get dependencies |
 
-Run commands across all packages using Melos scripts:
+### Workflow
 
-#### Test
-Run tests in all packages:
-```bash
-melos run test
-```
-
-#### Analyze
-Analyze all packages:
-```bash
-melos run analyze
-```
-
-#### Format
-Format all packages:
-```bash
-melos run format
-```
-
-#### Format Check
-Check formatting without modifying files:
-```bash
-melos run format:check
-```
-
-#### Clean
-Clean build artifacts:
-```bash
-melos run clean
-```
-
-#### Get Dependencies
-Get dependencies for all packages:
-```bash
-melos run get
-```
-
-### Development Workflow
-
-1. **Initial Setup:**
+1. Make changes to any package
+2. Changes are immediately available to dependent packages (no publishing needed)
+3. Run validation before committing:
    ```bash
-   dart pub global activate melos
-   melos bootstrap
+   melos run format:check && melos run analyze && melos run test
    ```
-
-2. **Making Changes:**
-   - Make changes to any package
-   - Changes are immediately available to dependent packages (no publishing needed)
-   - Test locally using `melos run test`
-
-3. **Before Committing:**
-   - Run `melos run format:check` to ensure formatting is correct
-   - Run `melos run analyze` to check for issues
-   - Run `melos run test` to ensure all tests pass
-
-4. **Publishing:**
-   - Packages are published independently to pub.dev
-   - Each package maintains its own version and CI/CD workflow
-   - Use `melos publish` for batch publishing (optional)
 
 ### Workspace Resolution
 
-Packages use `resolution: workspace` in their `pubspec.yaml` files, which tells Dart to resolve dependencies from the workspace first. This enables:
-
+Packages use `resolution: workspace` in their `pubspec.yaml` files, enabling:
 - Local development without publishing
 - Immediate availability of changes across packages
 - Faster iteration cycles
 
-When packages are published to pub.dev, the `resolution: workspace` field is ignored, and version constraints are used instead.
+When published to pub.dev, version constraints are used instead.
 
-### Troubleshooting
+## Git Strategy
 
-#### Bootstrap Fails
-- Ensure Melos is installed: `melos --version`
-- Check that all packages have `resolution: workspace` in their `pubspec.yaml`
-- Verify the root `pubspec.yaml` includes all packages in the `workspace` section
+This monorepo uses a hybrid git strategy:
 
-#### Dependencies Not Resolving Locally
-- Run `melos bootstrap` again
-- Check that the package is listed in the root `pubspec.yaml` workspace section
-- Verify `resolution: workspace` is present in the package's `pubspec.yaml`
-
-#### Scripts Not Working
-- Ensure you're running commands from the root directory
-- Check that `melos.yaml` exists and contains the script definitions
-- Verify Melos is installed: `melos --version`
-
-## Git Repository Structure
-
-This monorepo uses a **hybrid git strategy**:
-
-- **Monorepo Repository**: The root directory (`appboypov/turbo_packages`) contains workspace configuration, CI/CD workflows, and scripts
-- **Individual Package Repositories**: Each package maintains its own git repository for independent versioning and publishing
-
-### Repository Setup
-
-#### Initial Setup
-
-1. **Clone the monorepo:**
-   ```bash
-   git clone https://github.com/appboypov/turbo_packages.git
-   cd turbo_packages
-   ```
-
-2. **Bootstrap the workspace:**
-   ```bash
-   dart pub global activate melos
-   melos bootstrap
-   ```
-
-3. **Configure git hooks** (if cloning existing repo):
-   ```bash
-   git config core.hooksPath .githooks
-   ```
-   
-   Git hooks are automatically configured for new repositories and provide:
-   - **Conventional commit validation**: Ensures commit messages follow the standard format
-   - **Pre-commit checks**: Runs formatting and analysis before committing
-   - **Pre-push tests**: Runs all tests before pushing
-
-#### Git Workflow
-
-**For Monorepo Changes:**
-- Changes to workspace config, CI/CD workflows, or scripts are committed to the monorepo repository
-- Use conventional commit messages (see below)
-
-**For Package Changes:**
-- Changes to individual packages are committed to their respective package repositories
-- Each package maintains its own version and release cycle
+- **Monorepo Repository**: Workspace configuration, CI/CD workflows, and scripts
+- **Individual Package Repositories**: Each package maintains its own git repository for independent versioning
 
 ### Conventional Commits
 
-This repository uses [Conventional Commits](https://www.conventionalcommits.org/) for commit messages. This enables:
-- Automatic version bumping via Melos
-- Automatic changelog generation
-- Clear commit history
+All commits must follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-**Commit Message Format:**
 ```
 <type>(<scope>): <subject>
-
-<body>
-
-<footer>
 ```
 
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, etc.)
-- `refactor`: Code refactoring
-- `test`: Test additions/changes
-- `chore`: Maintenance tasks
+| Type | Description |
+|------|-------------|
+| `feat` | New feature (minor bump) |
+| `fix` | Bug fix (patch bump) |
+| `docs` | Documentation changes |
+| `style` | Code style changes |
+| `refactor` | Code refactoring |
+| `test` | Test additions/changes |
+| `chore` | Maintenance tasks |
 
-**Examples:**
+**Breaking changes**: Add `BREAKING CHANGE:` in the commit body for major version bumps.
+
+Git hooks validate commit messages automatically.
+
+## Publishing
+
+### Validation
+
+All packages must achieve 160/160 pub.dev points before release:
+
+```bash
+cd <package_directory>
+bash ../.github/scripts/check_pub_points.sh
 ```
-feat(turbo_firestore_api): add batch update support
-fix(turbo_forms): resolve validation error on empty fields
-docs: update README with new examples
+
+### Release
+
+```bash
+# Preview release (dry-run)
+melos publish
+
+# Actual release
+melos publish --no-dry-run
 ```
 
-Git hooks are configured to validate commit messages automatically.
+Melos automatically:
+- Bumps versions based on conventional commits
+- Generates changelogs
+- Creates git tags (`package-name@version`)
+- Publishes to pub.dev
 
-### GitHub Repository Setup
+## Documentation
 
-**Repository**: `appboypov/turbo_packages`
-
-#### Recommended Settings
-
-1. **Branch Protection**:
-   - Protect `main` branch
-   - Require pull request reviews
-   - Require status checks to pass (CI workflows)
-
-2. **GitHub Actions Secrets**:
-   - `PUB_DEV_CREDENTIALS`: For publishing packages to pub.dev (if using automated publishing)
-
-3. **Repository Settings**:
-   - Enable GitHub Actions
-   - Set default branch to `main`
-   - Configure branch protection rules
-
-#### CI/CD Workflows
-
-The monorepo includes:
-- **Monorepo CI** (`.github/workflows/monorepo-ci.yml`): Validates all changed packages on push/PR
-- **Monorepo Release** (`.github/workflows/monorepo-release.yml`): Coordinates releases across packages
-- **Individual Package CI/CD**: Each package has its own workflows in its repository
-
-## Contributing
-
-Each package maintains its own Git repository and CI/CD workflows. See individual package README files for contribution guidelines.
-
-### Development Workflow
-
-1. **Make changes** in the appropriate package directory
-2. **Commit** using conventional commit format
-3. **Run checks** before pushing:
-   ```bash
-   melos run format:check
-   melos run analyze
-   melos run test
-   ```
-4. **Push** to your branch and create a pull request
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Project architecture and patterns
+- [RELEASE.md](./RELEASE.md) - Release preparation and publishing guide
+- [CHANGELOG.md](./CHANGELOG.md) - Version history
 
 ## License
 
-Each package has its own license. See individual package directories for license information.
-
+Each package has its own license. See individual package directories for details.

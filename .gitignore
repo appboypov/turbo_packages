@@ -38,3 +38,7 @@ coverage/
 .env
 .env.local
 
+# Task files (not tracked in repo)
+GITHUB_SETUP_TASK.md
+*.task.md
+
