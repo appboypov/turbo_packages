@@ -1,0 +1,184 @@
+name: Monorepo Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Comma-separated list of package names to release (leave empty for all)'
+        required: false
+        type: string
+      skip_validation:
+        description: 'Skip 160 pub points validation (not recommended)'
+        required: false
+        type: boolean
+        default: false
+  push:
+    tags:
+      - '**/v*.*.*'
+
+jobs:
+  validate-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      
+      - name: Install Melos
+        run: dart pub global activate melos
+      
+      - name: Install GitHub CLI
+        run: |
+          type -p curl >/dev/null || apt install curl -y
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          apt update
+          apt install gh -y
+      
+      - name: Bootstrap workspace
+        run: melos bootstrap
+      
+      - name: Determine packages to release
+        id: packages_to_release
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -n "${{ github.event.inputs.packages }}" ]; then
+              PACKAGES="${{ github.event.inputs.packages }}"
+            else
+              # Get all packages
+              PACKAGES=$(find . -maxdepth 2 -name "pubspec.yaml" -not -path "./pubspec.yaml" | xargs -I {} dirname {} | xargs -I {} basename {})
+            fi
+          else
+            # Tag-based release - extract package from tag path
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            PACKAGE=$(echo "$TAG_NAME" | cut -d'/' -f1)
+            PACKAGES="$PACKAGE"
+          fi
+          
+          echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+          echo "Packages to release: $PACKAGES"
+      
+      - name: Validate packages (160 Pub Points)
+        if: github.event.inputs.skip_validation != 'true'
+        run: |
+          PACKAGES='${{ steps.packages_to_release.outputs.packages }}'
+          FAILED_PACKAGES=()
+          
+          for PACKAGE in $PACKAGES; do
+            echo "=========================================="
+            echo "Validating package: $PACKAGE"
+            echo "=========================================="
+            
+            if [ ! -d "$PACKAGE" ]; then
+              echo "::error::Package directory $PACKAGE not found"
+              exit 1
+            fi
+            
+            cd "$PACKAGE"
+            
+            # Install dependencies
+            flutter pub get
+            
+            # Run pub points validation
+            if bash ../.github/scripts/check_pub_points.sh; then
+              echo "✅ $PACKAGE passed validation"
+            else
+              echo "❌ $PACKAGE failed validation"
+              FAILED_PACKAGES+=("$PACKAGE")
+            fi
+            
+            cd ..
+            echo ""
+          done
+          
+          if [ ${#FAILED_PACKAGES[@]} -gt 0 ]; then
+            echo "::error::The following packages failed 160 pub points validation:"
+            for PACKAGE in "${FAILED_PACKAGES[@]}"; do
+              echo "::error::  - $PACKAGE"
+            done
+            echo "::error::Release blocked. Fix validation issues before releasing."
+            exit 1
+          fi
+          
+          echo "✅ All packages passed 160 pub points validation"
+      
+      - name: Release packages
+        run: |
+          PACKAGES='${{ steps.packages_to_release.outputs.packages }}'
+          
+          for PACKAGE in $PACKAGES; do
+            echo "=========================================="
+            echo "Releasing package: $PACKAGE"
+            echo "=========================================="
+            
+            cd "$PACKAGE"
+            
+            # Extract version from pubspec.yaml
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | xargs)
+            TAG="v$VERSION"
+            
+            echo "Package: $PACKAGE"
+            echo "Version: $VERSION"
+            echo "Tag: $PACKAGE/$TAG"
+            
+            # Check if version changed
+            git fetch --tags
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            
+            if [ -n "$LATEST_TAG" ]; then
+              LATEST_VERSION="${LATEST_TAG#v}"
+              if [ "$VERSION" = "$LATEST_VERSION" ]; then
+                echo "⚠️  Version unchanged, skipping release for $PACKAGE"
+                cd ..
+                continue
+              fi
+            fi
+            
+            # Create tag
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            
+            # Use package-prefixed tag for monorepo
+            FULL_TAG="$PACKAGE/$TAG"
+            git tag -a "$FULL_TAG" -m "Release $PACKAGE $TAG" || echo "Tag may already exist"
+            git push origin "$FULL_TAG" || echo "Tag push may have failed (tag may already exist)"
+            
+            # Extract release notes from CHANGELOG.md
+            RELEASE_NOTES=""
+            if [ -f CHANGELOG.md ]; then
+              RELEASE_NOTES=$(awk "/^## \[?$VERSION\]?/,/^## /" CHANGELOG.md | head -n -1 || awk "/^## \[?$VERSION\]?/,EOF" CHANGELOG.md || echo "")
+              if [ -z "$RELEASE_NOTES" ] || [ "$RELEASE_NOTES" = "" ]; then
+                RELEASE_NOTES="Release $PACKAGE $TAG"
+              fi
+            else
+              RELEASE_NOTES="Release $PACKAGE $TAG"
+            fi
+            
+            # Create GitHub release
+            gh release create "$FULL_TAG" \
+              --title "Release $PACKAGE $TAG" \
+              --notes "$RELEASE_NOTES" \
+              --repo "${{ github.repository }}" || echo "Release may already exist"
+            
+            # Publish to pub.dev
+            echo "Publishing $PACKAGE to pub.dev..."
+            flutter pub publish --force || echo "Publish may have failed (package may already be published)"
+            
+            echo "✅ Released $PACKAGE $VERSION"
+            cd ..
+            echo ""
+          done
+          
+          echo "✅ All packages released successfully"
+

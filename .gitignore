@@ -1,0 +1,40 @@
+# Melos
+.melos/
+pubspec.lock
+
+# Git - Exclude individual package git repositories
+# (packages maintain their own repos, monorepo tracks workspace config only)
+**/.git/
+!.git/
+!.github/
+
+# But allow .gitignore files in packages (for reference)
+!**/.gitignore
+
+# Dart/Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+*.lcov
+
+# Environment
+.env
+.env.local
+

@@ -1,0 +1,74 @@
+name: flutter_turbo_packages
+
+# Versioning configuration
+version:
+  # Use conventional commits for versioning
+  useConventionalCommits: true
+  
+  # Generate changelog automatically
+  changelog:
+    # Use keep-a-changelog format (matches RELEASE.md config)
+    format: markdown
+    # Include all commit types
+    includeCommitBody: true
+
+# Publishing configuration  
+publish:
+  # Don't auto-publish, require manual confirmation
+  autoPublish: false
+  # Use git tags for versioning
+  gitTag: true
+  # Tag format: package-name@version
+  gitTagVersionPrefix: ""
+
+scripts:
+  test:
+    description: Run tests in all packages
+    run: flutter test
+    exec:
+      concurrency: 1
+
+  analyze:
+    description: Analyze all packages
+    run: dart analyze lib/
+    exec:
+      concurrency: 1
+
+  format:
+    description: Format all packages
+    run: |
+      if [ -d "example/lib" ]; then
+        dart format lib/ test/ example/lib/
+      else
+        dart format lib/ test/
+      fi
+    exec:
+      concurrency: 1
+
+  format:check:
+    description: Check formatting without modifying files
+    run: |
+      if [ -d "example/lib" ]; then
+        dart format --set-exit-if-changed lib/ test/ example/lib/
+      else
+        dart format --set-exit-if-changed lib/ test/
+      fi
+    exec:
+      concurrency: 1
+
+  clean:
+    description: Clean build artifacts
+    run: flutter clean
+    exec:
+      concurrency: 1
+
+  bootstrap:
+    description: Bootstrap the workspace (link local packages)
+    run: melos bootstrap
+
+  get:
+    description: Get dependencies for all packages
+    run: flutter pub get
+    exec:
+      concurrency: 1
+

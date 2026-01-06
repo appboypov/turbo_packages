@@ -1,0 +1,100 @@
+name: Monorepo CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-packages:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      
+      - name: Install Melos
+        run: dart pub global activate melos
+      
+      - name: Bootstrap workspace
+        run: melos bootstrap
+      
+      - name: Get changed packages
+        id: changed_packages
+        run: |
+          # Get list of changed packages using git and melos
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || git diff --name-only HEAD~1 HEAD)
+          
+          # Find unique package directories that changed
+          PACKAGES=()
+          for file in $CHANGED_FILES; do
+            # Extract package name from path (e.g., turbo_firestore_api/lib/file.dart -> turbo_firestore_api)
+            PACKAGE_DIR=$(echo "$file" | cut -d'/' -f1)
+            if [ -f "$PACKAGE_DIR/pubspec.yaml" ]; then
+              if [[ ! " ${PACKAGES[@]} " =~ " ${PACKAGE_DIR} " ]]; then
+                PACKAGES+=("$PACKAGE_DIR")
+              fi
+            fi
+          done
+          
+          # If no packages changed, check all packages
+          if [ ${#PACKAGES[@]} -eq 0 ]; then
+            echo "No specific packages changed, validating all packages"
+            PACKAGES=($(find . -maxdepth 2 -name "pubspec.yaml" -not -path "./pubspec.yaml" | xargs -I {} dirname {} | xargs -I {} basename {}))
+          fi
+          
+          # Convert array to JSON
+          PACKAGES_JSON=$(printf '%s\n' "${PACKAGES[@]}" | jq -R . | jq -s .)
+          echo "packages=$PACKAGES_JSON" >> $GITHUB_OUTPUT
+          echo "Changed packages: ${PACKAGES[@]}"
+      
+      - name: Validate changed packages
+        run: |
+          PACKAGES_JSON='${{ steps.changed_packages.outputs.packages }}'
+          PACKAGES=$(echo "$PACKAGES_JSON" | jq -r '.[]')
+          
+          FAILED_PACKAGES=()
+          
+          for PACKAGE in $PACKAGES; do
+            echo "=========================================="
+            echo "Validating package: $PACKAGE"
+            echo "=========================================="
+            
+            cd "$PACKAGE"
+            
+            # Install dependencies
+            flutter pub get
+            
+            # Run pub points validation
+            if bash ../.github/scripts/check_pub_points.sh; then
+              echo "✅ $PACKAGE passed validation"
+            else
+              echo "❌ $PACKAGE failed validation"
+              FAILED_PACKAGES+=("$PACKAGE")
+            fi
+            
+            cd ..
+            echo ""
+          done
+          
+          if [ ${#FAILED_PACKAGES[@]} -gt 0 ]; then
+            echo "::error::The following packages failed 160 pub points validation:"
+            for PACKAGE in "${FAILED_PACKAGES[@]}"; do
+              echo "::error::  - $PACKAGE"
+            done
+            exit 1
+          fi
+          
+          echo "✅ All packages passed 160 pub points validation"
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Git hook to run tests before pushing
+# Ensures all tests pass before code is pushed
+
+set -e
+
+echo "🧪 Running tests before push..."
+
+# Check if melos is available
+if ! command -v melos &> /dev/null; then
+    echo "⚠️  Melos not found. Install with: dart pub global activate melos"
+    echo "Skipping pre-push tests..."
+    exit 0
+fi
+
+# Run tests
+echo "Running tests across all packages..."
+if ! melos run test; then
+    echo "❌ Tests failed!"
+    echo "Fix failing tests before pushing."
+    exit 1
+fi
+
+echo "✅ All tests passed!"
+exit 0
+
