@@ -654,10 +654,7 @@ Pub.dev awards up to 160 points across six categories:
 
 Before publishing any package:
 
-- [ ] Run `melos pub-check` - All packages must pass 160/160
-- [ ] Run `melos analyze` - No analysis errors or warnings
-- [ ] Run `melos format` - All code properly formatted
-- [ ] Run `melos test` - All tests passing
+- [ ] Run `melos pub-check` - This automatically runs analysis, formatting, tests, and pana validation
 - [ ] Verify `CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com/) format
 - [ ] Verify `README.md` includes usage examples
 - [ ] Verify `LICENSE` file exists and is OSI-approved
@@ -713,11 +710,19 @@ Follow [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH):
 melos pub-check
 ```
 
-This command:
+This command runs a complete validation flow for each package:
+1. **Required files check**: Validates LICENSE, README.md, CHANGELOG.md exist
+2. **Dart analysis**: Runs `dart analyze --fatal-infos` (must pass)
+3. **Formatting check**: Runs `dart format --set-exit-if-changed` (must pass)
+4. **Tests**: Runs `flutter test` if test directory exists (must pass)
+5. **Pana validation**: Runs pana for 160/160 pub points scoring
+
+The command:
 - Validates each package sequentially
 - Reports pub points score for each package
-- Fails if any package doesn't meet 160/160
+- Fails early if analysis, formatting, or tests fail
 - Uses pana for official pub.dev scoring
+- Provides clear error messages for each validation step
 
 #### Dry-Run Publish
 
