@@ -36,12 +36,12 @@ melos:
       description: Check formatting
 
     test:
-      run: flutter test
+      run: flutter test --coverage
       exec:
         concurrency: 1
       packageFilters:
         dirExists: test
-      description: Run tests
+      description: Run tests with coverage
 
     build_runner:
       run: dart run build_runner build --delete-conflicting-outputs
