@@ -25,6 +25,6 @@ Developers SHALL validate packages meet 160/160 pub points before publishing man
 
 ## REMOVED Requirements
 
-### Requirement: CI Automation for Publishing
-**Reason**: All publishing is now manual to provide full developer control over release timing and prevent accidental publications.
-**Migration**: Developers must run `melos pub-publish` locally when ready to publish packages.
+### Requirement: Automated Publishing via GitHub Actions
+**Reason**: All publishing is now manual to provide full developer control over release timing and prevent accidental publications. Automated publishing workflows that trigger on version changes are removed.
+**Migration**: Developers must run `melos pub-publish` manually when ready to publish packages. Validation workflows remain for quality checks but do not publish.

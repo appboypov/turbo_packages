@@ -11,20 +11,20 @@ parent-id: remove-github-actions-pipelines
 Remove all GitHub Actions workflow files that automate publishing or validation, ensuring all publishing is manual.
 
 ## Currently
-- Root-level `.github/workflows/pub-check.yml` validates packages on PRs
 - Package-level `.github/workflows/publish.yml` files in turbo_mvvm, turbo_notifiers, and turbolytics automatically publish when version changes
 - These workflows create tags, releases, and publish to pub.dev automatically
 
 ## Should
-- All GitHub Actions workflow files related to publishing are deleted
-- No automated publishing occurs
+- All GitHub Actions workflow files related to publishing and validation are deleted
+- No automated publishing or CI validation occurs
 - Developers must manually run `melos pub-publish` to publish packages
+- Developers must manually run `melos pub-check` locally before publishing
 
 ## Constraints
 - [ ] Must delete root-level pub-check.yml workflow
 - [ ] Must delete all package-level publish.yml workflows
 - [ ] Must not break any existing manual publishing commands (melos pub-publish)
-- [ ] Must preserve any non-publishing workflows if they exist
+- [ ] Must not break any existing manual validation commands (melos pub-check)
 
 ## Acceptance Criteria
 - [ ] `.github/workflows/pub-check.yml` is deleted
@@ -33,6 +33,7 @@ Remove all GitHub Actions workflow files that automate publishing or validation,
 - [ ] `turbolytics/.github/workflows/publish.yml` is deleted
 - [ ] No other publish-related workflows remain
 - [ ] Manual publishing via `melos pub-publish` still works
+- [ ] Manual validation via `melos pub-check` still works
 
 ## Implementation Checklist
 - [x] 1.1 Delete `.github/workflows/pub-check.yml`
