@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: |
+          if [ -d "example/lib" ]; then
+            dart format --set-exit-if-changed lib/ test/ example/lib/
+          else
+            dart format --set-exit-if-changed lib/ test/
+          fi
+
+      - name: Analyze code
+        run: dart analyze lib/
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Validate 160 Pub Points
+        run: |
+          # Try to use script from monorepo root, or use local copy
+          if [ -f "../../.github/scripts/check_pub_points.sh" ]; then
+            bash ../../.github/scripts/check_pub_points.sh
+          elif [ -f ".github/scripts/check_pub_points.sh" ]; then
+            bash .github/scripts/check_pub_points.sh
+          else
+            echo "::error::check_pub_points.sh script not found"
+            exit 1
+          fi
+

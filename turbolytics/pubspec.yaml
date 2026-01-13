@@ -1,0 +1,23 @@
+name: turbolytics
+description: An efficient, user-friendly way to implement logs, analytics and crash reports into your projects.
+version: 1.1.0
+resolution: workspace
+repository: https://github.com/appboypov/turbo_packages/tree/main/turbolytics
+homepage: https://github.com/appboypov/turbo_packages
+issue_tracker: https://github.com/appboypov/turbo_packages/issues
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  get_it: ^9.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

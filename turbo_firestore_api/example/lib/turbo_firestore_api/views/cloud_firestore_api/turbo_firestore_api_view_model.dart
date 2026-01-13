@@ -1,0 +1,16 @@
+import 'package:example/main.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:veto/data/models/base_view_model.dart';
+
+class CloudFirestoreApiViewModel extends BaseViewModel {
+  CloudFirestoreApiViewModel();
+
+  @override
+  Future<void> initialise() async {
+    await Firebase.initializeApp();
+    ExampleAPI().createExample();
+    super.initialise();
+  }
+
+  static CloudFirestoreApiViewModel get locate => CloudFirestoreApiViewModel();
+}

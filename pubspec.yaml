@@ -1,0 +1,52 @@
+name: turbo_packages
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - turbo_response
+  - turbo_serializable
+  - turbo_notifiers
+  - turbo_mvvm
+  - turbolytics
+  - turbo_firestore_api
+  - turbo_promptable
+
+dev_dependencies:
+  melos: ^7.3.0
+
+melos:
+  repository: https://github.com/appboypov/turbo_packages
+
+  command:
+    version:
+      workspaceChangelog: true
+      linkToCommits: true
+
+  scripts:
+    analyze:
+      run: dart analyze --fatal-infos
+      exec:
+        concurrency: 1
+      description: Run dart analyze
+
+    format:
+      run: dart format --set-exit-if-changed .
+      description: Check formatting
+
+    test:
+      run: flutter test
+      exec:
+        concurrency: 1
+      packageFilters:
+        dirExists: test
+      description: Run tests
+
+    build_runner:
+      run: dart run build_runner build --delete-conflicting-outputs
+      exec:
+        concurrency: 1
+      packageFilters:
+        dependsOn: build_runner
+      description: Run build_runner

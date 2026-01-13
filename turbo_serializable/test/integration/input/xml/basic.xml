@@ -1,0 +1,6 @@
+<root>
+  <firstName>John</firstName>
+  <lastName>Doe</lastName>
+  <age>30</age>
+  <active>true</active>
+</root>

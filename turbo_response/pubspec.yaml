@@ -1,0 +1,23 @@
+name: turbo_response
+description: A type-safe response wrapper for handling success and failure states with pattern matching and utility methods.
+version: 1.0.1
+resolution: workspace
+repository: https://github.com/appboypov/turbo_packages/tree/main/turbo_response
+homepage: https://github.com/appboypov/turbo_packages
+issue_tracker: https://github.com/appboypov/turbo_packages/issues
+
+topics:
+  - error-handling
+  - result
+  - response
+  - type-safe
+  - dart
+
+environment:
+  sdk: ^3.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.24.0
+  lints: ^6.0.0

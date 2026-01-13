@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <title>JSON Body Test</title>
+  <version>1</version>
+  <body>
+    <key>value</key>
+    <nested>
+      <inner>data</inner>
+    </nested>
+  </body>
+</root>
