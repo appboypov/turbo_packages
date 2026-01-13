@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: remove-github-actions-pipelines
@@ -34,11 +34,11 @@ Update workspace documentation to remove all references to CI automation and cla
 - [ ] No confusion about automated vs manual publishing
 
 ## Implementation Checklist
-- [ ] 2.1 Review workspace/AGENTS.md for CI/publishing references
-- [ ] 2.2 Remove section about GitHub Actions workflow validation
-- [ ] 2.3 Update publishing instructions to emphasize manual process
-- [ ] 2.4 Add note that developers must run `melos pub-check` locally
-- [ ] 2.5 Verify all references to automated publishing are removed
+- [x] 2.1 Review workspace/AGENTS.md for CI/publishing references
+- [x] 2.2 Remove section about GitHub Actions workflow validation
+- [x] 2.3 Update publishing instructions to emphasize manual process
+- [x] 2.4 Add note that developers must run `melos pub-check` locally
+- [x] 2.5 Verify all references to automated publishing are removed
 
 ## Notes
 Focus on making it clear that publishing is a manual, intentional action. Developers should understand they have full control over when packages are published.

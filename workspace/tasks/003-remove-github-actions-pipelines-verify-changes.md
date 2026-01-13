@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: remove-github-actions-pipelines
@@ -33,12 +33,12 @@ After deleting workflows and updating docs, need to verify everything is complet
 - [ ] No broken references or dead links in documentation
 
 ## Implementation Checklist
-- [ ] 3.1 Verify all workflow files are deleted (search for .github/workflows/*.yml)
-- [ ] 3.2 Review workspace/AGENTS.md for accuracy
-- [ ] 3.3 Verify specs match the new manual-only approach
-- [ ] 3.4 Test `melos pub-check` locally to ensure it still works
-- [ ] 3.5 Test `melos pub-publish --dry-run` to ensure it still works
-- [ ] 3.6 Check for any remaining references to CI automation
+- [x] 3.1 Verify all workflow files are deleted (search for .github/workflows/*.yml)
+- [x] 3.2 Review workspace/AGENTS.md for accuracy
+- [x] 3.3 Verify specs match the new manual-only approach
+- [x] 3.4 Test `melos pub-check` locally to ensure it still works
+- [x] 3.5 Test `melos pub-publish-dry-run` to ensure it still works
+- [x] 3.6 Check for any remaining references to CI automation
 
 ## Notes
 This is a verification task to ensure the change is complete and consistent across all files.

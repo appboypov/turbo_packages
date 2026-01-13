@@ -654,7 +654,7 @@ Pub.dev awards up to 160 points across six categories:
 
 Before publishing any package:
 
-- [ ] Run `melos pub-check` - This automatically runs analysis, formatting, tests, and pana validation
+- [ ] Run `melos pub-check` locally - This automatically runs analysis, formatting, tests, and pana validation
 - [ ] Verify `CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com/) format
 - [ ] Verify `README.md` includes usage examples
 - [ ] Verify `LICENSE` file exists and is OSI-approved
@@ -735,7 +735,7 @@ This command:
 - Runs full validation (pub-check)
 - Runs `dart pub publish --dry-run` for each package
 - Does NOT publish to pub.dev
-- Safe to run in CI or locally
+- Safe to run locally anytime
 
 #### Publish to pub.dev
 
@@ -748,7 +748,7 @@ This command:
 - Validates all packages first
 - Requires `--confirmed` flag (built into the command)
 - Publishes to pub.dev
-- **Never runs in CI** - publishing is manual only
+- **Publishing is manual only** - developers must run this command locally when ready to publish
 
 ### Common Issues and Solutions
 
@@ -792,13 +792,16 @@ This command:
    - Add `example/` directory with working example
    - Ensure example demonstrates main package features
 
-### CI Validation
+### Local Validation Before Publishing
 
-The GitHub Actions workflow (`.github/workflows/pub-check.yml`) automatically:
-- Validates all packages on every PR to main
-- Fails PRs that don't meet 160/160 pub points
-- Runs `melos pub-check` (never publishes)
-- Provides clear error messages for failing packages
+**Important:** All publishing is manual. Before publishing any package, developers MUST run validation locally:
+
+- Run `melos pub-check` to validate all packages meet 160/160 pub points
+- Fix any issues identified by the validation
+- Run `melos pub-publish-dry-run` to verify packages are ready for publication
+- Only proceed with `melos pub-publish` after validation passes
+
+There is no automated CI validation. Developers are responsible for ensuring packages meet all requirements before publishing.
 
 ### When to Publish
 

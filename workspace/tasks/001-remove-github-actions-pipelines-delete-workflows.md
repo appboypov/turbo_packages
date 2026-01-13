@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: remove-github-actions-pipelines
@@ -35,12 +35,12 @@ Remove all GitHub Actions workflow files that automate publishing or validation,
 - [ ] Manual publishing via `melos pub-publish` still works
 
 ## Implementation Checklist
-- [ ] 1.1 Delete `.github/workflows/pub-check.yml`
-- [ ] 1.2 Delete `turbo_mvvm/.github/workflows/publish.yml`
-- [ ] 1.3 Delete `turbo_notifiers/.github/workflows/publish.yml`
-- [ ] 1.4 Delete `turbolytics/.github/workflows/publish.yml`
-- [ ] 1.5 Verify no other publish-related workflows exist
-- [ ] 1.6 Test that `melos pub-publish --dry-run` still works locally
+- [x] 1.1 Delete `.github/workflows/pub-check.yml`
+- [x] 1.2 Delete `turbo_mvvm/.github/workflows/publish.yml`
+- [x] 1.3 Delete `turbo_notifiers/.github/workflows/publish.yml`
+- [x] 1.4 Delete `turbolytics/.github/workflows/publish.yml`
+- [x] 1.5 Verify no other publish-related workflows exist
+- [x] 1.6 Test that `melos pub-publish-dry-run` still works locally
 
 ## Notes
 After deletion, all publishing must be done manually using `melos pub-publish`. Developers should run `melos pub-check` locally before publishing to ensure packages meet 160/160 pub points.
