@@ -27,17 +27,11 @@ All files modified correctly and no regressions.
 
 - [ ] Root pubspec.yaml has correct workspace and melos config
 - [ ] flutter-app/pubspec.yaml has resolution: workspace
-- [ ] All scripts are executable
-- [ ] Hook source file tracked in tool/hooks/
 
 ## Implementation Checklist
 
-- [x] 4.1 Review root pubspec.yaml changes
-- [x] 4.2 Review flutter-app/pubspec.yaml changes
-- [x] 4.3 Verify tool/sync_template.sh exists and is executable
-- [x] 4.4 Verify tool/hooks/post-commit exists and is executable
-- [x] 4.5 Verify tool/setup_hooks.sh exists and is executable
-- [x] 4.6 Review Makefile changes
+- [x] 2.1 Review root pubspec.yaml changes
+- [x] 2.2 Review flutter-app/pubspec.yaml changes
 
 ## Notes
 

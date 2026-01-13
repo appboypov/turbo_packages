@@ -16,37 +16,6 @@ The monorepo SHALL include turbo_template/flutter-app in the melos workspace for
 - **WHEN** running `melos analyze`, `melos format`, or `melos test`
 - **THEN** turbo_flutter_template SHALL be included
 
-### Requirement: Template Sync Hook
-The monorepo SHALL provide a post-commit hook that syncs turbo_template to an external directory when template files change.
-
-#### Scenario: Sync triggers on template changes
-- **WHEN** a commit modifies files in turbo_template/
-- **THEN** the post-commit hook SHALL sync the template to the configured target
-
-#### Scenario: Sync skips when template unchanged
-- **WHEN** a commit does not modify files in turbo_template/
-- **THEN** the post-commit hook SHALL skip the sync operation
-
-#### Scenario: Sync excludes build artifacts
-- **WHEN** the sync operation runs
-- **THEN** it SHALL exclude build/, .dart_tool/, node_modules/, Pods/, .gradle/, *.lock, .firebase/, coverage/, .idea/, .vscode/, .DS_Store, and .git/
-
-#### Scenario: Sync target is configurable
-- **WHEN** SYNC_TEMPLATE_TARGET environment variable is set
-- **THEN** the sync SHALL use that path as the target
-- **OTHERWISE** it SHALL default to ~/Repos/turbo-template
-
-### Requirement: Template Sync Makefile Targets
-The monorepo SHALL provide Makefile targets for template sync operations.
-
-#### Scenario: Manual sync target
-- **WHEN** running `make sync-template`
-- **THEN** the template SHALL sync to the configured target directory
-
-#### Scenario: Hook setup target
-- **WHEN** running `make setup-hooks`
-- **THEN** the post-commit hook SHALL be installed to .git/hooks/
-
 ## MODIFIED Requirements
 
 ### Requirement: Melos Scripts
