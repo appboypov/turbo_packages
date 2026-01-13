@@ -1,0 +1,150 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shake_gesture/shake_gesture.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
+import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view_model.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/widgets/is_busy_icon.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusable.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/widgets/value_listenable_builder_x2.dart'
+    show ValueListenableBuilderX2;
+import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/config/no_thumb_scroll_behaviour.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/constants/k_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/constants/spacings.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/models/t_colors.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider_builder.dart';
+import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
+import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
+import 'package:veto/veto.dart';
+
+class MyAppView extends StatelessWidget {
+  const MyAppView({super.key});
+
+  static const String path = 'app';
+
+  @override
+  Widget build(BuildContext context) => ViewModelBuilder<MyAppViewModel>(
+    isReactive: false,
+    builder: (context, model, isInitialised, _) {
+      if (!isInitialised) return kWidgetsNothing;
+      return ValueListenableBuilderX2(
+        valueListenable: model.themeMode,
+        valueListenable2: model.language,
+        builder: (context, turboThemeMode, language, _) => AnnotatedRegion(
+          value: turboThemeMode.themeMode,
+          child: ShadApp.router(
+            key: ValueKey(language.languageCode),
+            locale: language.toLocale,
+            materialThemeBuilder: (context, theme) {
+              final backgroundColor = switch (turboThemeMode) {
+                TThemeMode.dark => TColors.backgroundDark,
+                TThemeMode.light => TColors.backgroundLight,
+              };
+              final foregroundColor = backgroundColor.onColor;
+              return theme.copyWith(
+                scaffoldBackgroundColor: backgroundColor,
+                iconTheme: IconThemeData(color: foregroundColor),
+                colorScheme: switch (turboThemeMode) {
+                  TThemeMode.dark => ColorScheme.dark(onSurface: backgroundColor),
+                  TThemeMode.light => ColorScheme.light(onSurface: backgroundColor),
+                },
+              );
+            },
+            theme: TThemeMode.light.themeData,
+            darkTheme: TThemeMode.dark.themeData,
+            themeMode: turboThemeMode.themeMode,
+            routerConfig: model.coreRouter,
+            scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            builder: (context, child) => TProviderBuilder(
+              tSupportedLanguage: language,
+              tThemeMode: turboThemeMode,
+              builder:
+                  (
+                    deviceType,
+                    themeMode,
+                    tools,
+                    data,
+                    texts,
+                    colors,
+                    sizes,
+                    decorations,
+                    context,
+                  ) => Unfocusable(
+                    child: MediaQuery(
+                      data: context.media.copyWith(textScaler: TextScaler.noScaling),
+                      child: Overlay(
+                        initialEntries: [
+                          OverlayEntry(
+                            builder: (_) {
+                              return ValueListenableBuilderX2<BusyModel, bool>(
+                                valueListenable: model.busyListenable,
+                                valueListenable2: model.hasInternetConnection,
+                                builder: (context, busyModel, hasInternetConnection, _) {
+                                  return Stack(
+                                    fit: StackFit.expand,
+                                    alignment: AlignmentDirectional.center,
+                                    children: [
+                                      Positioned.fill(
+                                        child: Container(color: context.colors.background),
+                                      ),
+                                      Positioned.fill(
+                                        child: AnimatedOpacity(
+                                          duration: AnimationDurations.animation,
+                                          opacity: busyModel.isBusy ? Spacings.opacityDisabled : 1,
+                                          child: IgnorePointer(
+                                            ignoring: busyModel.isBusy || !hasInternetConnection,
+                                            child: ShakeGesture(
+                                              onShake: () =>
+                                                  model.onShakeDetected(context: context),
+                                              child: child!,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      IsBusyIcon(busyModel: busyModel, height: 112),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+            ),
+          ),
+        ),
+      );
+    },
+    viewModelBuilder: () => MyAppViewModel(
+      authService: () => AuthService.locate,
+      shakeGestureService: () => ShakeGestureService.locate,
+      baseRouterService: () => BaseRouterService.locate,
+      busyService: () => BusyService.instance(),
+      connectionService: () => ConnectionService.locate,
+      languageService: () => LanguageService.locate,
+      themeService: () => ThemeService.locate,
+      locatorService: LocatorService.locate,
+      localStorageService: () => LocalStorageService.locate,
+    ),
+  );
+}

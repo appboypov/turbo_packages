@@ -1,0 +1,133 @@
+{
+  "@@locale": "en",
+  "appName": "Turbo Template",
+  "@appName": {
+    "description": "The application name"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button text"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button text"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Done button text"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error title"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Success title"
+  },
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Generic error message"
+  },
+  "somethingWentWrongPleaseTryAgainLater": "Something went wrong. Please try again later.",
+  "@somethingWentWrongPleaseTryAgainLater": {
+    "description": "Generic error message with retry suggestion"
+  },
+  "noInternetConnection": "No internet connection",
+  "@noInternetConnection": {
+    "description": "No internet connection message"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings title"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home tab title"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile title"
+  },
+  "logOut": "Log out",
+  "@logOut": {
+    "description": "Log out button text"
+  },
+  "logIn": "Log in",
+  "@logIn": {
+    "description": "Log in button text"
+  },
+  "signUp": "Sign up",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "confirmPassword": "Confirm password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "resetPassword": "Reset password",
+  "@resetPassword": {
+    "description": "Reset password button text"
+  },
+  "createAccount": "Create account",
+  "@createAccount": {
+    "description": "Create account button text"
+  },
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Already have account text"
+  },
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Don't have account text"
+  },
+  "welcomeToApp": "Welcome to {appName}",
+  "@welcomeToApp": {
+    "description": "Welcome message with app name",
+    "placeholders": {
+      "appName": {
+        "type": "String",
+        "example": "Turbo Template"
+      }
+    }
+  }
+}

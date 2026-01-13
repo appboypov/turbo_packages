@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "a-pew-pew-app",
+    "staging": "a-pew-pew-app-staging"
+  }
+}

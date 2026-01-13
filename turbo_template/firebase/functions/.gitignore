@@ -1,0 +1,11 @@
+# Compiled JavaScript
+lib/
+
+# Node modules
+node_modules/
+
+# Local config
+*.local
+
+# Logs
+*.log

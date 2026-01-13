@@ -1,0 +1,4 @@
+class TBreakpointConfig {
+  const TBreakpointConfig();
+}
+

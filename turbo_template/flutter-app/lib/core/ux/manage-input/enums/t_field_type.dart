@@ -1,0 +1,5 @@
+enum TFieldType {
+  textInput,
+  checkbox;
+}
+
