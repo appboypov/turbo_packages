@@ -50,3 +50,21 @@ melos:
       packageFilters:
         dependsOn: build_runner
       description: Run build_runner
+
+    pub-check:
+      run: bash "$MELOS_ROOT_PATH/tool/pub_check.sh"
+      exec:
+        concurrency: 1
+      description: Validate packages meet 160/160 pub.dev points using pana
+
+    pub-publish:
+      run: bash "$MELOS_ROOT_PATH/tool/pub_publish.sh" --confirmed
+      exec:
+        concurrency: 1
+      description: Validate and publish packages to pub.dev (requires confirmation)
+
+    pub-publish-dry-run:
+      run: bash "$MELOS_ROOT_PATH/tool/pub_publish.sh" --dry-run
+      exec:
+        concurrency: 1
+      description: Validate packages for publishing without actually publishing (dry-run)

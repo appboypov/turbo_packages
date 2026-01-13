@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: completed
 skill-level: medior
 parent-type: change
 parent-id: add-melos-pub-workflow
@@ -44,14 +44,14 @@ Root pubspec.yaml has Melos scripts for analyze, format, test, and build_runner.
 
 ## Implementation Checklist
 
-- [ ] 1.1 Add pana as dev_dependency in root pubspec.yaml
-- [ ] 1.2 Create tool/pub_check.sh wrapper script
-- [ ] 1.3 Create tool/pub_publish.sh wrapper script
-- [ ] 1.4 Add pub-check Melos script to pubspec.yaml (melos.scripts)
-- [ ] 1.5 Add pub-publish Melos script to pubspec.yaml (melos.scripts)
-- [ ] 1.6 Test pub-check locally against all packages
-- [ ] 1.7 Test pub-publish --dry-run locally
-- [ ] 1.8 Verify scripts handle errors and edge cases
+- [x] 1.1 Add pana as dev_dependency in root pubspec.yaml
+- [x] 1.2 Create tool/pub_check.sh wrapper script
+- [x] 1.3 Create tool/pub_publish.sh wrapper script
+- [x] 1.4 Add pub-check Melos script to pubspec.yaml (melos.scripts)
+- [x] 1.5 Add pub-publish Melos script to pubspec.yaml (melos.scripts)
+- [x] 1.6 Test pub-check locally against all packages
+- [x] 1.7 Test pub-publish --dry-run locally
+- [x] 1.8 Verify scripts handle errors and edge cases
 
 ## Notes
 
