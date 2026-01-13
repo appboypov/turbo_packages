@@ -20,7 +20,8 @@ class SubAgentDto extends TurboPromptable {
   final RoleDto role;
 
   static const fromJsonFactory = _$SubAgentDtoFromJson;
-  factory SubAgentDto.fromJson(Map<String, dynamic> json) => _$SubAgentDtoFromJson(json);
+  factory SubAgentDto.fromJson(Map<String, dynamic> json) =>
+      _$SubAgentDtoFromJson(json);
   static const toJsonFactory = _$SubAgentDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$SubAgentDtoToJson(this);

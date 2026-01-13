@@ -5,7 +5,8 @@
 
 import 'package:turbo_serializable/turbo_serializable.dart';
 
-export 'package:turbo_serializable/turbo_serializable.dart' show TurboSerializable;
+export 'package:turbo_serializable/turbo_serializable.dart'
+    show TurboSerializable;
 
 /// Type alias for backwards compatibility with existing code.
 typedef TurboWriteable<M> = TurboSerializable<M>;

@@ -24,7 +24,8 @@ class TemplateDto extends TurboPromptable {
   final Map<String, String>? variables;
 
   static const fromJsonFactory = _$TemplateDtoFromJson;
-  factory TemplateDto.fromJson(Map<String, dynamic> json) => _$TemplateDtoFromJson(json);
+  factory TemplateDto.fromJson(Map<String, dynamic> json) =>
+      _$TemplateDtoFromJson(json);
   static const toJsonFactory = _$TemplateDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$TemplateDtoToJson(this);

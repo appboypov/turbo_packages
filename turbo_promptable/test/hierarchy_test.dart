@@ -28,7 +28,9 @@ void main() {
       final role = RoleDto(
         metaData: MetaDataDto(name: 'Test Role', description: 'A test role'),
         expertise: ExpertiseDto(
-          metaData: MetaDataDto(name: 'Engineering Expertise', description: 'Engineering expertise description'),
+          metaData: MetaDataDto(
+              name: 'Engineering Expertise',
+              description: 'Engineering expertise description'),
           field: 'Engineering',
           specialization: 'Backend',
           experience: '5 years',
@@ -42,9 +44,12 @@ void main() {
 
     test('Hierarchy nesting works (Team → Area → Role)', () {
       final role = RoleDto(
-        metaData: MetaDataDto(name: 'Developer', description: 'Software developer role'),
+        metaData: MetaDataDto(
+            name: 'Developer', description: 'Software developer role'),
         expertise: ExpertiseDto(
-          metaData: MetaDataDto(name: 'Engineering Expertise', description: 'Engineering expertise description'),
+          metaData: MetaDataDto(
+              name: 'Engineering Expertise',
+              description: 'Engineering expertise description'),
           field: 'Engineering',
           specialization: 'Backend',
           experience: '5 years',
@@ -52,12 +57,14 @@ void main() {
       );
 
       final area = AreaDto(
-        metaData: MetaDataDto(name: 'Engineering', description: 'Engineering area'),
+        metaData:
+            MetaDataDto(name: 'Engineering', description: 'Engineering area'),
         roles: [role],
       );
 
       final team = TeamDto(
-        metaData: MetaDataDto(name: 'Product Team', description: 'Main product team'),
+        metaData:
+            MetaDataDto(name: 'Product Team', description: 'Main product team'),
         areas: [area],
       );
 
@@ -77,9 +84,12 @@ void main() {
 
     test('Hierarchy structure works correctly', () {
       final role = RoleDto(
-        metaData: MetaDataDto(name: 'Developer', description: 'Software developer role'),
+        metaData: MetaDataDto(
+            name: 'Developer', description: 'Software developer role'),
         expertise: ExpertiseDto(
-          metaData: MetaDataDto(name: 'Engineering Expertise', description: 'Engineering expertise description'),
+          metaData: MetaDataDto(
+              name: 'Engineering Expertise',
+              description: 'Engineering expertise description'),
           field: 'Engineering',
           specialization: 'Backend',
           experience: '5 years',
@@ -87,12 +97,14 @@ void main() {
       );
 
       final area = AreaDto(
-        metaData: MetaDataDto(name: 'Engineering', description: 'Engineering area'),
+        metaData:
+            MetaDataDto(name: 'Engineering', description: 'Engineering area'),
         roles: [role],
       );
 
       final team = TeamDto(
-        metaData: MetaDataDto(name: 'Product Team', description: 'Main product team'),
+        metaData:
+            MetaDataDto(name: 'Product Team', description: 'Main product team'),
         areas: [area],
       );
 
@@ -104,7 +116,8 @@ void main() {
 
     test('Frontmatter generation works', () {
       final team = TeamDto(
-        metaData: MetaDataDto(name: 'Product Team', description: 'Main product team'),
+        metaData:
+            MetaDataDto(name: 'Product Team', description: 'Main product team'),
       );
 
       final frontmatter = team.toXml();

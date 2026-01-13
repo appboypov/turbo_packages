@@ -151,7 +151,8 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
           return TurboResponse.fail(
             error: TurboException(
               title: 'Serialization Error',
-              message: 'The writeable object did not provide JSON serialization (toJson returned null)',
+              message:
+                  'The writeable object did not provide JSON serialization (toJson returned null)',
             ),
           );
         }
@@ -348,7 +349,8 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
         return TurboResponse.fail(
           error: TurboException(
             title: 'Serialization Error',
-            message: 'The writeable object did not provide JSON serialization (toJson returned null)',
+            message:
+                'The writeable object did not provide JSON serialization (toJson returned null)',
           ),
         );
       }

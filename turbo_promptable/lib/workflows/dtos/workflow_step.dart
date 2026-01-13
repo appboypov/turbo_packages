@@ -11,7 +11,8 @@ part 'workflow_step.g.dart';
 /// Workflow steps define individual actions or phases in a process, with
 /// optional input/output types, guard rails for validation, and a
 /// specific step type that categorizes the action.
-@JsonSerializable(includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
+@JsonSerializable(
+    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
 class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [WorkflowStep] with the given properties.
   WorkflowStep({
@@ -49,7 +50,7 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
     OUTPUT Function(Object? json) fromJsonOUTPUT,
   ) =>
       _$WorkflowStepFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
-  
+
   /// JSON serialization method for generic types.
   /// Requires converters for INPUT and OUTPUT types.
   Map<String, dynamic> toJsonWithConverters(
@@ -57,7 +58,7 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
     Object? Function(OUTPUT value) toJsonOUTPUT,
   ) =>
       _$WorkflowStepToJson(this, toJsonINPUT, toJsonOUTPUT);
-  
+
   @override
   Map<String, dynamic>? toJsonImpl() {
     // For generic types, toJsonImpl() cannot be implemented without type converters.

@@ -17,7 +17,8 @@ class RawBoxDto extends TurboPromptable {
   });
 
   static const fromJsonFactory = _$RawBoxDtoFromJson;
-  factory RawBoxDto.fromJson(Map<String, dynamic> json) => _$RawBoxDtoFromJson(json);
+  factory RawBoxDto.fromJson(Map<String, dynamic> json) =>
+      _$RawBoxDtoFromJson(json);
   static const toJsonFactory = _$RawBoxDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$RawBoxDtoToJson(this);

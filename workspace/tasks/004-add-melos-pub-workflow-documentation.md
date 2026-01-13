@@ -1,5 +1,6 @@
 ---
-status: to-do
+status: done
+status: completed
 skill-level: junior
 parent-type: change
 parent-id: add-melos-pub-workflow
@@ -46,18 +47,18 @@ No documentation on publishing to pub.dev. Developers are unaware of pub points,
 
 ## Implementation Checklist
 
-- [ ] 4.1 Review existing workspace/AGENTS.md structure
-- [ ] 4.2 Add "Publishing Packages to pub.dev" section
-- [ ] 4.3 Document the 160/160 pub points categories with explanations
-- [ ] 4.4 Create pre-publish checklist
-- [ ] 4.5 Document CHANGELOG.md format with Keep a Changelog example
-- [ ] 4.6 Explain semantic versioning (MAJOR.MINOR.PATCH)
-- [ ] 4.7 Document `melos pub-check` command and output
-- [ ] 4.8 Document `melos pub-publish --dry-run` command
-- [ ] 4.9 Document `melos pub-publish` command and safety confirmations
-- [ ] 4.10 List 10 common issues and how to fix them
-- [ ] 4.11 Add links to pub.dev documentation
-- [ ] 4.12 Update README.md with link to publishing guide
+- [x] 4.1 Review existing workspace/AGENTS.md structure
+- [x] 4.2 Add "Publishing Packages to pub.dev" section
+- [x] 4.3 Document the 160/160 pub points categories with explanations
+- [x] 4.4 Create pre-publish checklist
+- [x] 4.5 Document CHANGELOG.md format with Keep a Changelog example
+- [x] 4.6 Explain semantic versioning (MAJOR.MINOR.PATCH)
+- [x] 4.7 Document `melos pub-check` command and output
+- [x] 4.8 Document `melos pub-publish --dry-run` command
+- [x] 4.9 Document `melos pub-publish` command and safety confirmations
+- [x] 4.10 List 10 common issues and how to fix them
+- [x] 4.11 Add links to pub.dev documentation
+- [x] 4.12 Update README.md with link to publishing guide
 
 ## Notes
 

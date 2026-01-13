@@ -13,13 +13,13 @@ abstract class TurboPromptable extends TurboSerializable<MetaDataDto> {
     String? name,
     String? description,
   }) : super(
-         metaData: name == null && description == null
-             ? metaData
-             : MetaDataDto(
-                 name: name,
-                 description: description,
-               ),
-       );
+          metaData: name == null && description == null
+              ? metaData
+              : MetaDataDto(
+                  name: name,
+                  description: description,
+                ),
+        );
 
   final bool shouldExport;
   final String? exportPathOverride;

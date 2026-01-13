@@ -32,7 +32,8 @@ class PersonaDto extends TurboPromptable {
   final String? nickname;
 
   static const fromJsonFactory = _$PersonaDtoFromJson;
-  factory PersonaDto.fromJson(Map<String, dynamic> json) => _$PersonaDtoFromJson(json);
+  factory PersonaDto.fromJson(Map<String, dynamic> json) =>
+      _$PersonaDtoFromJson(json);
   static const toJsonFactory = _$PersonaDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$PersonaDtoToJson(this);

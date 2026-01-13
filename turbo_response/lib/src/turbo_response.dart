@@ -476,7 +476,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
   ///   (response) => 'Success: ${response.result}',
   /// );
   /// ```
-  FutureOr<R?> whenSuccess<R>(FutureOr<R> Function(Success<T> response) success) async =>
+  FutureOr<R?> whenSuccess<R>(
+          FutureOr<R> Function(Success<T> response) success) async =>
       isSuccess ? await success(this as Success<T>) : null;
 
   /// Handles a failed response, returning a value.
@@ -522,7 +523,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
   ///   (value) => value.length,
   /// );
   /// ```
-  FutureOr<TurboResponse<R>> mapSuccess<R>(FutureOr<R> Function(T value) transform) async =>
+  FutureOr<TurboResponse<R>> mapSuccess<R>(
+          FutureOr<R> Function(T value) transform) async =>
       switch (this) {
         Success<T>(result: final value, title: final t, message: final m) =>
           Success<R>(result: await transform(value), title: t, message: m),
@@ -633,7 +635,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
   ///   () => computeExpensiveDefault(),
   /// );
   /// ```
-  FutureOr<T> unwrapOrCompute(FutureOr<T> Function() defaultValue) async => switch (this) {
+  FutureOr<T> unwrapOrCompute(FutureOr<T> Function() defaultValue) async =>
+      switch (this) {
         Success(result: final r) => r,
         Fail() => await defaultValue(),
       };
@@ -781,7 +784,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
           : TurboResponse.fail(
               error: error ?? Exception('Validation failed'),
               title: title ?? 'Validation Error',
-              message: message ?? 'The success value did not meet the required condition',
+              message: message ??
+                  'The success value did not meet the required condition',
             );
     }
     return this;

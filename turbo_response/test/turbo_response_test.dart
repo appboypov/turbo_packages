@@ -82,8 +82,8 @@ void main() {
       expect(exceptionWithoutError.hasTitle, isTrue);
       expect(exceptionWithoutError.hasMessage, isTrue);
       expect(exceptionWithoutError.hasError, isFalse);
-      expect(
-          exceptionWithoutError.toString(), equals('TurboException(Error Title)\nError Message'));
+      expect(exceptionWithoutError.toString(),
+          equals('TurboException(Error Title)\nError Message'));
     });
 
     test('when should handle all states correctly', () {
@@ -662,7 +662,8 @@ void main() {
         final items = ['a', 'b', 'c'];
         final result = await TurboResponseX.traverse(
           items,
-          (item) async => TurboResponse<String>.success(result: item.toUpperCase()),
+          (item) async =>
+              TurboResponse<String>.success(result: item.toUpperCase()),
         );
 
         expect(result.isSuccess, isTrue);
@@ -740,7 +741,8 @@ void main() {
         final state = TurboResponse.failAsBool();
         expect(state.isFail, isTrue);
         expect(state.error, isA<TurboException>());
-        expect(state.error.toString(), equals('TurboException: Operation failed'));
+        expect(
+            state.error.toString(), equals('TurboException: Operation failed'));
         expect(state.title, isNull);
         expect(state.message, isNull);
       });

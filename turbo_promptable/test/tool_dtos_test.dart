@@ -17,7 +17,8 @@ void main() {
     group('ScriptDto', () {
       test('can be instantiated with basic properties', () {
         final script = ScriptDto(
-          metaData: MetaDataDto(name: 'Test Script', description: 'A test script'),
+          metaData:
+              MetaDataDto(name: 'Test Script', description: 'A test script'),
         );
 
         expect(script.metaData?.name, 'Test Script');
@@ -29,7 +30,8 @@ void main() {
 
       test('can be instantiated with input and output', () {
         final script = ScriptDto<String, String>(
-          metaData: MetaDataDto(name: 'Test Script', description: 'Test script description'),
+          metaData: MetaDataDto(
+              name: 'Test Script', description: 'Test script description'),
           input: 'input data',
           output: 'output data',
         );
@@ -40,7 +42,8 @@ void main() {
 
       test('can be instantiated with instructions', () {
         final script = ScriptDto(
-          metaData: MetaDataDto(name: 'Test Script', description: 'A test script'),
+          metaData:
+              MetaDataDto(name: 'Test Script', description: 'A test script'),
           instructions: 'Run with --verbose flag',
         );
 
@@ -49,7 +52,8 @@ void main() {
 
       test('can be instantiated with all properties', () {
         final script = ScriptDto<String, Map<String, dynamic>>(
-          metaData: MetaDataDto(name: 'Test Script', description: 'A test script'),
+          metaData:
+              MetaDataDto(name: 'Test Script', description: 'A test script'),
           input: 'input data',
           output: {'result': 'success'},
           instructions: 'Run with --verbose flag',
@@ -66,7 +70,8 @@ void main() {
     group('PersonaDto', () {
       test('can be instantiated with basic properties', () {
         final persona = PersonaDto(
-          metaData: MetaDataDto(name: 'Test Persona', description: 'A test persona'),
+          metaData:
+              MetaDataDto(name: 'Test Persona', description: 'A test persona'),
         );
 
         expect(persona.metaData?.name, 'Test Persona');
@@ -77,7 +82,8 @@ void main() {
 
       test('can be instantiated with preferences', () {
         final persona = PersonaDto(
-          metaData: MetaDataDto(name: 'Test Persona', description: 'Test persona description'),
+          metaData: MetaDataDto(
+              name: 'Test Persona', description: 'Test persona description'),
           preferences: ['helpful', 'knowledgeable', 'concise'],
         );
 
@@ -90,7 +96,8 @@ void main() {
 
       test('can be instantiated with values', () {
         final persona = PersonaDto(
-          metaData: MetaDataDto(name: 'Test Persona', description: 'Test persona description'),
+          metaData: MetaDataDto(
+              name: 'Test Persona', description: 'Test persona description'),
           values: ['honesty', 'respect', 'accuracy'],
         );
 
@@ -103,18 +110,21 @@ void main() {
 
       test('can be instantiated with background and communication style', () {
         final persona = PersonaDto(
-          metaData: MetaDataDto(name: 'Test Persona', description: 'Test persona description'),
+          metaData: MetaDataDto(
+              name: 'Test Persona', description: 'Test persona description'),
           background: 'Software engineer with 10 years experience',
           communicationStyle: 'Direct and concise',
         );
 
-        expect(persona.background, 'Software engineer with 10 years experience');
+        expect(
+            persona.background, 'Software engineer with 10 years experience');
         expect(persona.communicationStyle, 'Direct and concise');
       });
 
       test('can be instantiated with all properties', () {
         final persona = PersonaDto(
-          metaData: MetaDataDto(name: 'Test Persona', description: 'A helpful assistant'),
+          metaData: MetaDataDto(
+              name: 'Test Persona', description: 'A helpful assistant'),
           preferences: ['patient', 'thorough'],
           values: ['accuracy', 'clarity'],
           achievements: ['Award winner', 'Published author'],

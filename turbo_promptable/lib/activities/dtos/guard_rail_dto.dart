@@ -17,7 +17,8 @@ class GuardRailDto extends TurboPromptable {
   });
 
   static const fromJsonFactory = _$GuardRailDtoFromJson;
-  factory GuardRailDto.fromJson(Map<String, dynamic> json) => _$GuardRailDtoFromJson(json);
+  factory GuardRailDto.fromJson(Map<String, dynamic> json) =>
+      _$GuardRailDtoFromJson(json);
   static const toJsonFactory = _$GuardRailDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$GuardRailDtoToJson(this);

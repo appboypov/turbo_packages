@@ -1,5 +1,6 @@
 ---
-status: to-do
+status: done
+status: completed
 skill-level: junior
 parent-type: change
 parent-id: add-melos-pub-workflow
@@ -44,16 +45,16 @@ No CI validation of pub.dev readiness. PRs can be merged with unpublishable code
 
 ## Implementation Checklist
 
-- [ ] 3.1 Create .github/workflows/pub-check.yml
-- [ ] 3.2 Configure trigger: pull_request to main branch
-- [ ] 3.3 Add job to set up Dart environment
-- [ ] 3.4 Cache pub dependencies (.pub-cache)
-- [ ] 3.5 Run `melos bootstrap` to fetch dependencies
-- [ ] 3.6 Run `melos pub-check`
-- [ ] 3.7 Configure workflow to fail on pub-check failure
-- [ ] 3.8 Add step to report results (optional: post comment on PR)
-- [ ] 3.9 Test workflow on a test PR
-- [ ] 3.10 Verify workflow passes on main branch
+- [x] 3.1 Create .github/workflows/pub-check.yml
+- [x] 3.2 Configure trigger: pull_request to main branch
+- [x] 3.3 Add job to set up Dart environment
+- [x] 3.4 Cache pub dependencies (.pub-cache)
+- [x] 3.5 Run `melos bootstrap` to fetch dependencies
+- [x] 3.6 Run `melos pub-check`
+- [x] 3.7 Configure workflow to fail on pub-check failure
+- [x] 3.8 Add step to report results (optional: post comment on PR)
+- [x] 3.9 Test workflow on a test PR
+- [x] 3.10 Verify workflow passes on main branch
 
 ## Notes
 

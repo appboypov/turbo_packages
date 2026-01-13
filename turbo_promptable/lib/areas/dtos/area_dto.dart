@@ -22,7 +22,8 @@ class AreaDto extends TurboPromptable {
   final List<RoleDto>? roles;
 
   static const fromJsonFactory = _$AreaDtoFromJson;
-  factory AreaDto.fromJson(Map<String, dynamic> json) => _$AreaDtoFromJson(json);
+  factory AreaDto.fromJson(Map<String, dynamic> json) =>
+      _$AreaDtoFromJson(json);
   static const toJsonFactory = _$AreaDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$AreaDtoToJson(this);

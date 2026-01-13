@@ -27,7 +27,8 @@ class TeamDto extends TurboPromptable {
   final List<RoleDto>? roles;
 
   static const fromJsonFactory = _$TeamDtoFromJson;
-  factory TeamDto.fromJson(Map<String, dynamic> json) => _$TeamDtoFromJson(json);
+  factory TeamDto.fromJson(Map<String, dynamic> json) =>
+      _$TeamDtoFromJson(json);
   static const toJsonFactory = _$TeamDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$TeamDtoToJson(this);

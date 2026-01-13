@@ -8,7 +8,8 @@ part of 'turbo_collection_service.dart';
 /// Type Parameters:
 /// - [T] - The document type, must extend [TurboWriteableId<String, void>]
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
-abstract class BeSyncTurboCollectionService<T extends TurboWriteableId<String, void>,
+abstract class BeSyncTurboCollectionService<
+    T extends TurboWriteableId<String, void>,
     API extends TurboFirestoreApi<T>> extends TurboCollectionService<T, API> {
   /// Creates a new [BeSyncTurboCollectionService] instance.
   BeSyncTurboCollectionService({required super.api});

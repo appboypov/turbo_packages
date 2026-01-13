@@ -24,7 +24,8 @@ class WorkflowDto extends TurboPromptable {
   final List<WorkflowStep> steps;
 
   static const fromJsonFactory = _$WorkflowDtoFromJson;
-  factory WorkflowDto.fromJson(Map<String, dynamic> json) => _$WorkflowDtoFromJson(json);
+  factory WorkflowDto.fromJson(Map<String, dynamic> json) =>
+      _$WorkflowDtoFromJson(json);
   static const toJsonFactory = _$WorkflowDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$WorkflowDtoToJson(this);

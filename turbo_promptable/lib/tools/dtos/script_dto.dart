@@ -8,7 +8,8 @@ part 'script_dto.g.dart';
 ///
 /// Extends [TurboPromptable] with script-specific properties including
 /// input/output types and execution instructions.
-@JsonSerializable(includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
+@JsonSerializable(
+    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
 class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [ScriptDto] with the given properties.
   ScriptDto({
@@ -30,7 +31,7 @@ class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
     OUTPUT Function(Object? json) fromJsonOUTPUT,
   ) =>
       _$ScriptDtoFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
-  
+
   /// JSON serialization method for generic types.
   /// Requires converters for INPUT and OUTPUT types.
   Map<String, dynamic> toJsonWithConverters(
@@ -38,7 +39,7 @@ class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
     Object? Function(OUTPUT value) toJsonOUTPUT,
   ) =>
       _$ScriptDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
-  
+
   @override
   Map<String, dynamic>? toJsonImpl() {
     // For generic types, toJsonImpl() cannot be implemented without type converters.

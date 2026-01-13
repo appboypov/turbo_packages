@@ -17,7 +17,8 @@ class ReferenceDto extends TurboPromptable {
   });
 
   static const fromJsonFactory = _$ReferenceDtoFromJson;
-  factory ReferenceDto.fromJson(Map<String, dynamic> json) => _$ReferenceDtoFromJson(json);
+  factory ReferenceDto.fromJson(Map<String, dynamic> json) =>
+      _$ReferenceDtoFromJson(json);
   static const toJsonFactory = _$ReferenceDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$ReferenceDtoToJson(this);

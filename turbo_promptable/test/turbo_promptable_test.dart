@@ -30,11 +30,11 @@ void main() {
       expect(promptable.shouldExport, true);
     });
 
-
     group('toXml', () {
       test('generates XML when metaDataDto exists', () {
         final promptable = TestPromptable(
-          metaData: MetaDataDto(name: 'Test Name', description: 'Test Description'),
+          metaData:
+              MetaDataDto(name: 'Test Name', description: 'Test Description'),
         );
         final xml = promptable.toXml();
 
@@ -50,7 +50,8 @@ void main() {
         expect(json.containsKey('description'), false);
         expect(json['name'], 'Test Name');
 
-        final dtoOnlyDescription = MetaDataDto(name: null, description: 'Test Description');
+        final dtoOnlyDescription =
+            MetaDataDto(name: null, description: 'Test Description');
         final json2 = dtoOnlyDescription.toJson();
 
         expect(json2.containsKey('name'), false);

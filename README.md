@@ -30,19 +30,34 @@ melos bootstrap
 
 ### Common Commands
 
+You can use either `make` or `melos` commands:
+
 ```bash
-# Run analysis
+# Using Make (recommended for convenience)
+make analyze      # Run analysis
+make format       # Check formatting
+make test         # Run tests
+make build        # Run build_runner
+make pub-check    # Validate pub.dev readiness
+make help         # Show all available commands
+
+# Using Melos directly
 melos analyze
-
-# Run tests
-melos test
-
-# Check formatting
 melos format
-
-# Run build_runner (for packages that need it)
+melos test
 melos build_runner
+melos pub-check
+melos pub-publish-dry-run
 ```
+
+### Publishing
+
+See [workspace/AGENTS.md](workspace/AGENTS.md#publishing-packages-to-pubdev) for comprehensive publishing guidelines, including:
+- 160/160 pub points breakdown
+- Pre-publish checklist
+- CHANGELOG.md format
+- Semantic versioning guidelines
+- Common issues and solutions
 
 ## License
 

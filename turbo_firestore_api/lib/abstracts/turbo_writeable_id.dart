@@ -5,7 +5,8 @@
 
 import 'package:turbo_serializable/turbo_serializable.dart';
 
-export 'package:turbo_serializable/turbo_serializable.dart' show TurboSerializableId;
+export 'package:turbo_serializable/turbo_serializable.dart'
+    show TurboSerializableId;
 
 /// Type alias for backwards compatibility with existing code.
 typedef TurboWriteableId<T extends Object, M> = TurboSerializableId<T, M>;

@@ -619,4 +619,199 @@ splx validate change --id <id> --strict  # Is it correct?
 splx archive change --id <change-id> [--yes|-y]  # Mark complete (add --yes for automation)
 ```
 
+## Publishing Packages to pub.dev
+
+The turbo_packages monorepo uses Melos to manage and publish packages to pub.dev. All packages must achieve 160/160 pub points before publication.
+
+### 160/160 Pub Points Breakdown
+
+Pub.dev awards up to 160 points across six categories:
+
+1. **Dart Conventions (30 points)**
+   - Valid `pubspec.yaml` (10 pts)
+   - Valid `README.md` (5 pts)
+   - Valid `CHANGELOG.md` (5 pts)
+   - OSI-approved license (10 pts)
+
+2. **Documentation (20 points)**
+   - 20% or more of public API has dartdoc comments (10 pts)
+   - Package has an example (10 pts)
+
+3. **Platform Support (20 points)**
+   - Supports multiple platforms (iOS, Android, Web, Windows, macOS, Linux) (20 pts)
+
+4. **Static Analysis (50 points)**
+   - Code has no errors, warnings, lints, or formatting issues (50 pts)
+
+5. **Up-to-date Dependencies (20 points)**
+   - All dependencies supported in latest version (10 pts)
+   - Package supports latest stable Dart and Flutter SDKs (10 pts)
+
+6. **Null Safety (20 points)**
+   - Compatible with dependency constraint lower bounds (20 pts)
+
+### Pre-Publish Checklist
+
+Before publishing any package:
+
+- [ ] Run `melos pub-check` - All packages must pass 160/160
+- [ ] Run `melos analyze` - No analysis errors or warnings
+- [ ] Run `melos format` - All code properly formatted
+- [ ] Run `melos test` - All tests passing
+- [ ] Verify `CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com/) format
+- [ ] Verify `README.md` includes usage examples
+- [ ] Verify `LICENSE` file exists and is OSI-approved
+- [ ] Verify `pubspec.yaml` has correct version number
+- [ ] Verify `pubspec.yaml` declares supported platforms
+- [ ] Verify at least 20% of public API is documented with dartdoc comments
+- [ ] Run `melos pub-publish-dry-run` to validate without publishing
+
+### CHANGELOG.md Format
+
+Follow the [Keep a Changelog](https://keepachangelog.com/) format:
+
+```markdown
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.0.0] - 2026-01-13
+
+### Added
+- Initial release
+- Feature X
+- Feature Y
+
+### Changed
+- Updated dependency Z
+
+### Fixed
+- Bug fix description
+
+## [0.1.0] - 2026-01-01
+
+### Added
+- Initial development version
+```
+
+### Semantic Versioning
+
+Follow [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH):
+
+- **MAJOR** (1.0.0 → 2.0.0): Breaking changes to public API
+- **MINOR** (1.0.0 → 1.1.0): New features, backward compatible
+- **PATCH** (1.0.0 → 1.0.1): Bug fixes, backward compatible
+
+**Important:** Publishing is permanent. Versions cannot be deleted, only retracted. Choose versions carefully.
+
+### Melos Publishing Commands
+
+#### Validate Packages
+
+```bash
+# Check all packages for 160/160 pub points
+melos pub-check
+```
+
+This command:
+- Validates each package sequentially
+- Reports pub points score for each package
+- Fails if any package doesn't meet 160/160
+- Uses pana for official pub.dev scoring
+
+#### Dry-Run Publish
+
+```bash
+# Validate without publishing (safe to run anytime)
+melos pub-publish-dry-run
+```
+
+This command:
+- Runs full validation (pub-check)
+- Runs `dart pub publish --dry-run` for each package
+- Does NOT publish to pub.dev
+- Safe to run in CI or locally
+
+#### Publish to pub.dev
+
+```bash
+# Publish packages (requires confirmation)
+melos pub-publish
+```
+
+This command:
+- Validates all packages first
+- Requires `--confirmed` flag (built into the command)
+- Publishes to pub.dev
+- **Never runs in CI** - publishing is manual only
+
+### Common Issues and Solutions
+
+1. **Missing 10 points from static analysis**
+   - Run `melos format` to fix formatting
+   - Run `melos analyze` and fix any errors/warnings
+   - Ensure no linter violations
+
+2. **Missing points from documentation**
+   - Add dartdoc comments to public API members
+   - Ensure at least 20% of public API is documented
+   - Add example code in README.md
+
+3. **Missing points from platform support**
+   - Add `platforms:` section to `pubspec.yaml`:
+     ```yaml
+     platforms:
+       android:
+       ios:
+       web:
+       windows:
+       macos:
+       linux:
+     ```
+
+4. **Dependency constraint issues**
+   - Run `dart pub upgrade --tighten` to update constraints
+   - Ensure all dependencies support latest versions
+   - Fix any `pub downgrade` failures
+
+5. **CHANGELOG.md format issues**
+   - Follow Keep a Changelog format exactly
+   - Use `## [Version] - YYYY-MM-DD` format
+   - Include Added/Changed/Fixed sections
+
+6. **Missing LICENSE file**
+   - Add LICENSE file to package root
+   - Use OSI-approved license (MIT, Apache 2.0, etc.)
+
+7. **Example missing or incomplete**
+   - Add `example/` directory with working example
+   - Ensure example demonstrates main package features
+
+### CI Validation
+
+The GitHub Actions workflow (`.github/workflows/pub-check.yml`) automatically:
+- Validates all packages on every PR to main
+- Fails PRs that don't meet 160/160 pub points
+- Runs `melos pub-check` (never publishes)
+- Provides clear error messages for failing packages
+
+### When to Publish
+
+- **Major version**: Breaking API changes, major refactoring
+- **Minor version**: New features, backward compatible additions
+- **Patch version**: Bug fixes, documentation updates, dependency updates
+
+**Decision tree:**
+- Breaking change? → Major version bump
+- New feature? → Minor version bump
+- Bug fix only? → Patch version bump
+
+### Resources
+
+- [pub.dev Publishing Guide](https://dart.dev/tools/pub/publishing)
+- [pub.dev Package Scoring](https://pub.dev/help/scoring)
+- [Keep a Changelog](https://keepachangelog.com/)
+- [Semantic Versioning](https://semver.org/)
+- [Pana Tool](https://github.com/dart-lang/pana) - Official pub.dev scoring tool
+
 Remember: Specs are truth. Changes are proposals. Keep them in sync.

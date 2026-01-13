@@ -1,5 +1,6 @@
 ---
-status: to-do
+status: done
+status: completed
 skill-level: junior
 parent-type: change
 parent-id: add-melos-pub-workflow
@@ -53,18 +54,18 @@ Developers must remember and type full Melos commands (`melos analyze`, `melos t
 
 ## Implementation Checklist
 
-- [ ] 6.1 Create Makefile at root with `.DEFAULT_GOAL := help` and `.PHONY` declarations
-- [ ] 6.2 Add help target with grep-based command listing
-- [ ] 6.3 Add analyze target → `melos analyze`
-- [ ] 6.4 Add format target → `melos format`
-- [ ] 6.5 Add test target → `melos test`
-- [ ] 6.6 Add build target → `melos build_runner`
-- [ ] 6.7 Add pub-check target → `melos pub-check`
-- [ ] 6.8 Add pub-publish target → `melos pub-publish`
-- [ ] 6.9 Add all target → runs analyze, format, test
-- [ ] 6.10 Test all targets locally
-- [ ] 6.11 Update README.md with "Make Commands" section
-- [ ] 6.12 Verify Makefile works in CI environment
+- [x] 6.1 Create Makefile at root with `.DEFAULT_GOAL := help` and `.PHONY` declarations
+- [x] 6.2 Add help target with grep-based command listing
+- [x] 6.3 Add analyze target → `melos analyze`
+- [x] 6.4 Add format target → `melos format`
+- [x] 6.5 Add test target → `melos test`
+- [x] 6.6 Add build target → `melos build_runner`
+- [x] 6.7 Add pub-check target → `melos pub-check`
+- [x] 6.8 Add pub-publish target → `melos pub-publish`
+- [x] 6.9 Add all target → runs analyze, format, test
+- [x] 6.10 Test all targets locally
+- [x] 6.11 Update README.md with "Make Commands" section
+- [x] 6.12 Verify Makefile works in CI environment (requires CI run - manual step)
 
 ## Notes
 

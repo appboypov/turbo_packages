@@ -23,7 +23,8 @@ class CollectionDto extends TurboPromptable {
   final List<String> items;
 
   static const fromJsonFactory = _$CollectionDtoFromJson;
-  factory CollectionDto.fromJson(Map<String, dynamic> json) => _$CollectionDtoFromJson(json);
+  factory CollectionDto.fromJson(Map<String, dynamic> json) =>
+      _$CollectionDtoFromJson(json);
   static const toJsonFactory = _$CollectionDtoToJson;
 
   @override
@@ -32,8 +33,9 @@ class CollectionDto extends TurboPromptable {
   CollectionDto copyWith({
     MetaDataDto? metaData,
     List<String>? items,
-  }) => CollectionDto(
-    metaData: metaData ?? this.metaData,
-    items: items ?? this.items,
-  );
+  }) =>
+      CollectionDto(
+        metaData: metaData ?? this.metaData,
+        items: items ?? this.items,
+      );
 }

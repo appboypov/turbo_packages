@@ -30,7 +30,8 @@ class RepoDto extends TurboPromptable {
   final String? instructions;
 
   static const fromJsonFactory = _$RepoDtoFromJson;
-  factory RepoDto.fromJson(Map<String, dynamic> json) => _$RepoDtoFromJson(json);
+  factory RepoDto.fromJson(Map<String, dynamic> json) =>
+      _$RepoDtoFromJson(json);
   static const toJsonFactory = _$RepoDtoToJson;
   @override
   Map<String, dynamic> toJsonImpl() => _$RepoDtoToJson(this);
