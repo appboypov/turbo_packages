@@ -36,7 +36,7 @@ melos:
       description: Check formatting
 
     test:
-      run: flutter test --coverage
+      run: bash "$MELOS_ROOT_PATH/tool/test_with_coverage.sh"
       exec:
         concurrency: 1
       packageFilters:

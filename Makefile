@@ -2,13 +2,6 @@
 
 .DEFAULT_GOAL := help
 
-# Package variable support (lowercase)
-ifdef package
-  MELOS_SCOPE = --scope=$(package)
-else
-  MELOS_SCOPE =
-endif
-
 ## help: Show this help message
 help:
 	@echo "Usage: make [target] [package=<package-name>]"
@@ -23,19 +16,35 @@ help:
 
 ## analyze: Run static analysis across all packages
 analyze:
-	@melos analyze $(MELOS_SCOPE)
+	@if [ -n "$(package)" ]; then \
+		cd $(package) && dart analyze --fatal-infos .; \
+	else \
+		melos analyze; \
+	fi
 
 ## format: Format all packages
 format:
-	@melos format $(MELOS_SCOPE)
+	@if [ -n "$(package)" ]; then \
+		cd $(package) && dart format --set-exit-if-changed .; \
+	else \
+		melos format; \
+	fi
 
 ## test: Run tests with coverage across all packages
 test:
-	@melos test $(MELOS_SCOPE) -- --coverage
+	@if [ -n "$(package)" ]; then \
+		cd $(package) && make test; \
+	else \
+		melos test; \
+	fi
 
 ## build: Run build_runner to generate code
 build:
-	@melos build_runner $(MELOS_SCOPE)
+	@if [ -n "$(package)" ]; then \
+		cd $(package) && make build; \
+	else \
+		melos build_runner; \
+	fi
 
 ## watch: Run build_runner in watch mode
 watch:
