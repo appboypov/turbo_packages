@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: add-turbo-template-integration
@@ -33,9 +33,9 @@ Makefile has no targets for template syncing or hook setup.
 
 ## Implementation Checklist
 
-- [ ] 3.1 Add sync-template target to Makefile
-- [ ] 3.2 Add setup-hooks target to Makefile
-- [ ] 3.3 Verify both appear in make help output
+- [x] 3.1 Add sync-template target to Makefile
+- [x] 3.2 Add setup-hooks target to Makefile
+- [x] 3.3 Verify both appear in make help output
 
 ## Notes
 

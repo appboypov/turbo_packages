@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: medior
 parent-type: change
 parent-id: add-turbo-template-integration
@@ -40,13 +40,13 @@ turbo_template/flutter-app participates in melos workflows (analyze, format, tes
 
 ## Implementation Checklist
 
-- [ ] 1.1 Add `turbo_template/flutter-app` to workspace list in root pubspec.yaml
-- [ ] 1.2 Add `resolution: workspace` to flutter-app/pubspec.yaml
-- [ ] 1.3 Update turbo_response dependency to use workspace (remove version)
-- [ ] 1.4 Add packageFilters.ignore to pub-check script in melos config
-- [ ] 1.5 Add packageFilters.ignore to pub-publish script in melos config
-- [ ] 1.6 Add packageFilters.ignore to pub-publish-dry-run script in melos config
-- [ ] 1.7 Run `melos bootstrap` and verify flutter-app is included
+- [x] 1.1 Add `turbo_template/flutter-app` to workspace list in root pubspec.yaml
+- [x] 1.2 Add `resolution: workspace` to flutter-app/pubspec.yaml
+- [x] 1.3 Update turbo_response dependency to use workspace (remove version)
+- [x] 1.4 Add packageFilters.ignore to pub-check script in melos config
+- [x] 1.5 Add packageFilters.ignore to pub-publish script in melos config
+- [x] 1.6 Add packageFilters.ignore to pub-publish-dry-run script in melos config
+- [x] 1.7 Run `melos bootstrap` and verify flutter-app is included
 
 ## Notes
 

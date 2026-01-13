@@ -1,4 +1,4 @@
-.PHONY: help analyze format test build watch clean get pub-check pub-publish pub-publish-dry-run all
+.PHONY: help analyze format test build watch clean get pub-check pub-publish pub-publish-dry-run sync-template setup-hooks all
 
 .DEFAULT_GOAL := help
 
@@ -83,6 +83,14 @@ pub-publish-dry-run:
 ## pub-publish: Publish packages to pub.dev (requires confirmation)
 pub-publish:
 	@melos pub-publish
+
+## sync-template: Sync turbo_template to external repository
+sync-template:
+	@bash tool/sync_template.sh
+
+## setup-hooks: Install git hooks from tool/hooks/
+setup-hooks:
+	@bash tool/setup_hooks.sh
 
 ## all: Run full CI pipeline (analyze, format, test)
 all: analyze format test

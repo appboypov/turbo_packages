@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: add-turbo-template-integration
@@ -34,12 +34,12 @@ All melos commands and sync functionality work correctly.
 
 ## Implementation Checklist
 
-- [ ] 5.1 Run `melos bootstrap` and verify flutter-app listed
-- [ ] 5.2 Run `melos analyze` and verify flutter-app included
-- [ ] 5.3 Run `melos pub-check` and verify flutter-app skipped
-- [ ] 5.4 Run `make setup-hooks` and verify hook installed
-- [ ] 5.5 Run `make sync-template` and verify files copied to target
-- [ ] 5.6 Verify ~/Repos/turbo-template has synced content without build artifacts
+- [x] 5.1 Run `melos bootstrap` and verify flutter-app listed
+- [x] 5.2 Run `melos analyze` and verify flutter-app included
+- [x] 5.3 Run `melos pub-check` and verify flutter-app skipped
+- [x] 5.4 Run `make setup-hooks` and verify hook installed
+- [x] 5.5 Run `make sync-template` and verify files copied to target
+- [x] 5.6 Verify ~/Repos/turbo-template has synced content without build artifacts
 
 ## Notes
 

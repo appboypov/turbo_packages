@@ -1,0 +1,17 @@
+#!/bin/bash
+# Post-commit hook: Sync turbo_template if it was modified in the commit
+
+set -e
+
+# Get the root directory of the repository
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Check if turbo_template/ was changed in the last commit
+if git diff-tree --no-commit-id --name-only -r HEAD | grep -q "^turbo_template/"; then
+  echo "turbo_template/ was modified, syncing to external repo..."
+  "$REPO_ROOT/tool/sync_template.sh"
+else
+  echo "No changes to turbo_template/, skipping sync."
+fi
+
+exit 0

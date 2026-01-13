@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: medior
 parent-type: change
 parent-id: add-turbo-template-integration
@@ -39,10 +39,10 @@ No sync mechanism exists between this monorepo and the external template repo.
 
 ## Implementation Checklist
 
-- [ ] 2.1 Create tool/sync_template.sh with rsync and exclusions
-- [ ] 2.2 Create tool/hooks/post-commit with change detection logic
-- [ ] 2.3 Create tool/setup_hooks.sh to install the hook
-- [ ] 2.4 Make all scripts executable (chmod +x)
+- [x] 2.1 Create tool/sync_template.sh with rsync and exclusions
+- [x] 2.2 Create tool/hooks/post-commit with change detection logic
+- [x] 2.3 Create tool/setup_hooks.sh to install the hook
+- [x] 2.4 Make all scripts executable (chmod +x)
 
 ## Notes
 

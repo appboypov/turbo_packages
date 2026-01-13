@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: add-turbo-template-integration
@@ -32,12 +32,12 @@ All files modified correctly and no regressions.
 
 ## Implementation Checklist
 
-- [ ] 4.1 Review root pubspec.yaml changes
-- [ ] 4.2 Review flutter-app/pubspec.yaml changes
-- [ ] 4.3 Verify tool/sync_template.sh exists and is executable
-- [ ] 4.4 Verify tool/hooks/post-commit exists and is executable
-- [ ] 4.5 Verify tool/setup_hooks.sh exists and is executable
-- [ ] 4.6 Review Makefile changes
+- [x] 4.1 Review root pubspec.yaml changes
+- [x] 4.2 Review flutter-app/pubspec.yaml changes
+- [x] 4.3 Verify tool/sync_template.sh exists and is executable
+- [x] 4.4 Verify tool/hooks/post-commit exists and is executable
+- [x] 4.5 Verify tool/setup_hooks.sh exists and is executable
+- [x] 4.6 Review Makefile changes
 
 ## Notes
 

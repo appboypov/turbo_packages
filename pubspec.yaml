@@ -12,6 +12,7 @@ workspace:
   - turbolytics
   - turbo_firestore_api
   - turbo_promptable
+  - turbo_template/flutter-app
 
 dev_dependencies:
   melos: ^7.3.0
@@ -55,16 +56,25 @@ melos:
       run: bash "$MELOS_ROOT_PATH/tool/pub_check.sh"
       exec:
         concurrency: 1
+      packageFilters:
+        ignore:
+          - turbo_flutter_template
       description: Validate packages meet 160/160 pub.dev points using pana
 
     pub-publish:
       run: bash "$MELOS_ROOT_PATH/tool/pub_publish.sh" --confirmed
       exec:
         concurrency: 1
+      packageFilters:
+        ignore:
+          - turbo_flutter_template
       description: Validate and publish packages to pub.dev (requires confirmation)
 
     pub-publish-dry-run:
       run: bash "$MELOS_ROOT_PATH/tool/pub_publish.sh" --dry-run
       exec:
         concurrency: 1
+      packageFilters:
+        ignore:
+          - turbo_flutter_template
       description: Validate packages for publishing without actually publishing (dry-run)
