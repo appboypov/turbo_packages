@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: add-monorepo-run-configs
@@ -44,22 +44,22 @@ Create IntelliJ and Cursor/VS Code run configurations at the monorepo root that 
 - [ ] Configurations are properly formatted and validate without errors
 
 ## Implementation Checklist
-- [ ] 1.1 Create `.run/` directory at monorepo root
-- [ ] 1.2 Create IntelliJ run configuration for `melos analyze`
-- [ ] 1.3 Create IntelliJ run configuration for `melos format`
-- [ ] 1.4 Create IntelliJ run configuration for `melos test`
-- [ ] 1.5 Create IntelliJ run configuration for `melos build_runner`
-- [ ] 1.6 Create IntelliJ run configuration for `melos pub-check`
-- [ ] 1.7 Create IntelliJ run configuration for turbo_template app (emulators environment)
-- [ ] 1.8 Create IntelliJ run configuration for turbo_template app (staging environment)
-- [ ] 1.9 Create IntelliJ run configuration for turbo_template app (production environment)
-- [ ] 1.10 Create IntelliJ run configuration for turbo_template app (demo environment)
-- [ ] 1.11 Create `.vscode/` directory at monorepo root if it doesn't exist
-- [ ] 1.12 Create `.vscode/launch.json` with Melos operation configurations
-- [ ] 1.13 Add turbo_template app launch configurations to `.vscode/launch.json`
-- [ ] 1.14 Verify all configurations use correct working directories
-- [ ] 1.15 Test IntelliJ configurations can be executed
-- [ ] 1.16 Test Cursor/VS Code configurations can be executed
+- [x] 1.1 Create `.run/` directory at monorepo root
+- [x] 1.2 Create IntelliJ run configuration for `melos analyze`
+- [x] 1.3 Create IntelliJ run configuration for `melos format`
+- [x] 1.4 Create IntelliJ run configuration for `melos test`
+- [x] 1.5 Create IntelliJ run configuration for `melos build_runner`
+- [x] 1.6 Create IntelliJ run configuration for `melos pub-check`
+- [x] 1.7 Create IntelliJ run configuration for turbo_template app (emulators environment)
+- [x] 1.8 Create IntelliJ run configuration for turbo_template app (staging environment)
+- [x] 1.9 Create IntelliJ run configuration for turbo_template app (production environment)
+- [x] 1.10 Create IntelliJ run configuration for turbo_template app (demo environment)
+- [x] 1.11 Create `.vscode/` directory at monorepo root if it doesn't exist
+- [x] 1.12 Create `.vscode/launch.json` with Melos operation configurations
+- [x] 1.13 Add turbo_template app launch configurations to `.vscode/launch.json`
+- [x] 1.14 Verify all configurations use correct working directories
+- [x] 1.15 Test IntelliJ configurations can be executed
+- [x] 1.16 Test Cursor/VS Code configurations can be executed
 
 ## Notes
 - Reference turbo_template/flutter-app/.run/ and turbo_template/.vscode/launch.json for patterns

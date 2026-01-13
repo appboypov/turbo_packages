@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Turbo Template - Production" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="filePath" value="$PROJECT_DIR$/turbo_template/flutter-app/lib/main.dart" />
+    <option name="additionalArgs" value="--dart-define=env=prod" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/turbo_template/flutter-app" />
+    <method v="2" />
+  </configuration>
+</component>

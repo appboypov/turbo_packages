@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Turbo Template - Staging" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="filePath" value="$PROJECT_DIR$/turbo_template/flutter-app/lib/main.dart" />
+    <option name="additionalArgs" value="--dart-define=env=staging" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/turbo_template/flutter-app" />
+    <method v="2" />
+  </configuration>
+</component>
