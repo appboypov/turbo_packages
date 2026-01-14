@@ -24,7 +24,7 @@ class SubAgentDto extends TurboPromptable {
       _$SubAgentDtoFromJson(json);
   static const toJsonFactory = _$SubAgentDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$SubAgentDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$SubAgentDtoToJson(this);
 
   SubAgentDto copyWith({
     MetaDataDto? metaData,

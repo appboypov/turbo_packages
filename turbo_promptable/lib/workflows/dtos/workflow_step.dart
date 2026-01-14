@@ -3,6 +3,7 @@ import 'package:turbo_promptable/activities/dtos/guard_rail_dto.dart';
 import 'package:turbo_promptable/activities/enums/workflow_step_type.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
+import '../../shared/dtos/meta_data_dto.dart';
 
 part 'workflow_step.g.dart';
 
@@ -60,11 +61,11 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
       _$WorkflowStepToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
-  Map<String, dynamic>? toJsonImpl() {
-    // For generic types, toJsonImpl() cannot be implemented without type converters.
+  Map<String, dynamic>? toJsonMap() {
+    // For generic types, toJsonMap() cannot be implemented without type converters.
     // Use toJsonWithConverters() instead with appropriate converters.
     throw UnimplementedError(
-      'WorkflowStep.toJsonImpl() requires type converters. Use toJsonWithConverters() instead.',
+      'WorkflowStep.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
     );
   }
 }

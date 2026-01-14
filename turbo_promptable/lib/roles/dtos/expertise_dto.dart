@@ -27,7 +27,7 @@ class ExpertiseDto extends TurboPromptable {
       _$ExpertiseDtoFromJson(json);
   static const toJsonFactory = _$ExpertiseDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$ExpertiseDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$ExpertiseDtoToJson(this);
 
   ExpertiseDto copyWith({
     MetaDataDto? metaData,

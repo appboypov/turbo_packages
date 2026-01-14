@@ -26,7 +26,7 @@ class AreaDto extends TurboPromptable {
       _$AreaDtoFromJson(json);
   static const toJsonFactory = _$AreaDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$AreaDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$AreaDtoToJson(this);
 
   AreaDto copyWith({
     MetaDataDto? metaData,

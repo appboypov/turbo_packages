@@ -7,7 +7,7 @@ import 'package:turbo_serializable/enums/serialization_format.dart';
 ///
 /// Specifies callbacks for serialization methods and automatically determines
 /// the primary format based on which callbacks are provided.
-class TurboSerializableConfig {
+class TurboSerializableConfig<T extends Object> {
   /// Creates a [TurboSerializableConfig] with optional callbacks.
   ///
   /// At least one callback must be provided. The [primaryFormat] is
@@ -32,18 +32,18 @@ class TurboSerializableConfig {
         );
 
   /// Callback for JSON serialization.
-  final Map<String, dynamic>? Function(TurboSerializable<Object?> input)?
+  final Map<String, dynamic>? Function(TurboSerializable<T?> input)?
       toJson;
 
   /// Callback for YAML serialization.
-  final String? Function(TurboSerializable<Object?> input)? toYaml;
+  final String? Function(TurboSerializable<T?> input)? toYaml;
 
   /// Callback for Markdown serialization.
-  final String? Function(TurboSerializable<Object?> input)? toMarkdown;
+  final String? Function(TurboSerializable<T?> input)? toMarkdown;
 
   /// Callback for XML serialization.
   final String? Function(
-    TurboSerializable<Object?>, {
+    TurboSerializable<T?>, {
     String? rootElementName,
     bool includeNulls,
     bool prettyPrint,
@@ -61,11 +61,11 @@ class TurboSerializableConfig {
   ///
   /// Priority order: json > yaml > markdown > xml
   static SerializationFormat _computePrimaryFormat(
-    Map<String, dynamic>? Function(TurboSerializable<Object?>)? toJson,
-    String? Function(TurboSerializable<Object?>)? toYaml,
-    String? Function(TurboSerializable<Object?>)? toMarkdown,
+    Map<String, dynamic>? Function(TurboSerializable<T?>)? toJson,
+    String? Function(TurboSerializable<T?>)? toYaml,
+    String? Function(TurboSerializable<T?>)? toMarkdown,
     String? Function(
-      TurboSerializable<Object?>, {
+      TurboSerializable<T?>, {
       String? rootElementName,
       bool includeNulls,
       bool prettyPrint,

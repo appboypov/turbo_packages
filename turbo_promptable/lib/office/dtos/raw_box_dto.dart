@@ -21,7 +21,7 @@ class RawBoxDto extends TurboPromptable {
       _$RawBoxDtoFromJson(json);
   static const toJsonFactory = _$RawBoxDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$RawBoxDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$RawBoxDtoToJson(this);
 
   RawBoxDto copyWith({
     MetaDataDto? metaData,

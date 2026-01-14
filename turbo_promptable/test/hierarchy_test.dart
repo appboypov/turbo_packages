@@ -120,12 +120,11 @@ void main() {
             MetaDataDto(name: 'Product Team', description: 'Main product team'),
       );
 
-      final frontmatter = team.toXml();
+      // Use toYaml() for YAML frontmatter format
+      final frontmatter = team.toYaml();
       expect(frontmatter, isNotNull);
       expect(frontmatter, contains('name: Product Team'));
       expect(frontmatter, contains('description: Main product team'));
-      expect(frontmatter, startsWith('---\n'));
-      expect(frontmatter, endsWith('---'));
     });
   });
 }

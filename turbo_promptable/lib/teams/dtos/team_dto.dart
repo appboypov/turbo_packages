@@ -31,7 +31,7 @@ class TeamDto extends TurboPromptable {
       _$TeamDtoFromJson(json);
   static const toJsonFactory = _$TeamDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$TeamDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$TeamDtoToJson(this);
 
   TeamDto copyWith({
     MetaDataDto? metaData,

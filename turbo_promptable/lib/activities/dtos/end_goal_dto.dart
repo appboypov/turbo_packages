@@ -25,7 +25,7 @@ class EndGoalDto extends TurboPromptable {
       _$EndGoalDtoFromJson(json);
   static const toJsonFactory = _$EndGoalDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$EndGoalDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$EndGoalDtoToJson(this);
 
   EndGoalDto copyWith({
     MetaDataDto? metaData,

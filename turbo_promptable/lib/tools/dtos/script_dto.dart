@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
+import '../../shared/dtos/meta_data_dto.dart';
 
 part 'script_dto.g.dart';
 
@@ -41,11 +42,11 @@ class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
       _$ScriptDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
-  Map<String, dynamic>? toJsonImpl() {
-    // For generic types, toJsonImpl() cannot be implemented without type converters.
+  Map<String, dynamic>? toJsonMap() {
+    // For generic types, toJsonMap() cannot be implemented without type converters.
     // Use toJsonWithConverters() instead with appropriate converters.
     throw UnimplementedError(
-      'ScriptDto.toJsonImpl() requires type converters. Use toJsonWithConverters() instead.',
+      'ScriptDto.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
     );
   }
 }

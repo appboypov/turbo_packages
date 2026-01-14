@@ -19,7 +19,7 @@ class ApiDto extends TurboPromptable {
   factory ApiDto.fromJson(Map<String, dynamic> json) => _$ApiDtoFromJson(json);
   static const toJsonFactory = _$ApiDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$ApiDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$ApiDtoToJson(this);
 
   ApiDto copyWith({
     MetaDataDto? metaData,

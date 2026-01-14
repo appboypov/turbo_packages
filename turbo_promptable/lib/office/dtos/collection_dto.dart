@@ -28,7 +28,7 @@ class CollectionDto extends TurboPromptable {
   static const toJsonFactory = _$CollectionDtoToJson;
 
   @override
-  Map<String, dynamic> toJsonImpl() => _$CollectionDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$CollectionDtoToJson(this);
 
   CollectionDto copyWith({
     MetaDataDto? metaData,

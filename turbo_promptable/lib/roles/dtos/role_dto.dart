@@ -28,7 +28,7 @@ class RoleDto extends TurboPromptable {
       _$RoleDtoFromJson(json);
   static const toJsonFactory = _$RoleDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$RoleDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$RoleDtoToJson(this);
 
   RoleDto copyWith({
     MetaDataDto? metaData,

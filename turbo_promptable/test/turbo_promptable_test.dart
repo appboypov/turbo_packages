@@ -5,6 +5,9 @@ class TestPromptable extends TurboPromptable {
   TestPromptable({
     super.metaData,
   });
+
+  @override
+  Map<String, dynamic>? toJsonMap() => {};
 }
 
 void main() {
@@ -42,20 +45,23 @@ void main() {
         expect(xml, isNotEmpty);
       });
 
-      test('excludes null fields from MetaDataDto in JSON serialization', () {
+      test('includes all fields from MetaDataDto in JSON serialization', () {
         final dtoWithNulls = MetaDataDto(name: 'Test Name', description: null);
         final json = dtoWithNulls.toJson();
 
         expect(json.containsKey('name'), true);
-        expect(json.containsKey('description'), false);
+        // Note: includeIfNull: true means nulls are included
+        expect(json.containsKey('description'), true);
         expect(json['name'], 'Test Name');
+        expect(json['description'], null);
 
         final dtoOnlyDescription =
             MetaDataDto(name: null, description: 'Test Description');
         final json2 = dtoOnlyDescription.toJson();
 
-        expect(json2.containsKey('name'), false);
+        expect(json2.containsKey('name'), true);
         expect(json2.containsKey('description'), true);
+        expect(json2['name'], null);
         expect(json2['description'], 'Test Description');
       });
     });

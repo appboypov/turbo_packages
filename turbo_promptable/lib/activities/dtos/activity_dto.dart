@@ -4,6 +4,7 @@ import 'package:turbo_promptable/activities/dtos/sub_agent_dto.dart';
 import 'package:turbo_promptable/workflows/dtos/workflow_dto.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
+import '../../shared/dtos/meta_data_dto.dart';
 
 part 'activity_dto.g.dart';
 
@@ -45,11 +46,11 @@ class ActivityDto<INPUT, OUTPUT> extends TurboPromptable {
       _$ActivityDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
-  Map<String, dynamic>? toJsonImpl() {
-    // For generic types, toJsonImpl() cannot be implemented without type converters.
+  Map<String, dynamic>? toJsonMap() {
+    // For generic types, toJsonMap() cannot be implemented without type converters.
     // Use toJsonWithConverters() instead with appropriate converters.
     throw UnimplementedError(
-      'ActivityDto.toJsonImpl() requires type converters. Use toJsonWithConverters() instead.',
+      'ActivityDto.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
     );
   }
 }

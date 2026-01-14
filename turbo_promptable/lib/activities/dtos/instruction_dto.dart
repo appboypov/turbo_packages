@@ -21,7 +21,7 @@ class InstructionDto extends TurboPromptable {
       _$InstructionDtoFromJson(json);
   static const toJsonFactory = _$InstructionDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$InstructionDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$InstructionDtoToJson(this);
 
   InstructionDto copyWith({
     MetaDataDto? metaData,

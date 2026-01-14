@@ -28,7 +28,7 @@ class WorkflowDto extends TurboPromptable {
       _$WorkflowDtoFromJson(json);
   static const toJsonFactory = _$WorkflowDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$WorkflowDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$WorkflowDtoToJson(this);
 
   WorkflowDto copyWith({
     MetaDataDto? metaData,

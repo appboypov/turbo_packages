@@ -34,7 +34,7 @@ class RepoDto extends TurboPromptable {
       _$RepoDtoFromJson(json);
   static const toJsonFactory = _$RepoDtoToJson;
   @override
-  Map<String, dynamic> toJsonImpl() => _$RepoDtoToJson(this);
+  Map<String, dynamic>? toJsonMap() => _$RepoDtoToJson(this);
 
   RepoDto copyWith({
     MetaDataDto? metaData,
