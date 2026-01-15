@@ -44,7 +44,7 @@ abstract class AfSyncTurboCollectionService<
       final docs = value ?? [];
       if (user != null) {
         log.debug('Updating docs for user ${user.uid}');
-        docsPerIdInformer.update(
+        docsPerIdNotifier.update(
           docs.toIdMap((element) => element.id),
         );
         _isReady.completeIfNotComplete();
@@ -52,7 +52,7 @@ abstract class AfSyncTurboCollectionService<
         log.debug('Updated ${docs.length} docs');
       } else {
         log.debug('User is null, clearing docs');
-        docsPerIdInformer.update(
+        docsPerIdNotifier.update(
           {},
         );
         await afterSyncNotifyUpdate([]);

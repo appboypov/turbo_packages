@@ -30,7 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  turbo_mvvm: ^1.0.0
+  turbo_mvvm:
+    path: ../
 
 dev_dependencies:
   flutter_test:

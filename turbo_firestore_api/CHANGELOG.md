@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * `TurboWriteable<M> = TurboSerializable<M>`
   * `TurboWriteableId<T, M> = TurboSerializableId<T, M>`
 * Converted `turbo_writeable.dart` and `turbo_writeable_id.dart` to re-export modules
+* Renamed `docsPerIdInformer` to `docsPerIdNotifier` in `TurboCollectionService` for consistency with turbo_notifiers package naming
+
+### Migration Notes
+* **Breaking**: `docsPerIdInformer` protected field renamed to `docsPerIdNotifier` in `TurboCollectionService` and related service classes. Update any code that directly accesses this field.
 
 ### Tests
 * Added tests for null `toJson()` error handling in `createDoc` and `updateDoc`
@@ -72,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.1] - 2025-04-01
 
 ### Improvements
-* Exposed `docsPerIdInformer` as @protected in `TurboFirestoreApi` for better access control when overriding methods
+* Exposed `docsPerIdNotifier` (formerly `docsPerIdInformer`) as @protected in `TurboCollectionService` for better access control when overriding methods
 * Updated dependencies to latest versions
 
 ## [0.7.0] - 2025-03-01
