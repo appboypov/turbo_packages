@@ -99,7 +99,7 @@ Content one
 Content two
 ''';
         final result = parser.parse(markdown);
-        expect(result.data['main'], isA<Map>());
+        expect(result.data['main'], isA<Map<dynamic, dynamic>>());
         // Note: The nested structure depends on implementation
       });
     });

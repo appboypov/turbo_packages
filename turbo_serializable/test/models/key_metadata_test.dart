@@ -189,7 +189,7 @@ void main() {
     test('fromJson handles empty alignment', () {
       final json = {'hasHeader': false};
       final meta = TableMeta.fromJson(json);
-      expect(meta.alignment, []);
+      expect(meta.alignment, <String>[]);
       expect(meta.hasHeader, false);
     });
   });
@@ -369,11 +369,11 @@ void main() {
     test('toJson includes data and keyMeta', () {
       const result = LayoutAwareParseResult(
         data: {'test': 'value'},
-        keyMeta: {'test': {}},
+        keyMeta: <String, KeyMetadata?>{'test': const KeyMetadata()},
       );
       final json = result.toJson();
       expect(json['data'], {'test': 'value'});
-      expect(json['keyMeta'], {'test': {}});
+      expect(json['keyMeta'], <String, dynamic>{'test': <String, dynamic>{}});
     });
 
     test('toJson omits null keyMeta', () {

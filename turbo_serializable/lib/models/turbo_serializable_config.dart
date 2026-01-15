@@ -60,12 +60,12 @@ class TurboSerializableConfig<T extends Object> {
   /// Computes the primary format based on which callbacks are provided.
   ///
   /// Priority order: json > yaml > markdown > xml
-  static SerializationFormat _computePrimaryFormat(
-    Map<String, dynamic>? Function(TurboSerializable<T?>)? toJson,
-    String? Function(TurboSerializable<T?>)? toYaml,
-    String? Function(TurboSerializable<T?>)? toMarkdown,
+  static SerializationFormat _computePrimaryFormat<M extends Object>(
+    Map<String, dynamic>? Function(TurboSerializable<M?>)? toJson,
+    String? Function(TurboSerializable<M?>)? toYaml,
+    String? Function(TurboSerializable<M?>)? toMarkdown,
     String? Function(
-      TurboSerializable<T?>, {
+      TurboSerializable<M?>, {
       String? rootElementName,
       bool includeNulls,
       bool prettyPrint,

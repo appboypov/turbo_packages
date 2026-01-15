@@ -4,6 +4,7 @@ import 'package:turbo_firestore_api/enums/turbo_search_term_type.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_serializable/turbo_serializable.dart';
 
 void main() {
   group('FirestoreApi', () {
@@ -23,6 +24,15 @@ void main() {
       final request = TestRequest(
         name: 'Test Item',
         value: 42,
+        config: TurboSerializableConfig(
+          toJson: (input) {
+            final testRequest = input as TestRequest;
+            return {
+              'name': testRequest.name,
+              'value': testRequest.value,
+            };
+          },
+        ),
       );
 
       final response = await api.createDoc(writeable: request);
@@ -74,6 +84,15 @@ void main() {
       final request = TestRequest(
         name: 'Updated Item',
         value: 43,
+        config: TurboSerializableConfig(
+          toJson: (input) {
+            final testRequest = input as TestRequest;
+            return {
+              'name': testRequest.name,
+              'value': testRequest.value,
+            };
+          },
+        ),
       );
 
       final response = await api.updateDoc(
@@ -110,7 +129,11 @@ void main() {
     });
 
     test('should fail createDoc when toJson returns null', () async {
-      final request = TestRequestWithNullJson();
+      final request = TestRequestWithNullJson(
+        config: TurboSerializableConfig(
+          toJson: (_) => null,
+        ),
+      );
 
       final response = await api.createDoc(writeable: request);
 
@@ -127,7 +150,11 @@ void main() {
         'value': 42,
       });
 
-      final request = TestRequestWithNullJson();
+      final request = TestRequestWithNullJson(
+        config: TurboSerializableConfig(
+          toJson: (_) => null,
+        ),
+      );
 
       final response = await api.updateDoc(
         id: docRef.id,
@@ -147,13 +174,18 @@ class TestRequest extends TurboWriteable {
   TestRequest({
     required this.name,
     required this.value,
+    required super.config,
   });
 
   final String name;
   final int value;
 
   @override
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic>? toJson({
+    bool includeMetaData = true,
+    bool includeNulls = false,
+  }) =>
+      {
         'name': name,
         'value': value,
       };
@@ -186,6 +218,14 @@ class TestFirestoreApi extends TurboFirestoreApi {
 }
 
 class TestRequestWithNullJson extends TurboWriteable {
+  TestRequestWithNullJson({
+    required super.config,
+  });
+
   @override
-  Map<String, dynamic>? toJson() => null;
+  Map<String, dynamic>? toJson({
+    bool includeMetaData = true,
+    bool includeNulls = false,
+  }) =>
+      null;
 }

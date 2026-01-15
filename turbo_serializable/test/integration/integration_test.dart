@@ -206,7 +206,7 @@ void main() {
 
       expect(data['title'], 'JSON Body Test');
       expect(data['version'], 1);
-      expect(data['body'], isA<Map>());
+      expect(data['body'], isA<Map<dynamic, dynamic>>());
       expect(data['body']['key'], 'value');
       expect(data['body']['nested']['inner'], 'data');
     });

@@ -1,5 +1,3 @@
-library turbolytics;
-
 // src/analytics
 export 'src/analytics/analytic.dart';
 export 'src/analytics/analytics.dart';

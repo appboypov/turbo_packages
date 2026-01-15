@@ -152,7 +152,7 @@ void main() {
       });
 
       test('validate returns null by default', () {
-        expect(model.validate(), isNull);
+        expect(model.validate<Object>(), isNull);
       });
 
       test('toJson returns null by default', () {
@@ -345,7 +345,7 @@ void main() {
 
       test('can override validate to return null for valid state', () {
         final model = TestModel('John');
-        expect(model.validate(), isNull);
+        expect(model.validate<Object>(), isNull);
       });
 
       test(
@@ -364,7 +364,7 @@ void main() {
     group('default behavior', () {
       test('extends TurboSerializable', () {
         final model = TestModelWithId(id: '123', name: 'John');
-        expect(model, isA<TurboSerializable>());
+        expect(model, isA<TurboSerializable<dynamic>>());
       });
 
       test('isLocalDefault defaults to false', () {
@@ -443,7 +443,7 @@ void main() {
 
       test('can override validate to return null for valid state', () {
         final model = TestModelWithId(id: '123', name: 'John');
-        expect(model.validate(), isNull);
+        expect(model.validate<Object>(), isNull);
       });
 
       test('can override validate to return TurboResponse.fail for invalid id',
@@ -771,7 +771,7 @@ void main() {
 
       test('parses list YAML', () {
         final json = yamlToJson('items:\n  - a\n  - b\n  - c');
-        expect(json['items'], isA<List>());
+        expect(json['items'], isA<List<dynamic>>());
         expect(json['items'], equals(['a', 'b', 'c']));
       });
 

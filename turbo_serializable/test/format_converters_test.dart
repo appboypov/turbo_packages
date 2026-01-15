@@ -854,7 +854,7 @@ void main() {
         },
       });
       expect(result['parent'], isEmpty);
-      expect(result['parent'], isA<Map>());
+      expect(result['parent'], isA<Map<dynamic, dynamic>>());
     });
 
     test('preserves empty lists after filtering', () {
@@ -862,7 +862,7 @@ void main() {
         'items': [null, null],
       });
       expect(result['items'], isEmpty);
-      expect(result['items'], isA<List>());
+      expect(result['items'], isA<List<dynamic>>());
     });
 
     test('preserves non-null values', () {

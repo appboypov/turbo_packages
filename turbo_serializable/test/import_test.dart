@@ -32,7 +32,7 @@ void main() {
   test('TurboSerializable can be imported and extended', () {
     final obj = TestSerializable('test');
     expect(obj.toJson(), {'name': 'test'});
-    expect(obj.validate(), isNull);
+    expect(obj.validate<Object>(), isNull);
     // toYaml converts from JSON when toJson is provided
     expect(obj.toYaml(), isNotNull);
     expect(obj.toYaml(), contains('name: test'));
