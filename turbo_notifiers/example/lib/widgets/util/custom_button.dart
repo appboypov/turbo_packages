@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
-    Key? key,
+    super.key,
     required this.child,
     this.minSize = 0,
     this.onPressed,
     this.padding = EdgeInsets.zero,
     this.pressedOpacity = 0.6,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double minSize;
@@ -31,13 +31,12 @@ class CustomButton extends StatelessWidget {
 
 class _CupertinoButtonHijacked extends StatefulWidget {
   const _CupertinoButtonHijacked({
-    Key? key,
     required this.child,
     required this.minSize,
     this.padding,
     this.pressedOpacity,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final EdgeInsetsGeometry? padding;

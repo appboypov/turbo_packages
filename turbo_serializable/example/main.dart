@@ -4,8 +4,6 @@ import 'package:turbo_response/turbo_response.dart';
 
 /// Full implementation with all serialization methods
 class FullModel extends TurboSerializable<Object?> {
-  final String name;
-  final int age;
 
   FullModel({
     required this.name,
@@ -25,6 +23,8 @@ class FullModel extends TurboSerializable<Object?> {
             return '# ${self.name}\n\nAge: ${self.age}';
           },
         ));
+  final String name;
+  final int age;
 
   @override
   TurboResponse<T>? validate<T>() {
@@ -40,7 +40,6 @@ class FullModel extends TurboSerializable<Object?> {
 
 /// Partial implementation with only toJson
 class PartialModel extends TurboSerializable<Object?> {
-  final String name;
 
   PartialModel(this.name)
       : super(config: TurboSerializableConfig(
@@ -49,6 +48,7 @@ class PartialModel extends TurboSerializable<Object?> {
             return {'name': self.name};
           },
         ));
+  final String name;
 }
 
 /// Empty implementation - all methods return null
@@ -62,8 +62,6 @@ class EmptyModel extends TurboSerializable<Object?> {
 
 /// Full implementation with ID
 class FullModelWithId extends TurboSerializableId<String, Object?> {
-  final String _id;
-  final String name;
 
   FullModelWithId({
     required String id,
@@ -76,6 +74,8 @@ class FullModelWithId extends TurboSerializableId<String, Object?> {
             return {'id': self.id, 'name': self.name};
           },
         ));
+  final String _id;
+  final String name;
 
   @override
   String get id => _id;
@@ -83,14 +83,13 @@ class FullModelWithId extends TurboSerializableId<String, Object?> {
 
 /// Custom ID type implementation
 class CustomId {
-  final int value;
   const CustomId(this.value);
+  final int value;
   @override
   String toString() => 'CustomId($value)';
 }
 
 class CustomIdModel extends TurboSerializableId<CustomId, Object?> {
-  final CustomId _id;
 
   CustomIdModel(int idValue)
       : _id = CustomId(idValue),
@@ -98,6 +97,7 @@ class CustomIdModel extends TurboSerializableId<CustomId, Object?> {
             config: TurboSerializableConfig(
           toJson: (_) => null,
         ));
+  final CustomId _id;
 
   @override
   CustomId get id => _id;
@@ -105,10 +105,6 @@ class CustomIdModel extends TurboSerializableId<CustomId, Object?> {
 
 /// Frontmatter metadata example
 class Frontmatter {
-  final String title;
-  final String description;
-  final List<String> tags;
-  final DateTime? publishedAt;
 
   Frontmatter({
     required this.title,
@@ -116,11 +112,14 @@ class Frontmatter {
     required this.tags,
     this.publishedAt,
   });
+  final String title;
+  final String description;
+  final List<String> tags;
+  final DateTime? publishedAt;
 }
 
 /// Document with frontmatter metadata
 class Document extends TurboSerializable<Frontmatter> {
-  final String content;
 
   Document({
     required this.content,
@@ -136,12 +135,11 @@ class Document extends TurboSerializable<Frontmatter> {
             return self.content;
           },
         ));
+  final String content;
 }
 
 /// Document with ID and frontmatter metadata
 class DocumentWithId extends TurboSerializableId<String, Frontmatter> {
-  final String _id;
-  final String content;
 
   DocumentWithId({
     required String id,
@@ -155,6 +153,8 @@ class DocumentWithId extends TurboSerializableId<String, Frontmatter> {
             return {'id': self.id, 'content': self.content};
           },
         ));
+  final String _id;
+  final String content;
 
   @override
   String get id => _id;
@@ -257,7 +257,6 @@ void main() {
     id: 'doc-001',
     content: 'Content here',
     metaData: docWithIdMeta,
-    isLocalDefault: false,
   );
   assert(docWithId.id == 'doc-001', 'ID should be set');
   assert(docWithId.metaData != null, 'metaData should be set');

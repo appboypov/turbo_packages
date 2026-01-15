@@ -4,9 +4,6 @@ import 'package:example/views/second/second_veto_view.dart';
 import 'package:example/views/second/second_veto_view_arguments.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:turbo_mvvm/data/mixins/busy_management.dart';
-import 'package:turbo_mvvm/data/mixins/error_management.dart';
-import 'package:turbo_mvvm/data/mixins/view_model_helpers.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 import 'data/constants/const_durations.dart';
@@ -17,7 +14,7 @@ void main() {
 }
 
 class FirstVetoView extends StatelessWidget {
-  const FirstVetoView({Key? key}) : super(key: key);
+  const FirstVetoView({super.key});
   static const String route = 'first-veto-view';
 
   /// Original width of the fictional design file that we got from our designer.
@@ -35,7 +32,7 @@ class FirstVetoView extends StatelessWidget {
     return TurboViewModelBuilder<FirstVetoViewModel>(
       builder: (context, model, isInitialised, child) => MediaQuery(
         data: model.media.copyWith(
-          textScaler: TextScaler.linear(model.textScaleFactor.clamp(1, 1.35)),
+          textScaler: TextScaler.linear(model.textScaler.scale(1.0).clamp(1, 1.35)),
         ),
         child: Scaffold(
           appBar: AppBar(
@@ -619,15 +616,19 @@ class FirstVetoViewModel extends TurboViewModel<Object?>
   /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData].
   MediaQueryData get media => MediaQuery.of(context!);
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData.textScaleFactor].
-  double get textScaleFactor => MediaQuery.of(context!).textScaleFactor;
+  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData.textScaler].
+  TextScaler get textScaler => MediaQuery.of(context!).textScaler;
 
-  /// Provides a scaled value based on given [value] and [textScaleFactor].
+  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData.textScaler] scale factor.
+  @Deprecated('Use textScaler.scale(1.0) instead')
+  double get textScaleFactor => textScaler.scale(1.0);
+
+  /// Provides a scaled value based on given [value] and [textScaler].
   double textScaled({required double value, BuildContext? context}) =>
       value *
       (context == null
-          ? textScaleFactor
-          : MediaQuery.textScaleFactorOf(context));
+          ? textScaler.scale(1.0)
+          : MediaQuery.textScalerOf(context).scale(1.0));
 
   /// Provides the current [TurboViewModelBuilderState]'s [FocusNode].
   FocusNode get focusNode => FocusScope.of(context!);
@@ -660,7 +661,7 @@ class FirstVetoViewModel extends TurboViewModel<Object?>
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

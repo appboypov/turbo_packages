@@ -7,9 +7,8 @@ import 'second_veto_view_model.dart';
 class SecondVetoView extends StatelessWidget {
   const SecondVetoView({
     required SecondVetoViewArguments secondVetoViewArguments,
-    Key? key,
-  })  : _secondVetoViewArguments = secondVetoViewArguments,
-        super(key: key);
+    super.key,
+  })  : _secondVetoViewArguments = secondVetoViewArguments;
 
   static const String route = 'second-veto-view';
 

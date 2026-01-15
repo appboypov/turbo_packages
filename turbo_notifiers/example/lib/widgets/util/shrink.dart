@@ -4,7 +4,7 @@ class VerticalShrink extends StatelessWidget {
   const VerticalShrink.showHide({
     required this.show,
     required this.showChild,
-    Key? key,
+    super.key,
     this.fadeDuration = const Duration(milliseconds: 300),
     this.sizeDuration = const Duration(milliseconds: 300),
     this.fadeInCurve = Curves.easeInOut,
@@ -13,7 +13,7 @@ class VerticalShrink extends StatelessWidget {
     this.alignment = Alignment.center,
     this.hideChild,
     this.width,
-  }) : super(key: key);
+  });
 
   static final _key = UniqueKey();
   final Widget showChild;
@@ -90,7 +90,7 @@ class HorizontalShrink extends StatelessWidget {
   const HorizontalShrink.showHide({
     required this.show,
     required this.showChild,
-    Key? key,
+    super.key,
     this.fadeDuration = const Duration(milliseconds: 300),
     this.sizeDuration = const Duration(milliseconds: 300),
     this.fadeInCurve = Curves.easeInOut,
@@ -99,7 +99,7 @@ class HorizontalShrink extends StatelessWidget {
     this.alignment = Alignment.center,
     this.hideChild,
     this.height,
-  }) : super(key: key);
+  });
 
   static final _key = UniqueKey();
   final Widget showChild;

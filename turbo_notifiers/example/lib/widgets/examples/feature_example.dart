@@ -33,7 +33,7 @@ class _FeatureExampleState extends State<FeatureExample> {
     return Container(
       margin: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
       decoration: BoxDecoration(
-          color: Colors.red.withOpacity(0.2),
+          color: Colors.red.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(16)),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(

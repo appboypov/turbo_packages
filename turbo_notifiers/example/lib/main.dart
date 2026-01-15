@@ -6,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
-import 'data/constants/const_values.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
   static const String route = 'home-view';
 
   @override
