@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:turbo_flutter_template/environment/config/t_app_config.dart';
+import 'package:turbo_flutter_template/environment/firebase/staging_firebase_options.dart';
 import 'package:turbo_flutter_template/firebase_options.dart';
 
 /// Manages environment configuration and settings for the application.
@@ -127,7 +128,7 @@ enum EnvironmentType {
       return switch (this) {
         EnvironmentType.emulators => DefaultFirebaseOptions.web,
         EnvironmentType.demo => DefaultFirebaseOptions.web,
-        EnvironmentType.staging => DefaultFirebaseOptions.web, // TODO: Add staging web config
+        EnvironmentType.staging => StagingFirebaseOptions.web,
         EnvironmentType.prod => DefaultFirebaseOptions.web,
       };
     }
@@ -136,22 +137,21 @@ enum EnvironmentType {
         return switch (this) {
           EnvironmentType.emulators => DefaultFirebaseOptions.android,
           EnvironmentType.demo => DefaultFirebaseOptions.android,
-          EnvironmentType.staging =>
-            DefaultFirebaseOptions.android, // TODO: Add staging android config
+          EnvironmentType.staging => StagingFirebaseOptions.android,
           EnvironmentType.prod => DefaultFirebaseOptions.android,
         };
       case TargetPlatform.iOS:
         return switch (this) {
           EnvironmentType.emulators => DefaultFirebaseOptions.ios,
           EnvironmentType.demo => DefaultFirebaseOptions.ios,
-          EnvironmentType.staging => DefaultFirebaseOptions.ios, // TODO: Add staging ios config
+          EnvironmentType.staging => StagingFirebaseOptions.ios,
           EnvironmentType.prod => DefaultFirebaseOptions.ios,
         };
       case TargetPlatform.macOS:
         return switch (this) {
           EnvironmentType.emulators => DefaultFirebaseOptions.macos,
           EnvironmentType.demo => DefaultFirebaseOptions.macos,
-          EnvironmentType.staging => DefaultFirebaseOptions.macos, // TODO: Add staging macos config
+          EnvironmentType.staging => StagingFirebaseOptions.macos,
           EnvironmentType.prod => DefaultFirebaseOptions.macos,
         };
       default:

@@ -3,32 +3,35 @@
         "platforms": {
             "android": {
                 "default": {
-                    "projectId": "a-pew-pew-app",
-                    "appId": "1:686812062236:android:8a00308cd032581bcdf5d9",
+                    "projectId": "a-pew-pew-app-staging",
+                    "appId": "1:250732439782:android:c91402072fd188d24f7327",
                     "fileOutput": "android/app/google-services.json"
                 }
             },
             "ios": {
                 "default": {
-                    "projectId": "a-pew-pew-app",
-                    "appId": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9",
+                    "projectId": "a-pew-pew-app-staging",
+                    "appId": "1:250732439782:ios:056c6ffe2004c0014f7327",
                     "uploadDebugSymbols": false,
                     "fileOutput": "ios/Runner/GoogleService-Info.plist"
                 }
             },
             "macos": {
                 "default": {
-                    "projectId": "a-pew-pew-app",
-                    "appId": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9",
+                    "projectId": "a-pew-pew-app-staging",
+                    "appId": "1:250732439782:ios:056c6ffe2004c0014f7327",
                     "uploadDebugSymbols": false,
                     "fileOutput": "macos/Runner/GoogleService-Info.plist"
                 }
             },
             "dart": {
                 "lib/firebase_options.dart": {
-                    "projectId": "a-pew-pew-app",
+                    "projectId": "a-pew-pew-app-staging",
                     "configurations": {
-                        "macos": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9"
+                        "android": "1:250732439782:android:c91402072fd188d24f7327",
+                        "ios": "1:250732439782:ios:056c6ffe2004c0014f7327",
+                        "macos": "1:250732439782:ios:056c6ffe2004c0014f7327",
+                        "web": "1:250732439782:web:8472c50058d4b10a4f7327"
                     }
                 }
             }
