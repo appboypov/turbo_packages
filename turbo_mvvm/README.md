@@ -50,7 +50,7 @@
     dependencies:
       flutter:
         sdk: flutter
-      turbo_mvvm: ^latest_version # Replace with the latest version from pub.dev
+      turbo_mvvm: ^1.1.0
     ```
 
 2.  Install the package by running:

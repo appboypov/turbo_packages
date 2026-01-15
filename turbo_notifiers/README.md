@@ -20,7 +20,7 @@ Add `turbo_notifiers` to your `pubspec.yaml` file:
 dependencies:
   flutter:
     sdk: flutter
-  turbo_notifiers: ^1.0.0
+  turbo_notifiers: ^1.1.0
 ```
 
 Then run:

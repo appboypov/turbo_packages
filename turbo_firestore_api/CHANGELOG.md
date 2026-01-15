@@ -1,4 +1,11 @@
-## 0.8.4 (2026-01-09)
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.8.4] - 2026-01-09
 
 ### Features
 * Added `turbo_serializable` package dependency for reusable serialization abstractions
@@ -15,7 +22,7 @@
 ### Tests
 * Added tests for null `toJson()` error handling in `createDoc` and `updateDoc`
 
-## 0.8.3 (2026-01-08)
+## [0.8.3] - 2026-01-08
 
 ### Improvements
 * Updated internal package dependencies to latest versions:
@@ -23,18 +30,18 @@
   * `turbo_response`: ^0.2.6 -> ^1.0.1
   * `informers`: ^0.0.3+2 -> ^0.0.5
 
-## 0.8.2 (2026-01)
+## [0.8.2] - 2026-01-01
 
 ### Improvements
 * Updated GitHub repository URLs to appboypov organization
 
-## 0.8.1 (2025-09)
+## [0.8.1] - 2025-09-01
 
 ### Improvements
 * Updated dependencies to latest versions: Cloud Firestore to ^6.0.2, Firebase Auth to ^6.1.0, loglytics to ^0.16.1, and fake_cloud_firestore to ^4.0.0
 * Enhanced compatibility with latest Firebase SDK features and improvements
 
-## 0.8.0 (2025-09)
+## [0.8.0] - 2025-09-01
 
 ### Breaking
 * Changed sync notification methods to be asynchronous: `beforeSyncNotifyUpdate` and `afterSyncNotifyUpdate` methods in sync services now return `Future<void>` instead of `void`. Affects:
@@ -47,12 +54,12 @@
 * Enhanced sync service flexibility: sync notification methods can now perform asynchronous operations during data synchronization
 * Better async/await support: services can now properly handle asynchronous operations during document and collection updates
 
-## 0.7.3 (2025-05)
+## [0.7.3] - 2025-05-01
 
 ### Improvements
 * Clean release with all dependencies updated and proper git state
 
-## 0.7.2 (2025-05)
+## [0.7.2] - 2025-05-01
 
 ### Improvements
 * Comprehensive dependency update to latest compatible versions
@@ -62,13 +69,13 @@
 * Updated all Firebase dependencies to latest versions
 * Verified compatibility with Flutter 3.32.0 and Dart 3.8.0
 
-## 0.7.1 (2025-04)
+## [0.7.1] - 2025-04-01
 
 ### Improvements
 * Exposed `docsPerIdInformer` as @protected in `TurboFirestoreApi` for better access control when overriding methods
 * Updated dependencies to latest versions
 
-## 0.7.0 (2025-03)
+## [0.7.0] - 2025-03-01
 
 ### Features
 * Enhanced error handling using `TurboFirestoreException.fromFirestoreException` for more structured error responses across all API methods
@@ -78,13 +85,13 @@
 * Improved code consistency across API implementations
 * Added detailed examples for exception handling
 
-## 0.6.1 (2025-01)
+## [0.6.1] - 2025-01-01
 
 ### Improvements
 * Updated sync services to use `upsertLocalDoc` instead of `updateLocalDoc` for better consistency
 * Enhanced error handling across multiple API methods using `TurboFirestoreException.fromFirestoreException` for more structured error responses
 
-## 0.6.0 (2025-01)
+## [0.6.0] - 2025-01-01
 
 ### Features
 * Added `upsertLocalDocs` method for consistent batch local operations
@@ -96,23 +103,23 @@
 ### Bug Fixes
 * Fixed incorrect document creation skipping in upsert operations
 
-## 0.5.0 (2025-01)
+## [0.5.0] - 2025-01-01
 
 ### Breaking
 * Removed `templateBlockNotify`
 
-## 0.4.2 (2025-01)
+## [0.4.2] - 2025-01-01
 
 ### Improvements
 * Add id getter
 
-## 0.4.1 (2025-01)
+## [0.4.1] - 2025-01-01
 
 ### Improvements
 * Made `TurboAuthVars.userId` non-nullable for better type safety (defaults to `kValuesNoAuthId`)
 * Added `UpdateDocDef` type definition export
 
-## 0.4.0 (2025-01)
+## [0.4.0] - 2025-01-01
 
 ### Breaking
 * Renamed `createDoc` and `updateDoc` named parameter names to doc
@@ -120,7 +127,7 @@
 ### Improvements
 * Update readme
 
-## 0.3.0 (2025-01)
+## [0.3.0] - 2025-01-01
 
 ### Breaking
 * Renamed `vars()` to `turboVars()` for better clarity and consistency
@@ -142,35 +149,36 @@
 ### Improvements
 * Improved temporary block notify in sync services for better state management
 
-## 0.2.0
+## [0.2.0] - 2025-01-01
 
 ### Breaking
 * Updated dependencies to latest versions
 
-## 0.1.3
+## [0.1.3] - 2025-01-01
 
 ### Features
 * Added `TurboApiVars` and `TurboAuthVars` classes for standardized document variables
 
-## 0.1.2
+## [0.1.2] - 2025-01-01
 
 ### Improvements
 * Updated turbo_response to version 0.2.6
 * Replaced tryThrowFail() with throwWhenFail() to match new TurboResponse API
 
-## 0.1.1
+## [0.1.1] - 2025-01-01
 
 ### Bug Fixes
 * Remove default stream implementation in `TurboCollectionService` to enforce inheritance
 
-## 0.1.0+1
+## [0.1.0+1] - 2025-01-01
 
 ### Bug Fixes
 * Made `TurboResponse<T>? validate<T>()` null by default to avoid forced inheritance
 
-## 0.1.0
+## [0.1.0] - 2025-01-01
 
-Initial release of turbo_firestore_api:
+### Added
+* Initial release of turbo_firestore_api
 * TurboFirestoreApi for clean Firestore operations
 * CRUD operations with error handling
 * Search functionality
