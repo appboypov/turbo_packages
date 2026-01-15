@@ -7,7 +7,7 @@ void main() {
       test('can be instantiated with basic properties', () {
         final collection = CollectionDto(
           metaData: MetaDataDto(
-              name: 'Test Collection', description: 'A test collection'),
+              name: 'Test Collection', description: 'A test collection',),
           items: [],
         );
 
@@ -21,7 +21,7 @@ void main() {
         final collection = CollectionDto(
           metaData: MetaDataDto(
               name: 'Test Collection',
-              description: 'Test collection description'),
+              description: 'Test collection description',),
           items: ['Item 1', 'Item 2'],
         );
 
@@ -36,7 +36,7 @@ void main() {
       test('can be instantiated with basic properties', () {
         final instruction = InstructionDto(
           metaData: MetaDataDto(
-              name: 'Test Instruction', description: 'A test instruction'),
+              name: 'Test Instruction', description: 'A test instruction',),
         );
 
         expect(instruction.metaData?.name, 'Test Instruction');
@@ -48,7 +48,7 @@ void main() {
       test('can be instantiated with basic properties', () {
         final workflow = WorkflowDto(
           metaData: MetaDataDto(
-              name: 'Test Workflow', description: 'A test workflow'),
+              name: 'Test Workflow', description: 'A test workflow',),
           steps: [],
         );
 
@@ -72,7 +72,7 @@ void main() {
 
         final workflow = WorkflowDto(
           metaData: MetaDataDto(
-              name: 'Test Workflow', description: 'Test workflow description'),
+              name: 'Test Workflow', description: 'Test workflow description',),
           steps: [step1, step2],
         );
 
@@ -85,7 +85,7 @@ void main() {
       test('can be instantiated with basic properties', () {
         final reference = ReferenceDto(
           metaData: MetaDataDto(
-              name: 'Test Reference', description: 'A test reference'),
+              name: 'Test Reference', description: 'A test reference',),
         );
 
         expect(reference.metaData?.name, 'Test Reference');
@@ -97,7 +97,7 @@ void main() {
       test('can be instantiated with basic properties', () {
         final template = TemplateDto(
           metaData: MetaDataDto(
-              name: 'Test Template', description: 'A test template'),
+              name: 'Test Template', description: 'A test template',),
         );
 
         expect(template.metaData?.name, 'Test Template');
@@ -108,7 +108,7 @@ void main() {
       test('can be instantiated with variables', () {
         final template = TemplateDto(
           metaData: MetaDataDto(
-              name: 'Test Template', description: 'Test template description'),
+              name: 'Test Template', description: 'Test template description',),
           variables: {'name': 'World'},
         );
 
@@ -132,12 +132,12 @@ void main() {
       test('can be instantiated with basic properties', () {
         final workflow = WorkflowDto(
           metaData: MetaDataDto(
-              name: 'Test Workflow', description: 'Test workflow description'),
+              name: 'Test Workflow', description: 'Test workflow description',),
           steps: [],
         );
         final activity = ActivityDto(
           metaData: MetaDataDto(
-              name: 'Test Activity', description: 'A test activity'),
+              name: 'Test Activity', description: 'A test activity',),
           workflow: workflow,
           output: 'result',
         );
@@ -151,11 +151,11 @@ void main() {
       test('can be instantiated with basic properties', () {
         final role = RoleDto(
           metaData: MetaDataDto(
-              name: 'Test Role', description: 'Test role description'),
+              name: 'Test Role', description: 'Test role description',),
           expertise: ExpertiseDto(
             metaData: MetaDataDto(
                 name: 'Engineering Expertise',
-                description: 'Engineering expertise description'),
+                description: 'Engineering expertise description',),
             field: 'Engineering',
             specialization: 'Backend',
             experience: '5 years',
@@ -175,11 +175,11 @@ void main() {
       test('can be instantiated with role', () {
         final role = RoleDto(
           metaData: MetaDataDto(
-              name: 'Test Role', description: 'Test role description'),
+              name: 'Test Role', description: 'Test role description',),
           expertise: ExpertiseDto(
             metaData: MetaDataDto(
                 name: 'Engineering Expertise',
-                description: 'Engineering expertise description'),
+                description: 'Engineering expertise description',),
             field: 'Engineering',
             specialization: 'Backend',
             experience: '5 years',
@@ -187,7 +187,7 @@ void main() {
         );
         final agent = SubAgentDto(
           metaData: MetaDataDto(
-              name: 'Test Agent', description: 'Test agent description'),
+              name: 'Test Agent', description: 'Test agent description',),
           role: role,
         );
 

@@ -21,7 +21,6 @@ dependencies:
   change_case: ^2.2.0
   meta: ^1.9.0
   turbo_response:
-    path: ../turbo_response
   xml: ^6.3.0
   yaml: ^3.1.0
 

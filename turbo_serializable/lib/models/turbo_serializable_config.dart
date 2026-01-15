@@ -32,8 +32,7 @@ class TurboSerializableConfig<T extends Object> {
         );
 
   /// Callback for JSON serialization.
-  final Map<String, dynamic>? Function(TurboSerializable<T?> input)?
-      toJson;
+  final Map<String, dynamic>? Function(TurboSerializable<T?> input)? toJson;
 
   /// Callback for YAML serialization.
   final String? Function(TurboSerializable<T?> input)? toYaml;

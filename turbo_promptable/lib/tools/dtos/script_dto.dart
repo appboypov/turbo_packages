@@ -10,7 +10,7 @@ part 'script_dto.g.dart';
 /// Extends [TurboPromptable] with script-specific properties including
 /// input/output types and execution instructions.
 @JsonSerializable(
-    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
+    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true,)
 class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [ScriptDto] with the given properties.
   ScriptDto({

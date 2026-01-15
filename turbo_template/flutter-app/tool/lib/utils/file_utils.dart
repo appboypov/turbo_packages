@@ -96,7 +96,7 @@ class FileUtils {
           lineNumber: i + 1,
           before: line,
           after: line.replaceAll(oldValue, newValue),
-        ));
+        ),);
       }
     }
 

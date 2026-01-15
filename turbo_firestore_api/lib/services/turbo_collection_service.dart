@@ -148,7 +148,8 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
 
   /// Local state for documents, indexed by their IDs.
   @protected
-  final docsPerIdNotifier = TurboNotifier<Map<String, T>>({}, forceUpdate: true);
+  final docsPerIdNotifier =
+      TurboNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer();

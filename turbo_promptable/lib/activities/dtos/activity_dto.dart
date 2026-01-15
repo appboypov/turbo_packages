@@ -12,7 +12,7 @@ part 'activity_dto.g.dart';
 ///
 /// Activities are AI commands that agents can execute.
 @JsonSerializable(
-    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true)
+    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true,)
 class ActivityDto<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates an [ActivityDto] with the given properties.
   ActivityDto({

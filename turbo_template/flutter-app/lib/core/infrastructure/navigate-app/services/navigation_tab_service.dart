@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home_view.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 /// Manages the current navigation tab state.
 ///

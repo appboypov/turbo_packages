@@ -166,7 +166,7 @@ void main() {
   // Test 1: Full implementation
   print('Test 1: Full implementation');
   final full = FullModel(name: 'Alice', age: 30);
-  assert(full.validate() == null, 'Valid model should have null validate');
+  assert(full.validate<Object?>() == null, 'Valid model should have null validate');
   assert(full.toJson() != null, 'toJson should return a map');
   assert(full.toJson()!['name'] == 'Alice', 'toJson should contain name');
   assert(full.toYaml() != null, 'toYaml should return a string');
@@ -176,13 +176,13 @@ void main() {
   // Test 2: Full implementation with invalid data
   print('\nTest 2: Validation with invalid data');
   final invalid = FullModel(name: '', age: 30);
-  assert(invalid.validate() is Fail, 'Invalid model should fail validation');
+  assert(invalid.validate<Object?>() is Fail, 'Invalid model should fail validation');
   print('  ✓ Validation correctly rejects empty name');
 
   // Test 3: Partial implementation with auto-conversion
   print('\nTest 3: Partial implementation with auto-conversion');
   final partial = PartialModel('Bob');
-  assert(partial.validate() == null, 'Default validate returns null');
+  assert(partial.validate<Object?>() == null, 'Default validate returns null');
   assert(partial.toJson() != null, 'toJson should work');
   // Auto-conversion from JSON to other formats
   assert(partial.toYaml() != null, 'toYaml converts from JSON');
@@ -193,7 +193,7 @@ void main() {
   // Test 4: Empty implementation
   print('\nTest 4: Empty implementation (all null)');
   final empty = EmptyModel();
-  assert(empty.validate() == null, 'Default validate returns null');
+  assert(empty.validate<Object?>() == null, 'Default validate returns null');
   assert(empty.toJson() == null, 'Default toJson returns null');
   assert(empty.toYaml() == null, 'Default toYaml returns null');
   assert(empty.toMarkdown() == null, 'Default toMarkdown returns null');

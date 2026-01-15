@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../roles/dtos/role_dto.dart';
 import '../../shared/abstracts/turbo_promptable.dart';
 import '../../shared/dtos/meta_data_dto.dart';
-import '../../roles/dtos/role_dto.dart';
 
 part 'area_dto.g.dart';
 

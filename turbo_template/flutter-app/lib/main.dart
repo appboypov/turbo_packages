@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view.dart';
 import 'package:turbo_flutter_template/environment/config/emulator_config.dart';
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 void main() {
   runZonedGuarded(

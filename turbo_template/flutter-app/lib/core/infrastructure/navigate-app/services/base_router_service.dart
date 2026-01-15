@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view.dart';
@@ -17,6 +15,8 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/extensio
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 class BaseRouterService with Turbolytics {
   static const String _testRoute = String.fromEnvironment('route');

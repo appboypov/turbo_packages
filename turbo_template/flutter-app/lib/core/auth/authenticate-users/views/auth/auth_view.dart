@@ -51,7 +51,7 @@ class AuthView extends StatelessWidget {
                       AuthViewMode.login => 'Please log in to continue',
                       AuthViewMode.register => 'Please register to continue',
                       AuthViewMode.forgotPassword => 'Please enter your email',
-                    }, style: TextStyle(color: context.colors.mutedForeground)),
+                    }, style: TextStyle(color: context.colors.mutedForeground),),
                     const SizedBox(height: 32),
                     _buildEmailField(context, model, authViewMode),
                     VerticalShrink(

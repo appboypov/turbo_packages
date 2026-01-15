@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:provider/provider.dart';
 import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/analytics_implementation.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
@@ -16,6 +15,7 @@ import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart'
     show LanguageService;
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:veto/veto.dart';
 
 class MyAppViewModel extends BaseViewModel with Turbolytics {

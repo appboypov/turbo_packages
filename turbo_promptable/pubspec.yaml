@@ -17,9 +17,7 @@ environment:
 
 dependencies:
   turbo_serializable:
-    path: ../turbo_serializable
   turbo_response:
-    path: ../turbo_response
   json_annotation: ^4.9.0
 
 dev_dependencies:

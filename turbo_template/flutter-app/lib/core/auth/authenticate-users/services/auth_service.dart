@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 class AuthService extends SyncService<User?> with Turbolytics {
   AuthService() : super(initialiseStream: true);

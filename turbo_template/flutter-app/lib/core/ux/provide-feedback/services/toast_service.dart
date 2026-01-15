@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 class ToastService with Turbolytics {
   static ToastService Function() get lazyLocate =>

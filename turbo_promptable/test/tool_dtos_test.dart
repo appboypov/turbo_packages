@@ -31,7 +31,7 @@ void main() {
       test('can be instantiated with input and output', () {
         final script = ScriptDto<String, String>(
           metaData: MetaDataDto(
-              name: 'Test Script', description: 'Test script description'),
+              name: 'Test Script', description: 'Test script description',),
           input: 'input data',
           output: 'output data',
         );
@@ -83,7 +83,7 @@ void main() {
       test('can be instantiated with preferences', () {
         final persona = PersonaDto(
           metaData: MetaDataDto(
-              name: 'Test Persona', description: 'Test persona description'),
+              name: 'Test Persona', description: 'Test persona description',),
           preferences: ['helpful', 'knowledgeable', 'concise'],
         );
 
@@ -97,7 +97,7 @@ void main() {
       test('can be instantiated with values', () {
         final persona = PersonaDto(
           metaData: MetaDataDto(
-              name: 'Test Persona', description: 'Test persona description'),
+              name: 'Test Persona', description: 'Test persona description',),
           values: ['honesty', 'respect', 'accuracy'],
         );
 
@@ -111,20 +111,20 @@ void main() {
       test('can be instantiated with background and communication style', () {
         final persona = PersonaDto(
           metaData: MetaDataDto(
-              name: 'Test Persona', description: 'Test persona description'),
+              name: 'Test Persona', description: 'Test persona description',),
           background: 'Software engineer with 10 years experience',
           communicationStyle: 'Direct and concise',
         );
 
         expect(
-            persona.background, 'Software engineer with 10 years experience');
+            persona.background, 'Software engineer with 10 years experience',);
         expect(persona.communicationStyle, 'Direct and concise');
       });
 
       test('can be instantiated with all properties', () {
         final persona = PersonaDto(
           metaData: MetaDataDto(
-              name: 'Test Persona', description: 'A helpful assistant'),
+              name: 'Test Persona', description: 'A helpful assistant',),
           preferences: ['patient', 'thorough'],
           values: ['accuracy', 'clarity'],
           achievements: ['Award winner', 'Published author'],
