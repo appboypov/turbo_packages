@@ -1,12 +1,24 @@
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_serializable/models/turbo_serializable_config.dart';
 
 class ExampleDTO extends TurboWriteable {
   ExampleDTO({
     required this.thisIsAString,
     required this.thisIsANumber,
     required this.thisIsABoolean,
-  });
+  }) : super(
+          config: TurboSerializableConfig(
+            toJson: (instance) {
+              final self = instance as ExampleDTO;
+              return {
+                "thisIsAString": self.thisIsAString,
+                "thisIsANumber": self.thisIsANumber,
+                "thisIsABoolean": self.thisIsABoolean,
+              };
+            },
+          ),
+        );
 
   final String thisIsAString;
   final double thisIsANumber;
@@ -36,11 +48,4 @@ class ExampleDTO extends TurboWriteable {
         thisIsANumber: json["thisIsANumber"] as double,
         thisIsABoolean: json["thisIsABoolean"] as bool,
       );
-
-  @override
-  Map<String, dynamic> toJson() => {
-        "thisIsAString": thisIsAString,
-        "thisIsANumber": thisIsANumber,
-        "thisIsABoolean": thisIsABoolean,
-      };
 }
