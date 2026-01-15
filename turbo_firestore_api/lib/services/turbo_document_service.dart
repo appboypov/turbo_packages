@@ -146,7 +146,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
       forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
-  final _isReady = Completer();
+  final _isReady = Completer<void>();
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
@@ -173,7 +173,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
   ValueChanged<T?>? afterLocalNotifyUpdate;
 
   /// Future that completes when the service is ready.
-  Future get isReady => _isReady.future;
+  Future<void> get isReady => _isReady.future;
 
   /// Listenable for the document state.
   Listenable get listenable => _doc;
@@ -306,7 +306,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
   ///
   /// Returns a [TurboResponse] indicating success or failure
   @protected
-  Future<TurboResponse> deleteDoc({
+  Future<TurboResponse<void>> deleteDoc({
     required String id,
     bool doNotifyListeners = true,
     Transaction? transaction,
@@ -360,7 +360,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpdateDocDef<T> doc,
-    TurboWriteable Function(T doc)? remoteUpdateRequestBuilder,
+    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -371,7 +371,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
         id: id,
         transaction: transaction,
       );
@@ -460,7 +460,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpsertDocDef<T> doc,
-    TurboWriteable Function(T doc)? remoteUpdateRequestBuilder,
+    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -471,7 +471,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
         id: id,
         transaction: transaction,
         merge: true,

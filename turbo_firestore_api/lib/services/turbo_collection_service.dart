@@ -152,7 +152,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
       TurboNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
-  final _isReady = Completer();
+  final _isReady = Completer<void>();
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
@@ -180,7 +180,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
   T? tryFindById(String? id) => docsPerIdNotifier.value[id];
 
   /// Future that completes when the service is ready to use.
-  Future get isReady => _isReady.future;
+  Future<void> get isReady => _isReady.future;
 
   /// Listenable for the document collection state.
   Listenable get listenable => docsPerIdNotifier;
@@ -400,7 +400,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpsertDocDef<T> doc,
-    TurboWriteable Function(T doc)? remoteUpdateRequestBuilder,
+    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -411,7 +411,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
         id: id,
         transaction: transaction,
         merge: true,
@@ -453,7 +453,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpdateDocDef<T> doc,
-    TurboWriteable Function(T doc)? remoteUpdateRequestBuilder,
+    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -464,7 +464,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
         id: id,
         transaction: transaction,
       );
@@ -562,7 +562,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
           (await api.updateDoc(
             id: pDoc.id,
             transaction: transaction,
-            writeable: pDoc,
+            writeable: pDoc as TurboWriteable<T>,
           ))
               .throwWhenFail();
         }
@@ -573,7 +573,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
           await api.updateDocInBatch(
             id: pDoc.id,
             writeBatch: batch,
-            writeable: pDoc,
+            writeable: pDoc as TurboWriteable<T>,
           );
         }
         final future = batch.commit();
@@ -663,7 +663,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
   ///
   /// Returns a [TurboResponse] indicating success or failure
   @protected
-  Future<TurboResponse> deleteDoc({
+  Future<TurboResponse<void>> deleteDoc({
     required String id,
     bool doNotifyListeners = true,
     Transaction? transaction,
@@ -707,7 +707,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
   ///
   /// Returns a [TurboResponse] indicating success or failure
   @protected
-  Future<TurboResponse> deleteDocs({
+  Future<TurboResponse<void>> deleteDocs({
     Transaction? transaction,
     required List<String> ids,
     bool doNotifyListeners = true,

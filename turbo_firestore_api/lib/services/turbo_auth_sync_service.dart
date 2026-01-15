@@ -60,7 +60,7 @@ abstract class TurboAuthSyncService<StreamValue> with TurboExceptionHandler {
               (value) async {
                 await onData(value, user);
               },
-              onError: (error, stackTrace) {
+              onError: (Object error, StackTrace stackTrace) {
                 _log.error(
                   'Stream error occurred inside of stream!',
                   error: error,
@@ -126,10 +126,10 @@ abstract class TurboAuthSyncService<StreamValue> with TurboExceptionHandler {
   String? cachedUserId;
 
   /// Subscription to the data stream.
-  StreamSubscription? _subscription;
+  StreamSubscription<StreamValue?>? _subscription;
 
   /// Subscription to the authentication state stream.
-  StreamSubscription? _userSubscription;
+  StreamSubscription<User?>? _userSubscription;
 
   /// Timer for retry attempts.
   Timer? _retryTimer;
