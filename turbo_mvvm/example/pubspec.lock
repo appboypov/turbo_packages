@@ -203,11 +203,10 @@ packages:
   turbo_mvvm:
     dependency: "direct main"
     description:
-      name: turbo_mvvm
-      sha256: f1785d349a3a468669fd7b78dc46f2b7cbc883732a193acd53c48a7cb18bc152
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
+      path: ".."
+      relative: true
+    source: path
+    version: "1.1.0"
   vector_math:
     dependency: transitive
     description:

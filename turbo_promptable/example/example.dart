@@ -35,5 +35,6 @@ void main() {
   );
 
   final xml = team.toXml();
+  // ignore: avoid_print
   print(xml);
 }

@@ -497,7 +497,7 @@ class FirstVetoView extends StatelessWidget {
   }
 }
 
-class FirstVetoViewModel extends TurboViewModel
+class FirstVetoViewModel extends TurboViewModel<Object?>
     with BusyManagement, ErrorManagement, ViewModelHelpers {
   int _modelCounter = 0;
   int get modelCounter => _modelCounter;

@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TurboViewModelBuilder<HomeViewModel>(
-        builder: (context, model) {
+        builder: (context, model, isInitialised, child) {
           return GestureDetector(
             onTap: model.focusNode.unfocus,
             child: Scaffold(
@@ -56,7 +56,7 @@ class HomeView extends StatelessWidget {
       );
 }
 
-class HomeViewModel extends TurboViewModel {
+class HomeViewModel extends TurboViewModel<Object?> {
   final TurboNotifier<int> _counter = TurboNotifier(0);
   ValueListenable<int> get counterListenable => _counter;
 
@@ -81,8 +81,11 @@ class HomeViewModel extends TurboViewModel {
 
   void incrementCounter() => _counter.updateCurrent((value) => ++value);
 
+  /// Provides the current [TurboViewModelBuilderState]'s [FocusNode].
+  FocusNode get focusNode => FocusScope.of(context!);
+
   TextStyle get exampleTitleStyle =>
-      Theme.of(context).textTheme.bodyMedium!.copyWith(
+      Theme.of(context!).textTheme.bodyMedium!.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           );
