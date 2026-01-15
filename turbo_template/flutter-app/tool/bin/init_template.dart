@@ -119,7 +119,7 @@ void main(List<String> arguments) async {
       final replacements = {
         'Package Name': 'turbo_flutter_template → $name',
         'Bundle ID': 'turboFlutterTemplate → ${config.bundleIdSuffix}',
-        'Organization': 'com.example → $org',
+        'Organization': 'app.apewpew → $org',
         'Display Name': 'Turbo Flutter Template → ${config.displayName}',
         'Description': 'A new Flutter project. → $description',
         'App Name': 'Turbo Template → ${config.appName}',

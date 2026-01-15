@@ -4,10 +4,10 @@ import '../utils/file_utils.dart';
 
 /// Replaces the organization domain throughout the project.
 ///
-/// Current value: `com.example`
+/// Current value: `app.apewpew`
 /// Target files: build.gradle.kts, project.pbxproj, AppInfo.xcconfig, Runner.rc
 class OrganizationReplacer {
-  static const oldValue = 'com.example';
+  static const oldValue = 'app.apewpew';
 
   /// File patterns to search for organization replacements.
   static const filePatterns = [

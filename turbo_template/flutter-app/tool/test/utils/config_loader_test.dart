@@ -137,11 +137,11 @@ description: App with comments.   # App description
       test('uses default description when both sources are null', () {
         final result = ConfigLoader.merge(
           cliName: 'my_app',
-          cliOrg: 'com.example',
+          cliOrg: 'app.apewpew',
         );
 
         expect(result['name'], equals('my_app'));
-        expect(result['organization'], equals('com.example'));
+        expect(result['organization'], equals('app.apewpew'));
         expect(result['description'], equals('A Flutter application.'));
       });
 

@@ -7,7 +7,6 @@ homepage: https://github.com/appboypov/turbo_packages
 issue_tracker: https://github.com/appboypov/turbo_packages/issues
 
 topics:
-  - ai
   - prompts
   - agents
   - serialization

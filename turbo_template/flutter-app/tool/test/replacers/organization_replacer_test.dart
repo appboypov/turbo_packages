@@ -5,7 +5,7 @@ void main() {
   group('OrganizationReplacer', () {
     group('string replacement logic', () {
       test('replaces organization in build.gradle.kts namespace', () {
-        const input = 'namespace = "com.example.turbo_flutter_template"';
+        const input = 'namespace = "app.apewpew.turbo_flutter_template"';
         const expected = 'namespace = "io.mycompany.turbo_flutter_template"';
 
         final result = input.replaceAll(
@@ -16,7 +16,7 @@ void main() {
       });
 
       test('replaces organization in build.gradle.kts applicationId', () {
-        const input = 'applicationId = "com.example.turbo_flutter_template"';
+        const input = 'applicationId = "app.apewpew.turbo_flutter_template"';
         const expected = 'applicationId = "io.mycompany.turbo_flutter_template"';
 
         final result = input.replaceAll(
@@ -28,7 +28,7 @@ void main() {
 
       test('replaces organization in project.pbxproj', () {
         const input =
-            'PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate;';
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
         const expected =
             'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate;';
 
@@ -40,7 +40,7 @@ void main() {
       });
 
       test('replaces organization in AppInfo.xcconfig', () {
-        const input = 'PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate';
+        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate';
         const expected =
             'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate';
 
@@ -53,7 +53,7 @@ void main() {
 
       test('replaces organization in Windows Runner.rc copyright', () {
         const input =
-            'VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\\0"';
+            'VALUE "LegalCopyright", "Copyright (C) 2026 app.apewpew. All rights reserved." "\\0"';
         const expected =
             'VALUE "LegalCopyright", "Copyright (C) 2026 io.mycompany. All rights reserved." "\\0"';
 
@@ -66,7 +66,7 @@ void main() {
 
       test('replaces organization in macOS AppInfo.xcconfig copyright', () {
         const input =
-            'PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.';
+            'PRODUCT_COPYRIGHT = Copyright © 2026 app.apewpew. All rights reserved.';
         const expected =
             'PRODUCT_COPYRIGHT = Copyright © 2026 io.mycompany. All rights reserved.';
 
@@ -79,8 +79,8 @@ void main() {
 
       test('replaces multiple occurrences', () {
         const input = '''
-namespace = "com.example.turbo_flutter_template"
-applicationId = "com.example.turbo_flutter_template"
+namespace = "app.apewpew.turbo_flutter_template"
+applicationId = "app.apewpew.turbo_flutter_template"
 ''';
         const expected = '''
 namespace = "io.mycompany.turbo_flutter_template"
@@ -103,7 +103,7 @@ applicationId = "io.mycompany.turbo_flutter_template"
           OrganizationReplacer.oldValue,
           'io.mycompany',
         );
-        // com.example is not in example.com, so no change
+        // app.apewpew is not in example.com, so no change
         expect(result, equals(input));
       });
     });

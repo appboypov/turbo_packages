@@ -128,7 +128,7 @@ void main() {
 
     group('isValidReverseDomain', () {
       test('accepts valid reverse domains', () {
-        expect(CaseConverter.isValidReverseDomain('com.example'), isTrue);
+        expect(CaseConverter.isValidReverseDomain('app.apewpew'), isTrue);
         expect(CaseConverter.isValidReverseDomain('io.mycompany'), isTrue);
         expect(CaseConverter.isValidReverseDomain('com.my.company'), isTrue);
         expect(CaseConverter.isValidReverseDomain('nl.codaveto'), isTrue);

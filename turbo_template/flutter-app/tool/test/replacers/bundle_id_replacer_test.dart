@@ -6,8 +6,8 @@ void main() {
     group('string replacement logic', () {
       test('replaces bundle ID in project.pbxproj', () {
         const input =
-            'PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate;';
-        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp;';
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
+        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp;';
 
         final result = input.replaceAll(
           BundleIdReplacer.oldValue,
@@ -18,9 +18,9 @@ void main() {
 
       test('replaces bundle ID with RunnerTests suffix', () {
         const input =
-            'PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate.RunnerTests;';
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate.RunnerTests;';
         const expected =
-            'PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp.RunnerTests;';
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp.RunnerTests;';
 
         final result = input.replaceAll(
           BundleIdReplacer.oldValue,
@@ -30,8 +30,8 @@ void main() {
       });
 
       test('replaces in AppInfo.xcconfig', () {
-        const input = 'PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate';
-        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp';
+        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate';
+        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp';
 
         final result = input.replaceAll(
           BundleIdReplacer.oldValue,
@@ -41,8 +41,8 @@ void main() {
       });
 
       test('replaces in firebase_options.dart iosBundleId', () {
-        const input = "iosBundleId: 'com.example.turboFlutterTemplate',";
-        const expected = "iosBundleId: 'com.example.myApp',";
+        const input = "iosBundleId: 'app.apewpew.turboFlutterTemplate',";
+        const expected = "iosBundleId: 'app.apewpew.myApp',";
 
         final result = input.replaceAll(
           BundleIdReplacer.oldValue,
@@ -54,11 +54,11 @@ void main() {
       test('replaces in GoogleService-Info.plist', () {
         const input = '''
 <key>BUNDLE_ID</key>
-<string>com.example.turboFlutterTemplate</string>
+<string>app.apewpew.turboFlutterTemplate</string>
 ''';
         const expected = '''
 <key>BUNDLE_ID</key>
-<string>com.example.myApp</string>
+<string>app.apewpew.myApp</string>
 ''';
 
         final result = input.replaceAll(
@@ -70,14 +70,14 @@ void main() {
 
       test('replaces multiple bundle IDs in project.pbxproj', () {
         const input = '''
-PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate;
-PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate;
-PRODUCT_BUNDLE_IDENTIFIER = com.example.turboFlutterTemplate.RunnerTests;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate.RunnerTests;
 ''';
         const expected = '''
-PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp;
-PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp;
-PRODUCT_BUNDLE_IDENTIFIER = com.example.myApp.RunnerTests;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp;
+PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp.RunnerTests;
 ''';
 
         final result = input.replaceAll(

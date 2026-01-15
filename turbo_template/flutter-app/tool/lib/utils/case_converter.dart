@@ -78,7 +78,7 @@ class CaseConverter {
 
   /// Validates that input is valid reverse domain notation.
   ///
-  /// Example: `com.example`, `io.mycompany`
+  /// Example: `app.apewpew`, `io.mycompany`
   static bool isValidReverseDomain(String input) {
     if (input.isEmpty) return false;
 

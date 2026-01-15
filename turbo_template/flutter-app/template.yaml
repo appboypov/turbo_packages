@@ -2,5 +2,5 @@
 # Edit these values and run: make init
 
 name: turbo_flutter_template          # Package name (snake_case)
-organization: com.example             # Organization domain
+organization: app.apewpew             # Organization domain
 description: A turbo Flutter project.   # App description
