@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// - Managing document references
 /// - Handling document IDs
 /// - Managing timestamp fields (createdAt/updatedAt)
-extension TurboMapExtension on Map {
+extension TurboMapExtension on Map<dynamic, dynamic> {
   /// Adds a local document reference field to the map if specified conditions are met.
   ///
   /// This method is used to maintain a local reference to the Firestore document without storing it in the database.

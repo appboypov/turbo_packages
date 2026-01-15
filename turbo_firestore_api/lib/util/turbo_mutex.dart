@@ -26,7 +26,7 @@ import 'dart:ui';
 /// ```
 class TurboMutex {
   /// Queue of completers for managing locks.
-  final _completerQueue = Queue<Completer>();
+  final _completerQueue = Queue<Completer<void>>();
 
   /// Locks the mutex, runs the provided function, and releases the lock.
   ///
@@ -40,7 +40,7 @@ class TurboMutex {
   FutureOr<T> lockAndRun<T>({
     required FutureOr<T> Function(VoidCallback unlock) run,
   }) async {
-    final completer = Completer();
+    final completer = Completer<void>();
     _completerQueue.add(completer);
     if (_completerQueue.first != completer) {
       await _completerQueue.removeFirst().future;

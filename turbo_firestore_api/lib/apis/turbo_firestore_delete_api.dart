@@ -54,7 +54,7 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
   /// See also:
   /// [deleteDocInBatch] batch deletion
   /// [updateDoc] document updates
-  Future<TurboResponse> deleteDoc({
+  Future<TurboResponse<void>> deleteDoc({
     required String id,
     WriteBatch? writeBatch,
     String? collectionPathOverride,

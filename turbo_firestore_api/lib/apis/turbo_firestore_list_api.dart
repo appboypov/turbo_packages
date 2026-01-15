@@ -344,12 +344,12 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
         final data = snapshot.data() ?? {};
         try {
           return data
-              .tryAddLocalId(
+              .tryAddLocalId<String, dynamic>(
                 snapshot.id,
                 idFieldName: _idFieldName,
                 tryAddLocalId: _tryAddLocalId,
               )
-              .tryAddLocalDocumentReference(
+              .tryAddLocalDocumentReference<String, dynamic>(
                 snapshot.reference,
                 referenceFieldName: _documentReferenceFieldName,
                 tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
@@ -370,11 +370,11 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
       toFirestore: (data, _) {
         try {
           return data
-              .tryRemoveLocalId(
+              .tryRemoveLocalId<String, dynamic>(
                 idFieldName: _idFieldName,
                 tryRemoveLocalId: _tryAddLocalId,
               )
-              .tryRemoveLocalDocumentReference(
+              .tryRemoveLocalDocumentReference<String, dynamic>(
                 referenceFieldName: _documentReferenceFieldName,
                 tryRemoveLocalDocumentReference: _tryAddLocalDocumentReference,
               );
@@ -430,17 +430,17 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
         try {
           return _fromJson!(
             data
-                .tryAddLocalId(
+                .tryAddLocalId<String, dynamic>(
                   snapshot.id,
                   idFieldName: _idFieldName,
                   tryAddLocalId: _tryAddLocalId,
                 )
-                .tryAddLocalDocumentReference(
+                .tryAddLocalDocumentReference<String, dynamic>(
                   snapshot.reference,
                   referenceFieldName: _documentReferenceFieldName,
                   tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
                 ),
-          );
+            );
         } catch (error, stackTrace) {
           _log.error(
             message:
@@ -463,12 +463,12 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
           try {
             return _fromJsonError!(
               data
-                  .tryAddLocalId(
+                  .tryAddLocalId<String, dynamic>(
                     snapshot.id,
                     idFieldName: _idFieldName,
                     tryAddLocalId: _tryAddLocalId,
                   )
-                  .tryAddLocalDocumentReference(
+                  .tryAddLocalDocumentReference<String, dynamic>(
                     snapshot.reference,
                     referenceFieldName: _documentReferenceFieldName,
                     tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
@@ -493,11 +493,11 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
       toFirestore: (data, _) {
         try {
           return _toJson!(data)
-              .tryRemoveLocalId(
+              .tryRemoveLocalId<String, dynamic>(
                 idFieldName: _idFieldName,
                 tryRemoveLocalId: _tryAddLocalId,
               )
-              .tryRemoveLocalDocumentReference(
+              .tryRemoveLocalDocumentReference<String, dynamic>(
                 referenceFieldName: _documentReferenceFieldName,
                 tryRemoveLocalDocumentReference: _tryAddLocalDocumentReference,
               );

@@ -65,7 +65,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
       ),
     );
     return listCollectionReference().snapshots().handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection',
           sensitiveData: SensitiveData(
@@ -127,7 +127,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection with converter',
           sensitiveData: SensitiveData(
@@ -199,7 +199,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection by query',
           sensitiveData: SensitiveData(
@@ -275,7 +275,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection by query with converter',
           sensitiveData: SensitiveData(
@@ -343,7 +343,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
       ),
     );
     return docRef.snapshots().handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming document',
           sensitiveData: SensitiveData(
@@ -417,7 +417,7 @@ extension TurboFirestoreStreamApi<T> on TurboFirestoreApi<T> {
       ),
     );
     return docRefWithConverter.snapshots().map((e) => e.data()).handleError(
-      (error, stackTrace) {
+      (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming document with converter',
           sensitiveData: SensitiveData(

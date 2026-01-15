@@ -66,7 +66,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
   /// [updateDocInBatch] batch updates
   /// [createDoc] document creation
   Future<TurboResponse<DocumentReference>> updateDoc({
-    required TurboWriteable writeable,
+    required TurboWriteable<T> writeable,
     required String id,
     WriteBatch? writeBatch,
     TurboTimestampType timestampType = TurboTimestampType.updatedAt,
@@ -256,7 +256,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
   /// [createDocInBatch] batch creation
   Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
       updateDocInBatch({
-    required TurboWriteable writeable,
+    required TurboWriteable<T> writeable,
     required String id,
     WriteBatch? writeBatch,
     TurboTimestampType timestampType = TurboTimestampType.updatedAt,
