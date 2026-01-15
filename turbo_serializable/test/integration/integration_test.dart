@@ -48,8 +48,14 @@ void main() {
       final content = jsonFile.readAsStringSync();
       final data = jsonDecode(content) as Map<String, dynamic>;
 
-      expect(data['level1']['level2']['level3']['level4']['level5']['level6'],
-          'deep value',);
+      final level1 = data['level1'] as Map<String, dynamic>;
+      final level2 = level1['level2'] as Map<String, dynamic>;
+      final level3 = level2['level3'] as Map<String, dynamic>;
+      final level4 = level3['level4'] as Map<String, dynamic>;
+      final level5 = level4['level5'] as Map<String, dynamic>;
+      final level6 = level5['level6'];
+
+      expect(level6, 'deep value');
     });
 
     test('parses edge values', () {
@@ -88,7 +94,7 @@ void main() {
     test('parses basic YAML', () {
       final yamlFile = File('${inputDir.path}/yaml/basic.yaml');
       final content = yamlFile.readAsStringSync();
-      final data = yamlToJson(content);
+      final data = yamlToJson(content) as Map<String, dynamic>;
 
       expect(data['firstName'], 'John');
       expect(data['lastName'], 'Doe');
@@ -99,7 +105,7 @@ void main() {
     test('parses multiline strings', () {
       final yamlFile = File('${inputDir.path}/yaml/multiline.yaml');
       final content = yamlFile.readAsStringSync();
-      final data = yamlToJson(content);
+      final data = yamlToJson(content) as Map<String, dynamic>;
 
       expect(data['literalBlock'], contains('Line 1'));
       expect(data['literalBlock'], contains('Line 2'));
@@ -111,7 +117,7 @@ void main() {
     test('parses boolean variants', () {
       final yamlFile = File('${inputDir.path}/yaml/boolean_variants.yaml');
       final content = yamlFile.readAsStringSync();
-      final data = yamlToJson(content);
+      final data = yamlToJson(content) as Map<String, dynamic>;
 
       // YAML 1.2 only recognizes true/false as booleans
       // yes/no/on/off are treated as strings
@@ -130,10 +136,10 @@ void main() {
     test('parses edge values with anchors and aliases', () {
       final yamlFile = File('${inputDir.path}/yaml/edge_values.yaml');
       final content = yamlFile.readAsStringSync();
-      final data = yamlToJson(content);
+      final data = yamlToJson(content) as Map<String, dynamic>;
 
-      expect(data['anchor']['shared'], 'value');
-      expect(data['alias']['shared'], 'value');
+      expect((data['anchor'] as Map<String, dynamic>)['shared'], 'value');
+      expect((data['alias'] as Map<String, dynamic>)['shared'], 'value');
       expect(data['colonInValue'], 'key: value');
       expect(data['hashInValue'], 'use #hashtag');
       expect(data['quotedNumber'], '123');
@@ -145,7 +151,7 @@ void main() {
     test('parses XML without declaration', () {
       final xmlFile = File('${inputDir.path}/xml/basic.xml');
       final content = xmlFile.readAsStringSync();
-      final data = xmlToJson(content);
+      final data = xmlToJson(content) as Map<String, dynamic>;
 
       expect(data['firstName'], 'John');
       expect(data['lastName'], 'Doe');
@@ -156,7 +162,7 @@ void main() {
     test('parses XML with declaration', () {
       final xmlFile = File('${inputDir.path}/xml/with_declaration.xml');
       final content = xmlFile.readAsStringSync();
-      final data = xmlToJson(content);
+      final data = xmlToJson(content) as Map<String, dynamic>;
 
       expect(data['item'], 'value');
       expect(data['count'], 42);
@@ -166,12 +172,12 @@ void main() {
     test('parses PascalCase XML', () {
       final xmlFile = File('${inputDir.path}/xml/pascal_case.xml');
       final content = xmlFile.readAsStringSync();
-      final data = xmlToJson(content);
+      final data = xmlToJson(content) as Map<String, dynamic>;
 
       expect(data['FirstName'], 'John');
       expect(data['LastName'], 'Doe');
-      expect(data['UserSettings']['Theme'], 'dark');
-      expect(data['UserSettings']['Language'], 'en');
+      expect((data['UserSettings'] as Map<String, dynamic>)['Theme'], 'dark');
+      expect((data['UserSettings'] as Map<String, dynamic>)['Language'], 'en');
     });
 
     test('parses XML with attributes (ignores attributes)', () {
@@ -179,11 +185,11 @@ void main() {
       // Self-closing elements with only attributes are skipped
       final xmlFile = File('${inputDir.path}/xml/attributes.xml');
       final content = xmlFile.readAsStringSync();
-      final data = xmlToJson(content);
+      final data = xmlToJson(content) as Map<String, dynamic>;
 
       // user has child elements so it's parsed
       expect(data['user'], isNotNull);
-      expect(data['user']['name'], 'John');
+      expect((data['user'] as Map<String, dynamic>)['name'], 'John');
       // item is self-closing with only attributes - skipped
       expect(data.containsKey('item'), false);
     });
@@ -191,7 +197,7 @@ void main() {
     test('parses mixed content', () {
       final xmlFile = File('${inputDir.path}/xml/mixed_content.xml');
       final content = xmlFile.readAsStringSync();
-      final data = xmlToJson(content);
+      final data = xmlToJson(content) as Map<String, dynamic>;
 
       expect(data['paragraph'], isNotNull);
       expect(data['note'], isNotNull);
@@ -202,19 +208,23 @@ void main() {
     test('parses frontmatter with JSON body', () {
       final mdFile = File('${inputDir.path}/markdown/frontmatter_json.md');
       final content = mdFile.readAsStringSync();
-      final data = markdownToJson(content);
+      final data = markdownToJson(content) as Map<String, dynamic>;
 
       expect(data['title'], 'JSON Body Test');
       expect(data['version'], 1);
       expect(data['body'], isA<Map<dynamic, dynamic>>());
-      expect(data['body']['key'], 'value');
-      expect(data['body']['nested']['inner'], 'data');
+      expect((data['body'] as Map<String, dynamic>)['key'], 'value');
+      expect(
+        ((data['body'] as Map<String, dynamic>)['nested']
+            as Map<String, dynamic>)['inner'],
+        'data',
+      );
     });
 
     test('parses frontmatter with plain text body', () {
       final mdFile = File('${inputDir.path}/markdown/frontmatter_text.md');
       final content = mdFile.readAsStringSync();
-      final data = markdownToJson(content);
+      final data = markdownToJson(content) as Map<String, dynamic>;
 
       expect(data['title'], 'Plain Text Body');
       expect(data['author'], 'Test');
@@ -226,7 +236,7 @@ void main() {
       // It only extracts YAML frontmatter. Headers are treated as body content.
       final mdFile = File('${inputDir.path}/markdown/headers_only.md');
       final content = mdFile.readAsStringSync();
-      final data = markdownToJson(content);
+      final data = markdownToJson(content) as Map<String, dynamic>;
 
       // Without frontmatter, the whole content becomes the body
       expect(data['body'], isA<String>());
@@ -237,7 +247,7 @@ void main() {
     test('parses rich content with tables and code blocks', () {
       final mdFile = File('${inputDir.path}/markdown/rich_content.md');
       final content = mdFile.readAsStringSync();
-      final data = markdownToJson(content);
+      final data = markdownToJson(content) as Map<String, dynamic>;
 
       expect(data['title'], 'Rich Markdown');
       expect(data['body'], contains('bold'));
@@ -246,7 +256,7 @@ void main() {
     test('parses edge cases with emoji and special chars', () {
       final mdFile = File('${inputDir.path}/markdown/edge_cases.md');
       final content = mdFile.readAsStringSync();
-      final data = markdownToJson(content);
+      final data = markdownToJson(content) as Map<String, dynamic>;
 
       expect(data['emoji'], '👍');
       expect(data['special'], contains('quotes'));
@@ -405,7 +415,7 @@ void main() {
     test('converts basic YAML to JSON', () {
       final yamlFile = File('${inputDir.path}/yaml/basic.yaml');
       final content = yamlFile.readAsStringSync();
-      final result = yamlToJson(content);
+      final result = yamlToJson(content) as Map<String, dynamic>;
 
       expect(result['firstName'], 'John');
       expect(result['age'], 30);
@@ -418,7 +428,7 @@ void main() {
       // YAML 1.2 only treats true/false as booleans, not yes/no/on/off
       final yamlFile = File('${inputDir.path}/yaml/boolean_variants.yaml');
       final content = yamlFile.readAsStringSync();
-      final result = yamlToJson(content);
+      final result = yamlToJson(content) as Map<String, dynamic>;
 
       expect(result['bool1'], true);
       expect(result['bool2'], false);
@@ -437,9 +447,12 @@ void main() {
     test('resolves anchors and aliases', () {
       final yamlFile = File('${inputDir.path}/yaml/edge_values.yaml');
       final content = yamlFile.readAsStringSync();
-      final result = yamlToJson(content);
+      final result = yamlToJson(content) as Map<String, dynamic>;
 
-      expect(result['anchor']['shared'], result['alias']['shared']);
+      expect(
+        (result['anchor'] as Map<String, dynamic>)['shared'],
+        (result['alias'] as Map<String, dynamic>)['shared'],
+      );
 
       final jsonString = const JsonEncoder.withIndent('  ').convert(result);
       File('${outputDir.path}/yaml_edge_values_to_json.json')
@@ -451,7 +464,7 @@ void main() {
     test('converts basic XML to JSON', () {
       final xmlFile = File('${inputDir.path}/xml/basic.xml');
       final content = xmlFile.readAsStringSync();
-      final result = xmlToJson(content);
+      final result = xmlToJson(content) as Map<String, dynamic>;
 
       expect(result['firstName'], 'John');
       expect(result['age'], 30);
@@ -463,7 +476,7 @@ void main() {
     test('strips XML declaration', () {
       final xmlFile = File('${inputDir.path}/xml/with_declaration.xml');
       final content = xmlFile.readAsStringSync();
-      final result = xmlToJson(content);
+      final result = xmlToJson(content) as Map<String, dynamic>;
 
       expect(result.containsKey('?xml'), false);
       expect(result['item'], 'value');
@@ -476,10 +489,10 @@ void main() {
     test('preserves PascalCase keys', () {
       final xmlFile = File('${inputDir.path}/xml/pascal_case.xml');
       final content = xmlFile.readAsStringSync();
-      final result = xmlToJson(content);
+      final result = xmlToJson(content) as Map<String, dynamic>;
 
       expect(result['FirstName'], 'John');
-      expect(result['UserSettings']['Theme'], 'dark');
+      expect((result['UserSettings'] as Map<String, dynamic>)['Theme'], 'dark');
 
       final jsonString = const JsonEncoder.withIndent('  ').convert(result);
       File('${outputDir.path}/xml_pascal_to_json.json')
@@ -494,7 +507,7 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final yaml = jsonToYaml(original);
-      final roundTripped = yamlToJson(yaml);
+      final roundTripped = yamlToJson(yaml) as Map<String, dynamic>;
 
       expect(roundTripped['firstName'], original['firstName']);
       expect(roundTripped['lastName'], original['lastName']);
@@ -508,7 +521,7 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final xml = jsonToXml(original);
-      final roundTripped = xmlToJson(xml);
+      final roundTripped = xmlToJson(xml) as Map<String, dynamic>;
 
       expect(roundTripped['firstName'], original['firstName']);
       expect(roundTripped['lastName'], original['lastName']);
@@ -519,10 +532,10 @@ void main() {
     test('YAML → XML → YAML preserves structure', () {
       final yamlFile = File('${inputDir.path}/yaml/basic.yaml');
       final original = yamlFile.readAsStringSync();
-      final originalJson = yamlToJson(original);
+      final originalJson = yamlToJson(original) as Map<String, dynamic>;
 
       final xml = yamlToXml(original);
-      final roundTrippedJson = xmlToJson(xml);
+      final roundTrippedJson = xmlToJson(xml) as Map<String, dynamic>;
 
       expect(roundTrippedJson['firstName'], originalJson['firstName']);
       expect(roundTrippedJson['age'], originalJson['age']);
@@ -534,13 +547,16 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final yaml = jsonToYaml(original);
-      final roundTripped = yamlToJson(yaml);
+      final roundTripped = yamlToJson(yaml) as Map<String, dynamic>;
 
-      expect(
-        roundTripped['level1']['level2']['level3']['level4']['level5']
-            ['level6'],
-        'deep value',
-      );
+      final rtLevel1 = roundTripped['level1'] as Map<String, dynamic>;
+      final rtLevel2 = rtLevel1['level2'] as Map<String, dynamic>;
+      final rtLevel3 = rtLevel2['level3'] as Map<String, dynamic>;
+      final rtLevel4 = rtLevel3['level4'] as Map<String, dynamic>;
+      final rtLevel5 = rtLevel4['level5'] as Map<String, dynamic>;
+      final rtLevel6 = rtLevel5['level6'];
+
+      expect(rtLevel6, 'deep value');
     });
 
     test('arrays survive JSON → YAML → JSON', () {
@@ -549,7 +565,7 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final yaml = jsonToYaml(original);
-      final roundTripped = yamlToJson(yaml);
+      final roundTripped = yamlToJson(yaml) as Map<String, dynamic>;
 
       expect(roundTripped['primitiveArray'], original['primitiveArray']);
       expect(roundTripped['numberArray'], original['numberArray']);
@@ -617,7 +633,7 @@ void main() {
       expect(xml, contains('<lastName>'));
 
       // Convert back to JSON
-      final convertedData = xmlToJson(xml);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
       expect(convertedData, isA<Map<String, dynamic>>());
       expect(convertedData['firstName'], originalData['firstName']);
       expect(convertedData['lastName'], originalData['lastName']);
@@ -635,7 +651,7 @@ void main() {
       expect(xml, contains('<last_name>'));
 
       // Convert back to JSON
-      final convertedData = xmlToJson(xml);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
       expect(convertedData, isA<Map<String, dynamic>>());
       expect(convertedData['first_name'], originalData['firstName']);
       expect(convertedData['last_name'], originalData['lastName']);
@@ -653,7 +669,7 @@ void main() {
       expect(xml, contains('<last-name>'));
 
       // Convert back to JSON
-      final convertedData = xmlToJson(xml);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
       expect(convertedData, isA<Map<String, dynamic>>());
       expect(convertedData['first-name'], originalData['firstName']);
       expect(convertedData['last-name'], originalData['lastName']);
@@ -671,7 +687,7 @@ void main() {
       expect(xml, contains('<lastName>'));
 
       // Convert back to JSON
-      final convertedData = xmlToJson(xml);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
       expect(convertedData, isA<Map<String, dynamic>>());
       expect(convertedData['firstName'], originalData['firstName']);
       expect(convertedData['lastName'], originalData['lastName']);
@@ -689,11 +705,22 @@ void main() {
       expect(xml, contains('<level3>'));
 
       // Verify nested structure is preserved
-      final convertedData = xmlToJson(xml);
-      expect(
-          convertedData['level1']['level2']['level3']['level4']['level5']
-              ['level6'],
-          data['level1']['level2']['level3']['level4']['level5']['level6'],);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
+      final convLevel1 = convertedData['level1'] as Map<String, dynamic>;
+      final convLevel2 = convLevel1['level2'] as Map<String, dynamic>;
+      final convLevel3 = convLevel2['level3'] as Map<String, dynamic>;
+      final convLevel4 = convLevel3['level4'] as Map<String, dynamic>;
+      final convLevel5 = convLevel4['level5'] as Map<String, dynamic>;
+      final convLevel6 = convLevel5['level6'];
+
+      final origLevel1 = data['level1'] as Map<String, dynamic>;
+      final origLevel2 = origLevel1['level2'] as Map<String, dynamic>;
+      final origLevel3 = origLevel2['level3'] as Map<String, dynamic>;
+      final origLevel4 = origLevel3['level4'] as Map<String, dynamic>;
+      final origLevel5 = origLevel4['level5'] as Map<String, dynamic>;
+      final origLevel6 = origLevel5['level6'];
+
+      expect(convLevel6, origLevel6);
     });
 
     test('Complex nested structure with snakeCase', () {
@@ -707,11 +734,22 @@ void main() {
       expect(xml, contains('<level2>'));
 
       // Verify nested structure is preserved
-      final convertedData = xmlToJson(xml);
-      expect(
-          convertedData['level1']['level2']['level3']['level4']['level5']
-              ['level6'],
-          data['level1']['level2']['level3']['level4']['level5']['level6'],);
+      final convertedData = xmlToJson(xml) as Map<String, dynamic>;
+      final convLevel1 = convertedData['level1'] as Map<String, dynamic>;
+      final convLevel2 = convLevel1['level2'] as Map<String, dynamic>;
+      final convLevel3 = convLevel2['level3'] as Map<String, dynamic>;
+      final convLevel4 = convLevel3['level4'] as Map<String, dynamic>;
+      final convLevel5 = convLevel4['level5'] as Map<String, dynamic>;
+      final convLevel6 = convLevel5['level6'];
+
+      final origLevel1 = data['level1'] as Map<String, dynamic>;
+      final origLevel2 = origLevel1['level2'] as Map<String, dynamic>;
+      final origLevel3 = origLevel2['level3'] as Map<String, dynamic>;
+      final origLevel4 = origLevel3['level4'] as Map<String, dynamic>;
+      final origLevel5 = origLevel4['level5'] as Map<String, dynamic>;
+      final origLevel6 = origLevel5['level6'];
+
+      expect(convLevel6, origLevel6);
     });
 
     test('YAML → XML (camelCase) → YAML round-trip', () {
@@ -865,7 +903,7 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final yaml = jsonToYaml(original);
-      final roundTripped = yamlToJson(yaml);
+      final roundTripped = yamlToJson(yaml) as Map<String, dynamic>;
 
       expect(roundTripped['unicode'], original['unicode']);
       expect(roundTripped['emoji'], original['emoji']);
@@ -909,7 +947,7 @@ void main() {
           jsonDecode(jsonFile.readAsStringSync()) as Map<String, dynamic>;
 
       final yaml = jsonToYaml(data);
-      final roundTripped = yamlToJson(yaml);
+      final roundTripped = yamlToJson(yaml) as Map<String, dynamic>;
 
       // Empty collections become null in YAML round-trip
       expect(roundTripped['emptyArray'], isNull);

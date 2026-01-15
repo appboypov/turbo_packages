@@ -277,7 +277,7 @@ void main() {
   print('\nTest 12: Format converters');
   final yaml = jsonToYaml({'name': 'Test', 'age': 25});
   assert(yaml.contains('name: Test'), 'YAML should contain name');
-  final json = yamlToJson('name: Test\nage: 25');
+  final json = yamlToJson('name: Test\nage: 25') as Map<String, dynamic>;
   assert(json['name'] == 'Test', 'JSON should contain name');
   print('  ✓ Format converters work correctly');
 
@@ -291,9 +291,10 @@ void main() {
       mdWithFrontmatter.contains('---'), 'Should have frontmatter delimiters',);
   assert(mdWithFrontmatter.contains('title: Test'),
       'Should have frontmatter content',);
-  final parsedMd = markdownToJson('---\ntitle: Test\n---\n{"key": "value"}');
+  final parsedMd = markdownToJson('---\ntitle: Test\n---\n{"key": "value"}') as Map<String, dynamic>;
   assert(parsedMd['title'] == 'Test', 'Should parse frontmatter');
-  assert(parsedMd['body']['key'] == 'value', 'Should parse JSON body');
+  final body = parsedMd['body'] as Map<String, dynamic>;
+  assert(body['key'] == 'value', 'Should parse JSON body');
   print('  ✓ Markdown frontmatter works correctly');
 
   print('\n=== All validations passed! ===');

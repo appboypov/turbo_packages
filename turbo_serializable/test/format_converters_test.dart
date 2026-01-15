@@ -250,8 +250,9 @@ void main() {
       final yamlMap = {
         'outer': {'inner': 'value'},
       };
-      final result = convertYamlToMap(yamlMap);
-      expect(result['outer']['inner'], 'value');
+      final result = convertYamlToMap(yamlMap) as Map<String, dynamic>;
+      final outer = result['outer'] as Map<String, dynamic>;
+      expect(outer['inner'], 'value');
     });
 
     test('converts lists', () {
@@ -589,19 +590,20 @@ void main() {
 
   group('yamlToJson', () {
     test('parses simple YAML', () {
-      final result = yamlToJson('name: test\nage: 30');
+      final result = yamlToJson('name: test\nage: 30') as Map<String, dynamic>;
       expect(result['name'], 'test');
       expect(result['age'], 30);
     });
 
     test('parses nested YAML', () {
-      final result = yamlToJson('user:\n  name: test\n  active: true');
-      expect(result['user']['name'], 'test');
-      expect(result['user']['active'], true);
+      final result = yamlToJson('user:\n  name: test\n  active: true') as Map<String, dynamic>;
+      final user = result['user'] as Map<String, dynamic>;
+      expect(user['name'], 'test');
+      expect(user['active'], true);
     });
 
     test('parses lists', () {
-      final result = yamlToJson('items:\n  - one\n  - two');
+      final result = yamlToJson('items:\n  - one\n  - two') as Map<String, dynamic>;
       expect(result['items'], ['one', 'two']);
     });
 
@@ -615,19 +617,19 @@ void main() {
 
   group('markdownToJson', () {
     test('parses frontmatter', () {
-      final result = markdownToJson('---\ntitle: Test\n---\nBody content');
+      final result = markdownToJson('---\ntitle: Test\n---\nBody content') as Map<String, dynamic>;
       expect(result['title'], 'Test');
       expect(result['body'], 'Body content');
     });
 
     test('parses JSON body', () {
-      final result = markdownToJson('---\ntitle: Test\n---\n{"key": "value"}');
+      final result = markdownToJson('---\ntitle: Test\n---\n{"key": "value"}') as Map<String, dynamic>;
       expect(result['title'], 'Test');
       expect(result['body'], {'key': 'value'});
     });
 
     test('handles no frontmatter', () {
-      final result = markdownToJson('{"key": "value"}');
+      final result = markdownToJson('{"key": "value"}') as Map<String, dynamic>;
       expect(result['body'], {'key': 'value'});
     });
 
@@ -637,12 +639,12 @@ void main() {
     });
 
     test('handles only frontmatter', () {
-      final result = markdownToJson('---\ntitle: Test\n---');
+      final result = markdownToJson('---\ntitle: Test\n---') as Map<String, dynamic>;
       expect(result['title'], 'Test');
     });
 
     test('stores non-JSON body as string', () {
-      final result = markdownToJson('---\ntitle: Test\n---\nPlain text body');
+      final result = markdownToJson('---\ntitle: Test\n---\nPlain text body') as Map<String, dynamic>;
       expect(result['body'], 'Plain text body');
     });
   });
@@ -806,7 +808,7 @@ void main() {
 
   group('xmlToJson', () {
     test('parses simple XML', () {
-      final result = xmlToJson('<root><name>test</name></root>');
+      final result = xmlToJson('<root><name>test</name></root>') as Map<String, dynamic>;
       expect(result['name'], 'test');
     });
 
@@ -894,8 +896,10 @@ void main() {
         },
         'topNull': null,
       });
-      expect(result['level1']['level2']['level3'], {'value': 'kept'});
-      expect(result['level1']['kept'], 'value');
+      final level1 = result['level1'] as Map<String, dynamic>;
+      final level2 = level1['level2'] as Map<String, dynamic>;
+      expect(level2['level3'], {'value': 'kept'});
+      expect(level1['kept'], 'value');
       expect(result, isNot(contains('topNull')));
     });
   });

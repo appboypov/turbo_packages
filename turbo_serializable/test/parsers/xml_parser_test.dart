@@ -48,15 +48,20 @@ void main() {
         final result = parser.parse('<user id="123">John</user>');
         expect(result.data['user'], 'John');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
+        final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+        final xmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+        final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+        expect(attributes['id'], '123');
       });
 
       test('extracts multiple attributes', () {
         final result = parser.parse('<user id="123" active="true">John</user>');
         expect(result.data['user'], 'John');
-        expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
-        expect(
-            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
+        final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+        final xmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+        final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+        expect(attributes['id'], '123');
+        expect(attributes['active'], 'true');
       });
 
       test('attributes on nested elements', () {
@@ -67,19 +72,25 @@ void main() {
             </user>
           </root>
         ''');
-        expect(result.data['root']['user']['name'], 'John');
-        expect(
-            result.keyMeta!['root']['children']['user']['xmlMeta']['attributes']
-                ['role'],
-            'admin',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        final userData = rootData['user'] as Map<String, dynamic>;
+        expect(userData['name'], 'John');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final children = rootMeta['children'] as Map<String, dynamic>;
+        final userMeta = children['user'] as Map<String, dynamic>;
+        final xmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+        final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+        expect(attributes['role'], 'admin');
       });
 
       test('attributes with special characters in values', () {
         final result =
             parser.parse('<item data-value="test&amp;value">Content</item>');
         expect(result.data['item'], 'Content');
-        expect(result.keyMeta!['item']['xmlMeta']['attributes']['data-value'],
-            'test&value',);
+        final itemMeta = result.keyMeta!['item'] as Map<String, dynamic>;
+        final xmlMeta = itemMeta['xmlMeta'] as Map<String, dynamic>;
+        final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+        expect(attributes['data-value'], 'test&value');
       });
     });
 
@@ -88,21 +99,27 @@ void main() {
         final result =
             parser.parse('<bio><![CDATA[Special <characters> allowed]]></bio>');
         expect(result.data['bio'], 'Special <characters> allowed');
-        expect(result.keyMeta!['bio']['xmlMeta']['isCdata'], true);
+        final bioMeta = result.keyMeta!['bio'] as Map<String, dynamic>;
+        final xmlMeta = bioMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['isCdata'], true);
       });
 
       test('parses CDATA with XML-like content', () {
         final result =
             parser.parse('<code><![CDATA[<div>HTML content</div>]]></code>');
         expect(result.data['code'], '<div>HTML content</div>');
-        expect(result.keyMeta!['code']['xmlMeta']['isCdata'], true);
+        final codeMeta = result.keyMeta!['code'] as Map<String, dynamic>;
+        final xmlMeta = codeMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['isCdata'], true);
       });
 
       test('parses CDATA with multiple sections', () {
         final result = parser
             .parse('<content><![CDATA[Part 1]]><![CDATA[ Part 2]]></content>');
         expect(result.data['content'], 'Part 1 Part 2');
-        expect(result.keyMeta!['content']['xmlMeta']['isCdata'], true);
+        final contentMeta = result.keyMeta!['content'] as Map<String, dynamic>;
+        final xmlMeta = contentMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['isCdata'], true);
       });
 
       test('nested element with CDATA', () {
@@ -111,11 +128,13 @@ void main() {
             <description><![CDATA[Some <special> content]]></description>
           </root>
         ''');
-        expect(result.data['root']['description'], 'Some <special> content');
-        expect(
-            result.keyMeta!['root']['children']['description']['xmlMeta']
-                ['isCdata'],
-            true,);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['description'], 'Some <special> content');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final children = rootMeta['children'] as Map<String, dynamic>;
+        final descriptionMeta = children['description'] as Map<String, dynamic>;
+        final xmlMeta = descriptionMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['isCdata'], true);
       });
     });
 
@@ -127,11 +146,13 @@ void main() {
             <preferences>dark</preferences>
           </root>
         ''');
-        expect(result.data['root']['preferences'], 'dark');
-        expect(
-            result.keyMeta!['root']['children']['preferences']['xmlMeta']
-                ['comment'],
-            'User preferences',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['preferences'], 'dark');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final children = rootMeta['children'] as Map<String, dynamic>;
+        final preferencesMeta = children['preferences'] as Map<String, dynamic>;
+        final xmlMeta = preferencesMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['comment'], 'User preferences');
       });
 
       test('captures comment before nested element', () {
@@ -143,11 +164,14 @@ void main() {
             </section>
           </root>
         ''');
-        expect(result.data['root']['section']['title'], 'Main');
-        expect(
-            result.keyMeta!['root']['children']['section']['xmlMeta']
-                ['comment'],
-            'Important section',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        final sectionData = rootData['section'] as Map<String, dynamic>;
+        expect(sectionData['title'], 'Main');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final children = rootMeta['children'] as Map<String, dynamic>;
+        final sectionMeta = children['section'] as Map<String, dynamic>;
+        final xmlMeta = sectionMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['comment'], 'Important section');
       });
 
       test('ignores comments not immediately before element', () {
@@ -159,10 +183,13 @@ void main() {
             <target>content</target>
           </root>
         ''');
-        expect(result.data['root']['target'], 'content');
-        expect(
-            result.keyMeta!['root']['children']['target']['xmlMeta']['comment'],
-            'Second comment is for target',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['target'], 'content');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final children = rootMeta['children'] as Map<String, dynamic>;
+        final targetMeta = children['target'] as Map<String, dynamic>;
+        final xmlMeta = targetMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['comment'], 'Second comment is for target');
       });
     });
 
@@ -170,18 +197,22 @@ void main() {
       test('captures namespace URI', () {
         final result = parser.parse(
             '<root xmlns="http://example.com"><item>value</item></root>',);
-        expect(result.data['root']['item'], 'value');
-        expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-            'http://example.com',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['item'], 'value');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final xmlMeta = rootMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['namespace'], 'http://example.com');
       });
 
       test('captures namespace prefix', () {
         final result = parser.parse(
             '<app:root xmlns:app="http://example.com/app"><app:item>value</app:item></app:root>',);
-        expect(result.data['root']['item'], 'value');
-        expect(result.keyMeta!['root']['xmlMeta']['prefix'], 'app');
-        expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-            'http://example.com/app',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['item'], 'value');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final xmlMeta = rootMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(xmlMeta['prefix'], 'app');
+        expect(xmlMeta['namespace'], 'http://example.com/app');
       });
 
       test('nested elements with different namespaces', () {
@@ -192,14 +223,18 @@ void main() {
             </app:section>
           </root>
         ''');
-        expect(result.data['root']['section']['value'], 'content');
-        expect(
-            result.keyMeta!['root']['children']['section']['xmlMeta']['prefix'],
-            'app',);
-        expect(
-            result.keyMeta!['root']['children']['section']['children']['value']
-                ['xmlMeta']['prefix'],
-            'data',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        final sectionData = rootData['section'] as Map<String, dynamic>;
+        expect(sectionData['value'], 'content');
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final rootChildren = rootMeta['children'] as Map<String, dynamic>;
+        final sectionMeta = rootChildren['section'] as Map<String, dynamic>;
+        final sectionXmlMeta = sectionMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(sectionXmlMeta['prefix'], 'app');
+        final sectionChildren = sectionMeta['children'] as Map<String, dynamic>;
+        final valueMeta = sectionChildren['value'] as Map<String, dynamic>;
+        final valueXmlMeta = valueMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(valueXmlMeta['prefix'], 'data');
       });
     });
 
@@ -211,8 +246,9 @@ void main() {
             <email>john@example.com</email>
           </user>
         ''');
-        expect(result.data['user']['name'], 'John Doe');
-        expect(result.data['user']['email'], 'john@example.com');
+        final userData = result.data['user'] as Map<String, dynamic>;
+        expect(userData['name'], 'John Doe');
+        expect(userData['email'], 'john@example.com');
       });
 
       test('parses deeply nested elements', () {
@@ -225,7 +261,10 @@ void main() {
             </level1>
           </root>
         ''');
-        expect(result.data['root']['level1']['level2']['level3'], 'deep value');
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        final level1Data = rootData['level1'] as Map<String, dynamic>;
+        final level2Data = level1Data['level2'] as Map<String, dynamic>;
+        expect(level2Data['level3'], 'deep value');
       });
 
       test('parses sibling elements', () {
@@ -236,9 +275,10 @@ void main() {
             <third>3</third>
           </root>
         ''');
-        expect(result.data['root']['first'], 1);
-        expect(result.data['root']['second'], 2);
-        expect(result.data['root']['third'], 3);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['first'], 1);
+        expect(rootData['second'], 2);
+        expect(rootData['third'], 3);
       });
     });
 
@@ -251,7 +291,8 @@ void main() {
             <item>c</item>
           </root>
         ''');
-        expect(result.data['root']['item'], ['a', 'b', 'c']);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['item'], ['a', 'b', 'c']);
       });
 
       test('parses repeated elements with numeric values', () {
@@ -262,7 +303,8 @@ void main() {
             <number>3</number>
           </root>
         ''');
-        expect(result.data['root']['number'], [1, 2, 3]);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['number'], [1, 2, 3]);
       });
 
       test('parses repeated complex elements', () {
@@ -276,7 +318,8 @@ void main() {
             </user>
           </root>
         ''');
-        expect(result.data['root']['user'], [
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['user'], [
           {'name': 'John'},
           {'name': 'Jane'},
         ]);
@@ -289,15 +332,18 @@ void main() {
             <item id="2">second</item>
           </root>
         ''');
-        expect(result.data['root']['item'], ['first', 'second']);
-        expect(
-            result.keyMeta!['root']['children']['item.0']['xmlMeta']
-                ['attributes']['id'],
-            '1',);
-        expect(
-            result.keyMeta!['root']['children']['item.1']['xmlMeta']
-                ['attributes']['id'],
-            '2',);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['item'], ['first', 'second']);
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final rootChildren = rootMeta['children'] as Map<String, dynamic>;
+        final item0Meta = rootChildren['item.0'] as Map<String, dynamic>;
+        final item0XmlMeta = item0Meta['xmlMeta'] as Map<String, dynamic>;
+        final item0Attributes = item0XmlMeta['attributes'] as Map<String, dynamic>;
+        expect(item0Attributes['id'], '1');
+        final item1Meta = rootChildren['item.1'] as Map<String, dynamic>;
+        final item1XmlMeta = item1Meta['xmlMeta'] as Map<String, dynamic>;
+        final item1Attributes = item1XmlMeta['attributes'] as Map<String, dynamic>;
+        expect(item1Attributes['id'], '2');
       });
     });
 
@@ -305,15 +351,17 @@ void main() {
       test('handles text with elements', () {
         final result =
             parser.parse('<root>Some text <child>nested</child></root>');
-        expect(result.data['root']['_text'], 'Some text');
-        expect(result.data['root']['child'], 'nested');
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['_text'], 'Some text');
+        expect(rootData['child'], 'nested');
       });
 
       test('handles multiple text nodes', () {
         final result =
             parser.parse('<root>Start <middle>value</middle> End</root>');
-        expect(result.data['root']['_text'], 'Start End');
-        expect(result.data['root']['middle'], 'value');
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['_text'], 'Start End');
+        expect(rootData['middle'], 'value');
       });
     });
 
@@ -356,24 +404,29 @@ void main() {
         final result = parser.parse(xml);
 
         // Data extraction
-        expect(result.data['user']['name'], 'John Doe');
-        expect(result.data['user']['bio'], 'Special <characters> allowed');
-        expect(result.data['user']['preferences']['theme'], 'dark');
+        final userData = result.data['user'] as Map<String, dynamic>;
+        expect(userData['name'], 'John Doe');
+        expect(userData['bio'], 'Special <characters> allowed');
+        final preferencesData = userData['preferences'] as Map<String, dynamic>;
+        expect(preferencesData['theme'], 'dark');
 
         // Metadata extraction
-        expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
-        expect(
-            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
-        expect(result.keyMeta!['user']['children']['bio']['xmlMeta']['isCdata'],
-            true,);
-        expect(
-            result.keyMeta!['user']['children']['preferences']['xmlMeta']
-                ['comment'],
-            'User preferences',);
-        expect(
-            result.keyMeta!['user']['children']['preferences']['children']
-                ['theme']['xmlMeta']['prefix'],
-            'app',);
+        final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+        final userXmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+        final userAttributes = userXmlMeta['attributes'] as Map<String, dynamic>;
+        expect(userAttributes['id'], '123');
+        expect(userAttributes['active'], 'true');
+        final userChildren = userMeta['children'] as Map<String, dynamic>;
+        final bioMeta = userChildren['bio'] as Map<String, dynamic>;
+        final bioXmlMeta = bioMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(bioXmlMeta['isCdata'], true);
+        final preferencesMeta = userChildren['preferences'] as Map<String, dynamic>;
+        final preferencesXmlMeta = preferencesMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(preferencesXmlMeta['comment'], 'User preferences');
+        final preferencesChildren = preferencesMeta['children'] as Map<String, dynamic>;
+        final themeMeta = preferencesChildren['theme'] as Map<String, dynamic>;
+        final themeXmlMeta = themeMeta['xmlMeta'] as Map<String, dynamic>;
+        expect(themeXmlMeta['prefix'], 'app');
       });
 
       test('parses document with multiple lists', () {
@@ -393,11 +446,12 @@ void main() {
         ''';
         final result = parser.parse(xml);
 
-        expect(result.data['catalog']['book'], [
+        final catalogData = result.data['catalog'] as Map<String, dynamic>;
+        expect(catalogData['book'], [
           {'title': 'Book One', 'author': 'Author A'},
           {'title': 'Book Two', 'author': 'Author B'},
         ]);
-        expect(result.data['catalog']['category'], ['Fiction', 'Drama']);
+        expect(catalogData['category'], ['Fiction', 'Drama']);
       });
     });
 
@@ -409,7 +463,8 @@ void main() {
 
       test('handles self-closing tags', () {
         final result = parser.parse('<root><empty/></root>');
-        expect(result.data['root']['empty'], isNull);
+        final rootData = result.data['root'] as Map<String, dynamic>;
+        expect(rootData['empty'], isNull);
       });
 
       test('handles special characters in text', () {
@@ -431,8 +486,10 @@ void main() {
       test('handles attributes with colons', () {
         final result = parser.parse('<root xml:lang="en">Content</root>');
         expect(result.data['root'], 'Content');
-        expect(
-            result.keyMeta!['root']['xmlMeta']['attributes']['xml:lang'], 'en',);
+        final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+        final xmlMeta = rootMeta['xmlMeta'] as Map<String, dynamic>;
+        final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+        expect(attributes['xml:lang'], 'en');
       });
     });
   });
@@ -450,18 +507,22 @@ void main() {
     });
 
     test('backward compatibility - basic XML parsing', () {
-      final result = xmlToJson('<root><name>John</name><age>30</age></root>');
+      final result = xmlToJson('<root><name>John</name><age>30</age></root>')
+          as Map<String, dynamic>;
       expect(result['name'], 'John');
       expect(result['age'], 30);
     });
 
     test('backward compatibility - nested structures', () {
-      final result = xmlToJson('<root><user><name>John</name></user></root>');
-      expect(result['user']['name'], 'John');
+      final result = xmlToJson('<root><user><name>John</name></user></root>')
+          as Map<String, dynamic>;
+      final userData = result['user'] as Map<String, dynamic>;
+      expect(userData['name'], 'John');
     });
 
     test('backward compatibility - repeated elements as list', () {
-      final result = xmlToJson('<root><item>a</item><item>b</item></root>');
+      final result = xmlToJson('<root><item>a</item><item>b</item></root>')
+          as Map<String, dynamic>;
       expect(result['item'], ['a', 'b']);
     });
 
@@ -470,7 +531,10 @@ void main() {
           xmlToJson('<user id="123">John</user>', preserveLayout: true)
               as LayoutAwareParseResult;
       expect(result.data['user'], 'John');
-      expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
+      final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+      final xmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+      final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+      expect(attributes['id'], '123');
     });
 
     test('preserveLayout extracts CDATA metadata', () {
@@ -478,25 +542,33 @@ void main() {
           xmlToJson('<bio><![CDATA[Content]]></bio>', preserveLayout: true)
               as LayoutAwareParseResult;
       expect(result.data['bio'], 'Content');
-      expect(result.keyMeta!['bio']['xmlMeta']['isCdata'], true);
+      final bioMeta = result.keyMeta!['bio'] as Map<String, dynamic>;
+      final xmlMeta = bioMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['isCdata'], true);
     });
 
     test('preserveLayout extracts namespace metadata', () {
       final result = xmlToJson(
           '<root xmlns="http://example.com"><item>value</item></root>',
           preserveLayout: true,) as LayoutAwareParseResult;
-      expect(result.data['root']['item'], 'value');
-      expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-          'http://example.com',);
+      final rootData = result.data['root'] as Map<String, dynamic>;
+      expect(rootData['item'], 'value');
+      final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+      final xmlMeta = rootMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['namespace'], 'http://example.com');
     });
 
     test('preserveLayout extracts comment metadata', () {
       final result = xmlToJson(
           '<root><!-- comment --><item>value</item></root>',
           preserveLayout: true,) as LayoutAwareParseResult;
-      expect(result.data['root']['item'], 'value');
-      expect(result.keyMeta!['root']['children']['item']['xmlMeta']['comment'],
-          'comment',);
+      final rootData = result.data['root'] as Map<String, dynamic>;
+      expect(rootData['item'], 'value');
+      final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+      final rootChildren = rootMeta['children'] as Map<String, dynamic>;
+      final itemMeta = rootChildren['item'] as Map<String, dynamic>;
+      final xmlMeta = itemMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['comment'], 'comment');
     });
   });
 
@@ -505,16 +577,20 @@ void main() {
       const original = '<user id="123" active="true">John</user>';
       final result =
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
-      expect(
-          result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
+      final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+      final xmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+      final attributes = xmlMeta['attributes'] as Map<String, dynamic>;
+      expect(attributes['id'], '123');
+      expect(attributes['active'], 'true');
     });
 
     test('CDATA round-trip', () {
       const original = '<bio><![CDATA[Special <content>]]></bio>';
       final result =
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['bio']['xmlMeta']['isCdata'], true);
+      final bioMeta = result.keyMeta!['bio'] as Map<String, dynamic>;
+      final xmlMeta = bioMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['isCdata'], true);
     });
 
     test('namespace round-trip', () {
@@ -522,17 +598,21 @@ void main() {
           '<app:root xmlns:app="http://example.com/app"><app:item>value</app:item></app:root>';
       final result =
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['root']['xmlMeta']['prefix'], 'app');
-      expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-          'http://example.com/app',);
+      final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+      final xmlMeta = rootMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['prefix'], 'app');
+      expect(xmlMeta['namespace'], 'http://example.com/app');
     });
 
     test('comment round-trip', () {
       const original = '<root><!-- Important --><item>value</item></root>';
       final result =
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['root']['children']['item']['xmlMeta']['comment'],
-          'Important',);
+      final rootMeta = result.keyMeta!['root'] as Map<String, dynamic>;
+      final rootChildren = rootMeta['children'] as Map<String, dynamic>;
+      final itemMeta = rootChildren['item'] as Map<String, dynamic>;
+      final xmlMeta = itemMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(xmlMeta['comment'], 'Important');
     });
 
     test('complex document round-trip', () {
@@ -550,17 +630,21 @@ void main() {
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
 
       // Verify all metadata is captured
-      expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
-      expect(result.keyMeta!['user']['children']['bio']['xmlMeta']['isCdata'],
-          true,);
-      expect(
-          result.keyMeta!['user']['children']['preferences']['xmlMeta']
-              ['comment'],
-          'Preferences section',);
-      expect(
-          result.keyMeta!['user']['children']['preferences']['children']
-              ['theme']['xmlMeta']['prefix'],
-          'app',);
+      final userMeta = result.keyMeta!['user'] as Map<String, dynamic>;
+      final userXmlMeta = userMeta['xmlMeta'] as Map<String, dynamic>;
+      final userAttributes = userXmlMeta['attributes'] as Map<String, dynamic>;
+      expect(userAttributes['id'], '123');
+      final userChildren = userMeta['children'] as Map<String, dynamic>;
+      final bioMeta = userChildren['bio'] as Map<String, dynamic>;
+      final bioXmlMeta = bioMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(bioXmlMeta['isCdata'], true);
+      final preferencesMeta = userChildren['preferences'] as Map<String, dynamic>;
+      final preferencesXmlMeta = preferencesMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(preferencesXmlMeta['comment'], 'Preferences section');
+      final preferencesChildren = preferencesMeta['children'] as Map<String, dynamic>;
+      final themeMeta = preferencesChildren['theme'] as Map<String, dynamic>;
+      final themeXmlMeta = themeMeta['xmlMeta'] as Map<String, dynamic>;
+      expect(themeXmlMeta['prefix'], 'app');
     });
   });
 }

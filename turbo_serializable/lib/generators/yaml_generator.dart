@@ -27,13 +27,10 @@ class YamlLayoutGenerator {
     final buffer = StringBuffer();
 
     // Check for multi-document YAML
-    final docMeta = keyMeta?['_document'];
-    final isMultiDocument = docMeta != null &&
-        docMeta is Map<String, dynamic> &&
-        docMeta['yamlMeta']?['comment']
-                ?.toString()
-                .contains('Multi-document') ==
-            true;
+    final docMeta = keyMeta?['_document'] as Map<String, dynamic>?;
+    final yamlMeta = docMeta?['yamlMeta'] as Map<String, dynamic>?;
+    final isMultiDocument = yamlMeta != null &&
+        yamlMeta['comment']?.toString().contains('Multi-document') == true;
 
     if (isMultiDocument) {
       return _generateMultiDocument(data, keyMeta);

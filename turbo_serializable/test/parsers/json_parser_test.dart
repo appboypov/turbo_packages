@@ -23,7 +23,8 @@ void main() {
 
       test('parses nested object', () {
         final result = parser.parse('{"user": {"name": "John"}}');
-        expect(result.data['user']['name'], 'John');
+        final user = result.data['user'] as Map<String, dynamic>;
+        expect(user['name'], 'John');
       });
 
       test('parses array', () {
@@ -87,7 +88,9 @@ void main() {
   }
 }''';
         final result = parser.parse(json);
-        expect(result.data['level1']['level2']['level3'], 'value');
+        final level1 = result.data['level1'] as Map<String, dynamic>;
+        final level2 = level1['level2'] as Map<String, dynamic>;
+        expect(level2['level3'], 'value');
       });
     });
   });

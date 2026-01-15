@@ -260,7 +260,7 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
           limit: limit,
         ),
       );
-      Query<Object?> collectionReferenceQuery(Query<T> collectionReference) =>
+      Query<T> collectionReferenceQuery(Query<T> collectionReference) =>
           switch (searchTermType) {
             TurboSearchTermType.arrayContains => limit == null
                 ? collectionReference.where(
@@ -295,7 +295,7 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
         try {
           final numberSearchTerm = double.tryParse(searchTerm);
           if (numberSearchTerm != null) {
-            Query<Object?> collectionReferenceQuery(Query<T> collectionReference) =>
+            Query<T> collectionReferenceQuery(Query<T> collectionReference) =>
                 switch (searchTermType) {
                   TurboSearchTermType.startsWith => limit == null
                       ? collectionReference.where(

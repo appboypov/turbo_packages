@@ -56,10 +56,10 @@ defaults: &defaults
   host: localhost
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['defaults']['adapter'], 'postgres');
-        expect(result.data['defaults']['host'], 'localhost');
+        expect((result.data['defaults'] as Map<String, dynamic>)['adapter'], 'postgres');
+        expect((result.data['defaults'] as Map<String, dynamic>)['host'], 'localhost');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
+        expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
       });
 
       test('extracts anchor from simple value', () {
@@ -69,7 +69,7 @@ name: &username John
         final result = parser.parse(yaml);
         expect(result.data['name'], 'John');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['name']['yamlMeta']['anchor'], 'username');
+        expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'username');
       });
     });
 
@@ -84,12 +84,12 @@ development:
   database: dev_db
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['defaults']['adapter'], 'postgres');
-        expect(result.data['development']['database'], 'dev_db');
+        expect((result.data['defaults'] as Map<String, dynamic>)['adapter'], 'postgres');
+        expect((result.data['development'] as Map<String, dynamic>)['database'], 'dev_db');
         // The yaml package preserves the << key with the referenced value
-        expect(result.data['development']['<<']['adapter'], 'postgres');
+        expect(((result.data['development'] as Map<String, dynamic>)['<<'] as Map<String, dynamic>)['adapter'], 'postgres');
         // The anchor is captured on the defaults key
-        expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
+        expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
       });
 
       test('resolves alias in simple value', () {
@@ -112,7 +112,7 @@ name: John # This is a comment
         final result = parser.parse(yaml);
         expect(result.data['name'], 'John');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['name']['yamlMeta']['comment'],
+        expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'],
             'This is a comment',);
       });
 
@@ -124,7 +124,7 @@ name: John
         final result = parser.parse(yaml);
         expect(result.data['name'], 'John');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['name']['yamlMeta']['comment'], 'User name');
+        expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'], 'User name');
       });
 
       test('handles comment with special characters', () {
@@ -134,7 +134,7 @@ value: test # Comment with special chars: @#\$%
         final result = parser.parse(yaml);
         expect(result.data['value'], 'test');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['value']['yamlMeta']['comment'],
+        expect(((result.keyMeta!['value'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'],
             contains('Comment'),);
       });
     });
@@ -145,10 +145,10 @@ value: test # Comment with special chars: @#\$%
 person: {name: John, age: 30}
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['person']['name'], 'John');
-        expect(result.data['person']['age'], 30);
+        expect((result.data['person'] as Map<String, dynamic>)['name'], 'John');
+        expect((result.data['person'] as Map<String, dynamic>)['age'], 30);
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['person']['yamlMeta']['style'], 'flow');
+        expect(((result.keyMeta!['person'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['style'], 'flow');
       });
 
       test('detects block style map', () {
@@ -158,8 +158,8 @@ person:
   age: 30
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['person']['name'], 'John');
-        expect(result.data['person']['age'], 30);
+        expect((result.data['person'] as Map<String, dynamic>)['name'], 'John');
+        expect((result.data['person'] as Map<String, dynamic>)['age'], 30);
         // Block style is the default, so may not have explicit metadata
       });
 
@@ -170,7 +170,7 @@ items: [a, b, c]
         final result = parser.parse(yaml);
         expect(result.data['items'], ['a', 'b', 'c']);
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['items']['yamlMeta']['style'], 'flow');
+        expect(((result.keyMeta!['items'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['style'], 'flow');
       });
 
       test('detects block style list', () {
@@ -195,7 +195,7 @@ description: |
         final result = parser.parse(yaml);
         expect(result.data['description'], contains('This is a'));
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['description']['yamlMeta']['scalarStyle'],
+        expect(((result.keyMeta!['description'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
             'literal',);
       });
 
@@ -208,7 +208,7 @@ description: >
         final result = parser.parse(yaml);
         expect(result.data['description'], isNotNull);
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['description']['yamlMeta']['scalarStyle'],
+        expect(((result.keyMeta!['description'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
             'folded',);
       });
 
@@ -219,7 +219,7 @@ name: 'John Doe'
         final result = parser.parse(yaml);
         expect(result.data['name'], 'John Doe');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['name']['yamlMeta']['scalarStyle'],
+        expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
             'single-quoted',);
       });
 
@@ -230,7 +230,7 @@ name: "John Doe"
         final result = parser.parse(yaml);
         expect(result.data['name'], 'John Doe');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['name']['yamlMeta']['scalarStyle'],
+        expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
             'double-quoted',);
       });
 
@@ -253,8 +253,8 @@ name: Doc1
 name: Doc2
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['_document_0']['name'], 'Doc1');
-        expect(result.data['_document_1']['name'], 'Doc2');
+        expect((result.data['_document_0'] as Map<String, dynamic>)['name'], 'Doc1');
+        expect((result.data['_document_1'] as Map<String, dynamic>)['name'], 'Doc2');
       });
 
       test('handles document end marker', () {
@@ -267,8 +267,8 @@ name: Doc2
 ...
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['_document_0']['name'], 'Doc1');
-        expect(result.data['_document_1']['name'], 'Doc2');
+        expect((result.data['_document_0'] as Map<String, dynamic>)['name'], 'Doc1');
+        expect((result.data['_document_1'] as Map<String, dynamic>)['name'], 'Doc2');
       });
 
       test('single document without markers', () {
@@ -290,7 +290,7 @@ b: 2
 ''';
         final result = parser.parse(yaml);
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['_document']['yamlMeta']['comment'],
+        expect(((result.keyMeta!['_document'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'],
             contains('Multi-document'),);
       });
     });
@@ -305,9 +305,9 @@ user:
     zip: 10001
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['user']['name'], 'John');
-        expect(result.data['user']['address']['city'], 'NYC');
-        expect(result.data['user']['address']['zip'], 10001);
+        expect((result.data['user'] as Map<String, dynamic>)['name'], 'John');
+        expect(((result.data['user'] as Map<String, dynamic>)['address'] as Map<String, dynamic>)['city'], 'NYC');
+        expect(((result.data['user'] as Map<String, dynamic>)['address'] as Map<String, dynamic>)['zip'], 10001);
       });
 
       test('parses nested lists', () {
@@ -319,8 +319,8 @@ matrix:
     - 4
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['matrix'][0], [1, 2]);
-        expect(result.data['matrix'][1], [3, 4]);
+        expect((result.data['matrix'] as List)[0], [1, 2]);
+        expect((result.data['matrix'] as List)[1], [3, 4]);
       });
 
       test('parses lists of maps', () {
@@ -332,10 +332,10 @@ users:
     age: 25
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['users'][0]['name'], 'John');
-        expect(result.data['users'][0]['age'], 30);
-        expect(result.data['users'][1]['name'], 'Jane');
-        expect(result.data['users'][1]['age'], 25);
+        expect(((result.data['users'] as List)[0] as Map<String, dynamic>)['name'], 'John');
+        expect(((result.data['users'] as List)[0] as Map<String, dynamic>)['age'], 30);
+        expect(((result.data['users'] as List)[1] as Map<String, dynamic>)['name'], 'Jane');
+        expect(((result.data['users'] as List)[1] as Map<String, dynamic>)['age'], 25);
       });
 
       test('parses maps with list values', () {
@@ -347,8 +347,8 @@ person:
     - coding
 ''';
         final result = parser.parse(yaml);
-        expect(result.data['person']['name'], 'John');
-        expect(result.data['person']['hobbies'], ['reading', 'coding']);
+        expect((result.data['person'] as Map<String, dynamic>)['name'], 'John');
+        expect((result.data['person'] as Map<String, dynamic>)['hobbies'], ['reading', 'coding']);
       });
     });
 
@@ -395,17 +395,17 @@ production:
         final result = parser.parse(yaml);
 
         // Data extraction
-        expect(result.data['defaults']['adapter'], 'postgres');
-        expect(result.data['defaults']['host'], 'localhost');
-        expect(result.data['development']['database'], 'dev_db');
-        expect(result.data['production']['database'], 'prod_db');
-        expect(result.data['production']['password'], contains('secret'));
+        expect((result.data['defaults'] as Map<String, dynamic>)['adapter'], 'postgres');
+        expect((result.data['defaults'] as Map<String, dynamic>)['host'], 'localhost');
+        expect((result.data['development'] as Map<String, dynamic>)['database'], 'dev_db');
+        expect((result.data['production'] as Map<String, dynamic>)['database'], 'prod_db');
+        expect((result.data['production'] as Map<String, dynamic>)['password'], contains('secret'));
 
         // Metadata extraction
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
+        expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
         expect(
-            result.keyMeta!['defaults']['yamlMeta']['comment'], 'Main config',);
+            ((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'], 'Main config',);
       });
 
       test('parses mixed flow and block styles', () {
@@ -419,9 +419,9 @@ config:
 ''';
         final result = parser.parse(yaml);
 
-        expect(result.data['config']['simple']['a'], 1);
-        expect(result.data['config']['complex']['nested']['deep'], 'value');
-        expect(result.data['config']['list'], ['x', 'y', 'z']);
+        expect(((result.data['config'] as Map<String, dynamic>)['simple'] as Map<String, dynamic>)['a'], 1);
+        expect((((result.data['config'] as Map<String, dynamic>)['complex'] as Map<String, dynamic>)['nested'] as Map<String, dynamic>)['deep'], 'value');
+        expect((result.data['config'] as Map<String, dynamic>)['list'], ['x', 'y', 'z']);
       });
     });
 
@@ -478,7 +478,7 @@ empty_list: []
     });
 
     test('backward compatibility - basic YAML parsing', () {
-      final result = yamlToJson('name: John\nage: 30');
+      final result = yamlToJson('name: John\nage: 30') as Map<String, dynamic>;
       expect(result['name'], 'John');
       expect(result['age'], 30);
     });
@@ -489,9 +489,9 @@ user:
   name: John
   email: john@example.com
 ''';
-      final result = yamlToJson(yaml);
-      expect(result['user']['name'], 'John');
-      expect(result['user']['email'], 'john@example.com');
+      final result = yamlToJson(yaml) as Map<String, dynamic>;
+      expect((result['user'] as Map<String, dynamic>)['name'], 'John');
+      expect((result['user'] as Map<String, dynamic>)['email'], 'john@example.com');
     });
 
     test('backward compatibility - lists', () {
@@ -501,7 +501,7 @@ items:
   - b
   - c
 ''';
-      final result = yamlToJson(yaml);
+      final result = yamlToJson(yaml) as Map<String, dynamic>;
       expect(result['items'], ['a', 'b', 'c']);
     });
 
@@ -512,8 +512,8 @@ defaults: &defaults
 ''';
       final result =
           yamlToJson(yaml, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.data['defaults']['adapter'], 'postgres');
-      expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
+      expect((result.data['defaults'] as Map<String, dynamic>)['adapter'], 'postgres');
+      expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
     });
 
     test('preserveLayout extracts comment metadata', () {
@@ -523,7 +523,7 @@ name: John # User name
       final result =
           yamlToJson(yaml, preserveLayout: true) as LayoutAwareParseResult;
       expect(result.data['name'], 'John');
-      expect(result.keyMeta!['name']['yamlMeta']['comment'], 'User name');
+      expect(((result.keyMeta!['name'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'], 'User name');
     });
 
     test('preserveLayout extracts scalar style metadata', () {
@@ -535,7 +535,7 @@ description: |
       final result =
           yamlToJson(yaml, preserveLayout: true) as LayoutAwareParseResult;
       expect(
-          result.keyMeta!['description']['yamlMeta']['scalarStyle'], 'literal',);
+          ((result.keyMeta!['description'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'], 'literal',);
     });
 
     test('preserveLayout extracts flow style metadata', () {
@@ -544,8 +544,8 @@ config: {a: 1, b: 2}
 ''';
       final result =
           yamlToJson(yaml, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.data['config']['a'], 1);
-      expect(result.keyMeta!['config']['yamlMeta']['style'], 'flow');
+      expect((result.data['config'] as Map<String, dynamic>)['a'], 1);
+      expect(((result.keyMeta!['config'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['style'], 'flow');
     });
   });
 
@@ -561,7 +561,7 @@ development:
 ''';
       final result =
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
+      expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
     });
 
     test('comment round-trip', () {
@@ -572,7 +572,7 @@ config:
 ''';
       final result =
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['config']['yamlMeta']['comment'],
+      expect(((result.keyMeta!['config'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'],
           'Main configuration',);
     });
 
@@ -591,11 +591,11 @@ double: "also quoted"
 ''';
       final result =
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['literal']['yamlMeta']['scalarStyle'], 'literal');
-      expect(result.keyMeta!['folded']['yamlMeta']['scalarStyle'], 'folded');
-      expect(result.keyMeta!['single']['yamlMeta']['scalarStyle'],
+      expect(((result.keyMeta!['literal'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'], 'literal');
+      expect(((result.keyMeta!['folded'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'], 'folded');
+      expect(((result.keyMeta!['single'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
           'single-quoted',);
-      expect(result.keyMeta!['double']['yamlMeta']['scalarStyle'],
+      expect(((result.keyMeta!['double'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['scalarStyle'],
           'double-quoted',);
     });
 
@@ -606,8 +606,8 @@ flow_list: [1, 2, 3]
 ''';
       final result =
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
-      expect(result.keyMeta!['flow_map']['yamlMeta']['style'], 'flow');
-      expect(result.keyMeta!['flow_list']['yamlMeta']['style'], 'flow');
+      expect(((result.keyMeta!['flow_map'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['style'], 'flow');
+      expect(((result.keyMeta!['flow_list'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['style'], 'flow');
     });
 
     test('complex document round-trip', () {
@@ -630,10 +630,10 @@ production:
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
 
       // Verify all metadata is captured
-      expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
-      expect(result.keyMeta!['defaults']['yamlMeta']['comment'], 'Main config');
+      expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['anchor'], 'defaults');
+      expect(((result.keyMeta!['defaults'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)['comment'], 'Main config');
       expect(
-          result.keyMeta!['production']['children']['password']['yamlMeta']
+          ((((result.keyMeta!['production'] as Map<String, dynamic>)['children'] as Map<String, dynamic>)['password'] as Map<String, dynamic>)['yamlMeta'] as Map<String, dynamic>)
               ['scalarStyle'],
           'literal',);
     });

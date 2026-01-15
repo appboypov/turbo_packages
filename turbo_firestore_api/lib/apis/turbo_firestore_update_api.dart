@@ -84,8 +84,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse =
-          writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TurboWriteable was invalid!',
@@ -127,7 +126,9 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
           sensitiveData: null,
         );
         final documentReference = getDocRefById(
-            id: id, collectionPathOverride: collectionPathOverride,);
+          id: id,
+          collectionPathOverride: collectionPathOverride,
+        );
         _log.debug(
           message: 'Creating JSON..',
           sensitiveData: null,
@@ -167,7 +168,9 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
             ),
           );
           transaction.update(
-              getDocRefById(id: documentReference.id), writeableAsJson,);
+            getDocRefById(id: documentReference.id),
+            writeableAsJson,
+          );
         }
         _log.info(
           message: 'Updating data done!',
@@ -254,8 +257,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
   /// See also:
   /// [updateDoc] single document updates
   /// [createDocInBatch] batch creation
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
-      updateDocInBatch({
+  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>> updateDocInBatch({
     required TurboWriteable<T> writeable,
     required String id,
     WriteBatch? writeBatch,
@@ -268,8 +270,8 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>?
-        invalidResponse = writeable.validate();
+    final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>? invalidResponse =
+        writeable.validate();
     if (invalidResponse != null && invalidResponse.isFail) {
       _log.warning(
         message: 'TurboWriteable was invalid!',
@@ -319,8 +321,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
         writeableAsJson,
       );
       _log.info(
-        message:
-            'Adding update to batch done! Returning WriteBatchWithReference..',
+        message: 'Adding update to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(

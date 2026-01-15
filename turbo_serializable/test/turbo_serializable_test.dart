@@ -602,7 +602,8 @@ void main() {
         expect(json!['title'], equals('My Title'));
         expect(json['description'], equals('A description'));
         expect(json['body'], isA<Map<String, dynamic>>());
-        expect(json['body']['key'], equals('value'));
+        final body = json['body'] as Map<String, dynamic>;
+        expect(body['key'], equals('value'));
       });
 
       test('toXml with camelCase from Markdown primary format', () {
@@ -758,21 +759,23 @@ void main() {
 
     group('yamlToJson', () {
       test('parses simple YAML', () {
-        final json = yamlToJson('name: Test\nage: 25');
+        final json = yamlToJson('name: Test\nage: 25') as Map<String, dynamic>;
         expect(json['name'], equals('Test'));
         expect(json['age'], equals(25));
       });
 
       test('parses nested YAML', () {
-        final json = yamlToJson('user:\n  name: Test\n  age: 25');
+        final json = yamlToJson('user:\n  name: Test\n  age: 25') as Map<String, dynamic>;
         expect(json['user'], isA<Map<String, dynamic>>());
-        expect(json['user']['name'], equals('Test'));
+        final user = json['user'] as Map<String, dynamic>;
+        expect(user['name'], equals('Test'));
       });
 
       test('parses list YAML', () {
-        final json = yamlToJson('items:\n  - a\n  - b\n  - c');
-        expect(json['items'], isA<List<dynamic>>());
-        expect(json['items'], equals(['a', 'b', 'c']));
+        final json = yamlToJson('items:\n  - a\n  - b\n  - c') as Map<String, dynamic>;
+        final items = json['items'] as List<dynamic>;
+        expect(items, isA<List<dynamic>>());
+        expect(items, equals(['a', 'b', 'c']));
       });
 
       test('throws on invalid YAML', () {
@@ -820,11 +823,12 @@ title: My Title
 description: A description
 ---
 {"key": "value"}
-''');
+''') as Map<String, dynamic>;
         expect(json['title'], equals('My Title'));
         expect(json['description'], equals('A description'));
         expect(json['body'], isA<Map<String, dynamic>>());
-        expect(json['body']['key'], equals('value'));
+        final body = json['body'] as Map<String, dynamic>;
+        expect(body['key'], equals('value'));
       });
 
       test('parses frontmatter only', () {
@@ -832,14 +836,15 @@ description: A description
 ---
 title: My Title
 ---
-''');
+''') as Map<String, dynamic>;
         expect(json['title'], equals('My Title'));
       });
 
       test('parses body without frontmatter', () {
-        final json = markdownToJson('{"key": "value"}');
+        final json = markdownToJson('{"key": "value"}') as Map<String, dynamic>;
         expect(json['body'], isA<Map<String, dynamic>>());
-        expect(json['body']['key'], equals('value'));
+        final body = json['body'] as Map<String, dynamic>;
+        expect(body['key'], equals('value'));
       });
 
       test('stores non-JSON body as string', () {
@@ -848,7 +853,7 @@ title: My Title
 title: My Title
 ---
 Some regular markdown content
-''');
+''') as Map<String, dynamic>;
         expect(json['title'], equals('My Title'));
         expect(json['body'], equals('Some regular markdown content'));
       });
@@ -875,7 +880,7 @@ Some regular markdown content
       });
 
       test('xmlToJson is alias for xmlToMap', () {
-        final json = xmlToJson('<root><name>Test</name></root>');
+        final json = xmlToJson('<root><name>Test</name></root>') as Map<String, dynamic>;
         expect(json['name'], equals('Test'));
       });
 

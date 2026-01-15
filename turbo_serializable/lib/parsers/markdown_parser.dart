@@ -303,8 +303,9 @@ class MarkdownLayoutParser {
               '$existingValue\n${paragraphResult.content}',);
         }
       } else {
-        data['body'] = (data['body'] ?? '') +
-            (data['body'] != null ? '\n' : '') +
+        final existingBody = data['body'] as String?;
+        data['body'] = (existingBody ?? '') +
+            (existingBody != null ? '\n' : '') +
             paragraphResult.content;
       }
 

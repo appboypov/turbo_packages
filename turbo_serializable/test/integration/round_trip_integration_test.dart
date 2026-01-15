@@ -112,7 +112,7 @@ development:
     group('backward compatibility', () {
       test('yamlToJson without preserveLayout returns Map', () {
         const yaml = 'name: John';
-        final result = yamlToJson(yaml);
+        final result = yamlToJson(yaml) as Map<String, dynamic>;
         expect(result, isA<Map<String, dynamic>>());
         expect(result['name'], 'John');
       });

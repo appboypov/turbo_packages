@@ -287,8 +287,9 @@ void main() {
       const meta = KeyMetadata(divider: divider);
       final json = meta.toJson();
       expect(json['divider'], isA<Map<String, dynamic>>());
-      expect(json['divider']['before'], true);
-      expect(json['divider']['style'], '---');
+      final dividerMap = json['divider'] as Map<String, dynamic>;
+      expect(dividerMap['before'], true);
+      expect(dividerMap['style'], '---');
     });
 
     test('toJson includes children map', () {
@@ -299,7 +300,9 @@ void main() {
       );
       final json = meta.toJson();
       expect(json['children'], isA<Map<String, dynamic>>());
-      expect(json['children']['child']['headerLevel'], 3);
+      final children = json['children'] as Map<String, dynamic>;
+      final child = children['child'] as Map<String, dynamic>;
+      expect(child['headerLevel'], 3);
     });
 
     test('fromJson creates nested meta objects', () {
@@ -363,7 +366,9 @@ void main() {
         },
       );
       expect(result.data['key'], 'value');
-      expect(result.keyMeta?['key']['headerLevel'], 2);
+      final keyMetaMap = result.keyMeta;
+      final keyMeta = keyMetaMap?['key'] as Map<String, dynamic>?;
+      expect(keyMeta?['headerLevel'], 2);
     });
 
     test('toJson includes data and keyMeta', () {
@@ -391,7 +396,8 @@ void main() {
       };
       final result = LayoutAwareParseResult.fromJson(json);
       expect(result.data['key'], 'value');
-      expect(result.keyMeta?['key']['headerLevel'], 2);
+      final keyMeta = result.keyMeta?['key'] as Map<String, dynamic>?;
+      expect(keyMeta?['headerLevel'], 2);
     });
 
     test('copyWith updates values', () {

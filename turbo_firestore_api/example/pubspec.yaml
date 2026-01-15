@@ -43,6 +43,8 @@ dependencies:
     path: ../../turbo_response
   turbo_notifiers:
     path: ../../turbo_notifiers
+  turbo_serializable:
+    path: ../../turbo_serializable
   turbo_firestore_api:
     path: ../
   veto: ^0.0.16

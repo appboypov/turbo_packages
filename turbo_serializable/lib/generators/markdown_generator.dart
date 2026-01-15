@@ -50,9 +50,9 @@ class MarkdownLayoutGenerator {
   /// Gets the line ending style from document metadata.
   String _getLineEnding(Map<String, dynamic>? keyMeta) {
     if (keyMeta == null) return '\n';
-    final docMeta = keyMeta['_document'];
+    final docMeta = keyMeta['_document'] as Map<String, dynamic>?;
     if (docMeta == null) return '\n';
-    final whitespace = docMeta['whitespace'];
+    final whitespace = docMeta['whitespace'] as Map<String, dynamic>?;
     if (whitespace == null) return '\n';
     return whitespace['lineEnding'] as String? ?? '\n';
   }
@@ -60,9 +60,9 @@ class MarkdownLayoutGenerator {
   /// Gets the number of leading newlines from document metadata.
   int _getLeadingNewlines(Map<String, dynamic>? keyMeta) {
     if (keyMeta == null) return 0;
-    final docMeta = keyMeta['_document'];
+    final docMeta = keyMeta['_document'] as Map<String, dynamic>?;
     if (docMeta == null) return 0;
-    final whitespace = docMeta['whitespace'];
+    final whitespace = docMeta['whitespace'] as Map<String, dynamic>?;
     if (whitespace == null) return 0;
     return whitespace['leadingNewlines'] as int? ?? 0;
   }

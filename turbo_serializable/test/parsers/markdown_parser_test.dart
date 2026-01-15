@@ -28,43 +28,45 @@ void main() {
         final result = parser.parse('# Title\nContent here');
         expect(result.data['title'], 'Content here');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['title']['headerLevel'], 1);
+        expect((result.keyMeta!['title'] as Map<String, dynamic>)['headerLevel'], 1);
       });
 
       test('parses h2 header', () {
         final result = parser.parse('## Section\nSection content');
         expect(result.data['section'], 'Section content');
-        expect(result.keyMeta!['section']['headerLevel'], 2);
+        expect((result.keyMeta!['section'] as Map<String, dynamic>)['headerLevel'], 2);
       });
 
       test('parses h3 header', () {
         final result = parser.parse('### Subsection\nSubsection content');
         expect(result.data['subsection'], 'Subsection content');
-        expect(result.keyMeta!['subsection']['headerLevel'], 3);
+        expect((result.keyMeta!['subsection'] as Map<String, dynamic>)['headerLevel'], 3);
       });
 
       test('parses h4 header', () {
         final result = parser.parse('#### Deep Section\nDeep content');
         expect(result.data['deepSection'], 'Deep content');
-        expect(result.keyMeta!['deepSection']['headerLevel'], 4);
+        expect((result.keyMeta!['deepSection'] as Map<String, dynamic>)['headerLevel'], 4);
       });
 
       test('parses h5 header', () {
         final result = parser.parse('##### Very Deep\nVery deep content');
         expect(result.data['veryDeep'], 'Very deep content');
-        expect(result.keyMeta!['veryDeep']['headerLevel'], 5);
+        expect((result.keyMeta!['veryDeep'] as Map<String, dynamic>)['headerLevel'], 5);
       });
 
       test('parses h6 header', () {
         final result = parser.parse('###### Deepest\nDeepest content');
         expect(result.data['deepest'], 'Deepest content');
-        expect(result.keyMeta!['deepest']['headerLevel'], 6);
+        final deepestMeta = result.keyMeta!['deepest'] as Map<String, dynamic>;
+        expect(deepestMeta['headerLevel'], 6);
       });
 
       test('converts header text to camelCase key', () {
         final result = parser.parse('## User Name\nJohn Doe');
         expect(result.data['userName'], 'John Doe');
-        expect(result.keyMeta!['userName']['headerLevel'], 2);
+        final userNameMeta = result.keyMeta!['userName'] as Map<String, dynamic>;
+        expect(userNameMeta['headerLevel'], 2);
       });
 
       test('converts multi-word header to camelCase', () {
@@ -181,35 +183,41 @@ empty: null
         final result = parser.parse(markdown);
         expect(result.data['note'], 'This is a note');
         expect(result.keyMeta, isNotNull);
-        expect(result.keyMeta!['note']['callout']['type'], 'note');
+        expect(((result.keyMeta!['note'] as Map<String, dynamic>)['callout'] as Map<String, dynamic>)['type'], 'note');
       });
 
       test('parses WARNING callout', () {
         const markdown = '> [!WARNING]\n> Be careful!';
         final result = parser.parse(markdown);
         expect(result.data['warning'], 'Be careful!');
-        expect(result.keyMeta!['warning']['callout']['type'], 'warning');
+        expect(((result.keyMeta!['warning'] as Map<String, dynamic>)['callout'] as Map<String, dynamic>)['type'], 'warning');
       });
 
       test('parses TIP callout', () {
         const markdown = '> [!TIP]\n> Pro tip here';
         final result = parser.parse(markdown);
         expect(result.data['tip'], 'Pro tip here');
-        expect(result.keyMeta!['tip']['callout']['type'], 'tip');
+        final tipMeta = result.keyMeta!['tip'] as Map<String, dynamic>;
+        final callout = tipMeta['callout'] as Map<String, dynamic>;
+        expect(callout['type'], 'tip');
       });
 
       test('parses IMPORTANT callout', () {
         const markdown = '> [!IMPORTANT]\n> Very important!';
         final result = parser.parse(markdown);
         expect(result.data['important'], 'Very important!');
-        expect(result.keyMeta!['important']['callout']['type'], 'important');
+        final importantMeta = result.keyMeta!['important'] as Map<String, dynamic>;
+        final callout = importantMeta['callout'] as Map<String, dynamic>;
+        expect(callout['type'], 'important');
       });
 
       test('parses CAUTION callout', () {
         const markdown = '> [!CAUTION]\n> Handle with care';
         final result = parser.parse(markdown);
         expect(result.data['caution'], 'Handle with care');
-        expect(result.keyMeta!['caution']['callout']['type'], 'caution');
+        final cautionMeta = result.keyMeta!['caution'] as Map<String, dynamic>;
+        final callout = cautionMeta['callout'] as Map<String, dynamic>;
+        expect(callout['type'], 'caution');
       });
 
       test('parses multiline callout', () {
@@ -238,7 +246,9 @@ empty: null
         // Dividers are stored with unique keys
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-        expect(result.keyMeta![dividerKey]['divider']['style'], '---');
+        final dividerMeta = result.keyMeta![dividerKey] as Map<String, dynamic>;
+        final divider = dividerMeta['divider'] as Map<String, dynamic>;
+        expect(divider['style'], '---');
       });
 
       test('parses *** divider', () {
@@ -246,7 +256,9 @@ empty: null
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-        expect(result.keyMeta![dividerKey]['divider']['style'], '***');
+        final dividerMeta = result.keyMeta![dividerKey] as Map<String, dynamic>;
+        final divider = dividerMeta['divider'] as Map<String, dynamic>;
+        expect(divider['style'], '***');
       });
 
       test('parses ___ divider', () {
@@ -254,7 +266,9 @@ empty: null
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-        expect(result.keyMeta![dividerKey]['divider']['style'], '___');
+        final dividerMeta = result.keyMeta![dividerKey] as Map<String, dynamic>;
+        final divider = dividerMeta['divider'] as Map<String, dynamic>;
+        expect(divider['style'], '___');
       });
 
       test('parses longer dividers', () {
@@ -262,7 +276,9 @@ empty: null
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-        expect(result.keyMeta![dividerKey]['divider']['style'], '---');
+        final dividerMeta = result.keyMeta![dividerKey] as Map<String, dynamic>;
+        final divider = dividerMeta['divider'] as Map<String, dynamic>;
+        expect(divider['style'], '---');
       });
     });
 
@@ -277,7 +293,9 @@ const x = 1;
         final codeKey =
             result.data.keys.firstWhere((k) => k.startsWith('_code'));
         expect(result.data[codeKey], 'const x = 1;');
-        expect(result.keyMeta![codeKey]['codeBlock']['isInline'], false);
+        final codeMeta = result.keyMeta![codeKey] as Map<String, dynamic>;
+        final codeBlock = codeMeta['codeBlock'] as Map<String, dynamic>;
+        expect(codeBlock['isInline'], false);
       });
 
       test('parses fenced code block with language', () {
@@ -290,7 +308,9 @@ const x = 1;
         final codeKey =
             result.data.keys.firstWhere((k) => k.startsWith('_code'));
         expect(result.data[codeKey], 'const x = 1;');
-        expect(result.keyMeta![codeKey]['codeBlock']['language'], 'javascript');
+        final codeMeta = result.keyMeta![codeKey] as Map<String, dynamic>;
+        final codeBlock = codeMeta['codeBlock'] as Map<String, dynamic>;
+        expect(codeBlock['language'], 'javascript');
       });
 
       test('parses code block with language and filename', () {
@@ -302,9 +322,10 @@ void main() {}
         final result = parser.parse(markdown);
         final codeKey =
             result.data.keys.firstWhere((k) => k.startsWith('_code'));
-        expect(result.keyMeta![codeKey]['codeBlock']['language'], 'dart');
-        expect(
-            result.keyMeta![codeKey]['codeBlock']['filename'], 'example.dart',);
+        final codeMeta = result.keyMeta![codeKey] as Map<String, dynamic>;
+        final codeBlock = codeMeta['codeBlock'] as Map<String, dynamic>;
+        expect(codeBlock['language'], 'dart');
+        expect(codeBlock['filename'], 'example.dart');
       });
 
       test('parses multiline code block', () {
@@ -332,7 +353,9 @@ code here
         final codeKey =
             result.data.keys.firstWhere((k) => k.startsWith('_code'));
         expect(result.data[codeKey], 'code here');
-        expect(result.keyMeta![codeKey]['codeBlock']['language'], 'python');
+        final codeMeta = result.keyMeta![codeKey] as Map<String, dynamic>;
+        final codeBlock = codeMeta['codeBlock'] as Map<String, dynamic>;
+        expect(codeBlock['language'], 'python');
       });
     });
 
@@ -347,8 +370,10 @@ code here
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(result.data[listKey], ['Item 1', 'Item 2', 'Item 3']);
-        expect(result.keyMeta![listKey]['listMeta']['type'], 'unordered');
-        expect(result.keyMeta![listKey]['listMeta']['marker'], '-');
+        final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+        final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+        expect(listMetaData['type'], 'unordered');
+        expect(listMetaData['marker'], '-');
       });
 
       test('parses * list marker', () {
@@ -360,7 +385,9 @@ code here
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(result.data[listKey], ['Item A', 'Item B']);
-        expect(result.keyMeta![listKey]['listMeta']['marker'], '*');
+        final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+        final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+        expect(listMetaData['marker'], '*');
       });
 
       test('parses + list marker', () {
@@ -372,7 +399,9 @@ code here
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(result.data[listKey], ['First', 'Second']);
-        expect(result.keyMeta![listKey]['listMeta']['marker'], '+');
+        final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+        final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+        expect(listMetaData['marker'], '+');
       });
     });
 
@@ -388,8 +417,10 @@ code here
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(
             result.data[listKey], ['First item', 'Second item', 'Third item'],);
-        expect(result.keyMeta![listKey]['listMeta']['type'], 'ordered');
-        expect(result.keyMeta![listKey]['listMeta']['startNumber'], 1);
+        final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+        final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+        expect(listMetaData['type'], 'ordered');
+        expect(listMetaData['startNumber'], 1);
       });
 
       test('parses ordered list with parenthesis', () {
@@ -401,7 +432,9 @@ code here
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(result.data[listKey], ['Item A', 'Item B']);
-        expect(result.keyMeta![listKey]['listMeta']['marker'], '1)');
+        final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+        final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+        expect(listMetaData['marker'], '1)');
       });
 
       test('preserves start number', () {
@@ -412,7 +445,7 @@ code here
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
-        expect(result.keyMeta![listKey]['listMeta']['startNumber'], 5);
+        expect(((result.keyMeta![listKey] as Map<String, dynamic>)['listMeta'] as Map<String, dynamic>)['startNumber'], 5);
       });
     });
 
@@ -422,9 +455,10 @@ code here
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
-        expect(result.data[listKey][0]['content'], 'Todo item');
-        expect(result.data[listKey][0]['checked'], false);
-        expect(result.keyMeta![listKey]['listMeta']['type'], 'task');
+        final listData = result.data[listKey] as List;
+        expect((listData[0] as Map<String, dynamic>)['content'], 'Todo item');
+        expect((listData[0] as Map<String, dynamic>)['checked'], false);
+        expect(((result.keyMeta![listKey] as Map<String, dynamic>)['listMeta'] as Map<String, dynamic>)['type'], 'task');
       });
 
       test('parses checked task with lowercase x', () {
@@ -432,7 +466,8 @@ code here
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
-        expect(result.data[listKey][0]['checked'], true);
+        final listData = result.data[listKey] as List;
+        expect((listData[0] as Map<String, dynamic>)['checked'], true);
       });
 
       test('parses checked task with uppercase X', () {
@@ -440,7 +475,8 @@ code here
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
-        expect(result.data[listKey][0]['checked'], true);
+        final listData = result.data[listKey] as List;
+        expect((listData[0] as Map<String, dynamic>)['checked'], true);
       });
 
       test('parses mixed task list', () {
@@ -452,9 +488,10 @@ code here
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
-        expect(result.data[listKey][0]['checked'], true);
-        expect(result.data[listKey][1]['checked'], false);
-        expect(result.data[listKey][2]['checked'], true);
+        final listData = result.data[listKey] as List;
+        expect((listData[0] as Map<String, dynamic>)['checked'], true);
+        expect((listData[1] as Map<String, dynamic>)['checked'], false);
+        expect((listData[2] as Map<String, dynamic>)['checked'], true);
       });
     });
 
@@ -469,9 +506,12 @@ code here
         final result = parser.parse(markdown);
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
-        expect(result.data[tableKey]['headers'], ['Name', 'Age']);
-        expect(result.data[tableKey]['rows'].length, 2);
-        expect(result.keyMeta![tableKey]['tableMeta']['hasHeader'], true);
+        final tableData = result.data[tableKey] as Map<String, dynamic>;
+        expect(tableData['headers'], ['Name', 'Age']);
+        expect((tableData['rows'] as List).length, 2);
+        final tableMeta = result.keyMeta![tableKey] as Map<String, dynamic>;
+        final tableMetaData = tableMeta['tableMeta'] as Map<String, dynamic>;
+        expect(tableMetaData['hasHeader'], true);
       });
 
       test('parses table with left alignment', () {
@@ -483,7 +523,9 @@ code here
         final result = parser.parse(markdown);
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
-        expect(result.keyMeta![tableKey]['tableMeta']['alignment'], ['left']);
+        final tableMeta = result.keyMeta![tableKey] as Map<String, dynamic>;
+        final tableMetaData = tableMeta['tableMeta'] as Map<String, dynamic>;
+        expect(tableMetaData['alignment'], ['left']);
       });
 
       test('parses table with center alignment', () {
@@ -495,7 +537,9 @@ code here
         final result = parser.parse(markdown);
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
-        expect(result.keyMeta![tableKey]['tableMeta']['alignment'], ['center']);
+        final tableMeta = result.keyMeta![tableKey] as Map<String, dynamic>;
+        final tableMetaData = tableMeta['tableMeta'] as Map<String, dynamic>;
+        expect(tableMetaData['alignment'], ['center']);
       });
 
       test('parses table with right alignment', () {
@@ -507,7 +551,9 @@ code here
         final result = parser.parse(markdown);
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
-        expect(result.keyMeta![tableKey]['tableMeta']['alignment'], ['right']);
+        final tableMeta = result.keyMeta![tableKey] as Map<String, dynamic>;
+        final tableMetaData = tableMeta['tableMeta'] as Map<String, dynamic>;
+        expect(tableMetaData['alignment'], ['right']);
       });
 
       test('parses table with mixed alignments', () {
@@ -519,7 +565,7 @@ code here
         final result = parser.parse(markdown);
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
-        expect(result.keyMeta![tableKey]['tableMeta']['alignment'],
+        expect(((result.keyMeta![tableKey] as Map<String, dynamic>)['tableMeta'] as Map<String, dynamic>)['alignment'],
             ['left', 'center', 'right'],);
       });
     });
@@ -561,21 +607,25 @@ code here
       test('detects line ending style LF', () {
         const markdown = '# Title\nContent';
         final result = parser.parse(markdown);
-        expect(result.keyMeta!['_document']['whitespace']['lineEnding'], '\n');
+        final documentMeta = result.keyMeta!['_document'] as Map<String, dynamic>;
+        final whitespace = documentMeta['whitespace'] as Map<String, dynamic>;
+        expect(whitespace['lineEnding'], '\n');
       });
 
       test('detects line ending style CRLF', () {
         const markdown = '# Title\r\nContent';
         final result = parser.parse(markdown);
-        expect(
-            result.keyMeta!['_document']['whitespace']['lineEnding'], '\r\n',);
+        final documentMeta = result.keyMeta!['_document'] as Map<String, dynamic>;
+        final whitespace = documentMeta['whitespace'] as Map<String, dynamic>;
+        expect(whitespace['lineEnding'], '\r\n');
       });
 
       test('tracks leading newlines', () {
         const markdown = '\n\n\n# Title\nContent';
         final result = parser.parse(markdown);
-        expect(
-            result.keyMeta!['_document']['whitespace']['leadingNewlines'], 3,);
+        final documentMeta = result.keyMeta!['_document'] as Map<String, dynamic>;
+        final whitespace = documentMeta['whitespace'] as Map<String, dynamic>;
+        expect(whitespace['leadingNewlines'], 3);
       });
     });
 
@@ -636,7 +686,7 @@ void main() {}
       test('handles header without content', () {
         final result = parser.parse('## Empty Header');
         expect(result.data['emptyHeader'], '');
-        expect(result.keyMeta!['emptyHeader']['headerLevel'], 2);
+        expect((result.keyMeta!['emptyHeader'] as Map<String, dynamic>)['headerLevel'], 2);
       });
 
       test('handles consecutive dividers', () {
@@ -696,13 +746,13 @@ No closing fence
     });
 
     test('backward compatibility - basic frontmatter parsing', () {
-      final result = markdownToJson('---\ntitle: Test\n---\nBody');
+      final result = markdownToJson('---\ntitle: Test\n---\nBody') as Map<String, dynamic>;
       expect(result['title'], 'Test');
       expect(result['body'], 'Body');
     });
 
     test('backward compatibility - JSON body parsing', () {
-      final result = markdownToJson('{"key": "value"}');
+      final result = markdownToJson('{"key": "value"}') as Map<String, dynamic>;
       expect(result['body'], {'key': 'value'});
     });
 
@@ -710,14 +760,16 @@ No closing fence
       final result = markdownToJson('## User Name\nJohn', preserveLayout: true)
           as LayoutAwareParseResult;
       expect(result.data['userName'], 'John');
-      expect(result.keyMeta!['userName']['headerLevel'], 2);
+      expect((result.keyMeta!['userName'] as Map<String, dynamic>)['headerLevel'], 2);
     });
 
     test('preserveLayout extracts list metadata', () {
       final result = markdownToJson('- Item 1\n- Item 2', preserveLayout: true)
           as LayoutAwareParseResult;
       final listKey = result.data.keys.firstWhere((k) => k.startsWith('_list'));
-      expect(result.keyMeta![listKey]['listMeta']['type'], 'unordered');
+      final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+      final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+      expect(listMetaData['type'], 'unordered');
     });
 
     test('preserveLayout extracts code block metadata', () {
@@ -725,7 +777,9 @@ No closing fence
           markdownToJson('```dart\nvoid main() {}\n```', preserveLayout: true)
               as LayoutAwareParseResult;
       final codeKey = result.data.keys.firstWhere((k) => k.startsWith('_code'));
-      expect(result.keyMeta![codeKey]['codeBlock']['language'], 'dart');
+      final codeMeta = result.keyMeta![codeKey] as Map<String, dynamic>;
+      final codeBlock = codeMeta['codeBlock'] as Map<String, dynamic>;
+      expect(codeBlock['language'], 'dart');
     });
 
     test('preserveLayout extracts table metadata', () {
@@ -733,7 +787,7 @@ No closing fence
           preserveLayout: true,) as LayoutAwareParseResult;
       final tableKey =
           result.data.keys.firstWhere((k) => k.startsWith('_table'));
-      expect(result.keyMeta![tableKey]['tableMeta']['hasHeader'], true);
+      expect(((result.keyMeta![tableKey] as Map<String, dynamic>)['tableMeta'] as Map<String, dynamic>)['hasHeader'], true);
     });
 
     test('preserveLayout extracts callout metadata', () {
@@ -741,7 +795,7 @@ No closing fence
           markdownToJson('> [!WARNING]\n> Be careful!', preserveLayout: true)
               as LayoutAwareParseResult;
       expect(result.data['warning'], 'Be careful!');
-      expect(result.keyMeta!['warning']['callout']['type'], 'warning');
+      expect(((result.keyMeta!['warning'] as Map<String, dynamic>)['callout'] as Map<String, dynamic>)['type'], 'warning');
     });
 
     test('preserveLayout extracts divider metadata', () {
@@ -749,13 +803,17 @@ No closing fence
           markdownToJson('---', preserveLayout: true) as LayoutAwareParseResult;
       final dividerKey =
           result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-      expect(result.keyMeta![dividerKey]['divider']['style'], '---');
+      final dividerMeta = result.keyMeta![dividerKey] as Map<String, dynamic>;
+      final divider = dividerMeta['divider'] as Map<String, dynamic>;
+      expect(divider['style'], '---');
     });
 
     test('preserveLayout preserves whitespace metadata', () {
       final result = markdownToJson('\n\n# Title', preserveLayout: true)
           as LayoutAwareParseResult;
-      expect(result.keyMeta!['_document']['whitespace']['leadingNewlines'], 2);
+      final documentMeta = result.keyMeta!['_document'] as Map<String, dynamic>;
+      final whitespace = documentMeta['whitespace'] as Map<String, dynamic>;
+      expect(whitespace['leadingNewlines'], 2);
     });
   });
 
@@ -764,7 +822,7 @@ No closing fence
       const original = '## Section Title';
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
-      expect(result.keyMeta!['sectionTitle']['headerLevel'], 2);
+      expect((result.keyMeta!['sectionTitle'] as Map<String, dynamic>)['headerLevel'], 2);
     });
 
     test('list round-trip preserves marker style', () {
@@ -772,7 +830,9 @@ No closing fence
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
       final listKey = result.data.keys.firstWhere((k) => k.startsWith('_list'));
-      expect(result.keyMeta![listKey]['listMeta']['marker'], '*');
+      final listMeta = result.keyMeta![listKey] as Map<String, dynamic>;
+      final listMetaData = listMeta['listMeta'] as Map<String, dynamic>;
+      expect(listMetaData['marker'], '*');
     });
 
     test('ordered list round-trip preserves start number', () {
@@ -780,7 +840,7 @@ No closing fence
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
       final listKey = result.data.keys.firstWhere((k) => k.startsWith('_list'));
-      expect(result.keyMeta![listKey]['listMeta']['startNumber'], 5);
+      expect(((result.keyMeta![listKey] as Map<String, dynamic>)['listMeta'] as Map<String, dynamic>)['startNumber'], 5);
     });
 
     test('code block round-trip preserves language', () {
@@ -788,7 +848,7 @@ No closing fence
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
       final codeKey = result.data.keys.firstWhere((k) => k.startsWith('_code'));
-      expect(result.keyMeta![codeKey]['codeBlock']['language'], 'typescript');
+      expect(((result.keyMeta![codeKey] as Map<String, dynamic>)['codeBlock'] as Map<String, dynamic>)['language'], 'typescript');
     });
 
     test('table round-trip preserves alignment', () {
@@ -798,7 +858,7 @@ No closing fence
           as LayoutAwareParseResult;
       final tableKey =
           result.data.keys.firstWhere((k) => k.startsWith('_table'));
-      expect(result.keyMeta![tableKey]['tableMeta']['alignment'],
+      expect(((result.keyMeta![tableKey] as Map<String, dynamic>)['tableMeta'] as Map<String, dynamic>)['alignment'],
           ['left', 'center', 'right'],);
     });
 
@@ -806,7 +866,7 @@ No closing fence
       const original = '> [!IMPORTANT]\n> Critical info';
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
-      expect(result.keyMeta!['important']['callout']['type'], 'important');
+      expect(((result.keyMeta!['important'] as Map<String, dynamic>)['callout'] as Map<String, dynamic>)['type'], 'important');
     });
 
     test('divider round-trip preserves style', () {
@@ -815,14 +875,14 @@ No closing fence
           as LayoutAwareParseResult;
       final dividerKey =
           result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
-      expect(result.keyMeta![dividerKey]['divider']['style'], '***');
+      expect(((result.keyMeta![dividerKey] as Map<String, dynamic>)['divider'] as Map<String, dynamic>)['style'], '***');
     });
 
     test('line ending round-trip preserves CRLF', () {
       const original = '# Title\r\nContent';
       final result = markdownToJson(original, preserveLayout: true)
           as LayoutAwareParseResult;
-      expect(result.keyMeta!['_document']['whitespace']['lineEnding'], '\r\n');
+      expect(((result.keyMeta!['_document'] as Map<String, dynamic>)['whitespace'] as Map<String, dynamic>)['lineEnding'], '\r\n');
     });
   });
 }
