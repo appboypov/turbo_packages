@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  change_case:
+    dependency: transitive
+    description:
+      name: change_case
+      sha256: e41ef3df58521194ef8d7649928954805aeb08061917cf658322305e61568003
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   characters:
     dependency: transitive
     description:
@@ -184,14 +192,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
-  informers:
-    dependency: "direct main"
-    description:
-      name: informers
-      sha256: "4c0a2fd0202388380a1667dd488049e35d373d422bf8c1435e297d976f5fe256"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.5"
   leak_tracker:
     dependency: transitive
     description:
@@ -224,14 +224,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
-  loglytics:
-    dependency: "direct main"
-    description:
-      name: loglytics
-      sha256: "49ab0293cd7456e4f4e48a5d68db8f67c0d6a0bdc94e8dcc59a28a7e0ccbc199"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.17.0"
   matcher:
     dependency: transitive
     description:
@@ -272,6 +264,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: "1a97266a94f7350d30ae522c0af07890c70b8e62c71e8e3920d1db4d23c057d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.1"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -356,22 +356,34 @@ packages:
       relative: true
     source: path
     version: "0.8.4"
+  turbo_notifiers:
+    dependency: "direct main"
+    description:
+      path: "../../turbo_notifiers"
+      relative: true
+    source: path
+    version: "1.1.0"
   turbo_response:
     dependency: "direct main"
     description:
-      name: turbo_response
-      sha256: "7bd2ee8993e694facac465729de62f53a08bb294956e5684cd7185246551f830"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../turbo_response"
+      relative: true
+    source: path
     version: "1.0.1"
   turbo_serializable:
     dependency: transitive
     description:
-      name: turbo_serializable
-      sha256: "1ec686f04fb50a7582e8225ee45d20d55c04e911a4a1dbd950c17cdbe7e5b3db"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
+      path: "../../turbo_serializable"
+      relative: true
+    source: path
+    version: "0.2.0"
+  turbolytics:
+    dependency: "direct main"
+    description:
+      path: "../../turbolytics"
+      relative: true
+    source: path
+    version: "1.1.0"
   typed_data:
     dependency: transitive
     description:
@@ -412,6 +424,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "971043b3a0d3da28727e40ed3e0b5d18b742fa5a68665cca88e74b7876d5e025"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.6.1"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      sha256: b9da305ac7c39faa3f030eccd175340f968459dae4af175130b3fc47e40d76ce
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.3"
 sdks:
   dart: ">=3.8.0 <4.0.0"
   flutter: ">=3.22.0"

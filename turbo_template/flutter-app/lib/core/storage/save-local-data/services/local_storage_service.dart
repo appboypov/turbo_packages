@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -26,41 +27,79 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   final FlutterSecureStorage _flutterSecureStorage = const FlutterSecureStorage();
 
   Future<void> _initialise() async {
-    try {
-      log.info('Initializing LocalStorageService...');
-      Hive.init(kIsWeb ? null : (await getApplicationDocumentsDirectory()).path);
-      _box = await Hive.openBox(
-        StorageKeys.deviceBoxKey,
-        encryptionCipher: HiveAesCipher(await _encryptionKey),
-      );
-      _isReady.completeIfNotComplete();
-    } catch (error, stackTrace) {
-      log.error(
-        'Exception caught while initialising hive service',
-        error: error,
-        stackTrace: stackTrace,
-      );
+    const maxRetries = 3;
+    const retryDelay = Duration(milliseconds: 500);
+    
+    for (int attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        log.info('Initializing LocalStorageService... (attempt ${attempt + 1}/$maxRetries)');
+        final documentsDir = kIsWeb ? null : (await getApplicationDocumentsDirectory()).path;
+        Hive.init(documentsDir);
+        
+        _box = await Hive.openBox(
+          StorageKeys.deviceBoxKey,
+          encryptionCipher: HiveAesCipher(await _encryptionKey),
+        );
+        _isReady.completeIfNotComplete();
+        log.info('LocalStorageService initialized successfully');
+        return;
+      } on FileSystemException catch (error, stackTrace) {
+        if (error.osError?.errorCode == 35 && attempt < maxRetries - 1) {
+          // Lock file error (errno 35) - retry after delay
+          log.warning(
+            'Lock file error detected, retrying in ${retryDelay.inMilliseconds}ms...',
+            error: error,
+          );
+          await Future.delayed(retryDelay * (attempt + 1));
+          continue;
+        }
+        log.error(
+          'FileSystemException caught while initialising hive service',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      } catch (error, stackTrace) {
+        log.error(
+          'Exception caught while initialising hive service',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
+      
+      // If we get here, initialization failed
+      if (attempt == maxRetries - 1) {
+        log.error('Failed to initialize LocalStorageService after $maxRetries attempts');
+        // Complete anyway to prevent app from hanging
+        _isReady.completeIfNotComplete();
+      }
     }
   }
 
   @override
   void dispose() {
     log.info('Clearing data during dispose...');
+    _box?.close();
     _isReady = Completer();
     super.dispose();
   }
 
   Completer _isReady = Completer();
-  late Box _box;
+  Box? _box;
 
   Future get isReady => _isReady.future;
 
+  bool get _isBoxReady => _box != null && _box!.isOpen;
+
   TThemeMode get themeMode =>
-      _boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false
+      _isBoxReady && (_boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false)
       ? TThemeMode.light
       : TThemeMode.dark;
 
   TSupportedLanguage get language {
+    if (!_isBoxReady) {
+      return TSupportedLanguage.fromDeviceLocale();
+    }
+    
     final storedLanguage = _boxGet<String>(boxKey: BoxKey.language, id: null, userId: null);
 
     if (storedLanguage != null) {
@@ -70,7 +109,7 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     return TSupportedLanguage.fromDeviceLocale();
   }
 
-  bool get hasStoredLanguage => _boxContains(userId: null, boxKey: BoxKey.language, id: null);
+  bool get hasStoredLanguage => _isBoxReady && _boxContains(userId: null, boxKey: BoxKey.language, id: null);
 
   Future<List<int>> get _encryptionKey async {
     final encryptionKeyEncoded = await _flutterSecureStorage.read(key: DataKeys.hiveEncryptionKey);
@@ -87,8 +126,9 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   }
 
   bool _boxContains({required String? userId, required BoxKey boxKey, required Object? id}) {
+    if (!_isBoxReady) return false;
     try {
-      final containsKey = _box.containsKey(boxKey.genId(id: id, userId: userId));
+      final containsKey = _box!.containsKey(boxKey.genId(id: id, userId: userId));
       log.info('Checking if [BoxKey] contains [$boxKey]: $containsKey');
       return containsKey;
     } catch (error, stackTrace) {
@@ -107,8 +147,9 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     required BoxKey boxKey,
     required Object? id,
   }) {
+    if (!_isBoxReady) return defaultValue;
     try {
-      final value = _box.get(
+      final value = _box!.get(
         boxKey.genId(id: id, userId: userId),
         defaultValue: defaultValue,
       );
@@ -120,7 +161,7 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
         error: error,
         stackTrace: stackTrace,
       );
-      return null;
+      return defaultValue;
     }
   }
 
@@ -130,9 +171,13 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     required Object? id,
     required T value,
   }) async {
+    if (!_isBoxReady) {
+      log.warning('Cannot insert $boxKey: box is not ready');
+      return;
+    }
     try {
       log.info('Updating [BoxKey] [$boxKey]: $value');
-      await _box.put(boxKey.genId(id: id, userId: userId), value);
+      await _box!.put(boxKey.genId(id: id, userId: userId), value);
       notifyListeners();
     } catch (error, stackTrace) {
       log.error(
