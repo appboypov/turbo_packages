@@ -26,7 +26,7 @@ abstract class AkeBaseViewModel<E extends Object?> extends ChangeNotifier {
 
   /// Used to perform any initialising logic for the [TurboViewModel].
   @mustCallSuper
-  initialise() {
+  void initialise() {
     _isInitialised.value = true;
   }
 

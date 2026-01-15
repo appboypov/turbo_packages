@@ -85,8 +85,8 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
           limit: limit,
         ),
       );
-      collectionReferenceQuery(
-              Query<Map<String, dynamic>> collectionReference) =>
+      Query<Map<String, dynamic>> collectionReferenceQuery(
+              Query<Map<String, dynamic>> collectionReference,) =>
           switch (searchTermType) {
             TurboSearchTermType.arrayContains => limit == null
                 ? collectionReference.where(
@@ -123,8 +123,8 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
         try {
           final numberSearchTerm = double.tryParse(searchTerm);
           if (numberSearchTerm != null) {
-            collectionReferenceQuery(
-                    Query<Map<String, dynamic>> collectionReference) =>
+            Query<Map<String, dynamic>> collectionReferenceQuery(
+                    Query<Map<String, dynamic>> collectionReference,) =>
                 switch (searchTermType) {
                   TurboSearchTermType.arrayContains => limit == null
                       ? collectionReference.where(
@@ -260,7 +260,7 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
           limit: limit,
         ),
       );
-      collectionReferenceQuery(Query<T> collectionReference) =>
+      Query<Object?> collectionReferenceQuery(Query<T> collectionReference) =>
           switch (searchTermType) {
             TurboSearchTermType.arrayContains => limit == null
                 ? collectionReference.where(
@@ -295,7 +295,7 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
         try {
           final numberSearchTerm = double.tryParse(searchTerm);
           if (numberSearchTerm != null) {
-            collectionReferenceQuery(Query<T> collectionReference) =>
+            Query<Object?> collectionReferenceQuery(Query<T> collectionReference) =>
                 switch (searchTermType) {
                   TurboSearchTermType.startsWith => limit == null
                       ? collectionReference.where(
@@ -356,7 +356,7 @@ extension TurboFirestoreSearchApi<T> on TurboFirestoreApi<T> {
             searchTermType: searchTermType,
           ),
           error: error,
-          stackTrace: stackTrace);
+          stackTrace: stackTrace,);
 
       // Convert to TurboFirestoreException and wrap in TurboResponse
       final exception = TurboFirestoreException.fromFirestoreException(

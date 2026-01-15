@@ -359,7 +359,7 @@ void main() {
       const result = LayoutAwareParseResult(
         data: {'key': 'value'},
         keyMeta: {
-          'key': {'headerLevel': 2}
+          'key': {'headerLevel': 2},
         },
       );
       expect(result.data['key'], 'value');
@@ -369,7 +369,7 @@ void main() {
     test('toJson includes data and keyMeta', () {
       const result = LayoutAwareParseResult(
         data: {'test': 'value'},
-        keyMeta: <String, KeyMetadata?>{'test': const KeyMetadata()},
+        keyMeta: <String, KeyMetadata?>{'test': KeyMetadata()},
       );
       final json = result.toJson();
       expect(json['data'], {'test': 'value'});
@@ -386,7 +386,7 @@ void main() {
       final json = {
         'data': {'key': 'value'},
         'keyMeta': {
-          'key': {'headerLevel': 2}
+          'key': {'headerLevel': 2},
         },
       };
       final result = LayoutAwareParseResult.fromJson(json);

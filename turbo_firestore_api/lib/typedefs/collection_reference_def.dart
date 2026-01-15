@@ -9,4 +9,4 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 ///   .orderBy('name');
 /// ```
 typedef CollectionReferenceDef<T> = Query<T> Function(
-    Query<T> collectionReference);
+    Query<T> collectionReference,);

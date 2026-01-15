@@ -127,14 +127,14 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
           sensitiveData: null,
         );
         final documentReference = getDocRefById(
-            id: id, collectionPathOverride: collectionPathOverride);
+            id: id, collectionPathOverride: collectionPathOverride,);
         _log.debug(
           message: 'Creating JSON..',
           sensitiveData: null,
         );
         final json = writeable.toJson();
         if (json == null) {
-          return TurboResponse.fail(
+          return const TurboResponse.fail(
             error: TurboException(
               title: 'Serialization Error',
               message:
@@ -167,7 +167,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
             ),
           );
           transaction.update(
-              getDocRefById(id: documentReference.id), writeableAsJson);
+              getDocRefById(id: documentReference.id), writeableAsJson,);
         }
         _log.info(
           message: 'Updating data done!',
@@ -293,7 +293,7 @@ extension TurboFirestoreUpdateApi<T> on TurboFirestoreApi<T> {
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
       if (json == null) {
-        return TurboResponse.fail(
+        return const TurboResponse.fail(
           error: TurboException(
             title: 'Serialization Error',
             message:

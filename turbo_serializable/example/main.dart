@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
-import 'package:turbo_serializable/turbo_serializable.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_serializable/turbo_serializable.dart';
 
 /// Full implementation with all serialization methods
 class FullModel extends TurboSerializable<Object?> {
@@ -22,7 +22,7 @@ class FullModel extends TurboSerializable<Object?> {
             final self = instance as FullModel;
             return '# ${self.name}\n\nAge: ${self.age}';
           },
-        ));
+        ),);
   final String name;
   final int age;
 
@@ -47,7 +47,7 @@ class PartialModel extends TurboSerializable<Object?> {
             final self = instance as PartialModel;
             return {'name': self.name};
           },
-        ));
+        ),);
   final String name;
 }
 
@@ -57,7 +57,7 @@ class EmptyModel extends TurboSerializable<Object?> {
       : super(
             config: TurboSerializableConfig(
           toJson: (_) => null,
-        ));
+        ),);
 }
 
 /// Full implementation with ID
@@ -73,7 +73,7 @@ class FullModelWithId extends TurboSerializableId<String, Object?> {
             final self = instance as FullModelWithId;
             return {'id': self.id, 'name': self.name};
           },
-        ));
+        ),);
   final String _id;
   final String name;
 
@@ -96,7 +96,7 @@ class CustomIdModel extends TurboSerializableId<CustomId, Object?> {
         super(
             config: TurboSerializableConfig(
           toJson: (_) => null,
-        ));
+        ),);
   final CustomId _id;
 
   @override
@@ -134,7 +134,7 @@ class Document extends TurboSerializable<Frontmatter> {
             final self = instance as Document;
             return self.content;
           },
-        ));
+        ),);
   final String content;
 }
 
@@ -152,7 +152,7 @@ class DocumentWithId extends TurboSerializableId<String, Frontmatter> {
             final self = instance as DocumentWithId;
             return {'id': self.id, 'content': self.content};
           },
-        ));
+        ),);
   final String _id;
   final String content;
 
@@ -225,7 +225,7 @@ void main() {
   print('\nTest 8: Type inheritance verification');
   assert(full.toJson() != null, 'FullModel inherits TurboSerializable methods');
   assert(withId.toJson() != null,
-      'TurboSerializableId inherits TurboSerializable methods');
+      'TurboSerializableId inherits TurboSerializable methods',);
   assert(withId.id.isNotEmpty, 'TurboSerializableId provides typed id getter');
   print('  ✓ Type inheritance is correct');
 
@@ -243,7 +243,7 @@ void main() {
   assert(doc.metaData!.title == 'My Document', 'metaData title should match');
   assert(doc.metaData!.tags.length == 3, 'metaData tags should have 3 items');
   assert(doc.toMarkdown() == '# Hello World\n\nThis is content.',
-      'toMarkdown should return content');
+      'toMarkdown should return content',);
   print('  ✓ Metadata works with TurboSerializable');
 
   // Test 10: Metadata with TurboSerializableId
@@ -261,7 +261,7 @@ void main() {
   assert(docWithId.id == 'doc-001', 'ID should be set');
   assert(docWithId.metaData != null, 'metaData should be set');
   assert(docWithId.metaData!.title == 'Document With ID',
-      'metaData title should match');
+      'metaData title should match',);
   assert(docWithId.isLocalDefault == false, 'isLocalDefault should be false');
   print('  ✓ Metadata works with TurboSerializableId');
 
@@ -269,7 +269,7 @@ void main() {
   print('\nTest 11: Null metadata is valid');
   final docNoMeta = Document(content: 'No meta');
   assert(
-      docNoMeta.metaData == null, 'metaData should be null when not provided');
+      docNoMeta.metaData == null, 'metaData should be null when not provided',);
   assert(docNoMeta.toJson() != null, 'toJson should still work');
   print('  ✓ Null metadata is handled correctly');
 
@@ -288,9 +288,9 @@ void main() {
     metaData: {'title': 'Test', 'author': 'Me'},
   );
   assert(
-      mdWithFrontmatter.contains('---'), 'Should have frontmatter delimiters');
+      mdWithFrontmatter.contains('---'), 'Should have frontmatter delimiters',);
   assert(mdWithFrontmatter.contains('title: Test'),
-      'Should have frontmatter content');
+      'Should have frontmatter content',);
   final parsedMd = markdownToJson('---\ntitle: Test\n---\n{"key": "value"}');
   assert(parsedMd['title'] == 'Test', 'Should parse frontmatter');
   assert(parsedMd['body']['key'] == 'value', 'Should parse JSON body');

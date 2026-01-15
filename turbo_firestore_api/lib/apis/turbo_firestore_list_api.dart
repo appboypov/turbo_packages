@@ -150,7 +150,7 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
         ),
       );
       final result = (await collectionReferenceQuery(
-                  listCollectionReferenceWithConverter())
+                  listCollectionReferenceWithConverter(),)
               .get(_getOptions))
           .docs
           .map((e) => e.data())
@@ -230,7 +230,7 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
             path: _collectionPath(),
           ),
           error: error,
-          stackTrace: stackTrace);
+          stackTrace: stackTrace,);
 
       // Convert to TurboFirestoreException and wrap in TurboResponse
       final exception = TurboFirestoreException.fromFirestoreException(
@@ -459,7 +459,7 @@ extension TurboFirestoreListApi<T> on TurboFirestoreApi<T> {
             ),
           );
           _log.debug(
-              message: 'Returning error response..', sensitiveData: null);
+              message: 'Returning error response..', sensitiveData: null,);
           try {
             return _fromJsonError!(
               data

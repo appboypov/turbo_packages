@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbolytics/turbolytics.dart';
-import 'package:turbo_firestore_api/mixins/turbo_exception_handler.dart';
 import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
+import 'package:turbo_firestore_api/mixins/turbo_exception_handler.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 /// A service that synchronizes data with Firebase Authentication state changes.
 ///
@@ -92,7 +92,7 @@ abstract class TurboAuthSyncService<StreamValue> with TurboExceptionHandler {
       );
     } catch (error, stack) {
       _log.error('Stream error occurred while setting up stream!',
-          error: error, stackTrace: stack);
+          error: error, stackTrace: stack,);
 
       // Convert error to TurboFirestoreException if needed
       final exception = error is TurboFirestoreException

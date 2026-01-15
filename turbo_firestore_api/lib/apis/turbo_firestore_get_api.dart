@@ -88,10 +88,10 @@ extension TurboFirestoreGetApi<T> on TurboFirestoreApi<T> {
           message: 'Found nothing!',
           sensitiveData: null,
         );
-        return TurboResponse.fail(
+        return const TurboResponse.fail(
             error: 'Document not found',
             title: 'Not Found',
-            message: 'The requested document was not found');
+            message: 'The requested document was not found',);
       }
     } catch (error, stackTrace) {
       _log.error(
@@ -186,7 +186,7 @@ extension TurboFirestoreGetApi<T> on TurboFirestoreApi<T> {
         return TurboResponse.fail(
             error: 'Document not found',
             title: 'Not Found',
-            message: 'The requested document was not found');
+            message: 'The requested document was not found',);
       }
     } catch (error, stackTrace) {
       _log.error(

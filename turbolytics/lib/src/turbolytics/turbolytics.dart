@@ -29,7 +29,7 @@ mixin Turbolytics<D extends Analytics> {
 
   // Used to create an instance of Turbolytics when using a mixin is not possible or breaks a const constructor.
   static Turbolytics<T> create<T extends Analytics>(
-          {required String location}) =>
+          {required String location,}) =>
       _Turbolytics<T>(
         location: location,
       );

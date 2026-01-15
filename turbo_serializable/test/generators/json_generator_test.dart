@@ -36,7 +36,7 @@ void main() {
 
       test('generates arrays', () {
         final result = generator.generate({
-          'items': [1, 2, 3]
+          'items': [1, 2, 3],
         });
         expect(result.contains('['), true);
         expect(result.contains(']'), true);
@@ -90,7 +90,7 @@ void main() {
     group('nested structures', () {
       test('generates nested objects', () {
         final result = generator.generate({
-          'user': {'name': 'John', 'age': 30}
+          'user': {'name': 'John', 'age': 30},
         });
         expect(result.contains('"user"'), true);
         expect(result.contains('"name"'), true);
@@ -100,8 +100,8 @@ void main() {
         final result = generator.generate({
           'users': [
             {'name': 'John'},
-            {'name': 'Jane'}
-          ]
+            {'name': 'Jane'},
+          ],
         });
         expect(result.contains('"users"'), true);
         expect(result.contains('"John"'), true);

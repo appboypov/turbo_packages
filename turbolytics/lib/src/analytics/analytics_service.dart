@@ -26,7 +26,7 @@ class AnalyticsService {
     _eventBus
         .tryAddAnalytic(Turbolytics._analyticsInterface?.setUserId(userId));
     _eventBus.tryAddCrashReport(
-        Turbolytics._crashReportsInterface?.setUserIdentifier(userId));
+        Turbolytics._crashReportsInterface?.setUserIdentifier(userId),);
     _log?.analytic(
       name: 'user_id',
       value: userId,
@@ -1246,7 +1246,7 @@ class AnalyticsService {
   }) {
     final name = subject;
     _eventBus.tryAddAnalytic(
-        Turbolytics._analyticsInterface?.setCurrentScreen(name: name));
+        Turbolytics._analyticsInterface?.setCurrentScreen(name: name),);
     _log?.analytic(
       name: '[SCREEN] $name',
       addToCrashReports: Turbolytics._addAnalyticsToCrashReports,
@@ -1265,7 +1265,7 @@ class AnalyticsService {
     final name = analytic.name;
     final parameters = analytic.parameters;
     _eventBus.tryAddAnalytic(Turbolytics._analyticsInterface
-        ?.logEvent(name: name, parameters: parameters));
+        ?.logEvent(name: name, parameters: parameters),);
     _log?.analytic(
       name: name,
       parameters: parameters,

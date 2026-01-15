@@ -117,7 +117,7 @@ class Log {
   }) {
     const logLevel = LogLevel.analytic;
     if (level.skipLog(logLevel)) return;
-    var message = '$name${value != null ? ': $value' : ''}'
+    final message = '$name${value != null ? ': $value' : ''}'
         '${parameters != null ? ': $parameters' : ''}';
     _logMessage(
       message: message,
@@ -166,7 +166,7 @@ class Log {
     bool forceRecordError = false,
     String? tag,
   }) {
-    var logLevel = fatal ? LogLevel.fatal : LogLevel.error;
+    final logLevel = fatal ? LogLevel.fatal : LogLevel.error;
     if (level.skipLog(logLevel)) return;
     StackTrace localStackTrace;
     try {

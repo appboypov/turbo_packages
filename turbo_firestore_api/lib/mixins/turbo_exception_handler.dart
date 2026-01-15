@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/constants/k_errors.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 /// A mixin that provides Firebase Authentication exception handling.
 ///
@@ -44,7 +44,7 @@ mixin TurboExceptionHandler {
   }) {
     log.error('Handling FirebaseAuthException: ${firebaseAuthException.code}');
     log.error(
-        'Handling FirebaseAuthException: ${firebaseAuthException.message}  ');
+        'Handling FirebaseAuthException: ${firebaseAuthException.message}  ',);
     switch (firebaseAuthException.code) {
       case kErrorsInvalidLoginCredentials:
         return TurboResponse.fail(

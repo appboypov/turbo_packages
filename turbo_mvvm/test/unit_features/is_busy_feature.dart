@@ -45,9 +45,9 @@ class IsBusyFeature extends UnitFeature {
                     expect(systemUnderTest.isBusy.value, false);
                     log.success('TurboViewModel was not busy!');
                   },
-                )
+                ),
               ],
-            )
+            ),
           ],
         );
 }

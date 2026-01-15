@@ -56,7 +56,7 @@ void main() {
         expect(result.data['user'], 'John');
         expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
         expect(
-            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true');
+            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
       });
 
       test('attributes on nested elements', () {
@@ -71,7 +71,7 @@ void main() {
         expect(
             result.keyMeta!['root']['children']['user']['xmlMeta']['attributes']
                 ['role'],
-            'admin');
+            'admin',);
       });
 
       test('attributes with special characters in values', () {
@@ -79,7 +79,7 @@ void main() {
             parser.parse('<item data-value="test&amp;value">Content</item>');
         expect(result.data['item'], 'Content');
         expect(result.keyMeta!['item']['xmlMeta']['attributes']['data-value'],
-            'test&value');
+            'test&value',);
       });
     });
 
@@ -115,7 +115,7 @@ void main() {
         expect(
             result.keyMeta!['root']['children']['description']['xmlMeta']
                 ['isCdata'],
-            true);
+            true,);
       });
     });
 
@@ -131,7 +131,7 @@ void main() {
         expect(
             result.keyMeta!['root']['children']['preferences']['xmlMeta']
                 ['comment'],
-            'User preferences');
+            'User preferences',);
       });
 
       test('captures comment before nested element', () {
@@ -147,7 +147,7 @@ void main() {
         expect(
             result.keyMeta!['root']['children']['section']['xmlMeta']
                 ['comment'],
-            'Important section');
+            'Important section',);
       });
 
       test('ignores comments not immediately before element', () {
@@ -162,26 +162,26 @@ void main() {
         expect(result.data['root']['target'], 'content');
         expect(
             result.keyMeta!['root']['children']['target']['xmlMeta']['comment'],
-            'Second comment is for target');
+            'Second comment is for target',);
       });
     });
 
     group('namespaces', () {
       test('captures namespace URI', () {
         final result = parser.parse(
-            '<root xmlns="http://example.com"><item>value</item></root>');
+            '<root xmlns="http://example.com"><item>value</item></root>',);
         expect(result.data['root']['item'], 'value');
         expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-            'http://example.com');
+            'http://example.com',);
       });
 
       test('captures namespace prefix', () {
         final result = parser.parse(
-            '<app:root xmlns:app="http://example.com/app"><app:item>value</app:item></app:root>');
+            '<app:root xmlns:app="http://example.com/app"><app:item>value</app:item></app:root>',);
         expect(result.data['root']['item'], 'value');
         expect(result.keyMeta!['root']['xmlMeta']['prefix'], 'app');
         expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-            'http://example.com/app');
+            'http://example.com/app',);
       });
 
       test('nested elements with different namespaces', () {
@@ -195,11 +195,11 @@ void main() {
         expect(result.data['root']['section']['value'], 'content');
         expect(
             result.keyMeta!['root']['children']['section']['xmlMeta']['prefix'],
-            'app');
+            'app',);
         expect(
             result.keyMeta!['root']['children']['section']['children']['value']
                 ['xmlMeta']['prefix'],
-            'data');
+            'data',);
       });
     });
 
@@ -293,11 +293,11 @@ void main() {
         expect(
             result.keyMeta!['root']['children']['item.0']['xmlMeta']
                 ['attributes']['id'],
-            '1');
+            '1',);
         expect(
             result.keyMeta!['root']['children']['item.1']['xmlMeta']
                 ['attributes']['id'],
-            '2');
+            '2',);
       });
     });
 
@@ -343,7 +343,7 @@ void main() {
     group('complex documents', () {
       test('parses document with attributes, CDATA, comments, and namespaces',
           () {
-        final xml = '''
+        const xml = '''
           <user id="123" active="true">
             <name>John Doe</name>
             <bio><![CDATA[Special <characters> allowed]]></bio>
@@ -363,21 +363,21 @@ void main() {
         // Metadata extraction
         expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
         expect(
-            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true');
+            result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
         expect(result.keyMeta!['user']['children']['bio']['xmlMeta']['isCdata'],
-            true);
+            true,);
         expect(
             result.keyMeta!['user']['children']['preferences']['xmlMeta']
                 ['comment'],
-            'User preferences');
+            'User preferences',);
         expect(
             result.keyMeta!['user']['children']['preferences']['children']
                 ['theme']['xmlMeta']['prefix'],
-            'app');
+            'app',);
       });
 
       test('parses document with multiple lists', () {
-        final xml = '''
+        const xml = '''
           <catalog>
             <book>
               <title>Book One</title>
@@ -432,7 +432,7 @@ void main() {
         final result = parser.parse('<root xml:lang="en">Content</root>');
         expect(result.data['root'], 'Content');
         expect(
-            result.keyMeta!['root']['xmlMeta']['attributes']['xml:lang'], 'en');
+            result.keyMeta!['root']['xmlMeta']['attributes']['xml:lang'], 'en',);
       });
     });
   });
@@ -484,19 +484,19 @@ void main() {
     test('preserveLayout extracts namespace metadata', () {
       final result = xmlToJson(
           '<root xmlns="http://example.com"><item>value</item></root>',
-          preserveLayout: true) as LayoutAwareParseResult;
+          preserveLayout: true,) as LayoutAwareParseResult;
       expect(result.data['root']['item'], 'value');
       expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-          'http://example.com');
+          'http://example.com',);
     });
 
     test('preserveLayout extracts comment metadata', () {
       final result = xmlToJson(
           '<root><!-- comment --><item>value</item></root>',
-          preserveLayout: true) as LayoutAwareParseResult;
+          preserveLayout: true,) as LayoutAwareParseResult;
       expect(result.data['root']['item'], 'value');
       expect(result.keyMeta!['root']['children']['item']['xmlMeta']['comment'],
-          'comment');
+          'comment',);
     });
   });
 
@@ -507,7 +507,7 @@ void main() {
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
       expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
       expect(
-          result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true');
+          result.keyMeta!['user']['xmlMeta']['attributes']['active'], 'true',);
     });
 
     test('CDATA round-trip', () {
@@ -524,7 +524,7 @@ void main() {
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
       expect(result.keyMeta!['root']['xmlMeta']['prefix'], 'app');
       expect(result.keyMeta!['root']['xmlMeta']['namespace'],
-          'http://example.com/app');
+          'http://example.com/app',);
     });
 
     test('comment round-trip', () {
@@ -532,7 +532,7 @@ void main() {
       final result =
           xmlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
       expect(result.keyMeta!['root']['children']['item']['xmlMeta']['comment'],
-          'Important');
+          'Important',);
     });
 
     test('complex document round-trip', () {
@@ -552,15 +552,15 @@ void main() {
       // Verify all metadata is captured
       expect(result.keyMeta!['user']['xmlMeta']['attributes']['id'], '123');
       expect(result.keyMeta!['user']['children']['bio']['xmlMeta']['isCdata'],
-          true);
+          true,);
       expect(
           result.keyMeta!['user']['children']['preferences']['xmlMeta']
               ['comment'],
-          'Preferences section');
+          'Preferences section',);
       expect(
           result.keyMeta!['user']['children']['preferences']['children']
               ['theme']['xmlMeta']['prefix'],
-          'app');
+          'app',);
     });
   });
 }

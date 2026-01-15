@@ -16,8 +16,8 @@ void main() {
     test('encodes nested objects', () {
       final result = jsonEncodeFormatted({
         'outer': {
-          'inner': {'deep': 'value'}
-        }
+          'inner': {'deep': 'value'},
+        },
       });
       expect(result, contains('"outer"'));
       expect(result, contains('"inner"'));
@@ -59,7 +59,7 @@ void main() {
 
     test('encodes arrays', () {
       final result = jsonEncodeFormatted({
-        'items': [1, 2, 3]
+        'items': [1, 2, 3],
       });
       expect(result, contains('"items": ['));
       expect(result, contains('1'));
@@ -112,10 +112,10 @@ void main() {
       final result = formatJsonValue({
         'level1': {
           'level2': {
-            'level3': {'level4': 'deep'}
-          }
-        }
-      }, 0);
+            'level3': {'level4': 'deep'},
+          },
+        },
+      }, 0,);
       expect(result, contains('level4'));
       expect(result, contains('deep'));
     });
@@ -134,16 +134,16 @@ void main() {
 
     test('converts nested maps', () {
       final result = convertMapToYaml({
-        'parent': {'child': 'value'}
-      }, 0);
+        'parent': {'child': 'value'},
+      }, 0,);
       expect(result, contains('parent:'));
       expect(result, contains('  child: value'));
     });
 
     test('converts lists', () {
       final result = convertMapToYaml({
-        'items': ['a', 'b', 'c']
-      }, 0);
+        'items': ['a', 'b', 'c'],
+      }, 0,);
       expect(result, contains('items:'));
       expect(result, contains('  - a'));
       expect(result, contains('  - b'));
@@ -154,9 +154,9 @@ void main() {
       final result = convertMapToYaml({
         'users': [
           {'name': 'Alice'},
-          {'name': 'Bob'}
-        ]
-      }, 0);
+          {'name': 'Bob'},
+        ],
+      }, 0,);
       expect(result, contains('users:'));
       expect(result, contains('  -'));
       expect(result, contains('    name: Alice'));
@@ -175,7 +175,7 @@ void main() {
     test('formats with indentation when prettyPrint is true', () {
       final result = convertMapToYaml(
         {
-          'parent': {'child': 'value'}
+          'parent': {'child': 'value'},
         },
         0,
         prettyPrint: true,
@@ -248,7 +248,7 @@ void main() {
 
     test('converts nested structures', () {
       final yamlMap = {
-        'outer': {'inner': 'value'}
+        'outer': {'inner': 'value'},
       };
       final result = convertYamlToMap(yamlMap);
       expect(result['outer']['inner'], 'value');
@@ -267,7 +267,7 @@ void main() {
         'bool': true,
         'null': null,
         'list': [1, 2],
-        'map': {'nested': 'value'}
+        'map': {'nested': 'value'},
       };
       final result = convertYamlToMap(yamlMixed) as Map<String, dynamic>;
       expect(result['string'], 'value');
@@ -338,7 +338,7 @@ void main() {
     test('formats with indentation when prettyPrint is true', () {
       final result = jsonToYaml(
         {
-          'parent': {'child': 'value'}
+          'parent': {'child': 'value'},
         },
         prettyPrint: true,
       );
@@ -526,7 +526,7 @@ void main() {
     test('converts nested map with incrementing headers', () {
       final result = convertMapToMarkdownHeaders({
         'user': {'name': 'John'},
-      }, 2);
+      }, 2,);
       expect(result, contains('## User'));
       expect(result, contains('### Name'));
     });
@@ -540,7 +540,7 @@ void main() {
             },
           },
         },
-      }, 2);
+      }, 2,);
       expect(result, contains('## L1'));
       expect(result, contains('### L2'));
       expect(result, contains('#### L3'));
@@ -550,7 +550,7 @@ void main() {
     test('converts arrays of primitives to lists', () {
       final result = convertMapToMarkdownHeaders({
         'items': ['a', 'b'],
-      }, 2);
+      }, 2,);
       expect(result, contains('- a'));
       expect(result, contains('- b'));
     });
@@ -561,7 +561,7 @@ void main() {
           {'name': 'Alice'},
           {'name': 'Bob'},
         ],
-      }, 2);
+      }, 2,);
       expect(result, contains('### Name'));
       expect(result, contains('Alice'));
       expect(result, contains('Bob'));
@@ -649,42 +649,42 @@ void main() {
 
   group('yamlToXml with case styles', () {
     test('converts YAML to XML with camelCase', () {
-      final yaml = 'user_name: test\nfirst_name: John';
+      const yaml = 'user_name: test\nfirst_name: John';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.camelCase);
       expect(result, contains('<userName>test</userName>'));
       expect(result, contains('<firstName>John</firstName>'));
     });
 
     test('converts YAML to XML with PascalCase', () {
-      final yaml = 'user_name: test\nfirst_name: John';
+      const yaml = 'user_name: test\nfirst_name: John';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.pascalCase);
       expect(result, contains('<UserName>test</UserName>'));
       expect(result, contains('<FirstName>John</FirstName>'));
     });
 
     test('converts YAML to XML with snakeCase', () {
-      final yaml = 'userName: test\nfirstName: John';
+      const yaml = 'userName: test\nfirstName: John';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.snakeCase);
       expect(result, contains('<user_name>test</user_name>'));
       expect(result, contains('<first_name>John</first_name>'));
     });
 
     test('converts YAML to XML with kebabCase', () {
-      final yaml = 'userName: test\nfirstName: John';
+      const yaml = 'userName: test\nfirstName: John';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.kebabCase);
       expect(result, contains('<user-name>test</user-name>'));
       expect(result, contains('<first-name>John</first-name>'));
     });
 
     test('converts YAML to XML with none case style', () {
-      final yaml = 'userName: test\nuser_name: test2';
+      const yaml = 'userName: test\nuser_name: test2';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.none);
       expect(result, contains('<userName>test</userName>'));
       expect(result, contains('<user_name>test2</user_name>'));
     });
 
     test('camelCase with nested YAML', () {
-      final yaml = 'user_info:\n  first_name: John\n  last_name: Doe';
+      const yaml = 'user_info:\n  first_name: John\n  last_name: Doe';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.camelCase);
       expect(result, contains('<userInfo>'));
       expect(result, contains('<firstName>John</firstName>'));
@@ -692,7 +692,7 @@ void main() {
     });
 
     test('snakeCase with nested YAML', () {
-      final yaml = 'userInfo:\n  firstName: John\n  lastName: Doe';
+      const yaml = 'userInfo:\n  firstName: John\n  lastName: Doe';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.snakeCase);
       expect(result, contains('<user_info>'));
       expect(result, contains('<first_name>John</first_name>'));
@@ -700,7 +700,7 @@ void main() {
     });
 
     test('kebabCase with nested YAML', () {
-      final yaml = 'userInfo:\n  firstName: John\n  lastName: Doe';
+      const yaml = 'userInfo:\n  firstName: John\n  lastName: Doe';
       final result = yamlToXml(yaml, caseStyle: CaseStyle.kebabCase);
       expect(result, contains('<user-info>'));
       expect(result, contains('<first-name>John</first-name>'));
@@ -708,7 +708,7 @@ void main() {
     });
 
     test('camelCase with metadata', () {
-      final yaml = 'data: value';
+      const yaml = 'data: value';
       final result = yamlToXml(
         yaml,
         caseStyle: CaseStyle.camelCase,
@@ -720,7 +720,7 @@ void main() {
     });
 
     test('custom root element with camelCase', () {
-      final yaml = 'user_name: test';
+      const yaml = 'user_name: test';
       final result = yamlToXml(
         yaml,
         rootElementName: 'user_profile',
@@ -733,42 +733,42 @@ void main() {
 
   group('markdownToXml with case styles', () {
     test('converts Markdown to XML with camelCase', () {
-      final markdown = '{"user_name": "test", "first_name": "John"}';
+      const markdown = '{"user_name": "test", "first_name": "John"}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.camelCase);
       expect(result, contains('<userName>test</userName>'));
       expect(result, contains('<firstName>John</firstName>'));
     });
 
     test('converts Markdown to XML with PascalCase', () {
-      final markdown = '{"user_name": "test", "first_name": "John"}';
+      const markdown = '{"user_name": "test", "first_name": "John"}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.pascalCase);
       expect(result, contains('<UserName>test</UserName>'));
       expect(result, contains('<FirstName>John</FirstName>'));
     });
 
     test('converts Markdown to XML with snakeCase', () {
-      final markdown = '{"userName": "test", "firstName": "John"}';
+      const markdown = '{"userName": "test", "firstName": "John"}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.snakeCase);
       expect(result, contains('<user_name>test</user_name>'));
       expect(result, contains('<first_name>John</first_name>'));
     });
 
     test('converts Markdown to XML with kebabCase', () {
-      final markdown = '{"userName": "test", "firstName": "John"}';
+      const markdown = '{"userName": "test", "firstName": "John"}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.kebabCase);
       expect(result, contains('<user-name>test</user-name>'));
       expect(result, contains('<first-name>John</first-name>'));
     });
 
     test('converts Markdown to XML with none case style', () {
-      final markdown = '{"userName": "test", "user_name": "test2"}';
+      const markdown = '{"userName": "test", "user_name": "test2"}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.none);
       expect(result, contains('<userName>test</userName>'));
       expect(result, contains('<user_name>test2</user_name>'));
     });
 
     test('camelCase with nested JSON in Markdown', () {
-      final markdown =
+      const markdown =
           '{"user_info": {"first_name": "John", "last_name": "Doe"}}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.camelCase);
       expect(result, contains('<userInfo>'));
@@ -777,7 +777,7 @@ void main() {
     });
 
     test('snakeCase with nested JSON in Markdown', () {
-      final markdown = '{"userInfo": {"firstName": "John", "lastName": "Doe"}}';
+      const markdown = '{"userInfo": {"firstName": "John", "lastName": "Doe"}}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.snakeCase);
       expect(result, contains('<user_info>'));
       expect(result, contains('<first_name>John</first_name>'));
@@ -785,7 +785,7 @@ void main() {
     });
 
     test('kebabCase with nested JSON in Markdown', () {
-      final markdown = '{"userInfo": {"firstName": "John", "lastName": "Doe"}}';
+      const markdown = '{"userInfo": {"firstName": "John", "lastName": "Doe"}}';
       final result = markdownToXml(markdown, caseStyle: CaseStyle.kebabCase);
       expect(result, contains('<user-info>'));
       expect(result, contains('<first-name>John</first-name>'));
@@ -793,7 +793,7 @@ void main() {
     });
 
     test('custom root element with camelCase', () {
-      final markdown = '{"user_name": "test"}';
+      const markdown = '{"user_name": "test"}';
       final result = markdownToXml(
         markdown,
         rootElementName: 'user_profile',

@@ -10,7 +10,7 @@ class TestSerializable extends TurboSerializable<Object?> {
             final self = instance as TestSerializable;
             return {'name': self.name};
           },
-        ));
+        ),);
 }
 
 class TestSerializableId extends TurboSerializableId<String, Object?> {
@@ -22,7 +22,7 @@ class TestSerializableId extends TurboSerializableId<String, Object?> {
   }) : super(
             config: TurboSerializableConfig(
           toJson: (_) => null,
-        ));
+        ),);
 
   @override
   String get id => testId;

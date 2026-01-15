@@ -23,7 +23,7 @@ class IsInitialisedFeature extends UnitFeature {
                 When(
                   'we call the initialise method',
                   (systemUnderTest, log, box, mocks, [example]) async {
-                    await systemUnderTest.initialise();
+                    systemUnderTest.initialise();
                   },
                 ),
                 Then(
@@ -32,9 +32,9 @@ class IsInitialisedFeature extends UnitFeature {
                     expect(systemUnderTest.isInitialised.value, true);
                     log.success('TurboViewModel was initialised!');
                   },
-                )
+                ),
               ],
-            )
+            ),
           ],
         );
 }

@@ -100,19 +100,19 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
             message: 'Committing writeBatch done!',
             sensitiveData: null,
           );
-          return TurboResponse.success(
+          return const TurboResponse.success(
               result: null,
               title: 'Success',
-              message: 'Document deleted successfully');
+              message: 'Document deleted successfully',);
         } else {
           _log.error(
             message: 'Last batch failed!',
             sensitiveData: null,
           );
-          return TurboResponse.fail(
+          return const TurboResponse.fail(
               error: 'Failed to delete document',
               title: 'Error',
-              message: 'Failed to delete document');
+              message: 'Failed to delete document',);
         }
       } else {
         _log.debug(
@@ -120,7 +120,7 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
           sensitiveData: null,
         );
         final documentReference = getDocRefById(
-            id: id, collectionPathOverride: collectionPathOverride);
+            id: id, collectionPathOverride: collectionPathOverride,);
         if (transaction == null) {
           _log.debug(
             message: 'Deleting data with documentReference.delete..',
@@ -134,10 +134,10 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
           message: 'Deleting data done!',
           sensitiveData: null,
         );
-        return TurboResponse.success(
+        return const TurboResponse.success(
             result: null,
             title: 'Success',
-            message: 'Document deleted successfully');
+            message: 'Document deleted successfully',);
       }
     } catch (error, stackTrace) {
       if (transaction != null) {
@@ -157,7 +157,7 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
             id: id,
           ),
           error: error,
-          stackTrace: stackTrace);
+          stackTrace: stackTrace,);
 
       // Convert to TurboFirestoreException and wrap in TurboResponse
       final exception = TurboFirestoreException.fromFirestoreException(
@@ -170,7 +170,7 @@ extension TurboFirestoreDeleteApi<T> on TurboFirestoreApi<T> {
       return TurboResponse.fail(
           error: exception,
           title: 'Error',
-          message: 'Failed to delete document');
+          message: 'Failed to delete document',);
     }
   }
 

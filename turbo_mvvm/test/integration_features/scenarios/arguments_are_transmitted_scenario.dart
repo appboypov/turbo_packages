@@ -45,7 +45,7 @@ class ArgumentsAreTransmittedScenario extends IntegrationScenario {
                 expect(
                   box
                       .read<BaseViewModelImplementation<_DummyArguments>>(
-                          #baseViewModel)
+                          #baseViewModel,)
                       .arguments
                       .cookieType,
                   _argument,

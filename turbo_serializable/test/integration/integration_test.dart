@@ -49,7 +49,7 @@ void main() {
       final data = jsonDecode(content) as Map<String, dynamic>;
 
       expect(data['level1']['level2']['level3']['level4']['level5']['level6'],
-          'deep value');
+          'deep value',);
     });
 
     test('parses edge values', () {
@@ -693,7 +693,7 @@ void main() {
       expect(
           convertedData['level1']['level2']['level3']['level4']['level5']
               ['level6'],
-          data['level1']['level2']['level3']['level4']['level5']['level6']);
+          data['level1']['level2']['level3']['level4']['level5']['level6'],);
     });
 
     test('Complex nested structure with snakeCase', () {
@@ -711,7 +711,7 @@ void main() {
       expect(
           convertedData['level1']['level2']['level3']['level4']['level5']
               ['level6'],
-          data['level1']['level2']['level3']['level4']['level5']['level6']);
+          data['level1']['level2']['level3']['level4']['level5']['level6'],);
     });
 
     test('YAML → XML (camelCase) → YAML round-trip', () {
@@ -727,7 +727,7 @@ void main() {
       expect(
           convertedYaml.contains('firstName:') ||
               convertedYaml.contains('name:'),
-          isTrue);
+          isTrue,);
       expect(convertedYaml, contains('age:'));
     });
 

@@ -1,8 +1,7 @@
-import 'package:xml/xml.dart';
-
 import 'package:turbo_serializable/constants/turbo_constants.dart';
 import 'package:turbo_serializable/models/key_metadata.dart';
 import 'package:turbo_serializable/models/xml_meta.dart';
+import 'package:xml/xml.dart';
 
 /// Generates XML output from JSON data using key metadata for layout fidelity.
 ///
@@ -235,7 +234,7 @@ class XmlLayoutGenerator {
         } else if (item != null) {
           builder.text(_convertValue(item));
         }
-      });
+      },);
     }
   }
 

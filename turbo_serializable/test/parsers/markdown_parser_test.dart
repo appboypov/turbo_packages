@@ -78,7 +78,7 @@ void main() {
       });
 
       test('parses multiple headers', () {
-        final markdown = '''
+        const markdown = '''
 ## First Section
 First content
 
@@ -91,7 +91,7 @@ Second content
       });
 
       test('parses nested headers hierarchically', () {
-        final markdown = '''
+        const markdown = '''
 # Main
 ## Sub One
 Content one
@@ -106,7 +106,7 @@ Content two
 
     group('YAML frontmatter', () {
       test('parses basic frontmatter', () {
-        final markdown = '''
+        const markdown = '''
 ---
 title: Test Document
 author: John Doe
@@ -119,7 +119,7 @@ Body content
       });
 
       test('parses numeric frontmatter values', () {
-        final markdown = '''
+        const markdown = '''
 ---
 version: 1
 count: 42
@@ -131,7 +131,7 @@ count: 42
       });
 
       test('parses boolean frontmatter values', () {
-        final markdown = '''
+        const markdown = '''
 ---
 published: true
 draft: false
@@ -143,7 +143,7 @@ draft: false
       });
 
       test('parses quoted string values', () {
-        final markdown = '''
+        const markdown = '''
 ---
 message: "Hello: World"
 single: 'Test'
@@ -155,7 +155,7 @@ single: 'Test'
       });
 
       test('handles frontmatter without body', () {
-        final markdown = '''
+        const markdown = '''
 ---
 title: Only Frontmatter
 ---
@@ -165,7 +165,7 @@ title: Only Frontmatter
       });
 
       test('handles frontmatter with null value', () {
-        final markdown = '''
+        const markdown = '''
 ---
 empty: null
 ---
@@ -177,7 +177,7 @@ empty: null
 
     group('callouts', () {
       test('parses NOTE callout', () {
-        final markdown = '> [!NOTE]\n> This is a note';
+        const markdown = '> [!NOTE]\n> This is a note';
         final result = parser.parse(markdown);
         expect(result.data['note'], 'This is a note');
         expect(result.keyMeta, isNotNull);
@@ -185,35 +185,35 @@ empty: null
       });
 
       test('parses WARNING callout', () {
-        final markdown = '> [!WARNING]\n> Be careful!';
+        const markdown = '> [!WARNING]\n> Be careful!';
         final result = parser.parse(markdown);
         expect(result.data['warning'], 'Be careful!');
         expect(result.keyMeta!['warning']['callout']['type'], 'warning');
       });
 
       test('parses TIP callout', () {
-        final markdown = '> [!TIP]\n> Pro tip here';
+        const markdown = '> [!TIP]\n> Pro tip here';
         final result = parser.parse(markdown);
         expect(result.data['tip'], 'Pro tip here');
         expect(result.keyMeta!['tip']['callout']['type'], 'tip');
       });
 
       test('parses IMPORTANT callout', () {
-        final markdown = '> [!IMPORTANT]\n> Very important!';
+        const markdown = '> [!IMPORTANT]\n> Very important!';
         final result = parser.parse(markdown);
         expect(result.data['important'], 'Very important!');
         expect(result.keyMeta!['important']['callout']['type'], 'important');
       });
 
       test('parses CAUTION callout', () {
-        final markdown = '> [!CAUTION]\n> Handle with care';
+        const markdown = '> [!CAUTION]\n> Handle with care';
         final result = parser.parse(markdown);
         expect(result.data['caution'], 'Handle with care');
         expect(result.keyMeta!['caution']['callout']['type'], 'caution');
       });
 
       test('parses multiline callout', () {
-        final markdown = '''
+        const markdown = '''
 > [!NOTE]
 > First line
 > Second line
@@ -224,7 +224,7 @@ empty: null
       });
 
       test('parses callout with inline content', () {
-        final markdown = '> [!WARNING] Inline warning content';
+        const markdown = '> [!WARNING] Inline warning content';
         final result = parser.parse(markdown);
         expect(result.data['warning'], 'Inline warning content');
       });
@@ -232,7 +232,7 @@ empty: null
 
     group('dividers', () {
       test('parses --- divider', () {
-        final markdown = '---';
+        const markdown = '---';
         final result = parser.parse(markdown);
         expect(result.keyMeta, isNotNull);
         // Dividers are stored with unique keys
@@ -242,7 +242,7 @@ empty: null
       });
 
       test('parses *** divider', () {
-        final markdown = '***';
+        const markdown = '***';
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
@@ -250,7 +250,7 @@ empty: null
       });
 
       test('parses ___ divider', () {
-        final markdown = '___';
+        const markdown = '___';
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
@@ -258,7 +258,7 @@ empty: null
       });
 
       test('parses longer dividers', () {
-        final markdown = '--------';
+        const markdown = '--------';
         final result = parser.parse(markdown);
         final dividerKey =
             result.keyMeta!.keys.firstWhere((k) => k.startsWith('_divider'));
@@ -268,7 +268,7 @@ empty: null
 
     group('code blocks', () {
       test('parses fenced code block without language', () {
-        final markdown = '''
+        const markdown = '''
 ```
 const x = 1;
 ```
@@ -281,7 +281,7 @@ const x = 1;
       });
 
       test('parses fenced code block with language', () {
-        final markdown = '''
+        const markdown = '''
 ```javascript
 const x = 1;
 ```
@@ -294,7 +294,7 @@ const x = 1;
       });
 
       test('parses code block with language and filename', () {
-        final markdown = '''
+        const markdown = '''
 ```dart example.dart
 void main() {}
 ```
@@ -304,11 +304,11 @@ void main() {}
             result.data.keys.firstWhere((k) => k.startsWith('_code'));
         expect(result.keyMeta![codeKey]['codeBlock']['language'], 'dart');
         expect(
-            result.keyMeta![codeKey]['codeBlock']['filename'], 'example.dart');
+            result.keyMeta![codeKey]['codeBlock']['filename'], 'example.dart',);
       });
 
       test('parses multiline code block', () {
-        final markdown = '''
+        const markdown = '''
 ```python
 def hello():
     print("Hello")
@@ -323,7 +323,7 @@ def hello():
       });
 
       test('parses code block with tilde fence', () {
-        final markdown = '''
+        const markdown = '''
 ~~~python
 code here
 ~~~
@@ -338,7 +338,7 @@ code here
 
     group('unordered lists', () {
       test('parses - list marker', () {
-        final markdown = '''
+        const markdown = '''
 - Item 1
 - Item 2
 - Item 3
@@ -352,7 +352,7 @@ code here
       });
 
       test('parses * list marker', () {
-        final markdown = '''
+        const markdown = '''
 * Item A
 * Item B
 ''';
@@ -364,7 +364,7 @@ code here
       });
 
       test('parses + list marker', () {
-        final markdown = '''
+        const markdown = '''
 + First
 + Second
 ''';
@@ -378,7 +378,7 @@ code here
 
     group('ordered lists', () {
       test('parses ordered list with period', () {
-        final markdown = '''
+        const markdown = '''
 1. First item
 2. Second item
 3. Third item
@@ -387,13 +387,13 @@ code here
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
         expect(
-            result.data[listKey], ['First item', 'Second item', 'Third item']);
+            result.data[listKey], ['First item', 'Second item', 'Third item'],);
         expect(result.keyMeta![listKey]['listMeta']['type'], 'ordered');
         expect(result.keyMeta![listKey]['listMeta']['startNumber'], 1);
       });
 
       test('parses ordered list with parenthesis', () {
-        final markdown = '''
+        const markdown = '''
 1) Item A
 2) Item B
 ''';
@@ -405,7 +405,7 @@ code here
       });
 
       test('preserves start number', () {
-        final markdown = '''
+        const markdown = '''
 5. Fifth
 6. Sixth
 ''';
@@ -418,7 +418,7 @@ code here
 
     group('task lists', () {
       test('parses unchecked task', () {
-        final markdown = '- [ ] Todo item';
+        const markdown = '- [ ] Todo item';
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
@@ -428,7 +428,7 @@ code here
       });
 
       test('parses checked task with lowercase x', () {
-        final markdown = '- [x] Done item';
+        const markdown = '- [x] Done item';
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
@@ -436,7 +436,7 @@ code here
       });
 
       test('parses checked task with uppercase X', () {
-        final markdown = '- [X] Completed';
+        const markdown = '- [X] Completed';
         final result = parser.parse(markdown);
         final listKey =
             result.data.keys.firstWhere((k) => k.startsWith('_list'));
@@ -444,7 +444,7 @@ code here
       });
 
       test('parses mixed task list', () {
-        final markdown = '''
+        const markdown = '''
 - [x] Done
 - [ ] Not done
 - [X] Also done
@@ -460,7 +460,7 @@ code here
 
     group('tables', () {
       test('parses simple table with header', () {
-        final markdown = '''
+        const markdown = '''
 | Name | Age |
 |------|-----|
 | John | 30  |
@@ -475,7 +475,7 @@ code here
       });
 
       test('parses table with left alignment', () {
-        final markdown = '''
+        const markdown = '''
 | Name |
 |:-----|
 | Test |
@@ -487,7 +487,7 @@ code here
       });
 
       test('parses table with center alignment', () {
-        final markdown = '''
+        const markdown = '''
 | Name |
 |:----:|
 | Test |
@@ -499,7 +499,7 @@ code here
       });
 
       test('parses table with right alignment', () {
-        final markdown = '''
+        const markdown = '''
 | Amount |
 |-------:|
 | 100    |
@@ -511,7 +511,7 @@ code here
       });
 
       test('parses table with mixed alignments', () {
-        final markdown = '''
+        const markdown = '''
 | Left | Center | Right |
 |:-----|:------:|------:|
 | A    | B      | C     |
@@ -520,38 +520,38 @@ code here
         final tableKey =
             result.data.keys.firstWhere((k) => k.startsWith('_table'));
         expect(result.keyMeta![tableKey]['tableMeta']['alignment'],
-            ['left', 'center', 'right']);
+            ['left', 'center', 'right'],);
       });
     });
 
     group('emphasis detection', () {
       test('detects bold with double asterisks', () {
-        final markdown = '## Title\n**Bold text**';
+        const markdown = '## Title\n**Bold text**';
         final result = parser.parse(markdown);
         // The emphasis is detected in the content
         expect(result.data['title'], contains('**Bold text**'));
       });
 
       test('detects bold with double underscores', () {
-        final markdown = '## Title\n__Bold text__';
+        const markdown = '## Title\n__Bold text__';
         final result = parser.parse(markdown);
         expect(result.data['title'], contains('__Bold text__'));
       });
 
       test('detects italic with single asterisk', () {
-        final markdown = '## Title\n*Italic text*';
+        const markdown = '## Title\n*Italic text*';
         final result = parser.parse(markdown);
         expect(result.data['title'], contains('*Italic text*'));
       });
 
       test('detects strikethrough', () {
-        final markdown = '## Title\n~~Strikethrough~~';
+        const markdown = '## Title\n~~Strikethrough~~';
         final result = parser.parse(markdown);
         expect(result.data['title'], contains('~~Strikethrough~~'));
       });
 
       test('detects inline code', () {
-        final markdown = '## Title\n`inline code`';
+        const markdown = '## Title\n`inline code`';
         final result = parser.parse(markdown);
         expect(result.data['title'], contains('`inline code`'));
       });
@@ -559,29 +559,29 @@ code here
 
     group('whitespace preservation', () {
       test('detects line ending style LF', () {
-        final markdown = '# Title\nContent';
+        const markdown = '# Title\nContent';
         final result = parser.parse(markdown);
         expect(result.keyMeta!['_document']['whitespace']['lineEnding'], '\n');
       });
 
       test('detects line ending style CRLF', () {
-        final markdown = '# Title\r\nContent';
+        const markdown = '# Title\r\nContent';
         final result = parser.parse(markdown);
         expect(
-            result.keyMeta!['_document']['whitespace']['lineEnding'], '\r\n');
+            result.keyMeta!['_document']['whitespace']['lineEnding'], '\r\n',);
       });
 
       test('tracks leading newlines', () {
-        final markdown = '\n\n\n# Title\nContent';
+        const markdown = '\n\n\n# Title\nContent';
         final result = parser.parse(markdown);
         expect(
-            result.keyMeta!['_document']['whitespace']['leadingNewlines'], 3);
+            result.keyMeta!['_document']['whitespace']['leadingNewlines'], 3,);
       });
     });
 
     group('complex documents', () {
       test('parses document with frontmatter, headers, and content', () {
-        final markdown = '''
+        const markdown = '''
 ---
 title: Complex Document
 version: 2
@@ -606,7 +606,7 @@ Content for section two.
       });
 
       test('parses document with mixed content types', () {
-        final markdown = '''
+        const markdown = '''
 # Guide
 
 > [!NOTE]
@@ -640,7 +640,7 @@ void main() {}
       });
 
       test('handles consecutive dividers', () {
-        final markdown = '''
+        const markdown = '''
 ---
 ---
 ---
@@ -651,14 +651,14 @@ void main() {}
       });
 
       test('handles malformed table', () {
-        final markdown = '| only | one | row |';
+        const markdown = '| only | one | row |';
         final result = parser.parse(markdown);
         // Should parse as table with one row
         expect(result.data.keys.any((k) => k.startsWith('_table')), true);
       });
 
       test('handles unclosed code block', () {
-        final markdown = '''
+        const markdown = '''
 ```javascript
 const x = 1;
 No closing fence
@@ -671,13 +671,13 @@ No closing fence
       });
 
       test('handles special characters in content', () {
-        final markdown = '## Special\n<script>alert("xss")</script>';
+        const markdown = '## Special\n<script>alert("xss")</script>';
         final result = parser.parse(markdown);
         expect(result.data['special'], '<script>alert("xss")</script>');
       });
 
       test('handles unicode content', () {
-        final markdown = '## Unicode\n日本語テスト 🎉';
+        const markdown = '## Unicode\n日本語テスト 🎉';
         final result = parser.parse(markdown);
         expect(result.data['unicode'], '日本語テスト 🎉');
       });
@@ -730,7 +730,7 @@ No closing fence
 
     test('preserveLayout extracts table metadata', () {
       final result = markdownToJson('| A | B |\n|---|---|\n| 1 | 2 |',
-          preserveLayout: true) as LayoutAwareParseResult;
+          preserveLayout: true,) as LayoutAwareParseResult;
       final tableKey =
           result.data.keys.firstWhere((k) => k.startsWith('_table'));
       expect(result.keyMeta![tableKey]['tableMeta']['hasHeader'], true);
@@ -799,7 +799,7 @@ No closing fence
       final tableKey =
           result.data.keys.firstWhere((k) => k.startsWith('_table'));
       expect(result.keyMeta![tableKey]['tableMeta']['alignment'],
-          ['left', 'center', 'right']);
+          ['left', 'center', 'right'],);
     });
 
     test('callout round-trip preserves type', () {

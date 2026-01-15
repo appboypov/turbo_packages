@@ -26,7 +26,7 @@ class TurboViewModelBuilder<T extends TurboViewModel> extends StatefulWidget {
 
   /// Builder method that builds the widget tree.
   final Widget Function(
-          BuildContext context, T model, bool isInitialised, Widget? child)
+          BuildContext context, T model, bool isInitialised, Widget? child,)
       _builder;
 
   /// Builder method that provides the [TurboViewModel].

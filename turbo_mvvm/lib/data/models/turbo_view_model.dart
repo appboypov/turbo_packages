@@ -29,7 +29,7 @@ abstract class TurboViewModel<A> extends ChangeNotifier {
 
   /// Used to perform any initialising logic for the [TurboViewModel].
   @mustCallSuper
-  initialise() {
+  void initialise() {
     _isInitialised.value = true;
   }
 

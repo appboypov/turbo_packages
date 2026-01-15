@@ -26,11 +26,11 @@ class TestModel extends TurboSerializable<Object?> {
               bool includeNulls = false,
               bool prettyPrint = true,
               bool includeMetaData = true,
-              CaseStyle caseStyle = CaseStyle.none}) {
+              CaseStyle caseStyle = CaseStyle.none,}) {
             final self = instance as TestModel;
             return '<name>${self.name}</name>';
           },
-        ));
+        ),);
 
   @override
   TurboResponse<T>? validate<T>() {
@@ -56,7 +56,7 @@ class TestModelWithId extends TurboSerializableId<String, Object?> {
             final self = instance as TestModelWithId;
             return {'id': self.id, 'name': self.name};
           },
-        ));
+        ),);
 
   @override
   String get id => _id;
@@ -79,7 +79,7 @@ class MinimalModel extends TurboSerializable<Object?> {
       : super(
             config: TurboSerializableConfig(
           toJson: (_) => null,
-        ));
+        ),);
 }
 
 // Test model with typed metadata
@@ -118,7 +118,7 @@ class DocumentModel extends TurboSerializable<FrontmatterMeta> {
             final self = instance as DocumentModel;
             return self.content;
           },
-        ));
+        ),);
 }
 
 class DocumentWithId extends TurboSerializableId<String, FrontmatterMeta> {
@@ -136,7 +136,7 @@ class DocumentWithId extends TurboSerializableId<String, FrontmatterMeta> {
             final self = instance as DocumentWithId;
             return {'id': self.id, 'content': self.content};
           },
-        ));
+        ),);
 
   @override
   String get id => _id;
@@ -234,7 +234,7 @@ void main() {
         final model = TestModel('John');
         expect(model.toXml(), equals('<name>John</name>'));
         expect(model.toXml(rootElementName: 'Custom'),
-            equals('<name>John</name>'));
+            equals('<name>John</name>'),);
       });
 
       test('default toXml uses toJson conversion', () {
@@ -723,7 +723,7 @@ void main() {
 
       test('converts nested map', () {
         final yaml = jsonToYaml({
-          'user': {'name': 'Test', 'age': 25}
+          'user': {'name': 'Test', 'age': 25},
         });
         expect(yaml, contains('user:'));
         expect(yaml, contains('name: Test'));
@@ -731,7 +731,7 @@ void main() {
 
       test('converts list', () {
         final yaml = jsonToYaml({
-          'items': ['a', 'b', 'c']
+          'items': ['a', 'b', 'c'],
         });
         expect(yaml, contains('items:'));
         expect(yaml, contains('- a'));
@@ -804,7 +804,7 @@ void main() {
 
       test('formats nested JSON with headers', () {
         final markdown = jsonToMarkdown({
-          'user': {'name': 'Test', 'age': 25}
+          'user': {'name': 'Test', 'age': 25},
         });
         expect(markdown, contains('## User'));
         expect(markdown, contains('### Name'));
@@ -1207,7 +1207,7 @@ class _YamlOnlyModel extends TurboSerializable<Object?> {
             final self = instance as _YamlOnlyModel;
             return 'name: ${self.name}\nage: ${self.age}\n';
           },
-        ));
+        ),);
 }
 
 class _MarkdownOnlyModel extends TurboSerializable<Object?> {
@@ -1220,7 +1220,7 @@ class _MarkdownOnlyModel extends TurboSerializable<Object?> {
             final self = instance as _MarkdownOnlyModel;
             return self.content;
           },
-        ));
+        ),);
 }
 
 class _MarkdownWithFrontmatterModel extends TurboSerializable<Object?> {
@@ -1243,7 +1243,7 @@ description: ${self.description}
 ${self.body}
 ''';
           },
-        ));
+        ),);
 }
 
 class _XmlOnlyModel extends TurboSerializable<Object?> {
@@ -1259,12 +1259,12 @@ class _XmlOnlyModel extends TurboSerializable<Object?> {
               bool includeNulls = false,
               bool prettyPrint = true,
               bool includeMetaData = true,
-              CaseStyle caseStyle = CaseStyle.none}) {
+              CaseStyle caseStyle = CaseStyle.none,}) {
             final self = instance as _XmlOnlyModel;
             final elementName = rootElementName ?? 'XmlOnlyModel';
             return '<?xml version="1.0" encoding="UTF-8"?>\n<$elementName>\n  <name>${self.name}</name>\n  <age>${self.age}</age>\n</$elementName>';
           },
-        ));
+        ),);
 }
 
 class _TestIntIdModel extends TurboSerializableId<int, Object?> {
@@ -1278,7 +1278,7 @@ class _TestIntIdModel extends TurboSerializableId<int, Object?> {
         super(
             config: TurboSerializableConfig(
           toJson: (_) => null,
-        ));
+        ),);
 
   @override
   int get id => _id;
@@ -1296,7 +1296,7 @@ class _JsonOnlyModel extends TurboSerializable<Object?> {
             final self = instance as _JsonOnlyModel;
             return {'name': self.name, 'age': self.age};
           },
-        ));
+        ),);
 }
 
 class _NestedModel extends TurboSerializable<Object?> {
@@ -1314,7 +1314,7 @@ class _NestedModel extends TurboSerializable<Object?> {
               if (self.child != null) 'child': self.child!.toJson(),
             };
           },
-        ));
+        ),);
 }
 
 class _ListModel extends TurboSerializable<Object?> {
@@ -1326,7 +1326,7 @@ class _ListModel extends TurboSerializable<Object?> {
             final self = instance as _ListModel;
             return {'items': self.items};
           },
-        ));
+        ),);
 }
 
 class _NullableModel extends TurboSerializable<Object?> {
@@ -1344,7 +1344,7 @@ class _NullableModel extends TurboSerializable<Object?> {
               'value': self.value,
             };
           },
-        ));
+        ),);
 }
 
 class _DeeplyNestedModel extends TurboSerializable<Object?> {
@@ -1354,11 +1354,11 @@ class _DeeplyNestedModel extends TurboSerializable<Object?> {
           toJson: (_) => {
             'level1': {
               'level2': {
-                'level3': {'value': 'deep'}
-              }
-            }
+                'level3': {'value': 'deep'},
+              },
+            },
           },
-        ));
+        ),);
 }
 
 class _EmptyCollectionsModel extends TurboSerializable<Object?> {
@@ -1369,7 +1369,7 @@ class _EmptyCollectionsModel extends TurboSerializable<Object?> {
             'emptyList': <String>[],
             'emptyMap': <String, dynamic>{},
           },
-        ));
+        ),);
 }
 
 class _BooleanModel extends TurboSerializable<Object?> {
@@ -1385,7 +1385,7 @@ class _BooleanModel extends TurboSerializable<Object?> {
               'deleted': self.deleted,
             };
           },
-        ));
+        ),);
 }
 
 class _NumericModel extends TurboSerializable<Object?> {
@@ -1406,7 +1406,7 @@ class _NumericModel extends TurboSerializable<Object?> {
               'negativeValue': self.negativeValue,
             };
           },
-        ));
+        ),);
 }
 
 class _MetaWithToJson implements HasToJson {
@@ -1434,7 +1434,7 @@ class _ModelWithMeta extends TurboSerializable<_MetaWithToJson> {
             final self = instance as _ModelWithMeta;
             return {'content': self.content};
           },
-        ));
+        ),);
 }
 
 class _ModelWithBadMeta extends TurboSerializable<_MetaWithoutToJson> {
@@ -1446,5 +1446,5 @@ class _ModelWithBadMeta extends TurboSerializable<_MetaWithoutToJson> {
             final self = instance as _ModelWithBadMeta;
             return {'content': self.content};
           },
-        ));
+        ),);
 }

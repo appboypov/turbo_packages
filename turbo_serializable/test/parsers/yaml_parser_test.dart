@@ -113,7 +113,7 @@ name: John # This is a comment
         expect(result.data['name'], 'John');
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['name']['yamlMeta']['comment'],
-            'This is a comment');
+            'This is a comment',);
       });
 
       test('extracts comment from line before', () {
@@ -135,7 +135,7 @@ value: test # Comment with special chars: @#\$%
         expect(result.data['value'], 'test');
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['value']['yamlMeta']['comment'],
-            contains('Comment'));
+            contains('Comment'),);
       });
     });
 
@@ -196,7 +196,7 @@ description: |
         expect(result.data['description'], contains('This is a'));
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['description']['yamlMeta']['scalarStyle'],
-            'literal');
+            'literal',);
       });
 
       test('detects folded block scalar', () {
@@ -209,7 +209,7 @@ description: >
         expect(result.data['description'], isNotNull);
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['description']['yamlMeta']['scalarStyle'],
-            'folded');
+            'folded',);
       });
 
       test('detects single-quoted scalar', () {
@@ -220,7 +220,7 @@ name: 'John Doe'
         expect(result.data['name'], 'John Doe');
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['name']['yamlMeta']['scalarStyle'],
-            'single-quoted');
+            'single-quoted',);
       });
 
       test('detects double-quoted scalar', () {
@@ -231,7 +231,7 @@ name: "John Doe"
         expect(result.data['name'], 'John Doe');
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['name']['yamlMeta']['scalarStyle'],
-            'double-quoted');
+            'double-quoted',);
       });
 
       test('plain scalar has no style metadata', () {
@@ -291,7 +291,7 @@ b: 2
         final result = parser.parse(yaml);
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['_document']['yamlMeta']['comment'],
-            contains('Multi-document'));
+            contains('Multi-document'),);
       });
     });
 
@@ -405,7 +405,7 @@ production:
         expect(result.keyMeta, isNotNull);
         expect(result.keyMeta!['defaults']['yamlMeta']['anchor'], 'defaults');
         expect(
-            result.keyMeta!['defaults']['yamlMeta']['comment'], 'Main config');
+            result.keyMeta!['defaults']['yamlMeta']['comment'], 'Main config',);
       });
 
       test('parses mixed flow and block styles', () {
@@ -535,7 +535,7 @@ description: |
       final result =
           yamlToJson(yaml, preserveLayout: true) as LayoutAwareParseResult;
       expect(
-          result.keyMeta!['description']['yamlMeta']['scalarStyle'], 'literal');
+          result.keyMeta!['description']['yamlMeta']['scalarStyle'], 'literal',);
     });
 
     test('preserveLayout extracts flow style metadata', () {
@@ -573,7 +573,7 @@ config:
       final result =
           yamlToJson(original, preserveLayout: true) as LayoutAwareParseResult;
       expect(result.keyMeta!['config']['yamlMeta']['comment'],
-          'Main configuration');
+          'Main configuration',);
     });
 
     test('scalar style round-trip', () {
@@ -594,9 +594,9 @@ double: "also quoted"
       expect(result.keyMeta!['literal']['yamlMeta']['scalarStyle'], 'literal');
       expect(result.keyMeta!['folded']['yamlMeta']['scalarStyle'], 'folded');
       expect(result.keyMeta!['single']['yamlMeta']['scalarStyle'],
-          'single-quoted');
+          'single-quoted',);
       expect(result.keyMeta!['double']['yamlMeta']['scalarStyle'],
-          'double-quoted');
+          'double-quoted',);
     });
 
     test('flow style round-trip', () {
@@ -635,7 +635,7 @@ production:
       expect(
           result.keyMeta!['production']['children']['password']['yamlMeta']
               ['scalarStyle'],
-          'literal');
+          'literal',);
     });
   });
 }

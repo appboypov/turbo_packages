@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:turbo_mvvm/data/constants/k_values.dart';
-import 'package:turbo_mvvm/services/busy_service.dart';
-import 'package:turbo_mvvm/data/models/busy_model.dart';
 import 'package:turbo_mvvm/data/enums/busy_type.dart';
+import 'package:turbo_mvvm/data/models/busy_model.dart';
+import 'package:turbo_mvvm/services/busy_service.dart';
 
 /// Mixin to manage the busy state using [BusyService].
 ///

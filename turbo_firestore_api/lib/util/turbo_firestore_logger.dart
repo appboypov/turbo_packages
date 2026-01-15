@@ -1,5 +1,5 @@
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/models/sensitive_data.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 /// A logger for the TurboFirestoreApi that handles different log levels and sensitive data.
 ///
@@ -27,7 +27,6 @@ class TurboFirestoreLogger {
   /// The prefix parameters customize the prefix text for each log type.
   TurboFirestoreLogger({
     Log? log,
-    bool hideInProduction = true,
     this.showSensitiveData = true,
   }) : _log = log ?? Log(location: 'TurboFirestoreApi');
 

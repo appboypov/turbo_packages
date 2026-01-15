@@ -88,7 +88,7 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
     );
     try {
       _log.debug(
-          message: 'Checking if writeable is valid..', sensitiveData: null);
+          message: 'Checking if writeable is valid..', sensitiveData: null,);
       final TurboResponse<DocumentReference>? invalidResponse =
           writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
@@ -115,7 +115,7 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
       if (writeBatch != null) {
         _log.debug(
             message: 'WriteBatch was not null! Creating with batch..',
-            sensitiveData: null);
+            sensitiveData: null,);
         final lastBatchResponse = await createDocInBatch(
           writeable: writeable,
           id: id,
@@ -128,12 +128,12 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
         );
         _log.debug(
             message: 'Checking if batchCreate was successful..',
-            sensitiveData: null);
+            sensitiveData: null,);
         return _handleBatchOperation(lastBatchResponse);
       } else {
         _log.debug(
             message: 'WriteBatch was null! Creating without batch..',
-            sensitiveData: null);
+            sensitiveData: null,);
         final documentReference = id != null
             ? getDocRefById(
                 id: id,
@@ -148,7 +148,7 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
         );
         final json = writeable.toJson();
         if (json == null) {
-          return TurboResponse.fail(
+          return const TurboResponse.fail(
             error: TurboException(
               title: 'Serialization Error',
               message:
@@ -168,7 +168,7 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
                 createdAtFieldName: _createdAtFieldName,
                 updatedAtFieldName: _updatedAtFieldName,
               );
-        var setOptions = SetOptions(
+        final setOptions = SetOptions(
           merge: mergeFields == null ? merge : null,
           mergeFields: mergeFields,
         );
@@ -339,14 +339,14 @@ extension TurboFirestoreCreateApi<T> on TurboFirestoreApi {
       final nullSafeWriteBatch = writeBatch ?? this.writeBatch;
       final documentReference = id != null
           ? getDocRefById(
-              id: id, collectionPathOverride: collectionPathOverride)
+              id: id, collectionPathOverride: collectionPathOverride,)
           : _firebaseFirestore
               .collection(collectionPathOverride ?? _collectionPath())
               .doc();
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
       if (json == null) {
-        return TurboResponse.fail(
+        return const TurboResponse.fail(
           error: TurboException(
             title: 'Serialization Error',
             message:

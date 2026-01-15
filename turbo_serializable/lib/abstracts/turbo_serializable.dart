@@ -3,9 +3,9 @@ import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/has_to_json.dart';
 import 'package:turbo_serializable/constants/turbo_constants.dart';
 import 'package:turbo_serializable/converters/format_converters.dart';
+import 'package:turbo_serializable/converters/xml_converter.dart';
 import 'package:turbo_serializable/enums/case_style.dart';
 import 'package:turbo_serializable/enums/serialization_format.dart';
-import 'package:turbo_serializable/converters/xml_converter.dart';
 import 'package:turbo_serializable/models/turbo_serializable_config.dart';
 
 /// Base abstract class for serializable objects in the turbo ecosystem.

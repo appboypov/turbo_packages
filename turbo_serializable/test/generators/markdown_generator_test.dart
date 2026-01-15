@@ -248,7 +248,7 @@ void main() {
       });
 
       test('generates multiline code block', () {
-        final code = 'def hello():\n    print("Hello")';
+        const code = 'def hello():\n    print("Hello")';
         final data = {'_code_0': code};
         final keyMeta = {
           '_code_0': {
@@ -265,7 +265,7 @@ void main() {
     group('unordered list generation', () {
       test('generates list with - marker', () {
         final data = {
-          '_list_0': ['Item 1', 'Item 2', 'Item 3']
+          '_list_0': ['Item 1', 'Item 2', 'Item 3'],
         };
         final keyMeta = {
           '_list_0': {
@@ -280,7 +280,7 @@ void main() {
 
       test('generates list with * marker', () {
         final data = {
-          '_list_0': ['Item A', 'Item B']
+          '_list_0': ['Item A', 'Item B'],
         };
         final keyMeta = {
           '_list_0': {
@@ -294,7 +294,7 @@ void main() {
 
       test('generates list with + marker', () {
         final data = {
-          '_list_0': ['First', 'Second']
+          '_list_0': ['First', 'Second'],
         };
         final keyMeta = {
           '_list_0': {
@@ -310,7 +310,7 @@ void main() {
     group('ordered list generation', () {
       test('generates ordered list with period', () {
         final data = {
-          '_list_0': ['First item', 'Second item', 'Third item']
+          '_list_0': ['First item', 'Second item', 'Third item'],
         };
         final keyMeta = {
           '_list_0': {
@@ -325,7 +325,7 @@ void main() {
 
       test('generates ordered list with parenthesis', () {
         final data = {
-          '_list_0': ['Item A', 'Item B']
+          '_list_0': ['Item A', 'Item B'],
         };
         final keyMeta = {
           '_list_0': {
@@ -339,7 +339,7 @@ void main() {
 
       test('preserves start number', () {
         final data = {
-          '_list_0': ['Fifth', 'Sixth']
+          '_list_0': ['Fifth', 'Sixth'],
         };
         final keyMeta = {
           '_list_0': {
@@ -356,8 +356,8 @@ void main() {
       test('generates unchecked task', () {
         final data = {
           '_list_0': [
-            {'content': 'Todo item', 'checked': false}
-          ]
+            {'content': 'Todo item', 'checked': false},
+          ],
         };
         final keyMeta = {
           '_list_0': {
@@ -371,8 +371,8 @@ void main() {
       test('generates checked task', () {
         final data = {
           '_list_0': [
-            {'content': 'Done item', 'checked': true}
-          ]
+            {'content': 'Done item', 'checked': true},
+          ],
         };
         final keyMeta = {
           '_list_0': {
@@ -389,7 +389,7 @@ void main() {
             {'content': 'Done', 'checked': true},
             {'content': 'Not done', 'checked': false},
             {'content': 'Also done', 'checked': true},
-          ]
+          ],
         };
         final keyMeta = {
           '_list_0': {
@@ -412,7 +412,7 @@ void main() {
               ['John', '30'],
               ['Jane', '25'],
             ],
-          }
+          },
         };
         final keyMeta = {
           '_table_0': {
@@ -434,9 +434,9 @@ void main() {
           '_table_0': {
             'headers': ['Name'],
             'rows': [
-              ['Test']
+              ['Test'],
             ],
-          }
+          },
         };
         final keyMeta = {
           '_table_0': {
@@ -455,9 +455,9 @@ void main() {
           '_table_0': {
             'headers': ['Name'],
             'rows': [
-              ['Test']
+              ['Test'],
             ],
-          }
+          },
         };
         final keyMeta = {
           '_table_0': {
@@ -476,9 +476,9 @@ void main() {
           '_table_0': {
             'headers': ['Amount'],
             'rows': [
-              ['100']
+              ['100'],
             ],
-          }
+          },
         };
         final keyMeta = {
           '_table_0': {
@@ -497,9 +497,9 @@ void main() {
           '_table_0': {
             'headers': ['Left', 'Center', 'Right'],
             'rows': [
-              ['A', 'B', 'C']
+              ['A', 'B', 'C'],
             ],
-          }
+          },
         };
         final keyMeta = {
           '_table_0': {
@@ -787,7 +787,7 @@ void main() {
 
     test('handles nested maps without header metadata', () {
       final data = {
-        'outer': {'inner': 'value'}
+        'outer': {'inner': 'value'},
       };
       final result = generator.generate(data);
       expect(result, isNotNull);
@@ -811,7 +811,7 @@ void main() {
             ['A', 'B'],
             ['C', 'D'],
           ],
-        }
+        },
       };
       final keyMeta = {
         '_table_0': {

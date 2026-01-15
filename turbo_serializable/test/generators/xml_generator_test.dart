@@ -503,7 +503,7 @@ void main() {
 
     test('backward compatibility - nested structures', () {
       final result = jsonToXml({
-        'user': {'name': 'John'}
+        'user': {'name': 'John'},
       });
       expect(result, contains('<user>'));
       expect(result, contains('<name>John</name>'));
@@ -511,7 +511,7 @@ void main() {
 
     test('backward compatibility - list values', () {
       final result = jsonToXml({
-        'item': ['a', 'b']
+        'item': ['a', 'b'],
       });
       expect(result, contains('<item>a</item>'));
       expect(result, contains('<item>b</item>'));

@@ -41,7 +41,7 @@ class MountedIsTrueScenario extends IntegrationScenario {
                     box
                         .read<BaseViewModelImplementation>(#baseViewModel)
                         .isMounted,
-                    true);
+                    true,);
                 log.success('TurboViewModel was mounted!');
               },
             ),

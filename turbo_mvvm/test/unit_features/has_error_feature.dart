@@ -45,9 +45,9 @@ class HasErrorFeature extends UnitFeature {
                     expect(systemUnderTest.hasError.value, false);
                     log.success('TurboViewModel did not have an error!');
                   },
-                )
+                ),
               ],
-            )
+            ),
           ],
         );
 }

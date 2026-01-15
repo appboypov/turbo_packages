@@ -38,7 +38,7 @@ class DisposableContextIsNotNullScenario extends IntegrationScenario {
               (tester, log, box, mocks, [example, binding]) {
                 box.read<BaseViewModelImplementation>(#baseViewModel).context;
                 log.success(
-                    'TurboViewModel did not throw upon requesting context!');
+                    'TurboViewModel did not throw upon requesting context!',);
               },
             ),
           ],

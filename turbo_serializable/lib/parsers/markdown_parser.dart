@@ -152,7 +152,7 @@ class MarkdownLayoutParser {
 
   /// Parses YAML frontmatter.
   _ParseResult _parseFrontmatter(
-      List<String> lines, int startIndex, String lineEnding) {
+      List<String> lines, int startIndex, String lineEnding,) {
     final data = <String, dynamic>{};
     final meta = <String, dynamic>{};
 
@@ -217,7 +217,7 @@ class MarkdownLayoutParser {
 
   /// Parses the main body content of the Markdown document.
   _ParseResult _parseBody(
-      List<String> lines, int startIndex, String lineEnding) {
+      List<String> lines, int startIndex, String lineEnding,) {
     final data = <String, dynamic>{};
     final meta = <String, dynamic>{};
 
@@ -238,7 +238,7 @@ class MarkdownLayoutParser {
       final headerResult = _tryParseHeader(lines, currentIndex, lineEnding);
       if (headerResult != null) {
         _addToHierarchy(data, meta, headerStack, headerResult.key,
-            headerResult.value, headerResult.metadata);
+            headerResult.value, headerResult.metadata,);
         currentIndex = headerResult.nextIndex;
         continue;
       }
@@ -256,7 +256,7 @@ class MarkdownLayoutParser {
       if (calloutResult != null) {
         final key = _toCamelCaseKey(calloutResult.type);
         _addToHierarchy(data, meta, headerStack, key, calloutResult.content,
-            calloutResult.metadata);
+            calloutResult.metadata,);
         currentIndex = calloutResult.nextIndex;
         continue;
       }
@@ -266,7 +266,7 @@ class MarkdownLayoutParser {
       if (codeBlockResult != null) {
         final key = '_code_$currentIndex';
         _addToHierarchy(data, meta, headerStack, key, codeBlockResult.content,
-            codeBlockResult.metadata);
+            codeBlockResult.metadata,);
         currentIndex = codeBlockResult.nextIndex;
         continue;
       }
@@ -275,7 +275,7 @@ class MarkdownLayoutParser {
       if (tableResult != null) {
         final key = '_table_$currentIndex';
         _addToHierarchy(data, meta, headerStack, key, tableResult.tableData,
-            tableResult.metadata);
+            tableResult.metadata,);
         currentIndex = tableResult.nextIndex;
         continue;
       }
@@ -284,7 +284,7 @@ class MarkdownLayoutParser {
       if (listResult != null) {
         final key = '_list_$currentIndex';
         _addToHierarchy(data, meta, headerStack, key, listResult.items,
-            listResult.metadata);
+            listResult.metadata,);
         currentIndex = listResult.nextIndex;
         continue;
       }
@@ -297,10 +297,10 @@ class MarkdownLayoutParser {
             _getFromHierarchy(data, headerStack, currentHeader.key);
         if (existingValue == null || existingValue.toString().isEmpty) {
           _setInHierarchy(
-              data, headerStack, currentHeader.key, paragraphResult.content);
+              data, headerStack, currentHeader.key, paragraphResult.content,);
         } else {
           _setInHierarchy(data, headerStack, currentHeader.key,
-              '$existingValue\n${paragraphResult.content}');
+              '$existingValue\n${paragraphResult.content}',);
         }
       } else {
         data['body'] = (data['body'] ?? '') +
@@ -321,7 +321,7 @@ class MarkdownLayoutParser {
 
   /// Attempts to parse a header line.
   _HeaderResult? _tryParseHeader(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final match = _MarkdownPatterns.header.firstMatch(lines[index]);
     if (match == null) return null;
 
@@ -375,7 +375,7 @@ class MarkdownLayoutParser {
 
   /// Attempts to parse a callout block.
   _CalloutResult? _tryParseCallout(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final startMatch = _MarkdownPatterns.calloutStart.firstMatch(lines[index]);
     if (startMatch == null) return null;
 
@@ -416,7 +416,7 @@ class MarkdownLayoutParser {
 
   /// Attempts to parse a fenced code block.
   _CodeBlockResult? _tryParseCodeBlock(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final startMatch =
         _MarkdownPatterns.codeBlockFence.firstMatch(lines[index]);
     if (startMatch == null) return null;
@@ -467,7 +467,7 @@ class MarkdownLayoutParser {
 
   /// Attempts to parse a table.
   _TableResult? _tryParseTable(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     // Check if this looks like a table row
     if (!_MarkdownPatterns.tableRow.hasMatch(lines[index])) {
       return null;
@@ -575,7 +575,7 @@ class MarkdownLayoutParser {
 
   /// Parses an unordered list.
   _ListResult _parseUnorderedList(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final items = <String>[];
     String? marker;
     var nextIndex = index;
@@ -610,7 +610,7 @@ class MarkdownLayoutParser {
 
   /// Parses an ordered list.
   _ListResult _parseOrderedList(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final items = <String>[];
     int? startNumber;
     String? markerStyle;
@@ -683,7 +683,7 @@ class MarkdownLayoutParser {
 
   /// Parses a plain text paragraph.
   _ParagraphResult _parseParagraph(
-      List<String> lines, int index, String lineEnding) {
+      List<String> lines, int index, String lineEnding,) {
     final contentLines = <String>[];
     var nextIndex = index;
 
@@ -792,7 +792,7 @@ class MarkdownLayoutParser {
 
   /// Gets a value from the data hierarchy.
   dynamic _getFromHierarchy(
-      Map<String, dynamic> data, List<_HeaderContext> headerStack, String key) {
+      Map<String, dynamic> data, List<_HeaderContext> headerStack, String key,) {
     var current = data;
     for (var i = 0; i < headerStack.length - 1; i++) {
       final nested = current[headerStack[i].key];
@@ -804,7 +804,7 @@ class MarkdownLayoutParser {
 
   /// Sets a value in the data hierarchy.
   void _setInHierarchy(Map<String, dynamic> data,
-      List<_HeaderContext> headerStack, String key, dynamic value) {
+      List<_HeaderContext> headerStack, String key, dynamic value,) {
     var current = data;
     for (var i = 0; i < headerStack.length - 1; i++) {
       final headerKey = headerStack[i].key;

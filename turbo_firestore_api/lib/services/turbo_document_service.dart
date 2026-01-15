@@ -3,25 +3,26 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
 import 'package:turbo_firestore_api/constants/k_values.dart';
+import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
 import 'package:turbo_firestore_api/models/turbo_auth_vars.dart';
 import 'package:turbo_firestore_api/services/turbo_auth_sync_service.dart';
-import 'package:turbo_firestore_api/typedefs/turbo_locator_def.dart';
 import 'package:turbo_firestore_api/typedefs/create_doc_def.dart';
+import 'package:turbo_firestore_api/typedefs/turbo_locator_def.dart';
 import 'package:turbo_firestore_api/typedefs/update_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
-import '../extensions/completer_extension.dart';
-import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
+import 'package:turbolytics/turbolytics.dart';
 
-part 'be_sync_turbo_document_service.dart';
-part 'be_af_sync_turbo_document_service.dart';
+import '../extensions/completer_extension.dart';
+
 part 'af_sync_turbo_document_service.dart';
+part 'be_af_sync_turbo_document_service.dart';
+part 'be_sync_turbo_document_service.dart';
 
 /// A service for managing a single Firestore document with synchronized local state.
 ///
@@ -143,7 +144,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
   /// Local state for the document.
   late final _doc = TurboNotifier<T?>(
       initialValueLocator?.call() ?? defaultValueLocator?.call(),
-      forceUpdate: true);
+      forceUpdate: true,);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer<void>();

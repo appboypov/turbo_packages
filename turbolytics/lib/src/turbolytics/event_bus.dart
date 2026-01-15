@@ -2,9 +2,9 @@ part of 'turbolytics.dart';
 
 /// Used to make sure that events that are fired will be sent in chronological order.
 class EventBus {
+  factory EventBus() => _eventBus;
   EventBus._();
   static final EventBus _eventBus = EventBus._();
-  factory EventBus() => _eventBus;
 
   late final StreamController<Future<void>> _crashReports =
       StreamController.broadcast();
@@ -49,7 +49,7 @@ class EventBus {
   }
 
   /// Used to start listening to the event streams.
-  void _listen() async {
+  Future<void> _listen() async {
     if (Turbolytics._combineEvents) {
       if (!_combinedEvents.hasListener && _combinedEventsSubscription == null) {
         _combinedEventsSubscription = _combinedEvents.stream.listen(

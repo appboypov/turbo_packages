@@ -1,9 +1,8 @@
-import 'package:xml/xml.dart';
-
 import 'package:turbo_serializable/constants/turbo_constants.dart';
 import 'package:turbo_serializable/models/key_metadata.dart';
 import 'package:turbo_serializable/models/layout_aware_parse_result.dart';
 import 'package:turbo_serializable/models/xml_meta.dart';
+import 'package:xml/xml.dart';
 
 /// Parser for extracting layout metadata from XML documents.
 ///
@@ -150,7 +149,7 @@ class XmlLayoutParser {
                   key,
                   value is Map<String, dynamic>
                       ? KeyMetadata.fromJson(value)
-                      : const KeyMetadata()))
+                      : const KeyMetadata(),),)
               : null,
         );
         keyMeta[element.name.local] = metadata.toJson();
@@ -255,7 +254,7 @@ class XmlLayoutParser {
                 key,
                 value is Map<String, dynamic>
                     ? KeyMetadata.fromJson(value)
-                    : const KeyMetadata()))
+                    : const KeyMetadata(),),)
             : null,
       );
 

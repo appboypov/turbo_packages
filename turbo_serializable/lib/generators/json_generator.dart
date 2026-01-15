@@ -78,14 +78,14 @@ class JsonLayoutGenerator {
       if (value.isEmpty) return '[]';
       final items = value
           .map((e) =>
-              '$nextIndent${_generatePretty(e, indentSpaces, depth + 1)}')
+              '$nextIndent${_generatePretty(e, indentSpaces, depth + 1)}',)
           .join(',\n');
       return '[\n$items\n$indent]';
     } else if (value is Map<String, dynamic>) {
       if (value.isEmpty) return '{}';
       final entries = value.entries
           .map((e) =>
-              '$nextIndent"${e.key}": ${_generatePretty(e.value, indentSpaces, depth + 1)}')
+              '$nextIndent"${e.key}": ${_generatePretty(e.value, indentSpaces, depth + 1)}',)
           .join(',\n');
       return '{\n$entries\n$indent}';
     }

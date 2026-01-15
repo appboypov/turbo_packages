@@ -1,10 +1,9 @@
 import 'package:meta/meta.dart';
-import 'package:xml/xml.dart';
-
 import 'package:turbo_serializable/constants/turbo_constants.dart';
-import 'package:turbo_serializable/enums/case_style.dart';
 import 'package:turbo_serializable/converters/case_converter.dart';
+import 'package:turbo_serializable/enums/case_style.dart';
 import 'package:turbo_serializable/generators/xml_generator.dart';
+import 'package:xml/xml.dart';
 
 /// Converts a JSON map to an XML string.
 ///
@@ -42,7 +41,7 @@ String jsonToXml(
 
   final builder = XmlBuilder();
   builder.processing(
-      TurboConstants.xmlProcessingInstruction, TurboConstants.xmlDeclaration);
+      TurboConstants.xmlProcessingInstruction, TurboConstants.xmlDeclaration,);
   final rootName = convertCase(
     rootElementName ?? TurboConstants.defaultRootElement,
     caseStyle,
@@ -57,7 +56,7 @@ String jsonToXml(
           includeNulls: includeNulls,
           caseStyle: caseStyle,
         );
-      });
+      },);
     }
     buildXmlElement(
       builder,
@@ -65,7 +64,7 @@ String jsonToXml(
       includeNulls: includeNulls,
       caseStyle: caseStyle,
     );
-  });
+  },);
 
   final document = builder.buildDocument();
   return prettyPrint
@@ -123,7 +122,7 @@ void buildXmlElement(
               includeNulls: includeNulls,
               caseStyle: caseStyle,
             );
-          });
+          },);
         }
       } else {
         // Single value - create one element
@@ -134,7 +133,7 @@ void buildXmlElement(
             includeNulls: includeNulls,
             caseStyle: caseStyle,
           );
-        });
+        },);
       }
     });
   } else if (value is List) {
@@ -152,7 +151,7 @@ void buildXmlElement(
           includeNulls: includeNulls,
           caseStyle: caseStyle,
         );
-      });
+      },);
     }
   } else {
     // Primitive value (String, int, double, bool)

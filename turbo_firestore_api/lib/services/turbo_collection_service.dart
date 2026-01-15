@@ -1,26 +1,27 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
 import 'package:turbo_firestore_api/constants/k_values.dart';
+import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
 import 'package:turbo_firestore_api/extensions/completer_extension.dart';
+import 'package:turbo_firestore_api/extensions/turbo_list_extension.dart';
 import 'package:turbo_firestore_api/models/turbo_auth_vars.dart';
+import 'package:turbo_firestore_api/services/turbo_auth_sync_service.dart';
 import 'package:turbo_firestore_api/typedefs/create_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/update_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
-import 'package:turbo_firestore_api/extensions/turbo_list_extension.dart';
-import 'package:turbo_firestore_api/services/turbo_auth_sync_service.dart';
-import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
+import 'package:turbolytics/turbolytics.dart';
 
-part 'before_sync_turbo_collection_service.dart';
 part 'after_sync_turbo_collection_service.dart';
 part 'before_after_sync_turbo_collection_service.dart';
+part 'before_sync_turbo_collection_service.dart';
 
 /// A service for managing a collection of Firestore documents with synchronized local state.
 ///
@@ -726,7 +727,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
           ))
               .throwWhenFail();
         }
-        return TurboResponse.successAsBool();
+        return const TurboResponse.successAsBool();
       } else {
         final batch = api.writeBatch;
         for (final id in ids) {
@@ -737,7 +738,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
         }
         final future = batch.commit();
         await future;
-        return TurboResponse.successAsBool();
+        return const TurboResponse.successAsBool();
       }
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;

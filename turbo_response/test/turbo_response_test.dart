@@ -6,7 +6,7 @@ Future<void> delay() => Future.delayed(const Duration(milliseconds: 1));
 void main() {
   group('TurboResponse', () {
     test('Success state should have required result', () {
-      final state = TurboResponse.success(
+      const state = TurboResponse.success(
         result: 'test',
         title: 'Success',
         message: 'Test successful',
@@ -37,7 +37,7 @@ void main() {
 
     test('Fail state should work with type inference', () {
       // Type parameter inferred from context
-      TurboResponse<int> response = TurboResponse.fail(
+      const TurboResponse<int> response = TurboResponse.fail(
         error: 'Error',
         title: 'Error',
         message: 'Test failed',
@@ -46,7 +46,7 @@ void main() {
       expect(() => response.result, throwsA(isA<TurboException>()));
 
       // Type parameter inferred as dynamic when no context
-      final dynamicResponse = TurboResponse.fail(
+      const dynamicResponse = TurboResponse.fail(
         error: 'Error',
         title: 'Error',
         message: 'Test failed',
@@ -83,11 +83,11 @@ void main() {
       expect(exceptionWithoutError.hasMessage, isTrue);
       expect(exceptionWithoutError.hasError, isFalse);
       expect(exceptionWithoutError.toString(),
-          equals('TurboException(Error Title)\nError Message'));
+          equals('TurboException(Error Title)\nError Message'),);
     });
 
     test('when should handle all states correctly', () {
-      TurboResponse<String> successState = const TurboResponse<String>.success(
+      const TurboResponse<String> successState = TurboResponse<String>.success(
         result: 'success',
         title: 'Success',
       );
@@ -102,7 +102,7 @@ void main() {
 
     group('maybeWhen', () {
       test('should handle success state with success handler', () async {
-        TurboResponse<String> state = const TurboResponse<String>.success(
+        const TurboResponse<String> state = TurboResponse<String>.success(
           result: 'success',
           title: 'Success',
         );
@@ -115,7 +115,7 @@ void main() {
       });
 
       test('should handle fail state with fail handler', () async {
-        TurboResponse<String> state = const TurboResponse<String>.fail(
+        const TurboResponse<String> state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -128,7 +128,7 @@ void main() {
       });
 
       test('should throw when no handler matches', () async {
-        TurboResponse<String> state = const TurboResponse<String>.success(
+        const TurboResponse<String> state = TurboResponse<String>.success(
           result: 'success',
           title: 'Success',
         );
@@ -144,7 +144,7 @@ void main() {
 
     group('whenSuccess', () {
       test('should handle success state', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -154,7 +154,7 @@ void main() {
       });
 
       test('should return null for fail state', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -166,7 +166,7 @@ void main() {
 
     group('whenFail', () {
       test('should handle fail state', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'test error',
           title: 'Error',
         );
@@ -176,7 +176,7 @@ void main() {
       });
 
       test('should return null for success state', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -188,7 +188,7 @@ void main() {
 
     group('fold', () {
       test('should handle success state', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -202,7 +202,7 @@ void main() {
       });
 
       test('should handle fail state', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -218,7 +218,7 @@ void main() {
 
     group('mapSuccess', () {
       test('should transform success value', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -243,7 +243,7 @@ void main() {
 
     group('mapFail', () {
       test('should transform error value', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'test error',
           title: 'Error',
         );
@@ -254,7 +254,7 @@ void main() {
       });
 
       test('should preserve success state', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -267,7 +267,7 @@ void main() {
 
     group('unwrap', () {
       test('should return success value', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -288,7 +288,7 @@ void main() {
 
     group('unwrapOr', () {
       test('should return success value', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -297,7 +297,7 @@ void main() {
       });
 
       test('should return default value on fail state', () {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -308,7 +308,7 @@ void main() {
 
     group('unwrapOrCompute', () {
       test('should return success value', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -324,7 +324,7 @@ void main() {
       });
 
       test('should compute default value on fail state', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -382,7 +382,7 @@ void main() {
       });
 
       test('should not throw for success state', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -441,7 +441,7 @@ void main() {
 
     group('recover', () {
       test('should transform fail into success', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'test error',
           title: 'Error',
           message: 'Failed',
@@ -456,7 +456,7 @@ void main() {
       });
 
       test('should preserve success state', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Succeeded',
@@ -473,7 +473,7 @@ void main() {
 
     group('andThen', () {
       test('should chain successful operations', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'First',
         );
@@ -514,7 +514,7 @@ void main() {
 
     group('toString', () {
       test('should format success state', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Succeeded',
@@ -527,7 +527,7 @@ void main() {
       });
 
       test('should format fail state', () {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'test error',
           title: 'Error',
           message: 'Failed',
@@ -542,7 +542,7 @@ void main() {
 
     group('async operations', () {
       test('should handle async when', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -562,7 +562,7 @@ void main() {
       });
 
       test('should handle async mapSuccess', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -577,7 +577,7 @@ void main() {
       });
 
       test('should handle async mapFail', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -592,7 +592,7 @@ void main() {
       });
 
       test('should handle async recover', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -606,7 +606,7 @@ void main() {
       });
 
       test('should handle async andThen', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -624,7 +624,7 @@ void main() {
       });
 
       test('should handle mixed sync/async operations', () async {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -640,7 +640,7 @@ void main() {
       });
 
       test('should handle async unwrapOrCompute', () async {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -712,12 +712,12 @@ void main() {
 
     group('equality', () {
       test('success states should be equal with same values', () {
-        final success1 = TurboResponse<String>.success(
+        const success1 = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Test message',
         );
-        final success2 = TurboResponse<String>.success(
+        const success2 = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Test message',
@@ -730,7 +730,7 @@ void main() {
 
     group('empty constructors', () {
       test('successAsBool should create success with default result', () {
-        final state = TurboResponse.successAsBool();
+        const state = TurboResponse.successAsBool();
         expect(state.isSuccess, isTrue);
         expect(state.result.toString(), equals('Operation succeeded'));
         expect(state.title, isNull);
@@ -738,20 +738,20 @@ void main() {
       });
 
       test('failAsBool should create fail with default error', () {
-        final state = TurboResponse.failAsBool();
+        const state = TurboResponse.failAsBool();
         expect(state.isFail, isTrue);
         expect(state.error, isA<TurboException>());
         expect(
-            state.error.toString(), equals('TurboException: Operation failed'));
+            state.error.toString(), equals('TurboException: Operation failed'),);
         expect(state.title, isNull);
         expect(state.message, isNull);
       });
 
       test('empty states should be equal', () {
-        final success1 = TurboResponse.successAsBool();
-        final success2 = TurboResponse.successAsBool();
-        final fail1 = TurboResponse.failAsBool();
-        final fail2 = TurboResponse.failAsBool();
+        const success1 = TurboResponse.successAsBool();
+        const success2 = TurboResponse.successAsBool();
+        const fail1 = TurboResponse.failAsBool();
+        const fail2 = TurboResponse.failAsBool();
 
         expect(success1, equals(success2));
         expect(fail1, equals(fail2));
@@ -760,7 +760,7 @@ void main() {
       });
 
       test('Empty success state should support title and message', () {
-        final state = TurboResponse.successAsBool(
+        const state = TurboResponse.successAsBool(
           title: 'Success',
           message: 'Operation completed',
         );
@@ -772,7 +772,7 @@ void main() {
       });
 
       test('Empty fail state should support title and message', () {
-        final state = TurboResponse.failAsBool(
+        const state = TurboResponse.failAsBool(
           title: 'Error',
           message: 'Operation failed',
         );
@@ -787,7 +787,7 @@ void main() {
 
     group('copyWith', () {
       test('success copyWith should update fields', () {
-        final success = TurboResponse<String>.success(
+        const success = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Test message',
@@ -805,7 +805,7 @@ void main() {
       });
 
       test('success copyWith should clear optional fields', () {
-        final success = TurboResponse<String>.success(
+        const success = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Test message',
@@ -844,7 +844,7 @@ void main() {
 
     group('type conversion', () {
       test('cast should handle successful type conversion', () {
-        final state = TurboResponse<int>.success(
+        const state = TurboResponse<int>.success(
           result: 42,
           title: 'Success',
         );
@@ -855,7 +855,7 @@ void main() {
       });
 
       test('cast should preserve fail state', () {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -866,7 +866,7 @@ void main() {
       });
 
       test('asSuccess should return success state', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
         );
@@ -877,7 +877,7 @@ void main() {
       });
 
       test('asFail should return fail state', () {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
         );
@@ -890,7 +890,7 @@ void main() {
 
     group('utility methods', () {
       test('swap should convert success to fail', () {
-        final state = TurboResponse<String>.success(
+        const state = TurboResponse<String>.success(
           result: 'test',
           title: 'Success',
           message: 'Test message',
@@ -904,7 +904,7 @@ void main() {
       });
 
       test('swap should convert fail to success', () {
-        final state = TurboResponse<String>.fail(
+        const state = TurboResponse<String>.fail(
           error: 'error',
           title: 'Error',
           message: 'Test message',
@@ -918,7 +918,7 @@ void main() {
       });
 
       test('ensure should validate success state', () {
-        final state = TurboResponse<int>.success(
+        const state = TurboResponse<int>.success(
           result: 42,
           title: 'Success',
         );
@@ -929,7 +929,7 @@ void main() {
       });
 
       test('ensure should convert to fail on validation failure', () {
-        final state = TurboResponse<int>.success(
+        const state = TurboResponse<int>.success(
           result: -42,
           title: 'Success',
         );
@@ -943,7 +943,7 @@ void main() {
       });
 
       test('ensure should preserve fail state', () {
-        final state = TurboResponse<int>.fail(
+        const state = TurboResponse<int>.fail(
           error: 'error',
           title: 'Error',
         );

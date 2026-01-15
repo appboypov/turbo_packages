@@ -1,9 +1,8 @@
-import 'package:yaml/yaml.dart';
-
 import 'package:turbo_serializable/constants/turbo_constants.dart';
 import 'package:turbo_serializable/models/key_metadata.dart';
 import 'package:turbo_serializable/models/layout_aware_parse_result.dart';
 import 'package:turbo_serializable/models/yaml_meta.dart';
+import 'package:yaml/yaml.dart';
 
 /// Parser for extracting layout metadata from YAML documents.
 ///
@@ -267,7 +266,7 @@ class YamlLayoutParser {
             value is Map<String, dynamic>
                 ? KeyMetadata.fromJson(value)
                 : const KeyMetadata(),
-          )),
+          ),),
     );
   }
 
@@ -309,7 +308,7 @@ class YamlLayoutParser {
             value is Map<String, dynamic>
                 ? KeyMetadata.fromJson(value)
                 : const KeyMetadata(),
-          )),
+          ),),
     );
   }
 

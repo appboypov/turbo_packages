@@ -1,5 +1,5 @@
-import 'log_level.dart';
 import '../extensions/log_type_extensions.dart';
+import 'log_level.dart';
 
 /// Used to indicate what type of leading information is added to the crash report.
 enum CrashReportType {
