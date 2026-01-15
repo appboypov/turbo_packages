@@ -21,6 +21,8 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.0
 
+resolution: workspace
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -37,16 +39,11 @@ dependencies:
   firebase_core: ^4.1.1
 
   #  Packages
-  turbolytics:
-    path: ../../turbolytics
-  turbo_response:
-    path: ../../turbo_response
-  turbo_notifiers:
-    path: ../../turbo_notifiers
-  turbo_serializable:
-    path: ../../turbo_serializable
-  turbo_firestore_api:
-    path: ../
+  turbolytics: ^1.1.0
+  turbo_response: ^1.0.1
+  turbo_notifiers: ^1.1.0
+  turbo_serializable: ^0.2.0
+  turbo_firestore_api: ^0.8.4
   veto: ^0.0.16
 
 dev_dependencies:
