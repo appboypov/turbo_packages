@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 abstract class SyncService<T extends Object?> {
   SyncService({bool initialiseStream = true}) {

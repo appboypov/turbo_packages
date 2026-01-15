@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/mixins/turbo_exception_handler.dart';
 import 'package:turbo_firestore_api/exceptions/turbo_firestore_exception.dart';
 

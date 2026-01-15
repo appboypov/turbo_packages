@@ -1,4 +1,4 @@
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/models/sensitive_data.dart';
 
 /// A logger for the TurboFirestoreApi that handles different log levels and sensitive data.

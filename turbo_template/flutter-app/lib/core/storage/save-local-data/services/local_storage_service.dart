@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:turbo_flutter_template/core/storage/manage-data/constants/data_keys.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/constants/storage_keys.dart';
@@ -14,7 +14,7 @@ import 'package:turbo_flutter_template/core/storage/save-local-data/extensions/c
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
 
-class LocalStorageService extends ChangeNotifier with Loglytics {
+class LocalStorageService extends ChangeNotifier with Turbolytics {
   LocalStorageService() {
     _initialise();
   }

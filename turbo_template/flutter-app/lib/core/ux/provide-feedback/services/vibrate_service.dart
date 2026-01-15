@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 
-class VibrateService with Loglytics {
+class VibrateService with Turbolytics {
   VibrateService() {
     initialise();
   }

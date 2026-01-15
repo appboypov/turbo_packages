@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 
-/// Firebase Analytics implementation for the loglytics AnalyticsInterface.
+/// Firebase Analytics implementation for the turbolytics AnalyticsInterface.
 ///
 /// Provides analytics tracking through Firebase Analytics.
 class AnalyticsImplementation implements AnalyticsInterface {

@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/view_type.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:veto/veto.dart';
 
-class ShellViewModel extends BaseViewModel with Loglytics {
+class ShellViewModel extends BaseViewModel with Turbolytics {
   ShellViewModel({required LazyLocatorDef<AuthService> authService}) : _authService = authService {
     _initialise();
   }
@@ -17,7 +17,7 @@ class ShellViewModel extends BaseViewModel with Loglytics {
       GetIt.I.registerFactory(() => ShellViewModel(authService: () => AuthService.locate));
 
   final LazyLocatorDef<AuthService> _authService;
-  final _viewType = Informer<ViewType>(ViewType.defaultValue);
+  final _viewType = TurboNotifier<ViewType>(ViewType.defaultValue);
 
   void _initialise() {
     _authService().hasAuth.addListener(_onAuthStateChanged);

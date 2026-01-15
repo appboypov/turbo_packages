@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/view_arguments.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 
-abstract class BaseNavigation with Loglytics {
+abstract class BaseNavigation with Turbolytics {
   final _baseRouterService = BaseRouterService.locate;
 
   String get root;

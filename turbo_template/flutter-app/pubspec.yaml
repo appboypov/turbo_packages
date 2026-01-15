@@ -37,9 +37,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-  informers: ^0.0.5
-  loglytics: ^0.17.0
+  turbo_notifiers:
+    path: ../../turbo_notifiers
+  turbolytics:
+    path: ../../turbolytics
   turbo_response:
+    path: ../../turbo_response
   veto: ^0.0.16
   go_router: ^17.0.1
   get_it: ^9.2.0

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 
-class OverlayService with Loglytics {
+class OverlayService with Turbolytics {
   static OverlayService get locate => GetIt.I.get();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(OverlayService.new);
 

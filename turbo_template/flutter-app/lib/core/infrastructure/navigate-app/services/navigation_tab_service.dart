@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home_view.dart';
@@ -10,7 +10,7 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/ho
 ///
 /// Provides reactive access to the current tab and methods for tab switching.
 /// Used by the shell view to coordinate bottom navigation with routing.
-class NavigationTabService with Loglytics {
+class NavigationTabService with Turbolytics {
   NavigationTabService();
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -20,7 +20,7 @@ class NavigationTabService with Loglytics {
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  final _currentTab = Informer<NavigationTab>(NavigationTab.home);
+  final _currentTab = TurboNotifier<NavigationTab>(NavigationTab.home);
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 

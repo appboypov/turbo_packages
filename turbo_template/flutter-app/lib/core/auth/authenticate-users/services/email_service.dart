@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/firebase_auth_exception_handler.dart';
 import 'package:turbo_response/turbo_response.dart';
 
-class EmailService with Loglytics, FirebaseAuthExceptionHandler {
+class EmailService with Turbolytics, FirebaseAuthExceptionHandler {
   static EmailService get locate => GetIt.I.get();
   static void registerFactory() => GetIt.I.registerFactory(EmailService.new);
 

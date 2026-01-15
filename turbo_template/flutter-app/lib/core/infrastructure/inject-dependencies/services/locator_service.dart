@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/register_form.dart';
@@ -18,7 +18,7 @@ import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_g
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/vibrate_service.dart';
 
-class LocatorService with Loglytics {
+class LocatorService with Turbolytics {
   LocatorService._();
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\

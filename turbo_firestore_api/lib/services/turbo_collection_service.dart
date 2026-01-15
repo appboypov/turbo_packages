@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
@@ -60,7 +60,7 @@ part 'before_after_sync_turbo_collection_service.dart';
 /// - User authentication state synchronization
 abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
         API extends TurboFirestoreApi<T>> extends TurboAuthSyncService<List<T>>
-    with Loglytics {
+    with Turbolytics {
   /// Creates a new [TurboCollectionService] instance.
   ///
   /// Parameters:
@@ -79,7 +79,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
 
   /// Disposes of the service by cleaning up resources.
   ///
-  /// Disposes the [docsPerIdInformer] informer and completes the [_isReady] completer
+  /// Disposes the [docsPerIdInformer] TurboNotifier and completes the [_isReady] completer
   /// if not already completed. Then calls the parent dispose method.
   @override
   Future<void> dispose() {
@@ -148,7 +148,7 @@ abstract class TurboCollectionService<T extends TurboWriteableId<String, void>,
 
   /// Local state for documents, indexed by their IDs.
   @protected
-  final docsPerIdInformer = Informer<Map<String, T>>({}, forceUpdate: true);
+  final docsPerIdInformer = TurboNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer();

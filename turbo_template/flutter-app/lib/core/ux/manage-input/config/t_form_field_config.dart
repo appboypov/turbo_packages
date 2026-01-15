@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/enums/t_field_type.dart';
 
@@ -65,7 +65,7 @@ class TFormFieldState<T> {
   }
 }
 
-class TFormFieldConfig<T> extends Informer<TFormFieldState<T>> with Loglytics {
+class TFormFieldConfig<T> extends TurboNotifier<TFormFieldState<T>> with Turbolytics {
   TFormFieldConfig({
     FormFieldValidator<T>? valueValidator,
     T? initialValue,

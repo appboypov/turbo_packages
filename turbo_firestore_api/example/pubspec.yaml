@@ -37,9 +37,12 @@ dependencies:
   firebase_core: ^4.1.1
 
   #  Packages
-  loglytics: ^0.17.0
-  turbo_response: ^1.0.1
-  informers: ^0.0.5
+  turbolytics:
+    path: ../../turbolytics
+  turbo_response:
+    path: ../../turbo_response
+  turbo_notifiers:
+    path: ../../turbo_notifiers
   turbo_firestore_api:
     path: ../
   veto: ^0.0.16

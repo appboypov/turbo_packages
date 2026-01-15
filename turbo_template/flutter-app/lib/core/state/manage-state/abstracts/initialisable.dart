@@ -7,7 +7,7 @@ import 'dart:async';
 ///
 /// Usage:
 /// ```dart
-/// class MyService with Initialisable, Loglytics {
+/// class MyService with Initialisable, Turbolytics {
 ///   MyService() {
 ///     _initialise();
 ///   }

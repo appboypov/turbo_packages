@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/enums/auth_view_mode.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
@@ -17,7 +17,7 @@ import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:veto/veto.dart';
 
-class AuthViewModel extends BaseViewModel with Loglytics, BusyServiceManagement {
+class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagement {
   AuthViewModel({
     required ToastService toastService,
     required EmailService emailService,
@@ -77,7 +77,7 @@ class AuthViewModel extends BaseViewModel with Loglytics, BusyServiceManagement 
   final FocusNode sendForgotPasswordFocusNode = FocusNode();
   final FocusNode loginButtonFocusNode = FocusNode();
   final FocusNode registerButtonFocusNode = FocusNode();
-  final _authViewMode = Informer<AuthViewMode>(AuthViewMode.defaultValue);
+  final _authViewMode = TurboNotifier<AuthViewMode>(AuthViewMode.defaultValue);
   Timer? _resetPasswordTimer;
   bool _isResetPasswordCooldownActive = false;
 

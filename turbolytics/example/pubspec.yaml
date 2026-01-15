@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  turbolytics: ^1.0.0
+  turbolytics:
+    path: ../
 
 dev_dependencies:
   flutter_test:

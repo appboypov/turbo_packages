@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
 
-class LanguageService with Loglytics {
+class LanguageService with Turbolytics {
   LanguageService() {
     _initialise();
   }
@@ -39,7 +39,7 @@ class LanguageService with Loglytics {
   }
 
   final Completer _isReady = Completer();
-  late final _language = Informer<TSupportedLanguage>(TSupportedLanguage.defaultValue);
+  late final _language = TurboNotifier<TSupportedLanguage>(TSupportedLanguage.defaultValue);
 
   Future get isReady => _isReady.future;
   String get languageCode => _language.value.languageCode;

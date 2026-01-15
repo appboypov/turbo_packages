@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:informers/informer.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
@@ -39,7 +39,7 @@ part 'af_sync_turbo_document_service.dart';
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
 abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
         API extends TurboFirestoreApi<T>> extends TurboAuthSyncService<T?>
-    with Loglytics {
+    with Turbolytics {
   /// Creates a new [TurboDocumentService] instance.
   ///
   /// Parameters:
@@ -141,7 +141,7 @@ abstract class TurboDocumentService<T extends TurboWriteableId<String, void>,
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   /// Local state for the document.
-  late final _doc = Informer<T?>(
+  late final _doc = TurboNotifier<T?>(
       initialValueLocator?.call() ?? defaultValueLocator?.call(),
       forceUpdate: true);
 

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 import 'package:turbo_flutter_template/core/connection/manage-connection/extensions/connectivity_result_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 
-class ConnectionService with Loglytics {
+class ConnectionService with Turbolytics {
   ConnectionService() {
     initialize();
   }

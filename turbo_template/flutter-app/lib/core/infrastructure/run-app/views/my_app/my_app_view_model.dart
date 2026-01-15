@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loglytics/loglytics.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:provider/provider.dart';
 import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/analytics_implementation.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
@@ -18,7 +18,7 @@ import 'package:turbo_flutter_template/core/ux/manage-language/services/language
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
 import 'package:veto/veto.dart';
 
-class MyAppViewModel extends BaseViewModel with Loglytics {
+class MyAppViewModel extends BaseViewModel with Turbolytics {
   MyAppViewModel({
     required LazyLocatorDef<BaseRouterService> baseRouterService,
     required LazyLocatorDef<BusyService> busyService,
@@ -59,7 +59,7 @@ class MyAppViewModel extends BaseViewModel with Loglytics {
 
     final locatorService = _locatorService;
     locatorService.registerInitialDependencies();
-    await _setupLoglytics();
+    await _setupTurbolytics();
     locatorService.registerSingletons();
     Provider.debugCheckInvalidValueType = null;
     await _initEssentials();
@@ -83,12 +83,12 @@ class MyAppViewModel extends BaseViewModel with Loglytics {
     await _authService().isReady;
   }
 
-  Future<void> _setupLoglytics() async {
+  Future<void> _setupTurbolytics() async {
     try {
-      if (Loglytics.isActive) {
-        await Loglytics.disposeMe();
+      if (Turbolytics.isActive) {
+        await Turbolytics.disposeMe();
       }
-      Loglytics.setUp(
+      Turbolytics.setUp(
         logLevel: LogLevel.debug,
         logTime: false,
         addAnalyticsToCrashReports: true,
@@ -97,7 +97,7 @@ class MyAppViewModel extends BaseViewModel with Loglytics {
         analytics: (analyticsFactory) {},
       );
     } catch (error, stackTrace) {
-      log.error('$error caught while setting up Loglytics!', error: error, stackTrace: stackTrace);
+      log.error('$error caught while setting up Turbolytics!', error: error, stackTrace: stackTrace);
     }
   }
 
