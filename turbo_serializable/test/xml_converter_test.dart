@@ -541,8 +541,9 @@ void main() {
         </root>
       ''');
       final result = parseXmlElement(doc.rootElement) as Map<String, dynamic>;
-      expect(result['user']['name'], 'John');
-      expect(result['user']['email'], 'john@example.com');
+      final user = result['user'] as Map<String, dynamic>;
+      expect(user['name'], 'John');
+      expect(user['email'], 'john@example.com');
     });
   });
 
@@ -800,7 +801,8 @@ void main() {
 
     test('parses nested XML', () {
       final result = xmlToMap('<root><user><name>test</name></user></root>');
-      expect(result['user']['name'], 'test');
+      final user = result['user'] as Map<String, dynamic>;
+      expect(user['name'], 'test');
     });
 
     test('parses repeated elements as list', () {

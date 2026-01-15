@@ -47,8 +47,7 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
         if (error.osError?.errorCode == 35 && attempt < maxRetries - 1) {
           // Lock file error (errno 35) - retry after delay
           log.warning(
-            'Lock file error detected, retrying in ${retryDelay.inMilliseconds}ms...',
-            error: error,
+            'Lock file error detected, retrying in ${retryDelay.inMilliseconds}ms... Error: $error',
           );
           await Future.delayed(retryDelay * (attempt + 1));
           continue;
