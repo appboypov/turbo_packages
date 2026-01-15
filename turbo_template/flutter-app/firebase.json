@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"a-pew-pew-app","appId":"1:686812062236:android:8a00308cd032581bcdf5d9","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"a-pew-pew-app","appId":"1:686812062236:ios:dbf0cdd0a2542994cdf5d9","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"a-pew-pew-app","appId":"1:686812062236:ios:dbf0cdd0a2542994cdf5d9","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"a-pew-pew-app","configurations":{"android":"1:686812062236:android:8a00308cd032581bcdf5d9","ios":"1:686812062236:ios:dbf0cdd0a2542994cdf5d9","macos":"1:686812062236:ios:dbf0cdd0a2542994cdf5d9"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "a-pew-pew-app",
+                    "appId": "1:686812062236:android:8a00308cd032581bcdf5d9",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "a-pew-pew-app",
+                    "appId": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "macos": {
+                "default": {
+                    "projectId": "a-pew-pew-app",
+                    "appId": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "macos/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "a-pew-pew-app",
+                    "configurations": {
+                        "macos": "1:686812062236:ios:dbf0cdd0a2542994cdf5d9"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -148,6 +148,13 @@ enum EnvironmentType {
           EnvironmentType.staging => DefaultFirebaseOptions.ios, // TODO: Add staging ios config
           EnvironmentType.prod => DefaultFirebaseOptions.ios,
         };
+      case TargetPlatform.macOS:
+        return switch (this) {
+          EnvironmentType.emulators => DefaultFirebaseOptions.macos,
+          EnvironmentType.demo => DefaultFirebaseOptions.macos,
+          EnvironmentType.staging => DefaultFirebaseOptions.macos, // TODO: Add staging macos config
+          EnvironmentType.prod => DefaultFirebaseOptions.macos,
+        };
       default:
         throw UnsupportedError('DefaultFirebaseOptions are not supported for this platform.');
     }
