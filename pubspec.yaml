@@ -13,6 +13,7 @@ workspace:
   - turbo_firestore_api
   - turbo_promptable
   - turbo_template/flutter-app
+  - turbo_widgets
 
 dev_dependencies:
   melos: ^7.3.0
