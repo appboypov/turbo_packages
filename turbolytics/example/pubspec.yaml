@@ -7,17 +7,16 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.0
 
+resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
-
-  turbolytics: ^1.1.0
+  turbolytics:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^6.0.0
 
 flutter:

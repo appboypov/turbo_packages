@@ -5,15 +5,20 @@ environment:
   sdk: ^3.6.0
 
 workspace:
-  - turbo_response
-  - turbo_serializable
-  - turbo_notifiers
-  - turbo_mvvm
-  - turbolytics
   - turbo_firestore_api
+  - turbo_firestore_api/example
+  - turbo_mvvm
+  - turbo_mvvm/example
+  - turbo_notifiers
+  - turbo_notifiers/example
   - turbo_promptable
+  - turbo_response
+  - turbo_response/example
+  - turbo_serializable
   - turbo_template/flutter-app
   - turbo_widgets
+  - turbolytics
+  - turbolytics/example
 
 dev_dependencies:
   melos: ^7.3.0
