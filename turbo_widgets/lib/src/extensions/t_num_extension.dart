@@ -1,12 +1,12 @@
-extension TurboNumExtension on num {
+extension TNumExtension on num {
   /// Returns true if the number has decimal places
-  bool get turboHasDecimals => this % 1 != 0;
+  bool get tHasDecimals => this % 1 != 0;
 
   /// Multiplies this number by another number
-  T turboX<T extends num>(num other) => this * other as T;
+  T tX<T extends num>(num other) => this * other as T;
 
   /// Returns a formatted string representation
-  String turboToFormattedString() {
+  String tToFormattedString() {
     if (this % 1 == 0) {
       return toInt().toString();
     } else {
@@ -15,16 +15,16 @@ extension TurboNumExtension on num {
   }
 
   /// Returns the minimum of this and other
-  T turboMinimum<T extends num>(T other) => this >= other ? this as T : other;
+  T tMinimum<T extends num>(T other) => this >= other ? this as T : other;
 
   /// Returns the maximum of this and other
-  T turboMaximum<T extends num>(T other) => this <= other ? this as T : other;
+  T tMaximum<T extends num>(T other) => this <= other ? this as T : other;
 
   /// Multiplies this by other
-  T turboMultiply<T extends num>(T other) => this * other as T;
+  T tMultiply<T extends num>(T other) => this * other as T;
 
   /// Returns the number of decimal places
-  int get turboDecimals {
+  int get tDecimals {
     final valueAsString = toString();
     final decimalIndex = valueAsString.indexOf('.');
     if (decimalIndex == -1) {

@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 /// A flexible layout widget that arranges children with spacing.
-class TurboFlex extends StatelessWidget {
-  const TurboFlex({
+class TFlex extends StatelessWidget {
+  const TFlex({
     super.key,
     required this.children,
     required this.direction,

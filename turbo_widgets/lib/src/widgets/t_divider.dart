@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 /// A divider widget with convenient styling.
-class TurboDivider extends StatelessWidget {
-  const TurboDivider({
+class TDivider extends StatelessWidget {
+  const TDivider({
     super.key,
     this.height,
     this.color,

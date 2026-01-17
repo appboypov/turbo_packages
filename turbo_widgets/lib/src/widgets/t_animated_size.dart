@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
-import '../constants/turbo_constants.dart';
+import '../constants/t_constants.dart';
 
-class TurboAnimatedSize extends StatelessWidget {
-  const TurboAnimatedSize({
+class TAnimatedSize extends StatelessWidget {
+  const TAnimatedSize({
     super.key,
     required this.child,
     this.alignment = Alignment.topCenter,
     this.curve = Curves.easeInOut,
-    this.duration = turboDurationsAnimation,
+    this.duration = tDurationsAnimation,
   });
 
   final Duration duration;

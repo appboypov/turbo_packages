@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 /// Margin widget with convenient constructors for common margin values.
-class TurboMargin extends StatelessWidget {
-  const TurboMargin({
+class TMargin extends StatelessWidget {
+  const TMargin({
     super.key,
     required this.child,
     this.bottom = 16.0,
@@ -12,7 +12,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.app({
+  const TMargin.app({
     super.key,
     required this.child,
     this.bottom = 16.0,
@@ -22,7 +22,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.button({
+  const TMargin.button({
     super.key,
     required this.child,
     this.bottom = 0,
@@ -32,7 +32,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.card({
+  const TMargin.card({
     super.key,
     required this.child,
     this.bottom = 12.0,
@@ -42,7 +42,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.only({
+  const TMargin.only({
     super.key,
     required this.child,
     this.bottom = 0,
@@ -52,7 +52,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.left({
+  const TMargin.left({
     super.key,
     required this.child,
     this.left = 16.0,
@@ -62,7 +62,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.right({
+  const TMargin.right({
     super.key,
     required this.child,
     this.left = 0,
@@ -72,7 +72,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.top({
+  const TMargin.top({
     super.key,
     required this.child,
     this.left = 0,
@@ -82,7 +82,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.bottom({
+  const TMargin.bottom({
     super.key,
     required this.child,
     this.left = 0,
@@ -92,7 +92,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.horizontal({
+  const TMargin.horizontal({
     super.key,
     required this.child,
     this.left = 16.0,
@@ -102,7 +102,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.vertical({
+  const TMargin.vertical({
     super.key,
     required this.child,
     this.left = 0,
@@ -112,7 +112,7 @@ class TurboMargin extends StatelessWidget {
     this.multiplier = 1.0,
   });
 
-  const TurboMargin.symmetric({
+  const TMargin.symmetric({
     super.key,
     required this.child,
     double vertical = 16.0,

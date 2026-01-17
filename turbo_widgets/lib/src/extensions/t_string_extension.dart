@@ -1,27 +1,27 @@
-extension TurboStringExtension on String {
+extension TStringExtension on String {
   /// Returns null if the string is empty after trimming
-  String? get turboNullIfEmpty => turboTrimIsEmpty ? null : this;
+  String? get tNullIfEmpty => tTrimIsEmpty ? null : this;
 
   /// Returns true if the string is empty after trimming
-  bool get turboTrimIsEmpty => trim().isEmpty;
+  bool get tTrimIsEmpty => trim().isEmpty;
 
   /// Returns a normalized version (lowercase, no spaces)
-  String get turboNaked => replaceAll(' ', '').toLowerCase().trim();
+  String get tNaked => replaceAll(' ', '').toLowerCase().trim();
 
   /// Tries to parse as double, returns null if invalid
-  double? get turboTryAsDouble => double.tryParse(this);
+  double? get tTryAsDouble => double.tryParse(this);
 
   /// Tries to parse as int, returns null if invalid
-  int? get turboTryAsInt => int.tryParse(this);
+  int? get tTryAsInt => int.tryParse(this);
 
   /// Capitalizes the first letter
-  String get turboCapitalized {
+  String get tCapitalized {
     if (isEmpty) return this;
     return '${this[0].toUpperCase()}${substring(1)}';
   }
 
   /// Capitalizes the first letter, optionally forcing lowercase for the rest
-  String turboCapitalize({bool forceLowercase = false}) {
+  String tCapitalize({bool forceLowercase = false}) {
     if (isEmpty) {
       return '';
     }
@@ -31,8 +31,8 @@ extension TurboStringExtension on String {
   }
 
   /// Returns a normalized version (single spaces, trimmed)
-  String get turboNormalized => replaceAll(RegExp(r'\s+'), ' ').trim();
+  String get tNormalized => replaceAll(RegExp(r'\s+'), ' ').trim();
 
   /// Checks if string contains any of the provided values
-  bool turboContainsAny(List<String> values) => values.any(contains);
+  bool tContainsAny(List<String> values) => values.any(contains);
 }

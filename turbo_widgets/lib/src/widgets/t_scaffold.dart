@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 /// A scaffold widget with convenient defaults and background support.
-class TurboScaffold extends StatelessWidget {
-  const TurboScaffold({
+class TScaffold extends StatelessWidget {
+  const TScaffold({
     super.key,
     required this.child,
     this.backgroundColor,

@@ -1,7 +1,7 @@
 import 'dart:math';
 
-extension TurboScaleExtension on double {
-  double turboScaledPerWidth({
+extension TScaleExtension on double {
+  double tScaledPerWidth({
     required double currentWidth,
     required double widthInDesign,
     double speed = 1.0,
@@ -11,7 +11,7 @@ extension TurboScaleExtension on double {
     return this * adjustedScale;
   }
 
-  double turboScaledPerHeight({
+  double tScaledPerHeight({
     required double currentHeight,
     required double heightInDesign,
     double speed = 1.0,
@@ -21,7 +21,7 @@ extension TurboScaleExtension on double {
     return this * adjustedScale;
   }
 
-  double turboScaledPerWidthAndHeight({
+  double tScaledPerWidthAndHeight({
     required double currentWidth,
     required double currentHeight,
     required double widthInDesign,

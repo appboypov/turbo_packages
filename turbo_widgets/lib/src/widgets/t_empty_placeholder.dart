@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'turbo_column.dart';
-import 'turbo_gap.dart';
-import 'turbo_margin.dart';
+import 't_column.dart';
+import 't_gap.dart';
+import 't_margin.dart';
 
 /// A reusable widget for displaying an empty or "no data" state.
-class TurboEmptyPlaceholder extends StatelessWidget {
-  const TurboEmptyPlaceholder({
+class TEmptyPlaceholder extends StatelessWidget {
+  const TEmptyPlaceholder({
     super.key,
     required this.title,
     this.subtitle,
@@ -53,8 +53,8 @@ class TurboEmptyPlaceholder extends StatelessWidget {
     final theme = Theme.of(context);
     final hasSubtitle = subtitle != null && subtitle!.trim().isNotEmpty;
 
-    return TurboMargin(
-      child: TurboColumn(
+    return TMargin(
+      child: TColumn(
         spacing: 0,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,10 +62,10 @@ class TurboEmptyPlaceholder extends StatelessWidget {
           // Optional icon or image
           if (iconData != null) ...[
             Icon(iconData, size: iconSize, color: theme.iconTheme.color),
-            const TurboGap.app(multiplier: 0.5),
+            const TGap.app(multiplier: 0.5),
           ] else if (imageAsset != null) ...[
             Image.asset(imageAsset!, height: imageSize, width: imageSize),
-            const TurboGap.app(multiplier: 0.5),
+            const TGap.app(multiplier: 0.5),
           ],
 
           // Title
@@ -77,7 +77,7 @@ class TurboEmptyPlaceholder extends StatelessWidget {
           ),
 
           if (hasSubtitle) ...[
-            const TurboGap(8),
+            const TGap(8),
             Text(
               subtitle!,
               maxLines: 3,
@@ -91,7 +91,7 @@ class TurboEmptyPlaceholder extends StatelessWidget {
 
           // Optional Action
           if (onActionPressed != null && actionLabel != null) ...[
-            const TurboGap.app(),
+            const TGap.app(),
             if (actionSemanticIdentifier != null)
               Semantics(
                 identifier: actionSemanticIdentifier,

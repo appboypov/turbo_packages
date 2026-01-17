@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 /// A chip widget for displaying small pieces of information.
-class TurboChip extends StatelessWidget {
-  const TurboChip({
+class TChip extends StatelessWidget {
+  const TChip({
     super.key,
     required this.text,
     this.color,

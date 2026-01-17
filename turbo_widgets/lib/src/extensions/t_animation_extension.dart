@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../constants/turbo_constants.dart';
-import 'turbo_duration_extension.dart';
+import '../constants/t_constants.dart';
+import 't_duration_extension.dart';
 
-extension TurboAnimationExtension on Widget {
-  Widget turboSlideBottomUp({
-    Duration duration = turboDurationsAnimation,
+extension TAnimationExtension on Widget {
+  Widget tSlideBottomUp({
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double size = 1,
     double begin = 1,
@@ -21,8 +21,8 @@ extension TurboAnimationExtension on Widget {
         delay: delay,
       );
 
-  Widget turboSlideDownWithFade({
-    Duration duration = turboDurationsAnimation,
+  Widget tSlideDownWithFade({
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double begin = -0.2,
     double end = 0,
@@ -41,8 +41,8 @@ extension TurboAnimationExtension on Widget {
       )
       .fadeIn();
 
-  Widget turboSlideBottomUpWithFade({
-    Duration duration = turboDurationsAnimation,
+  Widget tSlideBottomUpWithFade({
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double begin = 0.2,
     double end = 0,
@@ -67,9 +67,9 @@ extension TurboAnimationExtension on Widget {
         .fadeIn();
   }
 
-  Widget turboFade({
+  Widget tFade({
     Key? key,
-    Duration duration = turboDurationsAnimationX0p5,
+    Duration duration = tDurationsAnimationX0p5,
     Duration? delay,
     double? target,
     bool? autoPlay,
@@ -78,9 +78,9 @@ extension TurboAnimationExtension on Widget {
       .animate(target: target, autoPlay: autoPlay, key: key)
       .fade(duration: duration, delay: delay, curve: curve);
 
-  Widget turboFadeWithoutRepaint({
+  Widget tFadeWithoutRepaint({
     Key? key,
-    Duration duration = turboDurationsAnimationX0p5,
+    Duration duration = tDurationsAnimationX0p5,
     Duration? delay,
     double? target,
     bool? autoPlay,
@@ -91,8 +91,8 @@ extension TurboAnimationExtension on Widget {
     key: key,
   ).fade(duration: duration, delay: delay, curve: curve);
 
-  Widget turboSlideBottomDownWithFade({
-    Duration duration = turboDurationsAnimation,
+  Widget tSlideBottomDownWithFade({
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double begin = 0,
     double end = 1,
@@ -109,8 +109,8 @@ extension TurboAnimationExtension on Widget {
       )
       .fadeOut();
 
-  Widget turboSlideOutLeftWithFade({
-    Duration duration = turboDurationsAnimation,
+  Widget tSlideOutLeftWithFade({
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double size = 1,
     double begin = 0,
@@ -128,9 +128,9 @@ extension TurboAnimationExtension on Widget {
       )
       .fadeOut();
 
-  Widget turboSlideInRightWithFade({
+  Widget tSlideInRightWithFade({
     Key? key,
-    Duration duration = turboDurationsAnimation,
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double size = 1,
     double begin = 1,
@@ -147,9 +147,9 @@ extension TurboAnimationExtension on Widget {
       )
       .fadeIn();
 
-  Widget turboSlideInLeftWithFade({
+  Widget tSlideInLeftWithFade({
     Key? key,
-    Duration duration = turboDurationsAnimation,
+    Duration duration = tDurationsAnimation,
     Duration? delay,
     double size = 1,
     double begin = -1,
@@ -166,8 +166,8 @@ extension TurboAnimationExtension on Widget {
       )
       .fadeIn();
 
-  Widget turboSlideInRightOutLeftWithFade({
-    Duration duration = turboDurationsAnimation,
+  Widget tSlideInRightOutLeftWithFade({
+    Duration duration = tDurationsAnimation,
     Duration? slideInDelay,
     double size = 1,
     double slideInBegin = 1,
@@ -182,7 +182,7 @@ extension TurboAnimationExtension on Widget {
         curve: curve,
         begin: slideInBegin,
         end: slideInEnd,
-        duration: duration.turboAdd(slideInDelay),
+        duration: duration.tAdd(slideInDelay),
       )
       .fadeIn()
       .then()

@@ -8,8 +8,8 @@
 
 ## Features
 
-- **Convenient Widgets**: Pre-built widgets like `TurboRow`, `TurboColumn`, `TurboPadding`, `TurboMargin`, `TurboDivider`, and more
-- **Animation Utilities**: Widgets like `TurboAnimatedSize` and `TurboSlideShrink` for smooth animations
+- **Convenient Widgets**: Pre-built widgets like `TRow`, `TColumn`, `TPadding`, `TMargin`, `TDivider`, and more
+- **Animation Utilities**: Widgets like `TAnimatedSize` and `TSlideShrink` for smooth animations
 - **Extensions**: Helpful extensions for numbers, strings, durations, and more
 - **Badge & Chip Widgets**: Ready-to-use badge and chip widgets for UI elements
 
@@ -38,25 +38,25 @@ flutter pub get
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 // Convenient padding
-TurboPadding.app() // Standard app padding (16.0)
-TurboPadding.button() // Button padding (16.0 horizontal, 0 vertical)
-TurboPadding.card() // Card padding (12.0)
+TPadding.app() // Standard app padding (16.0)
+TPadding.button() // Button padding (16.0 horizontal, 0 vertical)
+TPadding.card() // Card padding (12.0)
 
 // Layout widgets
-TurboRow(
+TRow(
   children: [
     // Your widgets
   ],
 )
 
-TurboColumn(
+TColumn(
   children: [
     // Your widgets
   ],
 )
 
 // Divider
-TurboDivider(
+TDivider(
   height: 1.0,
   color: Colors.grey,
 )

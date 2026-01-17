@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../constants/turbo_constants.dart';
+import '../constants/t_constants.dart';
 
 /// An animated divider that fades in/out based on visibility.
-class TurboAnimatedDivider extends StatelessWidget {
-  const TurboAnimatedDivider({
+class TAnimatedDivider extends StatelessWidget {
+  const TAnimatedDivider({
     super.key,
     required this.show,
     this.height = 0.5,
     this.thickness = 0.5,
     this.color,
-    this.duration = turboDurationsAnimation,
+    this.duration = tDurationsAnimation,
   });
 
   final bool show;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../constants/turbo_constants.dart';
-import '../extensions/turbo_animation_extension.dart';
-import '../typedefs/turbo_lazy_locator_def.dart';
-import 'turbo_animated_size.dart';
+import '../constants/t_constants.dart';
+import '../extensions/t_animation_extension.dart';
+import '../typedefs/t_lazy_locator_def.dart';
+import 't_animated_size.dart';
 
-class TurboHorizontalFadeShrink extends StatelessWidget {
-  const TurboHorizontalFadeShrink({
+class THorizontalFadeShrink extends StatelessWidget {
+  const THorizontalFadeShrink({
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = turboDurationsAnimation,
-    this.sizeDuration = turboDurationsAnimation,
+    this.fadeDuration = tDurationsAnimation,
+    this.sizeDuration = tDurationsAnimation,
     this.fadeInCurve = Curves.easeInOut,
     this.fadeOutCurve = Curves.easeInOut,
     this.sizeCurve = Curves.easeInOut,
@@ -48,15 +48,15 @@ class TurboHorizontalFadeShrink extends StatelessWidget {
   }
 }
 
-class TurboHorizontalSlideShrink extends StatelessWidget {
-  const TurboHorizontalSlideShrink({
+class THorizontalSlideShrink extends StatelessWidget {
+  const THorizontalSlideShrink({
     super.key,
     required this.show,
     required this.child,
     this.hideChild,
     this.builder,
     this.alignment = Alignment.centerRight,
-    this.duration = turboDurationsAnimation,
+    this.duration = tDurationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
   });
@@ -71,35 +71,35 @@ class TurboHorizontalSlideShrink extends StatelessWidget {
   final Widget Function(BuildContext context, Widget? hideChild)? hideBuilder;
 
   @override
-  Widget build(BuildContext context) => TurboAnimatedSize(
+  Widget build(BuildContext context) => TAnimatedSize(
     duration: duration,
     alignment: alignment,
     curve: curve,
     child: show
         ? builder?.call(context, child) ??
-              child.turboSlideInRightWithFade(
+              child.tSlideInRightWithFade(
                 begin: 0.6,
                 duration: duration,
                 curve: curve,
               )
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.turboSlideInRightWithFade(
+              hideChild?.tSlideInRightWithFade(
                 duration: duration,
                 curve: curve,
               ) ??
-              turboWidgetsNothing),
+              tWidgetsNothing),
   );
 }
 
-class TurboStatefulSlideShrink extends StatefulWidget {
-  const TurboStatefulSlideShrink({
+class TStatefulSlideShrink extends StatefulWidget {
+  const TStatefulSlideShrink({
     super.key,
     required this.show,
     this.lazyChild,
     this.hideChild,
     this.builder,
     this.alignment = Alignment.topCenter,
-    this.duration = turboDurationsAnimation,
+    this.duration = tDurationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
     this.child,
@@ -107,7 +107,7 @@ class TurboStatefulSlideShrink extends StatefulWidget {
 
   final bool show;
   final Widget? child;
-  final TurboLazyLocatorDef<Widget>? lazyChild;
+  final TLazyLocatorDef<Widget>? lazyChild;
   final Widget? hideChild;
   final Alignment alignment;
   final Duration duration;
@@ -116,11 +116,11 @@ class TurboStatefulSlideShrink extends StatefulWidget {
   final Widget Function(BuildContext context, Widget? hideChild)? hideBuilder;
 
   @override
-  State<TurboStatefulSlideShrink> createState() =>
-      _TurboStatefulSlideShrinkState();
+  State<TStatefulSlideShrink> createState() =>
+      _TStatefulSlideShrinkState();
 }
 
-class _TurboStatefulSlideShrinkState extends State<TurboStatefulSlideShrink> {
+class _TStatefulSlideShrinkState extends State<TStatefulSlideShrink> {
   bool initialBuild = true;
 
   @override
@@ -130,7 +130,7 @@ class _TurboStatefulSlideShrinkState extends State<TurboStatefulSlideShrink> {
         initialBuild = false;
       });
     }
-    return TurboAnimatedSize(
+    return TAnimatedSize(
       duration: widget.duration,
       alignment: widget.alignment,
       curve: widget.curve,
@@ -138,31 +138,31 @@ class _TurboStatefulSlideShrinkState extends State<TurboStatefulSlideShrink> {
           ? (widget.child ??
                     widget.builder?.call(context, widget.lazyChild!()) ??
                     widget.lazyChild!())
-                .turboSlideBottomUpWithFade(
+                .tSlideBottomUpWithFade(
                   duration: widget.duration,
                   curve: widget.curve,
                   shouldAnimate: !initialBuild,
                 )
           : (widget.hideBuilder?.call(context, widget.hideChild) ??
-                widget.hideChild?.turboSlideBottomUpWithFade(
+                widget.hideChild?.tSlideBottomUpWithFade(
                   shouldAnimate: !initialBuild,
                   duration: widget.duration,
                   curve: widget.curve,
                 ) ??
-                turboWidgetsNothing),
+                tWidgetsNothing),
     );
   }
 }
 
-class TurboSlideShrink extends StatelessWidget {
-  const TurboSlideShrink({
+class TSlideShrink extends StatelessWidget {
+  const TSlideShrink({
     super.key,
     required this.show,
     this.lazyChild,
     this.hideChild,
     this.builder,
     this.alignment = Alignment.topCenter,
-    this.duration = turboDurationsAnimation,
+    this.duration = tDurationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
     this.child,
@@ -170,7 +170,7 @@ class TurboSlideShrink extends StatelessWidget {
 
   final bool show;
   final Widget? child;
-  final TurboLazyLocatorDef<Widget>? lazyChild;
+  final TLazyLocatorDef<Widget>? lazyChild;
   final Widget? hideChild;
   final Alignment alignment;
   final Duration duration;
@@ -179,29 +179,29 @@ class TurboSlideShrink extends StatelessWidget {
   final Widget Function(BuildContext context, Widget? hideChild)? hideBuilder;
 
   @override
-  Widget build(BuildContext context) => TurboAnimatedSize(
+  Widget build(BuildContext context) => TAnimatedSize(
     duration: duration,
     alignment: alignment,
     curve: curve,
     child: show
         ? (child ?? builder?.call(context, lazyChild!()) ?? lazyChild!())
-              .turboSlideBottomUpWithFade(duration: duration, curve: curve)
+              .tSlideBottomUpWithFade(duration: duration, curve: curve)
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.turboSlideBottomUpWithFade(
+              hideChild?.tSlideBottomUpWithFade(
                 duration: duration,
                 curve: curve,
               ) ??
-              turboWidgetsNothing),
+              tWidgetsNothing),
   );
 }
 
-class TurboHorizontalShrink extends StatelessWidget {
-  const TurboHorizontalShrink({
+class THorizontalShrink extends StatelessWidget {
+  const THorizontalShrink({
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = turboDurationsAnimation,
-    this.sizeDuration = turboDurationsAnimation,
+    this.fadeDuration = tDurationsAnimation,
+    this.sizeDuration = tDurationsAnimation,
     this.fadeInCurve = Curves.fastOutSlowIn,
     this.fadeOutCurve = Curves.fastOutSlowIn,
     this.sizeCurve = Curves.fastOutSlowIn,
@@ -259,13 +259,13 @@ class TurboHorizontalShrink extends StatelessWidget {
   }
 }
 
-class TurboVerticalShrink extends StatelessWidget {
-  const TurboVerticalShrink({
+class TVerticalShrink extends StatelessWidget {
+  const TVerticalShrink({
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = turboDurationsAnimation,
-    this.sizeDuration = turboDurationsAnimation,
+    this.fadeDuration = tDurationsAnimation,
+    this.sizeDuration = tDurationsAnimation,
     this.fadeInCurve = Curves.easeInOut,
     this.fadeOutCurve = Curves.easeInOut,
     this.sizeCurve = Curves.easeInOut,

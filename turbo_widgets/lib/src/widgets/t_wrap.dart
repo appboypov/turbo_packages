@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 /// A wrap widget with convenient defaults and responsive child sizing.
-class TurboWrap extends StatelessWidget {
-  const TurboWrap({
+class TWrap extends StatelessWidget {
+  const TWrap({
     super.key,
     required this.children,
     this.spacing = 16.0,

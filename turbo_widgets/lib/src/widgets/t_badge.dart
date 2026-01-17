@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 /// A badge widget that displays a small indicator on top of a child widget.
-class TurboBadge extends StatelessWidget {
-  const TurboBadge({
+class TBadge extends StatelessWidget {
+  const TBadge({
     super.key,
     required this.child,
     this.color,
