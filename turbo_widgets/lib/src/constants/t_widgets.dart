@@ -1,3 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-const tWidgetsNothing = SizedBox.shrink();
+abstract class TWidgets {
+  TWidgets._();
+
+  static const widgetsNothing = SizedBox.shrink();
+}

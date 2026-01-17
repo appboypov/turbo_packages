@@ -7,7 +7,7 @@ class TAnimatedSize extends StatelessWidget {
     required this.child,
     this.alignment = Alignment.topCenter,
     this.curve = Curves.easeInOut,
-    this.duration = tDurationsAnimation,
+    this.duration = TDurations.durationsAnimation,
   });
 
   final Duration duration;

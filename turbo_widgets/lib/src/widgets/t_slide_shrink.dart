@@ -10,8 +10,8 @@ class THorizontalFadeShrink extends StatelessWidget {
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = tDurationsAnimation,
-    this.sizeDuration = tDurationsAnimation,
+    this.fadeDuration = TDurations.durationsAnimation,
+    this.sizeDuration = TDurations.durationsAnimation,
     this.fadeInCurve = Curves.easeInOut,
     this.fadeOutCurve = Curves.easeInOut,
     this.sizeCurve = Curves.easeInOut,
@@ -57,7 +57,7 @@ class THorizontalSlideShrink extends StatelessWidget {
     this.hideChild,
     this.builder,
     this.alignment = Alignment.centerRight,
-    this.duration = tDurationsAnimation,
+    this.duration = TDurations.durationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
   });
@@ -88,7 +88,7 @@ class THorizontalSlideShrink extends StatelessWidget {
                 duration: duration,
                 curve: curve,
               ) ??
-              tWidgetsNothing),
+              TWidgets.widgetsNothing),
   );
 }
 
@@ -100,7 +100,7 @@ class TStatefulSlideShrink extends StatefulWidget {
     this.hideChild,
     this.builder,
     this.alignment = Alignment.topCenter,
-    this.duration = tDurationsAnimation,
+    this.duration = TDurations.durationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
     this.child,
@@ -150,7 +150,7 @@ class _TStatefulSlideShrinkState extends State<TStatefulSlideShrink> {
                   duration: widget.duration,
                   curve: widget.curve,
                 ) ??
-                tWidgetsNothing),
+                TWidgets.widgetsNothing),
     );
   }
 }
@@ -163,7 +163,7 @@ class TSlideShrink extends StatelessWidget {
     this.hideChild,
     this.builder,
     this.alignment = Alignment.topCenter,
-    this.duration = tDurationsAnimation,
+    this.duration = TDurations.durationsAnimation,
     this.curve = Curves.decelerate,
     this.hideBuilder,
     this.child,
@@ -192,7 +192,7 @@ class TSlideShrink extends StatelessWidget {
                 duration: duration,
                 curve: curve,
               ) ??
-              tWidgetsNothing),
+              TWidgets.widgetsNothing),
   );
 }
 
@@ -201,8 +201,8 @@ class THorizontalShrink extends StatelessWidget {
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = tDurationsAnimation,
-    this.sizeDuration = tDurationsAnimation,
+    this.fadeDuration = TDurations.durationsAnimation,
+    this.sizeDuration = TDurations.durationsAnimation,
     this.fadeInCurve = Curves.fastOutSlowIn,
     this.fadeOutCurve = Curves.fastOutSlowIn,
     this.sizeCurve = Curves.fastOutSlowIn,
@@ -265,8 +265,8 @@ class TVerticalShrink extends StatelessWidget {
     super.key,
     required this.show,
     required this.child,
-    this.fadeDuration = tDurationsAnimation,
-    this.sizeDuration = tDurationsAnimation,
+    this.fadeDuration = TDurations.durationsAnimation,
+    this.sizeDuration = TDurations.durationsAnimation,
     this.fadeInCurve = Curves.easeInOut,
     this.fadeOutCurve = Curves.easeInOut,
     this.sizeCurve = Curves.easeInOut,
