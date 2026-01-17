@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 class FadeIn extends StatelessWidget {
   const FadeIn({
     required this.fadeIn,
     required this.fadeInChild,
     this.fadeOutChild,
-    this.duration = AnimationDurations.animation,
+    this.duration = TDurations.animation,
     super.key,
   });
 

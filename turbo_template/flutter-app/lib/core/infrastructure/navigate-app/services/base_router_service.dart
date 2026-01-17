@@ -14,8 +14,8 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/ro
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class BaseRouterService with Turbolytics {
@@ -235,7 +235,7 @@ class BaseRouterService with Turbolytics {
           barrierDismissible: true,
           maintainState: true,
           fullscreenDialog: fullscreenDialog,
-          transitionDuration: AnimationDurations.animationX0p5,
+          transitionDuration: TDurations.animationX0p5,
         );
     }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gherkin_integration_test/integration_test.dart';
-import 'package:turbo_mvvm/data/models/turbo_view_model.dart';
+import 'package:turbo_mvvm/data/models/t_view_model.dart';
 
 import '../../models/base_view_model_implementation.dart';
 
@@ -25,7 +25,7 @@ class MountedIsTrueScenario extends IntegrationScenario {
               'the TurboViewModelBuilder is initialised',
               (tester, log, box, mocks, [example, binding]) async {
                 await tester.pumpWidget(
-                  TurboViewModelBuilder<BaseViewModelImplementation>(
+                  TViewModelBuilder<BaseViewModelImplementation>(
                     builder: (context, model, isInitialised, child) =>
                         const SizedBox(),
                     viewModelBuilder: () => box.read(#baseViewModel),

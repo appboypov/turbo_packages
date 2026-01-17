@@ -19,17 +19,17 @@ class FirstVetoView extends StatelessWidget {
 
   /// Original width of the fictional design file that we got from our designer.
   ///
-  /// Play around with this value to demonstrate the [TurboViewModel.scaledWidth] property.
+  /// Play around with this value to demonstrate the [TViewModel.scaledWidth] property.
   static const _originalDesignWidth = 390.0;
 
   /// Original height of the fictional design file that we got from our designer.
   ///
-  /// Play around with this value to demonstrate the [TurboViewModel.scaledHeight] property.
+  /// Play around with this value to demonstrate the [TViewModel.scaledHeight] property.
   static const _originalDesignHeight = 844.0;
 
   @override
   Widget build(BuildContext context) {
-    return TurboViewModelBuilder<FirstVetoViewModel>(
+    return TViewModelBuilder<FirstVetoViewModel>(
       builder: (context, model, isInitialised, child) => MediaQuery(
         data: model.media.copyWith(
           textScaler: TextScaler.linear(model.textScaler.scale(1.0).clamp(1, 1.35)),
@@ -494,8 +494,8 @@ class FirstVetoView extends StatelessWidget {
   }
 }
 
-class FirstVetoViewModel extends TurboViewModel<Object?>
-    with BusyManagement, ErrorManagement, ViewModelHelpers {
+class FirstVetoViewModel extends TViewModel<Object?>
+    with TBusyManagement, TErrorManagement, TViewModelHelpers {
   int _modelCounter = 0;
   int get modelCounter => _modelCounter;
 
@@ -607,19 +607,19 @@ class FirstVetoViewModel extends TurboViewModel<Object?>
 
   void _log(Object message) => debugPrint('💡 [INFO] $message');
 
-  /// Provides the current [TurboViewModelBuilderState]'s [ThemeData].
+  /// Provides the current [TViewModelBuilderState]'s [ThemeData].
   ThemeData get theme => Theme.of(context!);
 
-  /// Provides the current [TurboViewModelBuilderState]'s [TextTheme].
+  /// Provides the current [TViewModelBuilderState]'s [TextTheme].
   TextTheme get textTheme => Theme.of(context!).textTheme;
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData].
+  /// Provides the current [TViewModelBuilderState]'s [MediaQueryData].
   MediaQueryData get media => MediaQuery.of(context!);
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData.textScaler].
+  /// Provides the current [TViewModelBuilderState]'s [MediaQueryData.textScaler].
   TextScaler get textScaler => MediaQuery.of(context!).textScaler;
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData.textScaler] scale factor.
+  /// Provides the current [TViewModelBuilderState]'s [MediaQueryData.textScaler] scale factor.
   @Deprecated('Use textScaler.scale(1.0) instead')
   double get textScaleFactor => textScaler.scale(1.0);
 
@@ -630,13 +630,13 @@ class FirstVetoViewModel extends TurboViewModel<Object?>
           ? textScaler.scale(1.0)
           : MediaQuery.textScalerOf(context).scale(1.0));
 
-  /// Provides the current [TurboViewModelBuilderState]'s [FocusNode].
+  /// Provides the current [TViewModelBuilderState]'s [FocusNode].
   FocusNode get focusNode => FocusScope.of(context!);
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData]'s [Size.width].
+  /// Provides the current [TViewModelBuilderState]'s [MediaQueryData]'s [Size.width].
   double get width => MediaQuery.of(context!).size.width;
 
-  /// Provides the current [TurboViewModelBuilderState]'s [MediaQueryData]'s [Size.height].
+  /// Provides the current [TViewModelBuilderState]'s [MediaQueryData]'s [Size.height].
   double get height => MediaQuery.of(context!).size.height;
 
   /// Provides a design scaled value based on given [value], [width] and given [originalDesignWidth].

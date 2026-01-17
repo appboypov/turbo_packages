@@ -9,21 +9,14 @@ class TSizes {
   final BuildContext context;
   final TDeviceType deviceType;
 
+  static const dialogMaxWidth = 480.0;
+
   MediaQueryData get _media => MediaQuery.of(context);
-
   RenderBox? get _renderBox => context.findRenderObject() as RenderBox?;
-
-  // ---------------------------------------------------------------------------
-  // Size getters
-  // ---------------------------------------------------------------------------
 
   double get width => _media.size.width;
   double get height => _media.size.height;
   double get keyboardInsets => _media.viewInsets.bottom;
-
-  // ---------------------------------------------------------------------------
-  // Safe area
-  // ---------------------------------------------------------------------------
 
   bool get hasKeyboard => _media.viewInsets.bottom > 0;
 
@@ -33,15 +26,7 @@ class TSizes {
       hasKeyboard ? 16 : max(bottomSafeArea, 16);
   double get bottomViewInsets => _media.viewInsets.bottom;
 
-  // ---------------------------------------------------------------------------
-  // App bar
-  // ---------------------------------------------------------------------------
-
   double get appBarSafeHeight => kToolbarHeight + topSafeArea;
-
-  // ---------------------------------------------------------------------------
-  // Global positions (requires renderBox from a widget's context)
-  // ---------------------------------------------------------------------------
 
   Offset get globalTopLeftPosition {
     final rb = _renderBox;
@@ -82,10 +67,6 @@ class TSizes {
   double get globalBottomInPositioned => height - globalBottomLeftPosition.dy;
   double get globalLeftInPositioned => globalTopLeftPosition.dx;
   double get globalRightInPositioned => width - globalTopRightPosition.dx;
-
-  // ---------------------------------------------------------------------------
-  // Device-specific
-  // ---------------------------------------------------------------------------
 
   double get sideNavBarWidth {
     switch (deviceType) {

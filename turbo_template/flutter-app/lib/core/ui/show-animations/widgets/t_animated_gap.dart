@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 class TAnimatedGap extends ImplicitlyAnimatedWidget {
   /// Creates a widget that animates its size when the [mainAxisExtent] changes.
@@ -12,7 +12,7 @@ class TAnimatedGap extends ImplicitlyAnimatedWidget {
     super.key,
     this.crossAxisExtent,
     this.color,
-    Duration duration = AnimationDurations.animation,
+    Duration duration = TDurations.animation,
     Curve curve = Curves.easeInOut,
   })  : assert(mainAxisExtent >= 0 && mainAxisExtent < double.infinity),
         assert(crossAxisExtent == null || crossAxisExtent >= 0),

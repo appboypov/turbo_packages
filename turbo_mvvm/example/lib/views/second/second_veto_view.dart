@@ -16,7 +16,7 @@ class SecondVetoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TurboViewModelBuilder<SecondVetoViewModel>(
+    return TViewModelBuilder<SecondVetoViewModel>(
       argumentBuilder: () => _secondVetoViewArguments,
       builder: (context, model, isInitialised, child) {
         return Scaffold(

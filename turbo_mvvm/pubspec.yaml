@@ -13,7 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.5
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
@@ -21,7 +21,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   gherkin_unit_test: ^0.0.5
   gherkin_integration_test: ^0.0.5
-  coverage: ^1.12.0
+  coverage: ^1.15.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

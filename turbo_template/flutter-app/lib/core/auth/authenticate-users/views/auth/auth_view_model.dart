@@ -13,11 +13,11 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/services/ema
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbolytics/turbolytics.dart';
-import 'package:veto/veto.dart';
 
-class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagement {
+class AuthViewModel extends TurboViewModel with Turbolytics, BusyServiceManagement {
   AuthViewModel({
     required ToastService toastService,
     required EmailService emailService,

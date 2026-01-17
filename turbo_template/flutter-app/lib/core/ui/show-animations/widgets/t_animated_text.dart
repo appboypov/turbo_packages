@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/animation_durations.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 /// A widget that animates text changes with a sequential fade transition.
 ///
@@ -7,7 +7,7 @@ import 'package:turbo_flutter_template/core/ui/show-animations/constants/animati
 /// smooth fade transitions when the text content changes. The animation consists
 /// of a fade out of the old text followed by a fade in of the new text.
 ///
-/// The default animation duration is [AnimationDurations.animation] (225ms) for both
+/// The default animation duration is [TDurations.animation] (225ms) for both
 /// fade in and fade out transitions.
 class TAnimatedText extends StatelessWidget {
   /// Creates a TAnimatedText widget.
@@ -23,7 +23,7 @@ class TAnimatedText extends StatelessWidget {
     this.style,
     this.textAlign,
     this.alignment = Alignment.topLeft,
-    this.duration = AnimationDurations.animation,
+    this.duration = TDurations.animation,
     this.curve = Curves.easeInOut,
     super.key,
   });

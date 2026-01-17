@@ -7,6 +7,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/models/t_sizes.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/models/t_texts.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/utils/t_tools.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
 
 extension ContextExtension on BuildContext {
   TProvider get turboProvider => TProvider.of(this);
@@ -19,4 +20,5 @@ extension ContextExtension on BuildContext {
   TThemeMode get themeMode => turboProvider.themeMode;
   MediaQueryData get media => MediaQuery.of(this);
   OverlayState get overlayState => Overlay.of(this, rootOverlay: true);
+  S get strings => S.of(this);
 }
