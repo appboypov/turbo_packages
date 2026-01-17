@@ -18,3 +18,5 @@ export 'src/widgets/turbo_padding.dart';
 export 'src/widgets/turbo_row.dart';
 export 'src/widgets/turbo_scaffold.dart';
 export 'src/widgets/turbo_slide_shrink.dart';
+export 'src/widgets/turbo_auth_view.dart';
+export 'src/widgets/turbo_auth_view_model.dart';
