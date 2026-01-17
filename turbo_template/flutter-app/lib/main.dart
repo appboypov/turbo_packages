@@ -13,8 +13,18 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      if (Firebase.apps.isEmpty) {
-        await Firebase.initializeApp(options: Environment.current.firebaseOptions);
+      try {
+        if (Firebase.apps.isEmpty) {
+          await Firebase.initializeApp(options: Environment.current.firebaseOptions);
+        }
+      } on FirebaseException catch (e) {
+        if (e.code == 'duplicate-app') {
+          // Firebase is already initialized, which is fine
+          // This can happen during hot reload
+        } else {
+          // Re-throw other Firebase exceptions
+          rethrow;
+        }
       }
 
       await EmulatorConfig.tryConfigureEmulators();
