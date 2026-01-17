@@ -1,12 +1,12 @@
 extension TNumExtension on num {
   /// Returns true if the number has decimal places
-  bool get tHasDecimals => this % 1 != 0;
+  bool get hasDecimals => this % 1 != 0;
 
   /// Multiplies this number by another number
-  T tX<T extends num>(num other) => this * other as T;
+  T x<T extends num>(num other) => this * other as T;
 
   /// Returns a formatted string representation
-  String tToFormattedString() {
+  String toFormattedString() {
     if (this % 1 == 0) {
       return toInt().toString();
     } else {
@@ -15,16 +15,16 @@ extension TNumExtension on num {
   }
 
   /// Returns the minimum of this and other
-  T tMinimum<T extends num>(T other) => this >= other ? this as T : other;
+  T minimum<T extends num>(T other) => this >= other ? this as T : other;
 
   /// Returns the maximum of this and other
-  T tMaximum<T extends num>(T other) => this <= other ? this as T : other;
+  T maximum<T extends num>(T other) => this <= other ? this as T : other;
 
   /// Multiplies this by other
-  T tMultiply<T extends num>(T other) => this * other as T;
+  T multiply<T extends num>(T other) => this * other as T;
 
   /// Returns the number of decimal places
-  int get tDecimals {
+  int get decimals {
     final valueAsString = toString();
     final decimalIndex = valueAsString.indexOf('.');
     if (decimalIndex == -1) {

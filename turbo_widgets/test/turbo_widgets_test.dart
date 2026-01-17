@@ -3,109 +3,109 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 
 void main() {
   group('TStringExtension', () {
-    group('tNullIfEmpty', () {
+    group('nullIfEmpty', () {
       test('returns null for empty string', () {
-        expect(''.tNullIfEmpty, isNull);
+        expect(''.nullIfEmpty, isNull);
       });
 
       test('returns null for whitespace-only string', () {
-        expect('   '.tNullIfEmpty, isNull);
+        expect('   '.nullIfEmpty, isNull);
       });
 
       test('returns string for non-empty string', () {
-        expect('hello'.tNullIfEmpty, equals('hello'));
+        expect('hello'.nullIfEmpty, equals('hello'));
       });
     });
 
-    group('tTrimIsEmpty', () {
+    group('trimIsEmpty', () {
       test('returns true for empty string', () {
-        expect(''.tTrimIsEmpty, isTrue);
+        expect(''.trimIsEmpty, isTrue);
       });
 
       test('returns true for whitespace-only string', () {
-        expect('   '.tTrimIsEmpty, isTrue);
+        expect('   '.trimIsEmpty, isTrue);
       });
 
       test('returns false for non-empty string', () {
-        expect('hello'.tTrimIsEmpty, isFalse);
+        expect('hello'.trimIsEmpty, isFalse);
       });
     });
 
-    group('tNaked', () {
+    group('naked', () {
       test('removes spaces and lowercases', () {
-        expect('Hello World'.tNaked, equals('helloworld'));
+        expect('Hello World'.naked, equals('helloworld'));
       });
 
       test('handles already naked string', () {
-        expect('test'.tNaked, equals('test'));
+        expect('test'.naked, equals('test'));
       });
     });
 
-    group('tTryAsDouble', () {
+    group('tryAsDouble', () {
       test('parses valid double', () {
-        expect('3.14'.tTryAsDouble, equals(3.14));
+        expect('3.14'.tryAsDouble, equals(3.14));
       });
 
       test('returns null for invalid double', () {
-        expect('abc'.tTryAsDouble, isNull);
+        expect('abc'.tryAsDouble, isNull);
       });
     });
 
-    group('tTryAsInt', () {
+    group('tryAsInt', () {
       test('parses valid int', () {
-        expect('42'.tTryAsInt, equals(42));
+        expect('42'.tryAsInt, equals(42));
       });
 
       test('returns null for invalid int', () {
-        expect('abc'.tTryAsInt, isNull);
+        expect('abc'.tryAsInt, isNull);
       });
     });
 
-    group('tCapitalized', () {
+    group('capitalized', () {
       test('capitalizes first letter', () {
-        expect('hello'.tCapitalized, equals('Hello'));
+        expect('hello'.capitalized, equals('Hello'));
       });
 
       test('handles empty string', () {
-        expect(''.tCapitalized, equals(''));
+        expect(''.capitalized, equals(''));
       });
 
       test('handles already capitalized', () {
-        expect('Hello'.tCapitalized, equals('Hello'));
+        expect('Hello'.capitalized, equals('Hello'));
       });
     });
 
-    group('tCapitalize', () {
+    group('capitalize', () {
       test('capitalizes without forcing lowercase', () {
-        expect('hELLO'.tCapitalize(), equals('HELLO'));
+        expect('hELLO'.capitalize(), equals('HELLO'));
       });
 
       test('capitalizes with forcing lowercase', () {
-        expect('hELLO'.tCapitalize(forceLowercase: true), equals('Hello'));
+        expect('hELLO'.capitalize(forceLowercase: true), equals('Hello'));
       });
 
       test('handles empty string', () {
-        expect(''.tCapitalize(), equals(''));
+        expect(''.capitalize(), equals(''));
       });
     });
 
-    group('tNormalized', () {
+    group('normalized', () {
       test('normalizes multiple spaces', () {
-        expect('hello   world'.tNormalized, equals('hello world'));
+        expect('hello   world'.normalized, equals('hello world'));
       });
 
       test('trims and normalizes', () {
-        expect('  hello   world  '.tNormalized, equals('hello world'));
+        expect('  hello   world  '.normalized, equals('hello world'));
       });
     });
 
-    group('tContainsAny', () {
+    group('containsAny', () {
       test('returns true when contains one value', () {
-        expect('hello world'.tContainsAny(['world', 'foo']), isTrue);
+        expect('hello world'.containsAny(['world', 'foo']), isTrue);
       });
 
       test('returns false when contains none', () {
-        expect('hello world'.tContainsAny(['foo', 'bar']), isFalse);
+        expect('hello world'.containsAny(['foo', 'bar']), isFalse);
       });
     });
   });
@@ -113,74 +113,74 @@ void main() {
   group('TNumExtension', () {
     group('tHasDecimals', () {
       test('returns true for number with decimals', () {
-        expect(3.14.tHasDecimals, isTrue);
+        expect(3.14.hasDecimals, isTrue);
       });
 
       test('returns false for whole number', () {
-        expect(5.0.tHasDecimals, isFalse);
+        expect(5.0.hasDecimals, isFalse);
       });
     });
 
     group('tToFormattedString', () {
       test('formats whole number without decimals', () {
-        expect(5.0.tToFormattedString(), equals('5'));
+        expect(5.0.toFormattedString(), equals('5'));
       });
 
       test('formats decimal with one place', () {
-        expect(3.14.tToFormattedString(), equals('3.1'));
+        expect(3.14.toFormattedString(), equals('3.1'));
       });
     });
 
     group('tMinimum', () {
       test('returns this when this is greater', () {
-        expect(10.tMinimum(5), equals(10));
+        expect(10.minimum(5), equals(10));
       });
 
       test('returns other when other is greater', () {
-        expect(3.tMinimum(5), equals(5));
+        expect(3.minimum(5), equals(5));
       });
     });
 
     group('tMaximum', () {
       test('returns this when this is less', () {
-        expect(3.tMaximum(5), equals(3));
+        expect(3.maximum(5), equals(3));
       });
 
       test('returns other when other is less', () {
-        expect(10.tMaximum(5), equals(5));
+        expect(10.maximum(5), equals(5));
       });
     });
 
     group('tDecimals', () {
       test('returns 0 for whole number', () {
-        expect(5.tDecimals, equals(0));
+        expect(5.decimals, equals(0));
       });
 
       test('returns count of decimal places', () {
-        expect(3.14.tDecimals, equals(2));
+        expect(3.14.decimals, equals(2));
       });
     });
   });
 
   group('TDurationExtension', () {
-    group('tAdd', () {
+    group('add', () {
       test('adds duration', () {
         const d1 = Duration(seconds: 5);
         const d2 = Duration(seconds: 3);
-        expect(d1.tAdd(d2), equals(const Duration(seconds: 8)));
+        expect(d1.add(d2), equals(const Duration(seconds: 8)));
       });
 
       test('handles null duration', () {
         const d1 = Duration(seconds: 5);
-        expect(d1.tAdd(null), equals(const Duration(seconds: 5)));
+        expect(d1.add(null), equals(const Duration(seconds: 5)));
       });
     });
   });
 
   group('TScaleExtension', () {
-    group('tScaledPerWidth', () {
+    group('scaledPerWidth', () {
       test('scales proportionally to width', () {
-        final result = 100.0.tScaledPerWidth(
+        final result = 100.0.scaledPerWidth(
           currentWidth: 800,
           widthInDesign: 400,
         );
@@ -188,7 +188,7 @@ void main() {
       });
 
       test('scales with speed factor', () {
-        final result = 100.0.tScaledPerWidth(
+        final result = 100.0.scaledPerWidth(
           currentWidth: 800,
           widthInDesign: 400,
           speed: 0.5,
@@ -197,9 +197,9 @@ void main() {
       });
     });
 
-    group('tScaledPerHeight', () {
+    group('scaledPerHeight', () {
       test('scales proportionally to height', () {
-        final result = 100.0.tScaledPerHeight(
+        final result = 100.0.scaledPerHeight(
           currentHeight: 1200,
           heightInDesign: 600,
         );
@@ -207,9 +207,9 @@ void main() {
       });
     });
 
-    group('tScaledPerWidthAndHeight', () {
+    group('scaledPerWidthAndHeight', () {
       test('uses minimum scale', () {
-        final result = 100.0.tScaledPerWidthAndHeight(
+        final result = 100.0.scaledPerWidthAndHeight(
           currentWidth: 800,
           currentHeight: 1000,
           widthInDesign: 400,
@@ -221,15 +221,15 @@ void main() {
   });
 
   group('TObjectExtension', () {
-    group('tButWhen', () {
+    group('butWhen', () {
       test('returns value when condition is true', () {
         const Object? value = 'hello';
-        expect(value.tButWhen(true, () => 'world'), equals('world'));
+        expect(value.butWhen(true, () => 'world'), equals('world'));
       });
 
       test('returns this when condition is false', () {
         const Object? value = 'hello';
-        expect(value.tButWhen(false, () => 'world'), equals('hello'));
+        expect(value.butWhen(false, () => 'world'), equals('hello'));
       });
     });
   });

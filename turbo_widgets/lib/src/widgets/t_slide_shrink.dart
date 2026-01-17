@@ -78,13 +78,13 @@ class THorizontalSlideShrink extends StatelessWidget {
     curve: curve,
     child: show
         ? builder?.call(context, child) ??
-              child.tSlideInRightWithFade(
+              child.slideInRightWithFade(
                 begin: 0.6,
                 duration: duration,
                 curve: curve,
               )
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.tSlideInRightWithFade(
+              hideChild?.slideInRightWithFade(
                 duration: duration,
                 curve: curve,
               ) ??
@@ -139,13 +139,13 @@ class _TStatefulSlideShrinkState extends State<TStatefulSlideShrink> {
           ? (widget.child ??
                     widget.builder?.call(context, widget.lazyChild!()) ??
                     widget.lazyChild!())
-                .tSlideBottomUpWithFade(
+                .slideBottomUpWithFade(
                   duration: widget.duration,
                   curve: widget.curve,
                   shouldAnimate: !initialBuild,
                 )
           : (widget.hideBuilder?.call(context, widget.hideChild) ??
-                widget.hideChild?.tSlideBottomUpWithFade(
+                widget.hideChild?.slideBottomUpWithFade(
                   shouldAnimate: !initialBuild,
                   duration: widget.duration,
                   curve: widget.curve,
@@ -186,9 +186,9 @@ class TSlideShrink extends StatelessWidget {
     curve: curve,
     child: show
         ? (child ?? builder?.call(context, lazyChild!()) ?? lazyChild!())
-              .tSlideBottomUpWithFade(duration: duration, curve: curve)
+              .slideBottomUpWithFade(duration: duration, curve: curve)
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.tSlideBottomUpWithFade(
+              hideChild?.slideBottomUpWithFade(
                 duration: duration,
                 curve: curve,
               ) ??
