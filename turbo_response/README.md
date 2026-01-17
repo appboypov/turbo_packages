@@ -93,7 +93,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  turbo_response: ^1.0.1
+  turbo_response: ^1.1.0
 ```
 
 Works out of the box with both Dart and Flutter projects - no additional setup required!

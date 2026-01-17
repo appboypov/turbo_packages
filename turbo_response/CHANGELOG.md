@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-17
+
+### Changed
+* Converted package from Flutter to pure Dart
+* Removed `flutter_test` from dev_dependencies
+* Updated Makefile to use `dart` commands instead of `flutter` commands
+* Converted example application from Flutter app to pure Dart CLI script
+* Removed all Flutter platform-specific files (android, ios, linux, macos, windows, web)
+
+### Platform
+* Package now requires only Dart SDK, no Flutter SDK needed
+* All tooling updated to use pure Dart commands
+
 ## [1.0.1] - 2026-01-01
 
 ### Changed
