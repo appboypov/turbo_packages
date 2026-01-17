@@ -1,5 +1,5 @@
-import 'package:example/data/constants/const_durations.dart';
-import 'package:example/widgets/util/shrink.dart';
+import 'package:turbo_notifiers_example/data/constants/const_durations.dart';
+import 'package:turbo_notifiers_example/widgets/util/shrink.dart';
 import 'package:flutter/material.dart';
 
 import '../util/custom_button.dart';

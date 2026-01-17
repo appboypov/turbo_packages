@@ -1,4 +1,4 @@
-import 'package:example/views/second/second_veto_view.dart';
+import 'package:turbo_mvvm_example/views/second/second_veto_view.dart';
 
 /// Holds arguments for the [SecondVetoView] to demonstrate the [TurboViewModel.arguments] functionality.
 class SecondVetoViewArguments {

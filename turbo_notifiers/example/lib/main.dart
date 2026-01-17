@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:example/widgets/example_implementations/turbo_notifier_example.dart';
+import 'package:turbo_notifiers_example/widgets/example_implementations/turbo_notifier_example.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';

@@ -1,4 +1,4 @@
-import 'package:example/views/second/second_veto_view_arguments.dart';
+import 'package:turbo_mvvm_example/views/second/second_veto_view_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 

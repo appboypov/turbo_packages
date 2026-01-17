@@ -1,7 +1,7 @@
-import 'package:example/turbo_firestore_api/data/dtos/example_dto.dart';
-import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
+import 'package:turbo_firestore_api_example/main.dart';
+import 'package:turbo_firestore_api_example/turbo_firestore_api/data/dtos/example_dto.dart';
 
 class TurboFirestoreApiView extends StatelessWidget {
   const TurboFirestoreApiView({super.key});
