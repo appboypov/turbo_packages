@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import '../constants/t_constants.dart';
+import '../constants/t_durations.dart';
 
 class TAnimatedSize extends StatelessWidget {
   const TAnimatedSize({

@@ -1,4 +1,5 @@
-export 'src/constants/t_constants.dart';
+export 'src/constants/t_durations.dart';
+export 'src/constants/t_widgets.dart';
 export 'src/extensions/t_animation_extension.dart';
 export 'src/extensions/t_duration_extension.dart';
 export 'src/extensions/t_num_extension.dart';

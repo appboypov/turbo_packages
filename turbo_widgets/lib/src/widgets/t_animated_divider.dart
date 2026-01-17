@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/t_constants.dart';
+import '../constants/t_durations.dart';
 
 /// An animated divider that fades in/out based on visibility.
 class TAnimatedDivider extends StatelessWidget {

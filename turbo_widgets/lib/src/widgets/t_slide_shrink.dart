@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/t_constants.dart';
+import '../constants/t_durations.dart';
+import '../constants/t_widgets.dart';
 import '../extensions/t_animation_extension.dart';
 import '../typedefs/t_lazy_locator_def.dart';
 import 't_animated_size.dart';

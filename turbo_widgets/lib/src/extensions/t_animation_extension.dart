@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../constants/t_constants.dart';
+import '../constants/t_durations.dart';
 import 't_duration_extension.dart';
 
 extension TAnimationExtension on Widget {
