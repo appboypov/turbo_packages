@@ -5,7 +5,7 @@ import 't_duration_extension.dart';
 
 extension TAnimationExtension on Widget {
   Widget slideBottomUp({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double size = 1,
     double begin = 1,
@@ -22,7 +22,7 @@ extension TAnimationExtension on Widget {
       );
 
   Widget slideDownWithFade({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double begin = -0.2,
     double end = 0,
@@ -42,7 +42,7 @@ extension TAnimationExtension on Widget {
       .fadeIn();
 
   Widget slideBottomUpWithFade({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double begin = 0.2,
     double end = 0,
@@ -69,7 +69,7 @@ extension TAnimationExtension on Widget {
 
   Widget fade({
     Key? key,
-    Duration duration = TDurations.durationsAnimationX0p5,
+    Duration duration = TDurations.animationX0p5,
     Duration? delay,
     double? target,
     bool? autoPlay,
@@ -80,7 +80,7 @@ extension TAnimationExtension on Widget {
 
   Widget fadeWithoutRepaint({
     Key? key,
-    Duration duration = TDurations.durationsAnimationX0p5,
+    Duration duration = TDurations.animationX0p5,
     Duration? delay,
     double? target,
     bool? autoPlay,
@@ -92,7 +92,7 @@ extension TAnimationExtension on Widget {
   ).fade(duration: duration, delay: delay, curve: curve);
 
   Widget slideBottomDownWithFade({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double begin = 0,
     double end = 1,
@@ -110,7 +110,7 @@ extension TAnimationExtension on Widget {
       .fadeOut();
 
   Widget slideOutLeftWithFade({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double size = 1,
     double begin = 0,
@@ -130,7 +130,7 @@ extension TAnimationExtension on Widget {
 
   Widget slideInRightWithFade({
     Key? key,
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double size = 1,
     double begin = 1,
@@ -149,7 +149,7 @@ extension TAnimationExtension on Widget {
 
   Widget slideInLeftWithFade({
     Key? key,
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? delay,
     double size = 1,
     double begin = -1,
@@ -167,7 +167,7 @@ extension TAnimationExtension on Widget {
       .fadeIn();
 
   Widget slideInRightOutLeftWithFade({
-    Duration duration = TDurations.durationsAnimation,
+    Duration duration = TDurations.animation,
     Duration? slideInDelay,
     double size = 1,
     double slideInBegin = 1,

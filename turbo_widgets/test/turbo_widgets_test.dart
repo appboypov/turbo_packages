@@ -261,13 +261,13 @@ void main() {
   });
 
   group('Constants', () {
-    test('TDurations.durationsAnimation is 225ms', () {
-      expect(TDurations.durationsAnimation, equals(const Duration(milliseconds: 225)));
+    test('TDurations.animation is 225ms', () {
+      expect(TDurations.animation, equals(const Duration(milliseconds: 225)));
     });
 
-    test('TDurations.durationsAnimationX2 is 450ms', () {
+    test('TDurations.animationX2 is 450ms', () {
       expect(
-        TDurations.durationsAnimationX2,
+        TDurations.animationX2,
         equals(const Duration(milliseconds: 450)),
       );
     });

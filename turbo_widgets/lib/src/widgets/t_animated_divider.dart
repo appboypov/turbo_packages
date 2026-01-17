@@ -9,7 +9,7 @@ class TAnimatedDivider extends StatelessWidget {
     this.height = 0.5,
     this.thickness = 0.5,
     this.color,
-    this.duration = TDurations.durationsAnimation,
+    this.duration = TDurations.animation,
   });
 
   final bool show;
