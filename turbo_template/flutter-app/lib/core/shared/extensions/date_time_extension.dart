@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
 import 'package:turbo_flutter_template/core/shared/dtos/current_week_dto.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/date_format.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
 
 abstract class DateTimeUtils {
   static DateTime latestOf(DateTime a, DateTime b) => a.isAfter(b) ? a : b;
@@ -16,22 +16,34 @@ extension DateTimeExtension on DateTime {
   }
 
   String asMemberSinceString({
-    required BuildContext context,
+    required Strings strings,
     DateFormat dateFormat = DateFormat.defaultValue,
-  }) =>
-      context.strings.memberSinceCreatedAtString(parseDateFormat(dateFormat: dateFormat));
+  }) => strings.memberSinceCreatedAtString(
+    parseDateFormat(
+      dateFormat: dateFormat,
+      strings: strings,
+    ),
+  );
 
   String asCreatedAtString({
     DateFormat dateFormat = DateFormat.defaultValue,
-    required BuildContext context,
-  }) =>
-      context.strings.createdAtDateString(parseDateFormat(dateFormat: dateFormat));
+    required Strings strings,
+  }) => strings.createdAtDateString(
+    parseDateFormat(
+      dateFormat: dateFormat,
+      strings: strings,
+    ),
+  );
 
   String asLastUpdatedString({
     DateFormat dateFormat = DateFormat.defaultValue,
-    required BuildContext context,
-  }) =>
-      context.strings.lastUpdateAtString(parseDateFormat(dateFormat: dateFormat));
+    required Strings strings,
+  }) => strings.lastUpdateAtString(
+    parseDateFormat(
+      dateFormat: dateFormat,
+      strings: strings,
+    ),
+  );
 
   DateTime get asUpcomingBirthday {
     final now = gNow;
@@ -72,7 +84,7 @@ extension DateTimeExtension on DateTime {
   DateTime get nextDay => add(const Duration(days: 1));
 
   String asRelativeDeadlineString({
-    required BuildContext context,
+    required Strings strings,
     DateFormat dateFormat = DateFormat.defaultValue,
   }) {
     final now = gNow.asStartOfDay;
@@ -82,67 +94,70 @@ extension DateTimeExtension on DateTime {
     if (difference < 0) {
       final daysPast = difference.abs();
       if (daysPast == 1) {
-        return context.strings.overdueOneDay;
+        return strings.overdueOneDay;
       } else {
-        return context.strings.overdueDays(daysPast);
+        return strings.overdueDays(daysPast);
       }
     }
 
     if (difference == 0) {
-      return context.strings.today;
+      return strings.today;
     }
 
     if (difference <= 14) {
       if (difference == 1) {
-        return context.strings.inOneDay;
+        return strings.inOneDay;
       } else {
-        return context.strings.inDays(difference);
+        return strings.inDays(difference);
       }
     }
 
     if (difference <= 60) {
       final weeks = (difference / 7).floor();
       if (weeks == 1) {
-        return context.strings.inOnePlusWeek;
+        return strings.inOnePlusWeek;
       } else {
-        return context.strings.inWeeksPlus(weeks);
+        return strings.inWeeksPlus(weeks);
       }
     }
 
     final months = (difference / 30).floor();
     if (months == 1) {
-      return context.strings.inOneMonth;
+      return strings.inOneMonth;
     } else {
-      return context.strings.inMonths(months);
+      return strings.inMonths(months);
     }
   }
 
-  String asRelativeTimeAgo({required BuildContext context}) {
+  String asRelativeTimeAgo({required Strings strings}) {
     final now = gNow;
     final difference = now.difference(this);
 
     if (difference.inMinutes < 1) {
-      return context.strings.justNow;
+      return strings.justNow;
     }
 
     if (difference.inMinutes < 60) {
-      return context.strings.minutesAgo(difference.inMinutes);
+      return strings.minutesAgo(difference.inMinutes);
     }
 
     if (difference.inHours < 24) {
-      return context.strings.hoursAgo(difference.inHours);
+      return strings.hoursAgo(difference.inHours);
     }
 
     final targetDate = asStartOfDay;
     final yesterday = now.subtract(const Duration(days: 1)).asStartOfDay;
     if (targetDate.isAtSameMomentAs(yesterday)) {
-      return context.strings.yesterday;
+      return strings.yesterday;
     }
 
     if (difference.inDays < 7) {
-      return context.strings.daysAgo(difference.inDays);
+      return strings.daysAgo(difference.inDays);
     }
 
-    return parseDateFormat(dateFormat: DateFormat.defaultValue);
+    return parseDateFormat(
+      dateFormat: DateFormat.defaultValue,
+      strings: strings,
+    );
   }
 }

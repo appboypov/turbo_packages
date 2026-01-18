@@ -1,32 +1,20 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:ui';
 
 class Mutex {
-  bool _isLocked = false;
-  final Completer<void> _lockCompleter = Completer<void>();
+  final _completerQueue = Queue<Completer>();
 
-  Future<void> lockAndRun({
-    required Future<void> Function(void Function() unlock) run,
-  }) async {
-    await _lock();
-    try {
-      await run(_unlock);
-    } finally {
-      _unlock();
+  FutureOr<T> lockAndRun<T>({required FutureOr<T> Function(VoidCallback unlock) run}) async {
+    final completer = Completer();
+    _completerQueue.add(completer);
+    if (_completerQueue.first != completer) {
+      await _completerQueue.removeFirst().future;
     }
+    final value = await run(() => completer.complete());
+    _completerQueue.remove(completer);
+    return value;
   }
 
-  Future<void> _lock() async {
-    while (_isLocked) {
-      await _lockCompleter.future;
-    }
-    _isLocked = true;
-  }
-
-  void _unlock() {
-    _isLocked = false;
-    if (!_lockCompleter.isCompleted) {
-      _lockCompleter.complete();
-    }
-  }
+  void dispose() => _completerQueue.clear();
 }
-

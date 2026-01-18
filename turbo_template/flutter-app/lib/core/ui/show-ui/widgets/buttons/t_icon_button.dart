@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/t_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_icon.dart';
-
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_icon.dart';
 import 'release_scale_button.dart';
 
 class TIconButton extends StatelessWidget {

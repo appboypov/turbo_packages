@@ -170,13 +170,13 @@ class TIconContainer extends StatelessWidget {
   }
 }
 
-class TIconOld extends StatelessWidget {
-  const TIconOld(this.iconData, {Key? key, this.iconSize = IconSize.small, this.color})
+class TIconSmall extends StatelessWidget {
+  const TIconSmall(this.iconData, {Key? key, this.iconSize = IconSize.small, this.color})
     : super(key: key);
 
-  const TIconOld.small(this.iconData, {super.key, this.color}) : iconSize = IconSize.small;
+  const TIconSmall.small(this.iconData, {super.key, this.color}) : iconSize = IconSize.small;
 
-  const TIconOld.xSmall(this.iconData, {super.key, this.color}) : iconSize = IconSize.xSmall;
+  const TIconSmall.xSmall(this.iconData, {super.key, this.color}) : iconSize = IconSize.xSmall;
 
   final IconData iconData;
   final IconSize iconSize;

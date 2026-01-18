@@ -79,7 +79,7 @@ class TColorContainer extends StatelessWidget {
                 spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (iconData != null) TIconOld.small(iconData!, color: pIconTextColor),
+                  if (iconData != null) TIconSmall.small(iconData!, color: pIconTextColor),
                   if (text != null)
                     AutoSizeText(
                       text!,

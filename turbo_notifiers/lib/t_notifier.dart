@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:turbo_notifiers/turbo_change_notifier.dart';
+import 'package:turbo_notifiers/t_change_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended capabilities.
-class TNotifier<T> extends TurboChangeNotifier
+class TNotifier<T> extends TChangeNotifier
     implements ValueListenable<T> {
   TNotifier(
     this._value, {

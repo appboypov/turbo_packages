@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/crud.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/turbo_notifiers.dart';
 
 class ActiveItemsBuilder<T> extends StatefulWidget {
   ActiveItemsBuilder({

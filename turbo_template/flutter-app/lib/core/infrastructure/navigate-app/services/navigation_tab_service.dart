@@ -4,7 +4,7 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/na
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class NavigationTabService with Turbolytics {

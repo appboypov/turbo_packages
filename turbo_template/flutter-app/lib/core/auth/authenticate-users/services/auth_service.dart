@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/analytics/user_analytics.dart';
@@ -15,17 +16,15 @@ import 'package:turbo_flutter_template/core/shared/extensions/map_extension.dart
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/called_by_mutex.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
-
-import '../../../state/manage-state/extensions/completer_extension.dart';
 
 class AuthService extends SyncService<User?>
     with Turbolytics<UserAnalytics>, FirebaseAuthExceptionHandler {

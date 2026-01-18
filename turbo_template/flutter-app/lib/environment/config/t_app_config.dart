@@ -11,6 +11,12 @@ abstract class TAppConfig {
 
   /// Display name of the application.
   String get appName;
+
+  /// Privacy policy URL of the application.
+  String get privacyPolicyUrl;
+
+  /// Terms of service URL of the application.
+  String get termsOfServiceUrl;
 }
 
 /// Default template app configuration.
@@ -26,4 +32,10 @@ class TemplateAppConfig extends TAppConfig {
 
   @override
   String get appName => 'Turbo Template';
+
+  @override
+  String get privacyPolicyUrl => 'https://example.com/privacy';
+
+  @override
+  String get termsOfServiceUrl => 'https://example.com/terms';
 }

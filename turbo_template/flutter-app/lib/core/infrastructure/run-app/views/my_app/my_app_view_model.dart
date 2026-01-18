@@ -137,7 +137,7 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
         await Turbolytics.disposeMe();
       }
       Turbolytics.setUp(
-        logLevel: LogLevel.debug,
+        logLevel: TLogLevel.debug,
         logTime: false,
         addAnalyticsToCrashReports: true,
         maxLinesStackTrace: 100,

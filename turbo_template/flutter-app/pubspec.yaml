@@ -30,7 +30,7 @@ dependencies:
   path_provider: ^2.1.5
   provider: ^6.1.5+1
   rxdart: ^0.28.0
-  shadcn_ui: ^0.43.0
+  shadcn_ui: ^0.43.3
   shake_gesture: ^2.0.0
   smooth_sheets: ^0.16.0
   top_snackbar_flutter: ^3.3.0
@@ -45,6 +45,7 @@ dependencies:
   url_strategy: ^0.3.0
   json_annotation: ^4.9.0
   firebase_crashlytics: ^5.0.6
+  flutter_phoenix: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +58,6 @@ dev_dependencies:
   mockito: ^5.4.5
   yaml: ^3.1.2
   icons_launcher: ^3.0.1
-  intl_utils: ^2.8.13
 
   firebase_storage_platform_interface: any
   firebase_core_platform_interface: any
@@ -140,11 +140,7 @@ flutter:
         - asset: assets/fonts/Nunito-BlackItalic.ttf
           weight: 900
 
-flutter_intl:
-  enabled: true
-  main_locale: en
-
 flutter_gen:
-  output: lib/gen/
+  output: lib/generated/
   integrations:
     flutter_svg: true

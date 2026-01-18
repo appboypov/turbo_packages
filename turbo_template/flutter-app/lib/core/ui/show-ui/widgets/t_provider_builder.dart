@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/config/turbo_breakpoint_config.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/config/t_breakpoint_config.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/box_constraints_extension.dart';

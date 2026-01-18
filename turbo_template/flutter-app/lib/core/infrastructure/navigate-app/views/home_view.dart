@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/l10n/globals/g_strings.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

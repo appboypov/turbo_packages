@@ -5,15 +5,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:turbo_firestore_api/constants/t_values.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/enums/auth_view_mode.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/register_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/email_service.dart';
+import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/utils/min_duration_completer.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
+import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
+import 'package:turbo_flutter_template/core/ux/provide-feedback/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
+import 'package:turbo_flutter_template/environment/globals/g_env.dart';
+import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
 import 'package:veto/veto.dart';
+
+import '../../../../state/manage-state/extensions/completer_extension.dart';
+import '../../../../state/manage-state/utils/mutex.dart';
 
 class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagement {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -28,8 +45,6 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
   final _emailService = EmailService.locate;
   final _authService = AuthService.locate;
   final _localStorageService = LocalStorageService.locate;
-  final _authStepService = AuthStepService.locate;
-  final _homeRouter = HomeRouter.locate;
   final _firebaseAuth = FirebaseAuth.instance;
   DialogService get _dialogService => DialogService.locate;
 
@@ -39,18 +54,6 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
   Future<void> initialise() async {
     await _authService.isReady;
     await _canInit.future;
-    if (_authService.hasAuth.value) {
-      await _authStepService.isReady;
-      final result = await _authStepService.handleAuthStep();
-      switch (result) {
-        case StepResult.didNavigate:
-          break;
-        case StepResult.didNothing:
-          _homeRouter.goHomeView();
-          return;
-      }
-      log.info('Startup step handled!');
-    }
     _authViewMode.addListener(_onAuthViewModeChanged);
     _showAgreeToPrivacyCheckBox.addListener(_onShowAgreePrivacyCheckbox);
     _onAuthViewModeChanged();
@@ -75,8 +78,8 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
   final FocusNode sendForgotPasswordFocusNode = FocusNode();
   final FocusNode loginButtonFocusNode = FocusNode();
   final FocusNode registerButtonFocusNode = FocusNode();
-  final _authViewMode = Informer<AuthViewMode>(AuthViewMode.defaultValue);
-  final _showAgreeToPrivacyCheckBox = Informer<bool>(false);
+  final _authViewMode = TNotifier<AuthViewMode>(AuthViewMode.defaultValue);
+  final _showAgreeToPrivacyCheckBox = TNotifier<bool>(false);
   final _loginForm = LoginForm.locate;
   final _registerForm = RegisterForm.locate;
   final _forgotPasswordForm = ForgotPasswordForm.locate;
@@ -178,17 +181,6 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
   Future<void> _tryCreateUserDocAndNextView({required String userId, required String email}) async {
     await _authService.isReady;
     await _localStorageService.isReady;
-    await _authStepService.isReady;
-    final result = await _authStepService.handleAuthStep(
-      acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt,
-    );
-    switch (result) {
-      case StepResult.didNavigate:
-        break;
-      case StepResult.didNothing:
-        _homeRouter.goHomeView();
-        break;
-    }
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
@@ -241,7 +233,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
       if (shouldVisit != true) return;
 
       setBusy(isBusy, busyType: BusyType.indicatorBackdropIgnorePointer);
-      await _urlLauncherService.tryLaunchUrl(url: kValuesPrivacyPolicyUrl);
+      await _urlLauncherService.tryLaunchUrl(url: TValues.noAuthId);
     } catch (error, stackTrace) {
       log.error(
         'Unexpected ${error.runtimeType} caught while trying to launch privacy policy url!',
@@ -263,7 +255,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
       if (shouldVisit != true) return;
 
       setBusy(isBusy, busyType: BusyType.indicatorBackdropIgnorePointer);
-      await _urlLauncherService.tryLaunchUrl(url: kValuesTermsOfServiceUrl);
+      await _urlLauncherService.tryLaunchUrl(url: gConfig.privacyPolicyUrl);
     } catch (error, stackTrace) {
       log.error(
         'Unexpected ${error.runtimeType} caught while trying to launch terms of service url!',
@@ -320,9 +312,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
                   },
                 );
 
-                if (authResponse.isSuccess) {
-                  await _tryCreateUserDocAndNextView(userId: authResponse.result.uid, email: email);
-                } else {
+                if (!authResponse.isSuccess) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _loginForm.password.requestFocus();
                   });

@@ -3,9 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 class Throttler {
-  Throttler({
-    this.duration = TDurations.throttle,
-  });
+  Throttler({this.duration = TDurations.throttle});
 
   Timer? _timer;
   VoidCallback? _pendingAction;

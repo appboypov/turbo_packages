@@ -4,7 +4,7 @@ import 'package:turbolytics/turbolytics.dart';
 /// Firebase Analytics implementation for the turbolytics AnalyticsInterface.
 ///
 /// Provides analytics tracking through Firebase Analytics.
-class AnalyticsImplementation implements AnalyticsInterface {
+class AnalyticsImplementation implements TAnalyticsInterface {
   final _analytics = FirebaseAnalytics.instance;
 
   @override

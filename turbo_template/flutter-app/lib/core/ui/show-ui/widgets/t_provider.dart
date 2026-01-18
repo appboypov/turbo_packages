@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/config/turbo_breakpoint_config.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/config/t_breakpoint_config.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';

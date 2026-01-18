@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/config/turbo_breakpoint_config.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/config/t_breakpoint_config.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_orientation.dart';
 

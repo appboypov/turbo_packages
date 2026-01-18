@@ -14,6 +14,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/dialog_constraints.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_icon.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/text_input_and_dropdown_sheet.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/widgets/t_form_field.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/utils/haptic_button_utils.dart';
@@ -268,7 +269,7 @@ class DialogService with Turbolytics {
         formFieldConfig: formFieldConfig,
         iconLabelDto: iconLabelDto,
         builder: (context, config, child) => ShadInput(
-          leading: TIconOld(leadingIcon),
+          leading: TIconSmall(leadingIcon),
           enabled: config.isEnabled && !config.isReadOnly,
           placeholder: Text(formFieldHint),
           onSubmitted: (_) => onOkButtonPressed(context),
@@ -315,7 +316,7 @@ class DialogService with Turbolytics {
         formFieldConfig: formFieldConfig,
         iconLabelDto: iconLabelDto,
         builder: (context, config, child) => ShadInput(
-          leading: TIconOld(leadingIcon),
+          leading: TIconSmall(leadingIcon),
           minLines: minLines,
           maxLines: maxLines,
           enabled: config.isEnabled && !config.isReadOnly,

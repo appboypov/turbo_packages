@@ -71,7 +71,7 @@ class TextInputAndDropdownSheet<T> extends StatelessWidget {
         formFieldConfig: textInputConfig,
         iconLabelDto: iconLabelDto,
         builder: (context, config, child) => ShadInput(
-          leading: TIconOld(leadingIcon),
+          leading: TIconSmall(leadingIcon),
           placeholder: Text(textFieldHint),
           onSubmitted: (value) => onOkButtonPressed(context),
           controller: config.textEditingController,

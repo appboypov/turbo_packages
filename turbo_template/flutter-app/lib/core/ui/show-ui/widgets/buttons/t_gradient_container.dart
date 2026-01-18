@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/config/t_background.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/button_width_behaviour.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gradient.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TGradientContainer extends StatelessWidget {
   const TGradientContainer({
@@ -35,7 +42,7 @@ class TGradientContainer extends StatelessWidget {
     final pIsHovered = isHovered == true;
     final colors = background.colors?.withReactiveHover(isHovered: pIsHovered);
     final button = AnimatedContainer(
-      duration: kDurationsAnimationX0p5,
+      duration: TDurations.animationX0p5,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(TSizes.buttonBorderRadius),

@@ -31,7 +31,7 @@ class HomeView extends StatelessWidget {
   static const String route = 'home-view';
 
   @override
-  Widget build(BuildContext context) => TurboViewModelBuilder<HomeViewModel>(
+  Widget build(BuildContext context) => TViewModelBuilder<HomeViewModel>(
         builder: (context, model, isInitialised, child) {
           return GestureDetector(
             onTap: model.focusNode.unfocus,
@@ -55,7 +55,7 @@ class HomeView extends StatelessWidget {
       );
 }
 
-class HomeViewModel extends TurboViewModel<Object?> {
+class HomeViewModel extends TViewModel<Object?> {
   final TNotifier<int> _counter = TNotifier(0);
   ValueListenable<int> get counterListenable => _counter;
 

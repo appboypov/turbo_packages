@@ -4,15 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/user_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/throttler.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
-import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
-
-import '../../../state/manage-state/extensions/completer_extension.dart';
 
 /// A service that manages badge states across the application.
 ///
@@ -90,8 +87,6 @@ class BadgeService with Turbolytics {
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  bool _hasHouseholdInvites = false;
-  bool _hasUnreadNotifications = false;
   final _hasUnreadChangelog = TNotifier<bool>(false);
   final _showInboxBadge = TNotifier<bool>(false);
   var _isReady = Completer();
@@ -117,8 +112,8 @@ class BadgeService with Turbolytics {
   ///
   /// Uses throttling to prevent excessive updates when multiple state changes occur.
   void _manageShowInboxBadge() => _throttler.run(
-        () => _showInboxBadge.update(
-      _hasUnreadChangelog.value || _hasHouseholdInvites || _hasUnreadNotifications,
+    () => _showInboxBadge.update(
+      _hasUnreadChangelog.value,
     ),
   );
 
@@ -154,10 +149,10 @@ class BadgeService with Turbolytics {
       if (remoteVersion != null) {
         final isRemoteNewer =
             localVersion == null ||
-                _versionComparatorService.isNewerVersion(
-                  currentVersion: remoteVersion,
-                  lastReadVersion: localVersion,
-                );
+            _versionComparatorService.isNewerVersion(
+              currentVersion: remoteVersion,
+              lastReadVersion: localVersion,
+            );
 
         if (isRemoteNewer) {
           effectiveLastReadVersion = remoteVersion;
@@ -169,10 +164,10 @@ class BadgeService with Turbolytics {
       // Show badge if current version is newer than effective last read version
       final shouldShowBadge =
           effectiveLastReadVersion == null ||
-              _versionComparatorService.isNewerVersion(
-                currentVersion: currentVersion,
-                lastReadVersion: effectiveLastReadVersion,
-              );
+          _versionComparatorService.isNewerVersion(
+            currentVersion: currentVersion,
+            lastReadVersion: effectiveLastReadVersion,
+          );
 
       log.debug('Should show badge: $shouldShowBadge');
       _hasUnreadChangelog.update(shouldShowBadge);

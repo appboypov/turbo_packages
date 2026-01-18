@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'l10n_en.dart';
+import 'l10n_nl.dart';
 
 // ignore_for_file: type=lint
 
@@ -66,8 +67,8 @@ abstract class Strings {
 
   final String localeName;
 
-  static Strings? of(BuildContext context) {
-    return Localizations.of<Strings>(context, Strings);
+  static Strings of(BuildContext context) {
+    return Localizations.of<Strings>(context, Strings)!;
   }
 
   static const LocalizationsDelegate<Strings> delegate = _StringsDelegate();
@@ -91,7 +92,10 @@ abstract class Strings {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('nl'),
+  ];
 
   /// No description provided for @aHousehold.
   ///
@@ -5983,7 +5987,7 @@ class _StringsDelegate extends LocalizationsDelegate<Strings> {
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en'].contains(locale.languageCode);
+      <String>['en', 'nl'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_StringsDelegate old) => false;
@@ -5994,6 +5998,8 @@ Strings lookupStrings(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return StringsEn();
+    case 'nl':
+      return StringsNl();
   }
 
   throw FlutterError(
