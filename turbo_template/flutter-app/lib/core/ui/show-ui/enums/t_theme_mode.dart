@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/num_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gradient.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/generated/fonts.gen.dart';
 
@@ -160,6 +159,7 @@ enum TThemeMode {
             background: backgroundColor(TThemeMode.light),
           ),
           brightness: Brightness.light,
+          disableSecondaryBorder: true,
           cardTheme: cardTheme(TThemeMode.light),
           checkboxTheme: checkboxTheme,
           selectTheme: selectTheme,
@@ -172,9 +172,7 @@ enum TThemeMode {
           ghostButtonTheme: buttonTheme(TThemeMode.light),
           linkButtonTheme: buttonTheme(TThemeMode.light),
           outlineButtonTheme: buttonTheme(TThemeMode.light),
-          primaryButtonTheme: buttonTheme(
-            TThemeMode.light,
-          ).copyWith(gradient: TGradient.topCenter(colors: TColors.primaryLight.asGradient())),
+          primaryButtonTheme: buttonTheme(TThemeMode.light),
           radius: BorderRadius.circular(8),
           secondaryButtonTheme: buttonTheme(TThemeMode.light),
           textTheme: textTheme(TThemeMode.light),
@@ -193,6 +191,7 @@ enum TThemeMode {
             background: backgroundColor(TThemeMode.dark),
           ),
           brightness: Brightness.dark,
+          disableSecondaryBorder: true,
           popoverTheme: ShadPopoverTheme(
             decoration: ShadDecoration(border: ShadBorder.all(radius: BorderRadius.circular(16))),
           ),
@@ -202,9 +201,7 @@ enum TThemeMode {
           ghostButtonTheme: buttonTheme(TThemeMode.dark),
           linkButtonTheme: buttonTheme(TThemeMode.dark),
           outlineButtonTheme: buttonTheme(TThemeMode.dark),
-          primaryButtonTheme: buttonTheme(
-            TThemeMode.dark,
-          ).copyWith(gradient: TGradient.topCenter(colors: TColors.primaryDark.asGradient())),
+          primaryButtonTheme: buttonTheme(TThemeMode.dark),
           radius: BorderRadius.circular(8),
           secondaryButtonTheme: buttonTheme(TThemeMode.dark),
           textTheme: textTheme(TThemeMode.dark),
@@ -266,53 +263,108 @@ class CustomColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    required this.shell,
   });
 
+  final Color shell;
+
   const CustomColorScheme.light()
-      : super(
-    background: TColors.backgroundLight,
-    foreground: TColors.textPrimaryLight,
-    card: TColors.cardLight,
-    cardForeground: TColors.textPrimaryLight,
-    popover: TColors.dialogLight,
-    popoverForeground: TColors.textPrimaryLight,
-    primary: TColors.primaryLight,
-    primaryForeground: TColors.textPrimaryDark, // Contrast for black
-    secondary: TColors.secondaryLight,
-    secondaryForeground: TColors.textPrimaryLight, // Contrast for green
-    muted: TColors.mutedLight,
-    mutedForeground: TColors.textSecondaryLight,
-    accent: TColors.accentLight,
-    accentForeground: TColors.textPrimaryLight, // Contrast for cyan
-    destructive: TColors.destructiveLight,
-    destructiveForeground: TColors.textPrimaryDark, // Contrast for red
-    border: TColors.borderLight,
-    input: TColors.borderLight, // Use border color for input
-    ring: TColors.focusLight, // Use focus color for ring
-    selection: const Color(0x6600FFFF), // accentLight with opacity
-  );
+      : shell = TColors.shellLight,
+        super(
+          background: TColors.backgroundLight,
+          foreground: TColors.textPrimaryLight,
+          card: TColors.cardLight,
+          cardForeground: TColors.textPrimaryLight,
+          popover: TColors.dialogLight,
+          popoverForeground: TColors.textPrimaryLight,
+          primary: TColors.primaryLight,
+          primaryForeground: TColors.textPrimaryDark,
+          secondary: TColors.secondaryLight,
+          secondaryForeground: TColors.textPrimaryLight,
+          muted: TColors.mutedLight,
+          mutedForeground: TColors.textSecondaryLight,
+          accent: TColors.accentLight,
+          accentForeground: TColors.textPrimaryLight,
+          destructive: TColors.destructiveLight,
+          destructiveForeground: TColors.textPrimaryDark,
+          border: TColors.borderLight,
+          input: TColors.borderLight,
+          ring: TColors.focusLight,
+          selection: const Color(0xFFB4D7FF),
+        );
 
   const CustomColorScheme.dark()
-      : super(
-    background: TColors.backgroundDark,
-    foreground: TColors.textPrimaryDark,
-    card: TColors.cardDark,
-    cardForeground: TColors.textPrimaryDark,
-    popover: TColors.dialogDark,
-    popoverForeground: TColors.textPrimaryDark,
-    primary: TColors.primaryDark,
-    primaryForeground: TColors.textPrimaryDark, // Contrast for purple
-    secondary: TColors.secondaryDark,
-    secondaryForeground: TColors.textPrimaryLight, // Contrast for green
-    muted: TColors.mutedDark,
-    mutedForeground: TColors.textSecondaryDark,
-    accent: TColors.accentDark,
-    accentForeground: TColors.textPrimaryLight, // Contrast for cyan
-    destructive: TColors.destructiveDark,
-    destructiveForeground: TColors.textPrimaryDark, // Contrast for light red
-    border: TColors.borderDark,
-    input: TColors.borderDark, // Use border color for input
-    ring: TColors.focusDark, // Use focus color for ring
-    selection: const Color(0x664DEEEE), // accentDark with opacity
-  );
+      : shell = TColors.shellDark,
+        super(
+          background: TColors.backgroundDark,
+          foreground: TColors.textPrimaryDark,
+          card: TColors.cardDark,
+          cardForeground: TColors.textPrimaryDark,
+          popover: TColors.dialogDark,
+          popoverForeground: TColors.textPrimaryDark,
+          primary: TColors.primaryDark,
+          primaryForeground: TColors.textPrimaryLight,
+          secondary: TColors.secondaryDark,
+          secondaryForeground: TColors.textPrimaryDark,
+          muted: TColors.mutedDark,
+          mutedForeground: TColors.textSecondaryDark,
+          accent: TColors.accentDark,
+          accentForeground: TColors.textPrimaryDark,
+          destructive: TColors.destructiveDark,
+          destructiveForeground: TColors.textPrimaryDark,
+          border: TColors.borderDark,
+          input: TColors.borderDark,
+          ring: TColors.focusDark,
+          selection: const Color(0xFF355172),
+        );
+
+  @override
+  CustomColorScheme copyWith({
+    Color? background,
+    Color? foreground,
+    Color? card,
+    Color? cardForeground,
+    Color? popover,
+    Color? popoverForeground,
+    Color? primary,
+    Color? primaryForeground,
+    Color? secondary,
+    Color? secondaryForeground,
+    Color? muted,
+    Color? mutedForeground,
+    Color? accent,
+    Color? accentForeground,
+    Color? destructive,
+    Color? destructiveForeground,
+    Color? border,
+    Color? input,
+    Color? ring,
+    Color? selection,
+    Map<String, Color>? custom,
+    Color? shell,
+  }) {
+    return CustomColorScheme(
+      background: background ?? this.background,
+      foreground: foreground ?? this.foreground,
+      card: card ?? this.card,
+      cardForeground: cardForeground ?? this.cardForeground,
+      popover: popover ?? this.popover,
+      popoverForeground: popoverForeground ?? this.popoverForeground,
+      primary: primary ?? this.primary,
+      primaryForeground: primaryForeground ?? this.primaryForeground,
+      secondary: secondary ?? this.secondary,
+      secondaryForeground: secondaryForeground ?? this.secondaryForeground,
+      muted: muted ?? this.muted,
+      mutedForeground: mutedForeground ?? this.mutedForeground,
+      accent: accent ?? this.accent,
+      accentForeground: accentForeground ?? this.accentForeground,
+      destructive: destructive ?? this.destructive,
+      destructiveForeground: destructiveForeground ?? this.destructiveForeground,
+      border: border ?? this.border,
+      input: input ?? this.input,
+      ring: ring ?? this.ring,
+      selection: selection ?? this.selection,
+      shell: shell ?? this.shell,
+    );
+  }
 }

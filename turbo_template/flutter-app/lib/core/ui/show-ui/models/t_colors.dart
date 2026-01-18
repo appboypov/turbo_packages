@@ -9,73 +9,67 @@ class TColors {
   final TThemeMode themeMode;
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
+  // New York theme (Zinc color scheme)
 
-  static const primaryViolet = Color(0xFF8A2BE2);
-  static const primaryRed = Color(0xFFDC2626);
-  static const primaryOlive = Color(0xFFA8A03C);
-  static const primaryBody = Color(0xFFC0B4D4);
+  static const primaryLight = Color(0xff18181b);
+  static const primaryDark = Color(0xfffafafa);
 
-  static final primaryDivider = const Color(0xFFBE34D5).withValues(alpha: 0.5);
+  static const secondaryLight = Color(0xfff4f4f5);
+  static const secondaryDark = Color(0xff27272a);
 
-  static const primaryLight = Colors.black;
-  static const primaryDark = Color(0xFFB54FCA);
+  static const accentLight = Color(0xfff4f4f5);
+  static const accentDark = Color(0xff27272a);
 
-  static const secondaryLight = Color(0xFFA9A03D); // Mapped from secondaryDark in user schema
-  static const secondaryDark = Color(0xFFA9A03D);
+  static const backgroundLight = Color(0xFFFFFFFF);
+  static const backgroundDark = Color(0xff09090b);
 
-  static const accentLight = Color(0xFF00FFFF);
-  static const accentDark = Color(0xFF4DEEEE);
+  static const cardLight = Color(0xffffffff);
+  static const cardDark = Color(0xff09090b);
 
-  static const backgroundLight = Color(0xFFF5F5F5);
-  static const backgroundDark = Color(0xFF1E1033);
+  static const textPrimaryLight = Color(0xff09090b);
+  static const textPrimaryDark = Color(0xfffafafa);
 
-  static const cardLight = Color(0xFFFFFFFF);
-  static const cardDark = Color(0xFF2A1640);
+  static const textSecondaryLight = Color(0xff71717a);
+  static const textSecondaryDark = Color(0xffa1a1aa);
 
-  static const textPrimaryLight = Color(0xFF111111);
-  static const textPrimaryDark = Color(0xFFF8F8F8);
+  static const borderLight = Color(0xffe4e4e7);
+  static const borderDark = Color(0xff27272a);
 
-  static const textSecondaryLight = Color(0xFF6E6E6E);
-  static const textSecondaryDark = Color(0xFFBDBDBD);
+  static const destructiveLight = Color(0xffef4444);
+  static const destructiveDark = Color(0xffef4444);
 
-  static const borderLight = Color(0xFFEFE9E9);
-  static const borderDark = Color(0xFF3D2A5E);
+  static const focusLight = Color(0xff18181b);
+  static const focusDark = Color(0xffd4d4d8);
 
-  static const destructiveLight = Color(0xFFDC2625);
-  static const destructiveDark = Color(0xFFDC2625);
+  static const dialogLight = Color(0xffffffff);
+  static const dialogDark = Color(0xff09090b);
 
-  static const focusLight = primaryLight;
-  static const focusDark = Color(0xFFCE93D8);
+  static const mutedLight = Color(0xfff4f4f5);
+  static const mutedDark = Color(0xff27272a);
 
-  static const dialogLight = Color(0xFFF8F8F8);
-  static const dialogDark = Color(0xFF342252);
+  static const headingLight = Color(0xff09090b);
+  static const headingDark = Color(0xfffafafa);
 
-  static const mutedLight = Color(0xFFBDBDBD);
-  static const mutedDark = Color(0xFF666666);
+  static const textHintLight = Color(0xff71717a);
+  static const textHintDark = Color(0xffa1a1aa);
 
-  static const headingLight = Color(0xFF1A1A1A);
-  static const headingDark = Color(0xFFFFFFFF);
+  static const shellLight = Color(0xfffafafa);
+  static const shellDark = Color(0xff09090b);
 
-  static const textHintLight = Color(0xFF9E9E9E);
-  static const textHintDark = Color(0xFF757575);
+  static const dividerLight = Color(0xffe4e4e7);
+  static const dividerDark = Color(0xff27272a);
 
-  static const shellLight = Color(0xFFFFFFFF);
-  static const shellDark = Color(0xFF2D1A4A);
+  static const iconPrimaryLight = Color(0xff18181b);
+  static const iconPrimaryDark = Color(0xfffafafa);
 
-  static const dividerLight = Color(0xFFEEEEEE);
-  static const dividerDark = Color(0xFF413163);
+  static const iconPrimaryBgLight = Color(0xfff4f4f5);
+  static const iconPrimaryBgDark = Color(0xff27272a);
 
-  static const iconPrimaryLight = Color(0xFF411356);
-  static const iconPrimaryDark = Color(0xFFA64FC9);
+  static const iconSecondaryLight = Color(0xff71717a);
+  static const iconSecondaryDark = Color(0xffa1a1aa);
 
-  static const iconPrimaryBgLight = Color(0xFF480D66);
-  static const iconPrimaryBgDark = Color(0xFF2D0C3E);
-
-  static const iconSecondaryLight = Color(0xFF9D65B2);
-  static const iconSecondaryDark = Color(0xFF8A68A8);
-
-  static const iconSecondaryBgLight = Color(0xFF583068);
-  static const iconSecondaryBgDark = Color(0xFF271434);
+  static const iconSecondaryBgLight = Color(0xffe4e4e7);
+  static const iconSecondaryBgDark = Color(0xff3f3f46);
 
   static const successLight = Color(0xFF22C55E);
   static const successDark = Color(0xFF4ADE80);
@@ -86,14 +80,14 @@ class TColors {
   static const infoLight = Color(0xFF0288D1);
   static const infoDark = Color(0xFF4FC3F7);
 
-  static const subtitleLight = Color(0xFF71717B);
-  static const subtitleDark = Color(0xFFCE93D8);
-  static const captionLight = Color(0xFF7B1FA2);
-  static const captionDark = Color(0xFFAB47BC);
-  static const listItemLight = Color(0xFF1F053D);
-  static const listItemDark = Color(0xFFE1BEE7);
-  static const subLabelLight = Color(0xB21F053D);
-  static const subLabelDark = Color(0xFFB39DDB);
+  static const subtitleLight = Color(0xff71717a);
+  static const subtitleDark = Color(0xffa1a1aa);
+  static const captionLight = Color(0xff71717a);
+  static const captionDark = Color(0xffa1a1aa);
+  static const listItemLight = Color(0xff09090b);
+  static const listItemDark = Color(0xfffafafa);
+  static const subLabelLight = Color(0xff71717a);
+  static const subLabelDark = Color(0xffa1a1aa);
 
   // 🏗 HELPERS ------------------------------------------------------------------------------- \\
 
