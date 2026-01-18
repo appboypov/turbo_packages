@@ -1,17 +1,23 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:turbo_flutter_template/core/storage/manage-data/constants/data_keys.dart';
-import 'package:turbo_flutter_template/core/storage/save-local-data/constants/storage_keys.dart';
+import 'package:turbo_firestore_api/extensions/completer_extension.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
+import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
+import 'package:turbo_flutter_template/core/shared/constants/t_values.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/list_extension.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/enums/box_key.dart';
-import 'package:turbo_flutter_template/core/storage/save-local-data/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -24,98 +30,90 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   static void registerLazySingleton() =>
       GetIt.I.registerLazySingleton(LocalStorageService.new, dispose: (param) => param.dispose());
 
-  final FlutterSecureStorage _flutterSecureStorage = const FlutterSecureStorage();
+  // 📍 LOCATOR ------------------------------------------------------------------------------- \\
+  // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+
+  AuthService get _authService => AuthService.locate;
+  BadgeService get _badgeService => BadgeService.locate;
+  FlutterSecureStorage get _flutterSecureStorage => const FlutterSecureStorage();
+
+  // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   Future<void> _initialise() async {
-    const maxRetries = 3;
-    const retryDelay = Duration(milliseconds: 500);
-    
-    for (int attempt = 0; attempt < maxRetries; attempt++) {
-      try {
-        log.info('Initializing LocalStorageService... (attempt ${attempt + 1}/$maxRetries)');
-        final documentsDir = kIsWeb ? null : (await getApplicationDocumentsDirectory()).path;
-        Hive.init(documentsDir);
-        
-        _box = await Hive.openBox(
-          StorageKeys.deviceBoxKey,
-          encryptionCipher: HiveAesCipher(await _encryptionKey),
-        );
-        _isReady.completeIfNotComplete();
-        log.info('LocalStorageService initialized successfully');
-        return;
-      } on FileSystemException catch (error, stackTrace) {
-        if (error.osError?.errorCode == 35 && attempt < maxRetries - 1) {
-          // Lock file error (errno 35) - retry after delay
-          log.warning(
-            'Lock file error detected, retrying in ${retryDelay.inMilliseconds}ms... Error: $error',
-          );
-          await Future.delayed(retryDelay * (attempt + 1));
-          continue;
-        }
-        log.error(
-          'FileSystemException caught while initialising hive service',
-          error: error,
-          stackTrace: stackTrace,
-        );
-      } catch (error, stackTrace) {
-        log.error(
-          'Exception caught while initialising hive service',
-          error: error,
-          stackTrace: stackTrace,
-        );
-      }
-      
-      // If we get here, initialization failed
-      if (attempt == maxRetries - 1) {
-        log.error('Failed to initialize LocalStorageService after $maxRetries attempts');
-        // Complete anyway to prevent app from hanging
-        _isReady.completeIfNotComplete();
-      }
+    try {
+      log.info('Initializing LocalStorageService...');
+      Hive.init(kIsWeb ? null : (await getApplicationDocumentsDirectory()).path);
+      _box = await Hive.openBox(
+        '_deviceBoxKey',
+        encryptionCipher: HiveAesCipher(await _encryptionKey),
+      );
+      _isReady.completeIfNotComplete();
+    } catch (error, stackTrace) {
+      log.error(
+        'Exception caught while initialising hive service',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 
   @override
   void dispose() {
-    log.info('Clearing data during dispose...');
-    _box?.close();
+    log.info('Clearing _userBox data during dispose...');
+    log.info('User box cleared during dispose.');
     _isReady = Completer();
     super.dispose();
   }
 
+  // 👂 LISTENERS ----------------------------------------------------------------------------- \\
+  // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
+  // 🎩 STATE --------------------------------------------------------------------------------- \\
+
   Completer _isReady = Completer();
-  Box? _box;
+  late Box _box;
+
+  // 🛠 UTIL ---------------------------------------------------------------------------------- \\
+  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+
+  String? get lastChangelogVersionRead =>
+      _boxGet<String>(boxKey: BoxKey.lastChangelogVersionRead, id: null, userId: _userId);
+
+  bool didHappen({required Object id, required String userId}) =>
+      _boxGet<bool>(boxKey: BoxKey.didHappen, id: id, userId: userId) ?? false;
+
+  bool didSee({required Object id, required String userId}) =>
+      _boxGet<bool>(boxKey: BoxKey.didSee, id: id, userId: userId) ?? false;
 
   Future get isReady => _isReady.future;
 
-  bool get _isBoxReady => _box != null && _box!.isOpen;
-
   TThemeMode get themeMode =>
-      _isBoxReady && (_boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false)
-      ? TThemeMode.light
-      : TThemeMode.dark;
+      _boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false
+          ? TThemeMode.light
+          : TThemeMode.dark;
 
   TSupportedLanguage get language {
-    if (!_isBoxReady) {
-      return TSupportedLanguage.fromDeviceLocale();
-    }
-    
-    final storedLanguage = _boxGet<String>(boxKey: BoxKey.language, id: null, userId: null);
+    final storedLanguage = _boxGet<String>(
+      boxKey: BoxKey.language,
+      id: null,
+      userId: null,
+    );
 
+    // If a language is stored, return it
     if (storedLanguage != null) {
       return TSupportedLanguage.values.asNameMap()[storedLanguage] ?? TSupportedLanguage.en;
     }
 
+    // Otherwise, detect and use the device's system language
     return TSupportedLanguage.fromDeviceLocale();
   }
 
-  bool get hasStoredLanguage => _isBoxReady && _boxContains(userId: null, boxKey: BoxKey.language, id: null);
-
   Future<List<int>> get _encryptionKey async {
-    final encryptionKeyEncoded = await _flutterSecureStorage.read(key: DataKeys.hiveEncryptionKey);
+    final flutterSecureStorage = _flutterSecureStorage;
+    final encryptionKeyEncoded = await flutterSecureStorage.read(key: TKeys.hiveEncryptionKey);
     if (encryptionKeyEncoded == null) {
       final encryptionKey = Hive.generateSecureKey();
-      await _flutterSecureStorage.write(
-        key: DataKeys.hiveEncryptionKey,
+      await flutterSecureStorage.write(
+        key: TKeys.hiveEncryptionKey,
         value: base64UrlEncode(encryptionKey),
       );
       return encryptionKey;
@@ -124,10 +122,38 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     }
   }
 
+  DateTime? get skippedVerifyEmailDate =>
+      _boxGet<DateTime>(boxKey: BoxKey.skippedVerifyEmailDate, id: null, userId: _userId);
+
+  NavigationTab get navigationTab =>
+      NavigationTab.values.indexOrNull(
+        _boxGet<int>(
+          id: null,
+          userId: _userId,
+          boxKey: BoxKey.bottomNavigationIndex,
+          defaultValue: 0,
+        ) ??
+            0,
+      ) ??
+          NavigationTab.defaultValue;
+
+  /// Checks if a language preference has been stored
+  ///
+  /// Returns true if the user has previously saved a language preference,
+  /// false if this is the first launch and no preference exists
+  bool get hasStoredLanguage => _boxContains(
+    userId: null,
+    boxKey: BoxKey.language,
+    id: null,
+  );
+
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  String get _userId => _authService.userId ?? TValues.noAuthId;
+
   bool _boxContains({required String? userId, required BoxKey boxKey, required Object? id}) {
-    if (!_isBoxReady) return false;
     try {
-      final containsKey = _box!.containsKey(boxKey.genId(id: id, userId: userId));
+      final containsKey = _box.containsKey(boxKey.genId(id: id, userId: userId));
       log.info('Checking if [BoxKey] contains [$boxKey]: $containsKey');
       return containsKey;
     } catch (error, stackTrace) {
@@ -146,9 +172,8 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     required BoxKey boxKey,
     required Object? id,
   }) {
-    if (!_isBoxReady) return defaultValue;
     try {
-      final value = _box!.get(
+      final value = _box.get(
         boxKey.genId(id: id, userId: userId),
         defaultValue: defaultValue,
       );
@@ -160,7 +185,7 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
         error: error,
         stackTrace: stackTrace,
       );
-      return defaultValue;
+      return null;
     }
   }
 
@@ -170,13 +195,9 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     required Object? id,
     required T value,
   }) async {
-    if (!_isBoxReady) {
-      log.warning('Cannot insert $boxKey: box is not ready');
-      return;
-    }
     try {
       log.info('Updating [BoxKey] [$boxKey]: $value');
-      await _box!.put(boxKey.genId(id: id, userId: userId), value);
+      await _box.put(boxKey.genId(id: id, userId: userId), value);
       notifyListeners();
     } catch (error, stackTrace) {
       log.error(
@@ -187,6 +208,39 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     }
   }
 
+  Future<void> _boxDelete({
+    required String? userId,
+    required BoxKey hiveDeviceBox,
+    required Object? id,
+  }) async {
+    try {
+      log.info('Deleting [BoxKey] [$hiveDeviceBox]');
+      await _box.delete(hiveDeviceBox.genId(id: id, userId: userId));
+      notifyListeners();
+    } catch (error, stackTrace) {
+      log.error(
+        '${error.runtimeType} caught while deleting $hiveDeviceBox from device box',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  // 🏗 HELPERS ------------------------------------------------------------------------------- \\
+  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
+
+  Future<void> updateDidHappen({
+    required String userId,
+    required Object id,
+    bool didHappen = true,
+  }) async => _boxInsert(userId: userId, boxKey: BoxKey.didHappen, id: id, value: didHappen);
+
+  Future<void> updateDidSee({
+    required String userId,
+    required Object id,
+    bool didSee = true,
+  }) async => _boxInsert(userId: userId, boxKey: BoxKey.didSee, id: id, value: didSee);
+
   Future<void> updateTThemeMode({required TThemeMode themeMode}) async => _boxInsert(
     userId: null,
     boxKey: BoxKey.isLightMode,
@@ -196,4 +250,24 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
   Future<void> updateLanguage({required TSupportedLanguage language}) async =>
       _boxInsert(userId: null, boxKey: BoxKey.language, id: null, value: language.name);
+
+  Future<void> updateSkippedVerifyEmailDate() async =>
+      _boxInsert(userId: _userId, id: null, boxKey: BoxKey.skippedVerifyEmailDate, value: gNow);
+
+  void updateBottomNavigationIndex({required NavigationTab navigationTab}) => _boxInsert(
+    userId: null,
+    boxKey: BoxKey.bottomNavigationIndex,
+    value: navigationTab.index,
+    id: _userId,
+  );
+
+  Future<void> updateLastChangelogVersionRead({required String? version}) async {
+    await _boxInsert(
+      boxKey: BoxKey.lastChangelogVersionRead,
+      id: null,
+      userId: _userId,
+      value: version,
+    );
+    unawaited(_badgeService.manageHasUnreadChangelog());
+  }
 }

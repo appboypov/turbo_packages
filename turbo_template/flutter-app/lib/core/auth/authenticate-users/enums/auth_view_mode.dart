@@ -9,4 +9,3 @@ enum AuthViewMode {
   bool get isRegister => this == AuthViewMode.register;
   bool get isForgotPassword => this == AuthViewMode.forgotPassword;
 }
-

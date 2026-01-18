@@ -1,0 +1,64 @@
+part of 't_document_service.dart';
+
+/// A document service that allows notification after synchronizing data.
+///
+/// Extends [TDocumentService] to provide a hook for notifying after
+/// the local state has been updated with new data from Firestore.
+///
+/// Type Parameters:
+/// - [T] - The document type, must extend [TurboWriteableId<String, void>]
+/// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
+abstract class AfterSyncTDocumentService<T extends TSerializableId<String, void>,
+    API extends TFirestoreApi<T>> extends TDocumentService<T, API> {
+  /// Creates a new [AfterSyncTDocumentService] instance.
+  AfterSyncTDocumentService({required super.api});
+
+  /// Called after the local state has been updated with new data.
+  ///
+  /// Use this method to perform any necessary operations after
+  /// the document has been synchronized with local state.
+  ///
+  /// Parameters:
+  /// - [doc] - The new document from Firestore
+  Future<void> afterSyncNotifyUpdate(T? doc);
+
+  /// Handles incoming data updates from Firestore with post-sync notification.
+  ///
+  /// This callback is triggered when:
+  /// - New document data is received from Firestore
+  /// - The user's authentication state changes
+  ///
+  /// The method:
+  /// - Updates local state with new document data if user is authenticated
+  /// - Marks the service as ready after first update
+  /// - Notifies after sync via [afterSyncNotifyUpdate]
+  /// - Clears local state if user is not authenticated
+  ///
+  /// Parameters:
+  /// - [value] - The new document value from Firestore
+  /// - [user] - The current Firebase user
+  @override
+  Future<void> Function(T? value, User? user) get onData {
+    return (value, user) async {
+      if (user != null) {
+        log.debug('Updating doc for user ${user.uid}');
+        if (value != null) {
+          final pDoc = upsertLocalDoc(
+            id: value.id,
+            doc: (current, _) => value,
+          );
+          _isReady.completeIfNotComplete();
+          await afterSyncNotifyUpdate(pDoc);
+        } else {
+          _doc.update(null);
+          await afterSyncNotifyUpdate(value);
+        }
+        log.debug('Updated doc');
+      } else {
+        log.debug('User is null, clearing doc');
+        _doc.update(null);
+        await afterSyncNotifyUpdate(null);
+      }
+    };
+  }
+}

@@ -1,0 +1,4 @@
+enum TParseType {
+  raw,
+  withConverter,
+}

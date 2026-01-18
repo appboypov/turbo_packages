@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turbolytics/turbolytics.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/template_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 class ToastService with Turbolytics {
   static ToastService Function() get lazyLocate =>
@@ -17,11 +17,11 @@ class ToastService with Turbolytics {
     final totalLength = titleLength + subtitleLength;
 
     if (totalLength <= 40) {
-      return TemplateDurations.toastDefault;
+      return TDurations.toastDefault;
     }
 
     final extraDuration = Duration(milliseconds: ((totalLength - 40) / 10).ceil() * 150);
-    final calculatedDuration = TemplateDurations.toastDefault + extraDuration;
+    final calculatedDuration = TDurations.toastDefault + extraDuration;
 
     return calculatedDuration > const Duration(seconds: 6)
         ? const Duration(seconds: 6)

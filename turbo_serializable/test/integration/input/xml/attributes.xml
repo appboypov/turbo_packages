@@ -1,6 +1,0 @@
-<root>
-  <user id="123" type="admin">
-    <name>John</name>
-  </user>
-  <item count="5" enabled="true"/>
-</root>

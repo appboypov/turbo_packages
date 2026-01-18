@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/animations/widgets/shrinks.dart';
-import 'package:roomy_mobile/data/constants/k_durations.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/shrinks.dart';
 
 class TErrorLabel extends StatelessWidget {
   const TErrorLabel({
@@ -19,7 +17,7 @@ class TErrorLabel extends StatelessWidget {
   final EdgeInsets? padding;
 
   @override
-  Widget build(BuildContext context) => TVerticalShrink(
+  Widget build(BuildContext context) => VerticalShrink(
     alignment: Alignment.bottomCenter,
     fadeDuration: TDurations.animationX0p5,
     sizeDuration: TDurations.animationX0p5,

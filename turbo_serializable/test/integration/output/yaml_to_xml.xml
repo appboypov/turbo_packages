@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<root>
-  <firstName>John</firstName>
-  <lastName>Doe</lastName>
-  <age>30</age>
-  <active>true</active>
-</root>

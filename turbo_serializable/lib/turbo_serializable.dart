@@ -1,38 +1,70 @@
-/// A serialization abstraction for the turbo ecosystem.
+/// A serialization abstraction for the turbo ecosystem with multi-format support.
 ///
-/// This library provides optional multi-format serialization through the
-/// [TurboSerializable] class and its typed variant [TurboSerializableId].
-/// Uses [TurboSerializableConfig] to specify callbacks for serialization methods,
-/// with automatic conversion to all other supported formats.
-library;
+/// This library provides abstract base classes for objects that need to be
+/// serialized to multiple data formats (JSON, YAML, Markdown, XML) and
+/// validated before being written to storage systems like Firestore.
+///
+/// ## Core Classes
+///
+/// - [TSerializable]: Base class for objects that can be serialized to
+///   multiple formats (JSON, YAML, Markdown, XML)
+/// - [TSerializableId]: Base class for serializable objects with identifiers
+///
+/// ## Usage
+///
+/// ### Basic Serializable Object
+///
+/// ```dart
+/// class User extends TSerializable {
+///   User({required this.name, required this.age});
+///
+///   final String name;
+///   final int age;
+///
+///   @override
+///   Map<String, dynamic> toJson() => {
+///     'name': name,
+///     'age': age,
+///   };
+///
+///   @override
+///   String Function(Map<String, dynamic> json)? get yamlBuilder =>
+///       (json) => 'name: ${json['name']}\nage: ${json['age']}';
+/// }
+/// ```
+///
+/// ### Serializable Object with ID
+///
+/// ```dart
+/// class Document extends TSerializableId {
+///   Document({required this.id, required this.content});
+///
+///   @override
+///   final String id;
+///   final String content;
+///
+///   @override
+///   Map<String, dynamic> toJson() => {
+///     'id': id,
+///     'content': content,
+///   };
+/// }
+/// ```
+///
+/// ## Validation
+///
+/// All classes support validation through the [TWriteable.validate] method:
+///
+/// ```dart
+/// @override
+/// TurboResponse<T>? validate<T>() {
+///   if (name.isEmpty) {
+///     return TurboResponse.fail(error: 'Name cannot be empty');
+///   }
+///   return null;
+/// }
+/// ```
+library turbo_serializable;
 
-export 'abstracts/has_to_json.dart';
-export 'abstracts/turbo_serializable.dart';
-export 'abstracts/turbo_serializable_id.dart';
-export 'constants/turbo_constants.dart';
-export 'converters/case_converter.dart' show convertCase;
-export 'converters/format_converters.dart';
-export 'converters/xml_converter.dart';
-export 'enums/case_style.dart';
-export 'enums/serialization_format.dart';
-export 'generators/json_generator.dart' show JsonLayoutGenerator;
-export 'generators/markdown_generator.dart' show MarkdownLayoutGenerator;
-export 'generators/xml_generator.dart' show XmlLayoutGenerator;
-export 'generators/yaml_generator.dart' show YamlLayoutGenerator;
-export 'models/callout_meta.dart';
-export 'models/code_block_meta.dart';
-export 'models/divider_meta.dart';
-export 'models/emphasis_meta.dart';
-export 'models/json_meta.dart';
-export 'models/key_metadata.dart';
-export 'models/layout_aware_parse_result.dart';
-export 'models/list_meta.dart';
-export 'models/table_meta.dart';
-export 'models/turbo_serializable_config.dart';
-export 'models/whitespace_meta.dart';
-export 'models/xml_meta.dart';
-export 'models/yaml_meta.dart';
-export 'parsers/json_parser.dart' show JsonLayoutParser;
-export 'parsers/markdown_parser.dart' show MarkdownLayoutParser;
-export 'parsers/xml_parser.dart' show XmlLayoutParser;
-export 'parsers/yaml_parser.dart' show YamlLayoutParser;
+export 'abstracts/t_serializable.dart';
+export 'abstracts/t_serializable_id.dart';

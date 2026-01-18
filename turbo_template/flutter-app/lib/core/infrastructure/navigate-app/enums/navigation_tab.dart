@@ -1,45 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/l10n/globals/g_strings.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/list_position.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
 
-/// Represents the navigation tabs in the bottom navigation bar.
-///
-/// Each tab corresponds to a main section of the app accessible from
-/// the bottom navigation.
 enum NavigationTab {
-  /// Home/dashboard tab
   home,
-
-  /// Settings tab
   settings;
 
-  /// Returns the position of this tab in the navigation bar.
-  int get position => switch (this) {
-    NavigationTab.home => 0,
-    NavigationTab.settings => 1,
-  };
+  int get branchIndex {
+    switch (this) {
+      case NavigationTab.home:
+        return 0;
+      case NavigationTab.settings:
+        return 1;
+    }
+  }
 
-  /// Returns the tab at the given index.
-  static NavigationTab fromIndex(int index) => switch (index) {
-    0 => NavigationTab.home,
-    1 => NavigationTab.settings,
-    _ => NavigationTab.home,
-  };
+  ListPosition get listPosition {
+    if (index == 0) return ListPosition.first;
+    if (index == values.length - 1) return ListPosition.last;
+    return ListPosition.middle;
+  }
 
-  /// Returns the icon for this tab.
-  IconData get icon => switch (this) {
-    NavigationTab.home => Icons.home_outlined,
-    NavigationTab.settings => Icons.settings_outlined,
-  };
+  static List<NavigationTab> navigationTabs({required TDeviceType deviceType}) => values;
 
-  /// Returns the filled icon for this tab when selected.
-  IconData get selectedIcon => switch (this) {
-    NavigationTab.home => Icons.home,
-    NavigationTab.settings => Icons.settings,
-  };
+  static const defaultValue = NavigationTab.home;
 
-  /// Returns the localized label for this tab.
-  String get label => switch (this) {
-    NavigationTab.home => gStrings.home,
-    NavigationTab.settings => gStrings.settings,
-  };
+
+  String label({required BuildContext context}) {
+    final strings = context.strings;
+    switch (this) {
+      case NavigationTab.home:
+        return strings.home;
+      case NavigationTab.settings:
+        return strings.settings;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case NavigationTab.home:
+        return Icons.home_rounded;
+      case NavigationTab.settings:
+        return Icons.settings;
+    }
+  }
+
+  bool get isSettings => this == NavigationTab.settings;
+  bool get isHome => this == NavigationTab.home;
 }

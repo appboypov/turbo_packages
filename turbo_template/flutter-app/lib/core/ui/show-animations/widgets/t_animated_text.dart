@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 /// A widget that animates text changes with a sequential fade transition.
 ///
@@ -7,7 +7,6 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 /// smooth fade transitions when the text content changes. The animation consists
 /// of a fade out of the old text followed by a fade in of the new text.
 ///
-/// The default animation duration is [TDurations.animation] (225ms) for both
 /// fade in and fade out transitions.
 class TAnimatedText extends StatelessWidget {
   /// Creates a TAnimatedText widget.
@@ -24,7 +23,7 @@ class TAnimatedText extends StatelessWidget {
     this.textAlign,
     this.alignment = Alignment.topLeft,
     this.duration = TDurations.animation,
-    this.curve = Curves.easeInOut,
+    this.curve = Curves.fastOutSlowIn,
     super.key,
   });
 
@@ -47,34 +46,29 @@ class TAnimatedText extends StatelessWidget {
   final Curve curve;
 
   @override
-  Widget build(BuildContext context) => AnimatedSwitcher(
-        duration: duration,
-        reverseDuration: duration,
-        switchInCurve: curve,
-        switchOutCurve: curve,
-        layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-          return Stack(
-            alignment: alignment,
-            children: <Widget>[
-              ...previousChildren,
-              if (currentChild != null) currentChild,
-            ],
-          );
-        },
-        child: Text(
-          text,
-          key: ValueKey<String>(text),
-          style: style,
-          textAlign: textAlign,
-        ),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(
-            opacity: CurvedAnimation(
-              parent: animation,
-              curve: curve,
-            ),
-            child: child,
-          );
-        },
-      );
+  Widget build(BuildContext context) => AnimatedSize(
+    duration: duration,
+    clipBehavior: Clip.none,
+    curve: curve,
+    alignment: alignment,
+    child: AnimatedSwitcher(
+      duration: duration,
+      reverseDuration: duration,
+      switchInCurve: curve,
+      switchOutCurve: curve,
+      layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+        return Stack(
+          alignment: alignment,
+          children: <Widget>[...previousChildren, if (currentChild != null) currentChild],
+        );
+      },
+      child: Text(text, key: ValueKey<String>(text), style: style, textAlign: textAlign),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: animation, curve: curve),
+          child: child,
+        );
+      },
+    ),
+  );
 }

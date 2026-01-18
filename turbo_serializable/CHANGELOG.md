@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-01-18
+
+### Added
+- Simplified abstract base classes: `TSerializable` and `TSerializableId`
+- Builder-based serialization pattern with optional format builders (`yamlBuilder`, `markdownBuilder`, `xmlBuilder`)
+- Comprehensive Dart documentation for all classes and methods
+- Example project demonstrating simplified API usage
+
+### Changed
+- **BREAKING**: Renamed all classes to t-prefix convention (`TurboSerializable` → `TSerializable`, `TurboWriteable` → `TWriteable`)
+- **BREAKING**: Removed `TurboSerializableConfig` - serialization methods are now implemented directly via overrides
+- **BREAKING**: Removed all format converter functions (`jsonToYaml`, `yamlToJson`, etc.)
+- **BREAKING**: Removed all parsers and generators (layout-aware parsing, format conversion utilities)
+- **BREAKING**: Removed metadata support (`metaData` parameter, `HasToJson` interface)
+- **BREAKING**: Removed `isLocalDefault` parameter from ID-based classes
+- **BREAKING**: Removed case transformation utilities and `CaseStyle` enum
+- **BREAKING**: Removed layout preservation features and related models
+- Simplified API to focus on core serialization abstraction
+- Updated example project to demonstrate new simplified API
+
+### Removed
+- All format converter functions (12 conversion functions)
+- All parsers (`json_parser`, `yaml_parser`, `markdown_parser`, `xml_parser`)
+- All generators (`json_generator`, `yaml_generator`, `markdown_generator`, `xml_generator`)
+- Configuration classes (`TurboSerializableConfig`, `TurboConstants`)
+- Metadata models (`KeyMetadata`, `LayoutAwareParseResult`, format-specific metadata)
+- Utility classes (`CaseConverter`, `HasToJson` interface)
+- Enums (`CaseStyle`, `SerializationFormat`)
+- Comprehensive test suite and integration tests
+
+### Technical Details
+- Package now provides minimal abstraction layer for serialization
+- Focus on core functionality: `toJson()`, `validate()`, and optional format builders
+- Reduced complexity from multi-format conversion system to simple serialization base classes
+- Maintains compatibility with `turbo_response` for validation
+- All serialization format support is now optional and implemented via builder functions
+
 ## [0.2.0] - 2026-01-12
 
 ### Added

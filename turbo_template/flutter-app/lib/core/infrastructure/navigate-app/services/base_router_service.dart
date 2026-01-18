@@ -11,11 +11,11 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/a
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/page_transition_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/router_type.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class BaseRouterService with Turbolytics {

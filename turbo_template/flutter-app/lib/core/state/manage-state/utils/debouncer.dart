@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 class Debouncer {
   Debouncer({Duration duration = TDurations.animation}) : _duration = duration;

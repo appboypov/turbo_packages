@@ -84,16 +84,16 @@ class SensitiveData {
   final String? searchTerm;
 
   /// Type of search being performed
-  final TurboSearchTermType? searchTermType;
+  final TSearchTermType? searchTermType;
 
   /// Operation type identifier
   final String? type;
 
   /// Timestamp type for document creation
-  final TurboTimestampType? createTimeStampType;
+  final TTimestampType? createTimeStampType;
 
   /// Timestamp type for document updates
-  final TurboTimestampType? updateTimeStampType;
+  final TTimestampType? updateTimeStampType;
 
   /// Whether operation is part of a batch
   final bool? isBatch;

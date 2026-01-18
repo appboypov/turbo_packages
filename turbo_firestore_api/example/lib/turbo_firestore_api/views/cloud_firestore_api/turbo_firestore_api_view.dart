@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
+import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api_example/main.dart';
 import 'package:turbo_firestore_api_example/turbo_firestore_api/data/dtos/example_dto.dart';
 

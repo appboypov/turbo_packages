@@ -1,8 +1,8 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
-import 'package:turbo_firestore_api/apis/turbo_firestore_api.dart';
-import 'package:turbo_firestore_api/enums/turbo_search_term_type.dart';
+import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
+import 'package:turbo_firestore_api/enums/t_search_term_type.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/turbo_serializable.dart';
 
@@ -62,7 +62,7 @@ void main() {
       final response = await api.listBySearchTerm(
         searchTerm: 'Test',
         searchField: 'name',
-        searchTermType: TurboSearchTermType.startsWith,
+        searchTermType: TSearchTermType.startsWith,
       );
 
       if (response case Success(:final result)) {
@@ -210,7 +210,7 @@ class TestRequest extends TurboWriteable {
   }
 }
 
-class TestFirestoreApi extends TurboFirestoreApi {
+class TestFirestoreApi extends TFirestoreApi {
   TestFirestoreApi({
     required super.firebaseFirestore,
     required super.collectionPath,

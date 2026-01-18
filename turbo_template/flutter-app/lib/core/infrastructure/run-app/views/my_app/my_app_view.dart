@@ -13,18 +13,18 @@ import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusab
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/value_listenable_builder_x2.dart'
     show ValueListenableBuilderX2;
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/config/no_thumb_scroll_behaviour.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/constants/k_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/spacings.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/models/t_colors.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider_builder.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:veto/veto.dart';
 
 class MyAppView extends StatelessWidget {
@@ -36,7 +36,7 @@ class MyAppView extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelBuilder<MyAppViewModel>(
     isReactive: false,
     builder: (context, model, isInitialised, _) {
-      if (!isInitialised) return kWidgetsNothing;
+      if (!isInitialised) return TWidgets.nothing;
       return ValueListenableBuilderX2(
         valueListenable: model.themeMode,
         valueListenable2: model.language,

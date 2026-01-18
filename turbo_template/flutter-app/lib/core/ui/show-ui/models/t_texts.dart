@@ -1,7 +1,5 @@
 part of '../widgets/t_provider.dart';
 
-import 'package:turbo_flutter_template/core/ui/show-ui/models/t_colors.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/models/t_sizes.dart';
 
 class TTexts {
   const TTexts({required this.colors, required this.sizes, required this.theme});

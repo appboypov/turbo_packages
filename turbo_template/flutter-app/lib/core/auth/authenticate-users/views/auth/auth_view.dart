@@ -4,14 +4,22 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/enums/auth_v
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/constants/routes.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/shrinks.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/widgets/t_animated_gap.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/widgets/t_animated_text.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/constants/k_widgets.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/models/t_sizes.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/dtos/icon_label_dto.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/icon_collection.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_constraints.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_focus_order.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gap.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/widgets/t_form_field.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_strings.dart';
-import 'package:turbo_mvvm/data/models/turbo_view_model.dart';
+import 'package:turbo_mvvm/data/models/t_view_model.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 class AuthView extends StatelessWidget {
@@ -20,7 +28,7 @@ class AuthView extends StatelessWidget {
   static const String path = Routes.auth;
 
   @override
-  Widget build(BuildContext context) => TurboViewModelBuilder<AuthViewModel>(
+  Widget build(BuildContext context) => TViewModelBuilder<AuthViewModel>(
         builder: (context, model, isInitialised, child) {
           if (!isInitialised) return TWidgets.nothing;
           return ValueListenableBuilder(
@@ -118,7 +126,7 @@ class AuthView extends StatelessWidget {
                                               controller: config.textEditingController,
                                               onChanged: (value) => config.silentUpdateValue(value),
                                               trailing: AnimatedSwitcher(
-                                                duration: kDurationsAnimation,
+                                                duration: TDurations.animation,
                                                 child: authViewMode.isLogin
                                                     ? ExcludeFocus(
                                                         excluding: true,

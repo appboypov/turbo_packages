@@ -1,4 +1,0 @@
-enum TurboParseType {
-  raw,
-  withConverter,
-}

@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 class TAnimatedGap extends ImplicitlyAnimatedWidget {
   /// Creates a widget that animates its size when the [mainAxisExtent] changes.
@@ -9,14 +9,14 @@ class TAnimatedGap extends ImplicitlyAnimatedWidget {
   /// The [crossAxisExtent] must be either null or positive.
   const TAnimatedGap(
     this.mainAxisExtent, {
-    super.key,
+    Key? key,
     this.crossAxisExtent,
     this.color,
     Duration duration = TDurations.animation,
     Curve curve = Curves.easeInOut,
-  })  : assert(mainAxisExtent >= 0 && mainAxisExtent < double.infinity),
-        assert(crossAxisExtent == null || crossAxisExtent >= 0),
-        super(duration: duration, curve: curve);
+  }) : assert(mainAxisExtent >= 0 && mainAxisExtent < double.infinity),
+       assert(crossAxisExtent == null || crossAxisExtent >= 0),
+       super(key: key, duration: duration, curve: curve);
 
   /// The amount of space this widget takes in the direction of its parent.
   ///
@@ -45,18 +45,18 @@ class TAnimatedGapState extends AnimatedWidgetBaseState<TAnimatedGap> {
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _mainAxisExtent = visitor(
-      _mainAxisExtent,
-      widget.mainAxisExtent,
-      (dynamic value) => Tween<double>(begin: value as double),
-    ) as Tween<double>?;
+    _mainAxisExtent =
+        visitor(
+              _mainAxisExtent,
+              widget.mainAxisExtent,
+              (dynamic value) => Tween<double>(begin: value as double),
+            )
+            as Tween<double>?;
 
     if (widget.color != null) {
-      _color = visitor(
-        _color,
-        widget.color,
-        (dynamic value) => ColorTween(begin: value as Color),
-      ) as ColorTween?;
+      _color =
+          visitor(_color, widget.color, (dynamic value) => ColorTween(begin: value as Color))
+              as ColorTween?;
     }
   }
 
@@ -64,8 +64,9 @@ class TAnimatedGapState extends AnimatedWidgetBaseState<TAnimatedGap> {
   Widget build(BuildContext context) {
     final scrollableState = Scrollable.maybeOf(context);
     final AxisDirection? axisDirection = scrollableState?.axisDirection;
-    final Axis? fallbackDirection =
-        axisDirection == null ? null : axisDirectionToAxis(axisDirection);
+    final Axis? fallbackDirection = axisDirection == null
+        ? null
+        : axisDirectionToAxis(axisDirection);
 
     return _RawGap(
       _mainAxisExtent!.evaluate(animation),
@@ -79,11 +80,13 @@ class TAnimatedGapState extends AnimatedWidgetBaseState<TAnimatedGap> {
 class _RawGap extends LeafRenderObjectWidget {
   const _RawGap(
     this.mainAxisExtent, {
+    Key? key,
     this.crossAxisExtent,
     this.color,
     this.fallbackDirection,
-  })  : assert(mainAxisExtent >= 0 && mainAxisExtent < double.infinity),
-        assert(crossAxisExtent == null || crossAxisExtent >= 0);
+  }) : assert(mainAxisExtent >= 0 && mainAxisExtent < double.infinity),
+       assert(crossAxisExtent == null || crossAxisExtent >= 0),
+       super(key: key);
 
   final double mainAxisExtent;
 
@@ -128,10 +131,10 @@ class _RenderGap extends RenderBox {
     double? crossAxisExtent,
     Axis? fallbackDirection,
     Color? color,
-  })  : _mainAxisExtent = mainAxisExtent,
-        _crossAxisExtent = crossAxisExtent,
-        _color = color,
-        _fallbackDirection = fallbackDirection;
+  }) : _mainAxisExtent = mainAxisExtent,
+       _crossAxisExtent = crossAxisExtent,
+       _color = color,
+       _fallbackDirection = fallbackDirection;
 
   double get mainAxisExtent => _mainAxisExtent;
   double _mainAxisExtent;
@@ -180,34 +183,22 @@ class _RenderGap extends RenderBox {
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return _computeIntrinsicExtent(
-      Axis.horizontal,
-      () => super.computeMinIntrinsicWidth(height),
-    )!;
+    return _computeIntrinsicExtent(Axis.horizontal, () => super.computeMinIntrinsicWidth(height))!;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return _computeIntrinsicExtent(
-      Axis.horizontal,
-      () => super.computeMaxIntrinsicWidth(height),
-    )!;
+    return _computeIntrinsicExtent(Axis.horizontal, () => super.computeMaxIntrinsicWidth(height))!;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    return _computeIntrinsicExtent(
-      Axis.vertical,
-      () => super.computeMinIntrinsicHeight(width),
-    )!;
+    return _computeIntrinsicExtent(Axis.vertical, () => super.computeMinIntrinsicHeight(width))!;
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    return _computeIntrinsicExtent(
-      Axis.vertical,
-      () => super.computeMaxIntrinsicHeight(width),
-    )!;
+    return _computeIntrinsicExtent(Axis.vertical, () => super.computeMaxIntrinsicHeight(width))!;
   }
 
   double? _computeIntrinsicExtent(Axis axis, double Function() compute) {

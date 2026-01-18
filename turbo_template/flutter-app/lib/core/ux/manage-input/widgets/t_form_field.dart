@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/dtos/icon_label_dto.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/typedefs/t_form_field_builder_def.dart';
+import 'package:turbo_flutter_template/core/ux/manage-input/widgets/t_form_field_builder.dart';
 
 class TFormField<T> extends StatelessWidget {
   const TFormField({
@@ -82,7 +83,7 @@ class StatelessTFormField extends StatelessWidget {
     final subLabel = description;
 
     return AnimatedOpacity(
-      duration: kDurationsAnimation,
+      duration: TDurations.animation,
       opacity: isEnabled ? 1 : TSizes.opacityDisabled,
       child: IgnorePointer(
         ignoring: !isEnabled || isReadOnly,

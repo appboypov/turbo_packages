@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/num_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/enums/t_field_type.dart';
 import 'package:turbo_flutter_template/core/ux/manage-input/typedefs/values_validator_def.dart';
 import 'package:turbo_notifiers/turbo_notifier.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
+
+import '../../../shared/extensions/string_extension.dart';
 
 part 't_form_field_extensions.dart';
 part 't_form_field_state.dart';

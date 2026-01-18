@@ -3,9 +3,9 @@ import 'package:turbo_serializable/turbo_serializable.dart';
 
 /// Base class for promptable objects in the turbo ecosystem.
 ///
-/// Extends [TurboSerializable] with [MetaDataDto] as metadata to add
+/// Extends [TSerializable] with [MetaDataDto] as metadata to add
 /// prompt-specific functionality including export configuration.
-abstract class TurboPromptable extends TurboSerializable<MetaDataDto> {
+abstract class TurboPromptable extends TSerializable<MetaDataDto> {
   TurboPromptable({
     MetaDataDto? metaData,
     String? description,
