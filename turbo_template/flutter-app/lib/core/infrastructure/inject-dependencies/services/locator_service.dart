@@ -16,6 +16,7 @@ import 'package:turbo_flutter_template/core/ux/manage-language/services/language
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/vibrate_service.dart';
+import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class LocatorService with Turbolytics {
@@ -57,6 +58,7 @@ class LocatorService with Turbolytics {
 
   void _registerFactories() {
     EmailService.registerFactory();
+    UrlLauncherService.registerFactory();
     LoginForm.registerFactory();
     RegisterForm.registerFactory();
     ForgotPasswordForm.registerFactory();

@@ -83,7 +83,7 @@ enum TThemeMode {
     final mutedTheme = (TThemeMode themeMode) => TextStyle(
       color: switch (themeMode) {
         TThemeMode.dark => TColors.subtitleDark,
-        TThemeMode.light => throw UnimplementedError(),
+        TThemeMode.light => TColors.subtitleLight,
       },
       fontWeight: FontWeight.w600,
       fontFamily: FontFamily.nunito,
