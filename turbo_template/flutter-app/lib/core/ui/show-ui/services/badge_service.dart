@@ -190,44 +190,4 @@ class BadgeService with Turbolytics {
       _manageShowInboxBadge();
     }
   }
-
-  /// Updates the household invites badge state.
-  ///
-  /// Sets [_hasHouseholdInvites] to true if there are pending invites,
-  /// false otherwise. Updates the inbox badge visibility accordingly.
-  void _manageHasHouseholdInvites() {
-    try {
-      if (_householdInvitesService.myInvites.value.isNotEmpty) {
-        _hasHouseholdInvites = true;
-      } else {
-        _hasHouseholdInvites = false;
-      }
-    } catch (error, stackTrace) {
-      log.error(
-        '$error caught while managing household invites',
-        error: error,
-        stackTrace: stackTrace,
-      );
-    } finally {
-      _manageShowInboxBadge();
-    }
-  }
-
-  /// Updates the unread notifications badge state.
-  ///
-  /// Sets [_hasUnreadNotifications] to true if there are unread notifications,
-  /// false otherwise. Updates the inbox badge visibility accordingly.
-  void _manageHasUnreadNotifications() {
-    try {
-      _hasUnreadNotifications = _notificationService.unreadCount > 0;
-    } catch (error, stackTrace) {
-      log.error(
-        '$error caught while managing unread notifications',
-        error: error,
-        stackTrace: stackTrace,
-      );
-    } finally {
-      _manageShowInboxBadge();
-    }
-  }
 }

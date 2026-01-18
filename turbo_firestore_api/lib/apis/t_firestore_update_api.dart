@@ -66,7 +66,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// [updateDocInBatch] batch updates
   /// [createDoc] document creation
   Future<TurboResponse<DocumentReference>> updateDoc({
-    required TWriteableId writeable,
+    required TWriteable writeable,
     required String id,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,
@@ -251,7 +251,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// [createDocInBatch] batch creation
   Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
       updateDocInBatch({
-    required TWriteableId writeable,
+    required TWriteable writeable,
     required String id,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,

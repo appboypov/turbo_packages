@@ -73,33 +73,33 @@ class UserDto extends TWriteableId {
 
   @override
   String toString() {
-    return 'UserDto{id: $id, acceptedPrivacyAndTermsAt: $acceptedPrivacyAndTermsAt, email: $email, phone: $phone, addressLine1: $addressLine1, initialHouseholdId: $initialHouseholdId, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, userLevel: $userLevel, lastChangelogVersionRead: $lastChangelogVersionRead, emailVerifiedAt: $emailVerifiedAt, welcomeEmailSent: $welcomeEmailSent}';
+    return 'UserDto{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, acceptedPrivacyAndTermsAt: $acceptedPrivacyAndTermsAt, email: $email, tags: $tags, userLevel: $userLevel, lastChangelogVersionRead: $lastChangelogVersionRead, emailVerifiedAt: $emailVerifiedAt, welcomeEmailSent: $welcomeEmailSent}';
   }
 
   UserDto copyWith({
+    DateTime? createdAt,
+    DateTime? updatedAt,
     DateTime? acceptedPrivacyAndTermsAt,
     String? email,
-    String? phone,
-    String? addressLine1,
-    String? initialHouseholdId,
     List<String>? tags,
     UserLevelDto? userLevel,
     String? lastChangelogVersionRead,
     DateTime? emailVerifiedAt,
     DateTime? welcomeEmailSent,
-  }) =>
-      UserDto(
-        id: id,
-        acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt ?? this.acceptedPrivacyAndTermsAt,
-        email: email ?? this.email,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        tags: tags ?? this.tags,
-        userLevel: userLevel ?? this.userLevel,
-        lastChangelogVersionRead: lastChangelogVersionRead ?? this.lastChangelogVersionRead,
-        emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
-        welcomeEmailSent: welcomeEmailSent ?? this.welcomeEmailSent,
-      );
+  }) {
+    return UserDto(
+      id: id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt ?? this.acceptedPrivacyAndTermsAt,
+      email: email ?? this.email,
+      tags: tags ?? this.tags,
+      userLevel: userLevel ?? this.userLevel,
+      lastChangelogVersionRead: lastChangelogVersionRead ?? this.lastChangelogVersionRead,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      welcomeEmailSent: welcomeEmailSent ?? this.welcomeEmailSent,
+    );
+  }
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)

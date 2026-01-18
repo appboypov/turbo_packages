@@ -14,6 +14,7 @@ import 'package:turbo_firestore_api/typedefs/update_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_serializable/abstracts/t_writeable.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -361,7 +362,7 @@ abstract class TDocumentService<T extends TWriteableId,
     Transaction? transaction,
     required String id,
     required UpdateDocDef<T> doc,
-    TWriteableId Function(T doc)? remoteUpdateRequestBuilder,
+    TWriteable Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -373,7 +374,7 @@ abstract class TDocumentService<T extends TWriteableId,
       );
       final future = api.updateDoc(
         writeable:
-            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable,
         id: id,
         transaction: transaction,
       );

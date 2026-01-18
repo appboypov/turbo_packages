@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:roomy_mobile/auth/enums/user_level.dart';
-import 'package:roomy_mobile/data/globals/g_now.dart';
-import 'package:roomy_mobile/firebase/firestore/converters/duration_days_converter.dart';
-import 'package:roomy_mobile/firebase/firestore/converters/timestamp_converter.dart';
+import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
+import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
+import 'package:turbo_flutter_template/core/storage/converters/duration_days_converter.dart';
+import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
 
 part 'user_level_dto.g.dart';
 
