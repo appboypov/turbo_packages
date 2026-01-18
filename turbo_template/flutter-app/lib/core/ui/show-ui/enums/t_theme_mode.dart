@@ -44,19 +44,10 @@ enum TThemeMode {
       padding: const EdgeInsets.all(TSizes.cardPadding),
     );
     final buttonTheme = (TThemeMode themeMode) => ShadButtonTheme(
-      hoverBackgroundColor: switch (themeMode) {
-        TThemeMode.dark => TColors.cardDark.onHover,
-        TThemeMode.light => TColors.cardLight.onHover,
-      },
-      hoverForegroundColor: switch (themeMode) {
-        TThemeMode.dark => TColors.cardDark.onHover.onColor,
-        TThemeMode.light => TColors.cardLight.onHover.onColor,
-      },
       decoration: ShadDecoration(
         border: ShadBorder(radius: BorderRadius.circular(12)),
         focusedBorder: ShadBorder(radius: BorderRadius.circular(TSizes.buttonBorderRadius.x(0.6))),
       ),
-      foregroundColor: foregroundColor(themeMode),
     );
     const h1LargeTheme = TextStyle(fontWeight: FontWeight.w900, fontFamily: FontFamily.nunito);
 

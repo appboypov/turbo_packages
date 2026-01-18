@@ -24,7 +24,7 @@ class TColors {
   static const backgroundDark = Color(0xff09090b);
 
   static const cardLight = Color(0xffffffff);
-  static const cardDark = Color(0xff09090b);
+  static const cardDark = Color(0xff18181b);
 
   static const textPrimaryLight = Color(0xff09090b);
   static const textPrimaryDark = Color(0xfffafafa);
@@ -42,7 +42,7 @@ class TColors {
   static const focusDark = Color(0xffd4d4d8);
 
   static const dialogLight = Color(0xffffffff);
-  static const dialogDark = Color(0xff09090b);
+  static const dialogDark = Color(0xff18181b);
 
   static const mutedLight = Color(0xfff4f4f5);
   static const mutedDark = Color(0xff27272a);
