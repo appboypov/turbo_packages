@@ -93,7 +93,6 @@ class BadgeService with Turbolytics {
   bool _hasHouseholdInvites = false;
   bool _hasUnreadNotifications = false;
   final _hasUnreadChangelog = TNotifier<bool>(false);
-  final _shoppingListsCount = TNotifier<int>(1);
   final _showInboxBadge = TNotifier<bool>(false);
   var _isReady = Completer();
 
@@ -105,9 +104,6 @@ class BadgeService with Turbolytics {
 
   /// Whether there are unread changelog entries.
   ValueListenable<bool> get hasUnreadChangelog => _hasUnreadChangelog;
-
-  /// The current count of shopping lists.
-  ValueListenable<int> get shoppingListsCount => _shoppingListsCount;
 
   /// Whether the inbox badge should be shown.
   ValueListenable<bool> get showInboxBadge => _showInboxBadge;

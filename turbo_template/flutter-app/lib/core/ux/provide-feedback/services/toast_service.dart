@@ -1,32 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:turbolytics/turbolytics.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/environment/globals/g_env.dart';
+import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
+import 'package:turbolytics/turbolytics.dart';
 
 class ToastService with Turbolytics {
+  // 📍 LOCATOR ------------------------------------------------------------------------------- \\
+
   static ToastService Function() get lazyLocate =>
-      () => GetIt.I.get();
+          () => GetIt.I.get();
   static ToastService get locate => GetIt.I.get();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(ToastService.new);
 
+  // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+  // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
+  // 👂 LISTENERS ----------------------------------------------------------------------------- \\
+  // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
+  // 🎩 STATE --------------------------------------------------------------------------------- \\
+  // 🛠 UTIL ---------------------------------------------------------------------------------- \\
+  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  /// Calculate appropriate display duration based on message length
+  /// Ensures messages have enough time to be read comfortably
   Duration calculateDisplayDuration({required String title, String? subtitle}) {
     final titleLength = title.length;
     final subtitleLength = subtitle?.length ?? 0;
     final totalLength = titleLength + subtitleLength;
 
+    // Base duration of 3 seconds for short messages
     if (totalLength <= 40) {
       return TDurations.toastDefault;
     }
 
+    // Add extra time for longer messages (roughly 150ms per 10 characters)
     final extraDuration = Duration(milliseconds: ((totalLength - 40) / 10).ceil() * 150);
     final calculatedDuration = TDurations.toastDefault + extraDuration;
 
+    // Cap at maximum of 6 seconds to avoid overly long displays
     return calculatedDuration > const Duration(seconds: 6)
         ? const Duration(seconds: 6)
         : calculatedDuration;
   }
+
+  Future<void> showSomethingWentWrongToast({required BuildContext context}) async => showToast(
+    context: context,
+    title: context.strings.somethingWentWrong,
+    subtitle: context.strings.somethingWentWrongPleaseTryAgainLater,
+  );
+
+  Future<void> showUnknownErrorToast({required BuildContext context}) async => showToast(
+    context: context,
+    title: context.strings.unknownError,
+    subtitle: context.strings.anUnknownErrorOccurredPleaseTryAgainLater,
+  );
+
+  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   void showToast({
     required String title,
@@ -39,11 +71,13 @@ class ToastService with Turbolytics {
     Duration animationDuration = TDurations.animation,
     Curve animationCurve = Curves.decelerate,
   }) {
-    if (context == null) {
+    final pContext = context ?? gContext;
+    if (pContext == null) {
       log.warning('ToastService: Context is null, cannot show toast.');
       return;
     }
 
+    // Use provided duration or calculate based on message length
     final effectiveDisplayDuration =
         displayDuration ?? calculateDisplayDuration(title: title, subtitle: subtitle);
 
@@ -51,35 +85,16 @@ class ToastService with Turbolytics {
       showTopSnackBar(
         padding: EdgeInsets.zero,
         curve: animationCurve,
-        Overlay.of(context, rootOverlay: true),
+        pContext.overlayState,
         onTap: onPressed,
         animationDuration: animationDuration,
         displayDuration: effectiveDisplayDuration,
-        Material(
-          color: Colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[900],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(iconData, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(title, style: const TextStyle(color: Colors.white)),
-                      if (subtitle != null) Text(subtitle, style: const TextStyle(color: Colors.white70)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+        TSnackbar(
+          onPressed: onPressed,
+          onPressedText: onPressedText,
+          iconData: iconData,
+          title: title,
+          subtitle: subtitle,
         ),
       );
     } catch (error, stackTrace) {

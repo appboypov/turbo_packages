@@ -5,4 +5,4 @@
 /// TurboLocatorDef<UserService> locateUserService = () => UserService();
 /// final userService = locateUserService();
 /// ```
-typedef TurboLocatorDef<T> = T Function();
+typedef TLocatorDef<T> = T Function();

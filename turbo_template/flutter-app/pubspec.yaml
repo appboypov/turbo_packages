@@ -40,9 +40,11 @@ dependencies:
   turbolytics:
   turbo_mvvm:
   turbo_serializable:
+  turbo_firestore_api:
   url_launcher: ^6.3.2
   url_strategy: ^0.3.0
   json_annotation: ^4.9.0
+  firebase_crashlytics: ^5.0.6
 
 dev_dependencies:
   flutter_test:

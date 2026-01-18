@@ -1,0 +1,11 @@
+import 'package:flutter/widgets.dart';
+import 'package:roomy_mobile/state/extensions/context_extension.dart';
+
+class TMaxHeight extends StatelessWidget {
+  const TMaxHeight({Key? key, required this.child}) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(height: context.data.height, child: child);
+}

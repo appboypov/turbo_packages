@@ -33,7 +33,7 @@ class TSizes {
   static const heightButtonBottomFade = 144.0;
   static const heightTabBarBottom = 56.0;
   static const horizontalButtonPadding = 16.0;
-  static const iconButtonSize = 80;
+  static const iconButtonSize = 80.0;
   static const iconGap = 8.0;
   static const iconHeight = 32.0;
   static const iconSize = 24.0;

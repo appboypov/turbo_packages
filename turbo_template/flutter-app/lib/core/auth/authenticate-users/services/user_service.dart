@@ -70,4 +70,5 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
       remoteUpdateRequestBuilder: (doc) => UpdateUserDtoRequest(lastChangelogVersionRead: version),
     );
   }
+
 }

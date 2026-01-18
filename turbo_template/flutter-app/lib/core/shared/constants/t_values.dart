@@ -5,5 +5,6 @@ abstract class TValues {
   static const minUsernameLength = 3;
   static const maxNameLength = 30;
   static const noAuthId = 'noAuthId';
-
+  static const documentReference = 'documentReference';
+  static const nullValue = 'null';
 }

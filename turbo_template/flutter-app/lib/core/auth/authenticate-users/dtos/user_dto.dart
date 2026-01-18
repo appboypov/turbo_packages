@@ -106,10 +106,7 @@ class UserDto extends TWriteableId {
 class UpdateUserDtoRequest extends TWriteable {
   UpdateUserDtoRequest({
     this.email,
-    this.phone,
-    this.addressLine1,
     this.tags,
-    this.initialHouseholdId,
     this.acceptedPrivacyAndTermsAt,
     this.lastChangelogVersionRead,
     this.emailVerifiedAt,
@@ -119,9 +116,6 @@ class UpdateUserDtoRequest extends TWriteable {
   @TimestampConverter()
   final DateTime? acceptedPrivacyAndTermsAt;
   final String? email;
-  final String? phone;
-  final String? addressLine1;
-  final String? initialHouseholdId;
   final List<String>? tags;
   final String? lastChangelogVersionRead;
   @TimestampConverter()

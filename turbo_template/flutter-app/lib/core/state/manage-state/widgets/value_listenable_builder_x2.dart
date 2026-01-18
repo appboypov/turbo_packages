@@ -21,6 +21,9 @@ class ValueListenableBuilderX2<T1, T2> extends StatefulWidget {
 }
 
 class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilderX2<T1, T2>> {
+  // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+  // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
+
   @override
   void initState() {
     initListeners();
@@ -41,9 +44,17 @@ class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilder
     super.dispose();
   }
 
+  // 🎩 STATE --------------------------------------------------------------------------------- \\
+  // 🛠 UTIL ---------------------------------------------------------------------------------- \\
+  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+
   List<Listenable> get _listenables => [widget.valueListenable, widget.valueListenable2];
 
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
   void rebuild() => setState(() {});
+
+  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   @override
   void didUpdateWidget(ValueListenableBuilderX2<T1, T2> oldWidget) {
@@ -68,4 +79,3 @@ class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilder
     widget.child,
   );
 }
-

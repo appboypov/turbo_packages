@@ -25,7 +25,7 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 class AuthView extends StatelessWidget {
   const AuthView({super.key});
 
-  static const String path = Routes.auth;
+  static const String path = '';
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<AuthViewModel>(

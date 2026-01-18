@@ -1,20 +1,31 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/config/turbo_breakpoint_config.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_orientation.dart';
 
 extension BoxConstraintsExtension on BoxConstraints {
-  TDeviceType turboDeviceType({required TBreakpointConfig breakpointConfig}) {
-    if (maxWidth < 600) {
-      return TDeviceType.mobile;
-    } else if (maxWidth < 1024) {
-      return TDeviceType.tablet;
-    } else {
+  TOrientation get orientation {
+    final difference = (maxHeight - maxWidth).abs();
+    const landscapeMultiplier = 1;
+    const portraitMultiplier = 1;
+    final landscapeThreshold = maxHeight * landscapeMultiplier;
+    final portraitThreshold = maxWidth * portraitMultiplier;
+
+    if (difference <= landscapeThreshold && difference <= portraitThreshold) {
+      return TOrientation.square;
+    }
+
+    return maxHeight > maxWidth ? TOrientation.portrait : TOrientation.landscape;
+  }
+
+  TDeviceType deviceType({required TBreakpointConfig breakpointConfig}) {
+    if (maxWidth >= breakpointConfig.desktopBreakpointWidth ||
+        maxHeight >= breakpointConfig.desktopBreakpointHeight) {
       return TDeviceType.desktop;
     }
-  }
-
-  Orientation get turboOrientation {
-    return maxWidth > maxHeight ? Orientation.landscape : Orientation.portrait;
+    if (maxWidth >= breakpointConfig.tabletBreakpointWidth) {
+      return TDeviceType.tablet;
+    }
+    return TDeviceType.mobile;
   }
 }
-

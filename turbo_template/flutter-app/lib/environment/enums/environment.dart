@@ -18,6 +18,9 @@ import 'package:turbo_flutter_template/firebase_options.dart';
 /// flutter run --dart-define=env=prod
 /// ```
 abstract class Environment {
+  /// Current version of the application.
+  static String? currentVersion;
+
   static const String _emulators = 'emulators';
   static const String _demo = 'demo';
   static const String _staging = 'staging';

@@ -163,10 +163,10 @@ abstract class TDocumentService<T extends TWriteableId,
   }
 
   /// Function to provide initial document value.
-  TurboLocatorDef<T>? initialValueLocator;
+  LazyLocatorDef<T>? initialValueLocator;
 
   /// Function to provide default document value.
-  TurboLocatorDef<T>? defaultValueLocator;
+  LazyLocatorDef<T>? defaultValueLocator;
 
   /// Called before local state is updated.
   ValueChanged<T?>? beforeLocalNotifyUpdate;

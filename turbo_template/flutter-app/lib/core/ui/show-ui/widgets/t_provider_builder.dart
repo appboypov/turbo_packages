@@ -42,7 +42,7 @@ class TProviderBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final deviceType = constraints.turboDeviceType(breakpointConfig: tBreakpointConfig);
+      final deviceType = constraints.deviceType(breakpointConfig: tBreakpointConfig);
       final sizes = TSizes(context: context, deviceType: deviceType);
       final colors = TColors(context: context, themeMode: tThemeMode);
       final decorations = TDecorations(
@@ -60,7 +60,7 @@ class TProviderBuilder extends StatelessWidget {
       final data = TData(
         currentWidth: constraints.maxWidth,
         currentHeight: constraints.maxHeight,
-        orientation: constraints.turboOrientation,
+        orientation: constraints.orientation,
         deviceType: deviceType,
         media: context.media,
       );
