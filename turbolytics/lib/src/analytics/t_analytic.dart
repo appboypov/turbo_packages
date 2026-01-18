@@ -1,21 +1,21 @@
-import '../enums/analytics_types.dart';
+import '../enums/t_analytics_type.dart';
 
 /// Core class that's used to structure and provide analytics in the [AnalyticsService].
-class Analytic {
-  const Analytic({
+class TAnalytic {
+  const TAnalytic({
     required String subject,
-    required AnalyticsTypes type,
+    required TAnalyticsType type,
     this.parameters,
   })  : _subject = subject,
         _type = type;
 
   final String _subject;
-  final AnalyticsTypes _type;
+  final TAnalyticsType _type;
   final Map<String, Object>? parameters;
 
   String get name => '${_subject}_${_type.value}';
 
-  bool equals(Analytic? other) =>
+  bool equals(TAnalytic? other) =>
       other != null &&
       (identical(this, other) ||
           runtimeType == other.runtimeType &&
@@ -26,14 +26,14 @@ class Analytic {
   CustomAnalytic get toCustomAnalytic => CustomAnalytic(name: name);
 }
 
-/// Custom variation on the [Analytic] that allows for more flexibility when sending analytics.
-class CustomAnalytic extends Analytic {
+/// Custom variation on the [TAnalytic] that allows for more flexibility when sending analytics.
+class CustomAnalytic extends TAnalytic {
   CustomAnalytic({
     required String name,
     super.parameters,
   }) : super(
           subject: name,
-          type: AnalyticsTypes.none,
+          type: TAnalyticsType.none,
         );
 
   @override

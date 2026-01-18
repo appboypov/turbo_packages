@@ -1,6 +1,6 @@
 import 'package:turbolytics/turbolytics.dart';
 
-class AnalyticsImplementation implements AnalyticsInterface {
+class AnalyticsImplementation implements TAnalyticsInterface {
   AnalyticsImplementation(this._yourAnalyticsProvider);
   // ignore: unused_field
   final Object _yourAnalyticsProvider;

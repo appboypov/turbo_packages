@@ -77,7 +77,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Searching without converter..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
           searchTerm: searchTerm,
           searchField: searchField,
@@ -165,7 +165,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
           _log.error(
             message:
                 '${error.runtimeType} caught while trying to search for number equivalent',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: _collectionPath(),
               searchTerm: searchTerm,
               searchTermType: searchTermType,
@@ -181,7 +181,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to find documents',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
           searchTerm: searchTerm,
           searchField: searchField,
@@ -254,7 +254,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Searching with converter..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
           searchTerm: searchTerm,
           searchField: searchField,
@@ -335,7 +335,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
         } catch (error, stackTrace) {
           _log.error(
             message: 'Unable to search for number equivalent',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: _collectionPath(),
               searchTerm: searchTerm,
               searchField: searchField,
@@ -351,7 +351,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to find documents',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
           searchTerm: searchTerm,
           searchField: searchField,

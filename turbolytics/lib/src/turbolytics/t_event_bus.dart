@@ -1,10 +1,10 @@
 part of 'turbolytics.dart';
 
 /// Used to make sure that events that are fired will be sent in chronological order.
-class EventBus {
-  factory EventBus() => _eventBus;
-  EventBus._();
-  static final EventBus _eventBus = EventBus._();
+class TEventBus {
+  factory TEventBus() => _eventBus;
+  TEventBus._();
+  static final TEventBus _eventBus = TEventBus._();
 
   late final StreamController<Future<void>> _crashReports =
       StreamController.broadcast();

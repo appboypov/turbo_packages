@@ -8,7 +8,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/models/t_data.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/utils/t_tools.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/generated/l10n.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart' show Strings;
 
 extension ContextExtension on BuildContext {
   RenderBox? get renderBox {
@@ -33,7 +33,7 @@ extension ContextExtension on BuildContext {
     materialText: () => _materialTextTheme,
   );
 
-  S get strings => S.maybeOf(this) ?? S.current;
+  Strings get strings => Strings.of(this)!;
   ShadTextTheme get _shadTextTheme => _shadTheme.textTheme;
   ShadThemeData get _shadTheme => ShadTheme.of(this);
   TThemeMode get _themeMode => turboProvider.themeMode;

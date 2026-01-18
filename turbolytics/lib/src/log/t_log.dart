@@ -1,8 +1,8 @@
 part of '../turbolytics/turbolytics.dart';
 
 /// Pure logger class to facilitate logging.
-class Log {
-  Log({
+class TLog {
+  TLog({
     String? location,
     String? tag,
     int? maxLinesStackTrace,
@@ -17,7 +17,7 @@ class Log {
   static bool logTime = false;
 
   /// Used to set the log level of the [Turbolytics].
-  static LogLevel level = LogLevel.info;
+  static TLogLevel level = TLogLevel.info;
 
   /// Used to indicate the current location of the log.
   final String _location;
@@ -26,7 +26,7 @@ class Log {
   final int? _maxLinesStackTrace;
 
   /// Used to properly handle chronological processing of events.
-  late final EventBus _eventBus = EventBus();
+  late final TEventBus _eventBus = TEventBus();
 
   /// Used to toggle broadcasting logs on or off.
   static bool broadcastLogs = false;
@@ -41,7 +41,7 @@ class Log {
 
   // --------------- REGULAR --------------- REGULAR --------------- REGULAR --------------- \\
 
-  /// Logs a trace [message] with [LogLevel.trace] default as [debugPrint].
+  /// Logs a trace [message] with [TLogLevel.trace] default as [debugPrint].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -51,7 +51,7 @@ class Log {
     String? location,
     String? tag,
   }) {
-    const logLevel = LogLevel.trace;
+    const logLevel = TLogLevel.trace;
     if (level.skipLog(logLevel)) return;
     _logMessage(
       message: message,
@@ -62,7 +62,7 @@ class Log {
     );
   }
 
-  /// Logs a debug [message] with [LogLevel.debug] as [debugPrint].
+  /// Logs a debug [message] with [TLogLevel.debug] as [debugPrint].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -72,17 +72,17 @@ class Log {
     String? location,
     String? tag,
   }) {
-    if (level.skipLog(LogLevel.debug)) return;
+    if (level.skipLog(TLogLevel.debug)) return;
     _logMessage(
       message: message,
-      logLevel: LogLevel.debug,
+      logLevel: TLogLevel.debug,
       addToCrashReports: addToCrashReports,
       location: location,
       tag: tag,
     );
   }
 
-  /// Logs an info [message] with [LogLevel.info] default as [debugPrint].
+  /// Logs an info [message] with [TLogLevel.info] default as [debugPrint].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -92,7 +92,7 @@ class Log {
     String? location,
     String? tag,
   }) {
-    const logLevel = LogLevel.info;
+    const logLevel = TLogLevel.info;
     if (level.skipLog(logLevel)) return;
     _logMessage(
       message: message,
@@ -103,7 +103,7 @@ class Log {
     );
   }
 
-  /// Logs an analytic [name] with [LogLevel.analytic] as [debugPrint].
+  /// Logs an analytic [name] with [TLogLevel.analytic] as [debugPrint].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -115,7 +115,7 @@ class Log {
     Map<String, Object?>? parameters,
     String? tag,
   }) {
-    const logLevel = LogLevel.analytic;
+    const logLevel = TLogLevel.analytic;
     if (level.skipLog(logLevel)) return;
     final message = '$name${value != null ? ': $value' : ''}'
         '${parameters != null ? ': $parameters' : ''}';
@@ -129,7 +129,7 @@ class Log {
     if (broadcastLogs) analyticsObserver.add(message);
   }
 
-  /// Logs a warning [message] with [LogLevel.warning] as [debugPrint].
+  /// Logs a warning [message] with [TLogLevel.warning] as [debugPrint].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -139,7 +139,7 @@ class Log {
     String? location,
     String? tag,
   }) {
-    const logLevel = LogLevel.warning;
+    const logLevel = TLogLevel.warning;
     if (level.skipLog(logLevel)) return;
     _logMessage(
       message: message,
@@ -150,7 +150,7 @@ class Log {
     );
   }
 
-  /// Logs an error [message] with [LogLevel.error] as [debugPrint].
+  /// Logs an error [message] with [TLogLevel.error] as [debugPrint].
   ///
   /// Also tries to send the log with optional [error], [stackTrace] and [fatal] boolean to your
   /// [CrashReportsInterface] implementation should you have configured one with the
@@ -166,7 +166,7 @@ class Log {
     bool forceRecordError = false,
     String? tag,
   }) {
-    final logLevel = fatal ? LogLevel.fatal : LogLevel.error;
+    final logLevel = fatal ? TLogLevel.fatal : TLogLevel.error;
     if (level.skipLog(logLevel)) return;
     StackTrace localStackTrace;
     try {
@@ -211,7 +211,7 @@ class Log {
     }
   }
 
-  /// Logs a fatal [message] with [LogLevel.fatal] as [debugPrint].
+  /// Logs a fatal [message] with [TLogLevel.fatal] as [debugPrint].
   ///
   /// Also tries to send the log with optional [error], [stackTrace] and [fatal] boolean to your
   /// [CrashReportsInterface] implementation should you have configured one with the
@@ -246,7 +246,7 @@ class Log {
   /// configured one with the [Turbolytics.setUp] method.
   void _logMessage({
     required String message,
-    required LogLevel logLevel,
+    required TLogLevel logLevel,
     bool addToCrashReports = true,
     String? location,
     String? tag,
@@ -255,7 +255,7 @@ class Log {
     if (addToCrashReports) {
       _tryLogCrashReportMessage(message, logLevel, localTag);
     }
-    final localMessage = '${Log.logTime ? '$time ' : ''}'
+    final localMessage = '${TLog.logTime ? '$time ' : ''}'
         '${logLevel.iconTag} '
         '${'[${location ?? _location}]'} '
         '${localTag != null ? '[$localTag] ' : ''}'
@@ -269,7 +269,7 @@ class Log {
   /// Used under the hood to try and log a crashlytics [message] with [logLevel].
   void _tryLogCrashReportMessage(
     String message,
-    LogLevel logLevel,
+    TLogLevel logLevel,
     String? tag,
   ) =>
       _eventBus.tryAddCrashReport(

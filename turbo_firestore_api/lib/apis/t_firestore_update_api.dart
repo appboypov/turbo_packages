@@ -96,7 +96,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Updating document..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -143,7 +143,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         if (transaction == null) {
           _log.debug(
             message: 'Updating data with documentReference.update..',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
               data: writeableAsJson,
@@ -153,7 +153,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         } else {
           _log.debug(
             message: 'Updating data with transaction.update..',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
               data: writeableAsJson,
@@ -183,7 +183,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
 
       _log.error(
         message: 'Unable to update document',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -249,7 +249,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [updateDoc] single document updates
   /// [createDocInBatch] batch creation
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
       updateDocInBatch({
     required TWriteable writeable,
     required String id,
@@ -263,7 +263,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>?
+    final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>?
         invalidResponse = writeable.validate();
     if (invalidResponse != null && invalidResponse.isFail) {
       _log.warning(
@@ -276,7 +276,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document with batch..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -294,7 +294,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       );
       _log.debug(
         message: 'Updating data with writeBatch.update..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: documentReference.id,
           data: writeableAsJson,
@@ -310,7 +310,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         sensitiveData: null,
       );
       return TurboResponse.success(
-        result: WriteBatchWithReference(
+        result: TWriteBatchWithReference(
           writeBatch: nullSafeWriteBatch,
           documentReference: documentReference,
         ),
@@ -318,7 +318,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to update document with batch',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),

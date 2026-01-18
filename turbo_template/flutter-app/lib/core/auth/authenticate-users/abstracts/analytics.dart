@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/abstracts/t_subjects.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-abstract class TAnalytics extends Analytics {
+abstract class Analytics extends TAnalytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/int_extension.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/do_not_change_order.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
 
 @DoNotChangeOrder()
 enum DateFormat {
@@ -31,7 +31,7 @@ enum DateFormat {
 
 extension DateTimeFormatExtension on DateTime {
   String parseDateFormatNoYear({
-    required BuildContext context,
+    required Strings strings,
     DateFormat dateFormat = DateFormat.defaultValue,
   }) {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
@@ -43,13 +43,13 @@ extension DateTimeFormatExtension on DateTime {
       case DateFormat.YYYYMMDD:
         return '${twoDigit(month)}-${twoDigit(day)}';
       case DateFormat.DDMMMYYYY:
-        return '${twoDigit(day)} ${month.monthEnum.abbreviation().toString().capitalize()}';
+        return '${twoDigit(day)} ${month.monthEnum.abbreviation(strings).toString().capitalize()}';
       case DateFormat.DDMMYYYY:
         return '${twoDigit(day)}.${twoDigit(month)}';
     }
   }
 
-  String parseDateFormat({required DateFormat dateFormat}) {
+  String parseDateFormat({required DateFormat dateFormat, required Strings strings}) {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     switch (dateFormat) {
       case DateFormat.MMDDYYYY:
@@ -59,7 +59,7 @@ extension DateTimeFormatExtension on DateTime {
       case DateFormat.YYYYMMDD:
         return '$year-${twoDigit(month)}-${twoDigit(day)}';
       case DateFormat.DDMMMYYYY:
-        return '${twoDigit(day)} ${month.monthEnum.abbreviation().toString().capitalize()} $year';
+        return '${twoDigit(day)} ${month.monthEnum.abbreviation(strings).toString().capitalize()} $year';
       case DateFormat.DDMMYYYY:
         return '${twoDigit(day)}.${twoDigit(month)}.$year';
     }

@@ -55,7 +55,7 @@ class TEmptyPlaceholder extends StatelessWidget {
   ///   onActionPressed: () => doSomething(),
   /// )
   /// ```
-  factory TEmptyPlaceholder.inboxItems({required S strings}) => TEmptyPlaceholder(
+  factory TEmptyPlaceholder.inboxItems({required Strings strings}) => TEmptyPlaceholder(
     title: strings.inbox,
     subtitle: strings.emptyPlaceholderNothingHere,
     iconData: Icons.inbox_rounded,

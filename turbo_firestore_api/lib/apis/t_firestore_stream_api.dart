@@ -60,7 +60,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     final path = _collectionPath();
     _log.debug(
       message: 'Finding stream..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
       ),
     );
@@ -68,7 +68,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
           ),
           error: error,
@@ -117,7 +117,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     final path = _collectionPath();
     _log.debug(
       message: 'Finding stream with converter..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
       ),
     );
@@ -130,7 +130,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection with converter',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
           ),
           error: error,
@@ -186,7 +186,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     final path = _collectionPath();
     _log.debug(
       message: 'Finding stream by query..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
         whereDescription: whereDescription,
       ),
@@ -202,7 +202,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection by query',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
             whereDescription: whereDescription,
           ),
@@ -261,7 +261,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     final path = _collectionPath();
     _log.debug(
       message: 'Finding stream by query with converter..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
         whereDescription: whereDescription,
       ),
@@ -278,7 +278,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming collection by query with converter',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
             whereDescription: whereDescription,
           ),
@@ -337,7 +337,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
         getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
     _log.debug(
       message: 'Finding doc stream..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
         id: id,
       ),
@@ -346,7 +346,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming document',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
             id: id,
           ),
@@ -411,7 +411,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     );
     _log.debug(
       message: 'Finding doc stream with converter..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: path,
         id: id,
       ),
@@ -420,7 +420,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
       (Object error, StackTrace stackTrace) {
         _log.error(
           message: 'Error streaming document with converter',
-          sensitiveData: SensitiveData(
+          sensitiveData: TSensitiveData(
             path: path,
             id: id,
           ),

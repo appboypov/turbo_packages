@@ -1,42 +1,42 @@
-import '../enums/log_level.dart';
+import '../enums/t_log_level.dart';
 
-/// Used to define a proper name per [LogLevel] when icons are not preferred.
-extension LogLevelExtensions on LogLevel {
+/// Used to define a proper name per [TLogLevel] when icons are not preferred.
+extension LogLevelExtensions on TLogLevel {
   String get tag {
     switch (this) {
-      case LogLevel.trace:
+      case TLogLevel.trace:
         return '[TRACE]';
-      case LogLevel.debug:
+      case TLogLevel.debug:
         return '[DEBUG]';
-      case LogLevel.info:
+      case TLogLevel.info:
         return '[INFO]';
-      case LogLevel.analytic:
+      case TLogLevel.analytic:
         return '[ANALYTIC]';
-      case LogLevel.warning:
+      case TLogLevel.warning:
         return '[WARNING]';
-      case LogLevel.error:
+      case TLogLevel.error:
         return '[ERROR]';
-      case LogLevel.fatal:
+      case TLogLevel.fatal:
         return '[FATAL]';
     }
   }
 
-  /// Used to define a proper icon per [LogLevel] when a name is not preferred.
+  /// Used to define a proper icon per [TLogLevel] when a name is not preferred.
   String get iconTag {
     switch (this) {
-      case LogLevel.trace:
+      case TLogLevel.trace:
         return '⏱️ $tag';
-      case LogLevel.debug:
+      case TLogLevel.debug:
         return '🐛 $tag';
-      case LogLevel.info:
+      case TLogLevel.info:
         return '🗣 $tag';
-      case LogLevel.analytic:
+      case TLogLevel.analytic:
         return '📊 $tag';
-      case LogLevel.warning:
+      case TLogLevel.warning:
         return '🚧 $tag';
-      case LogLevel.error:
+      case TLogLevel.error:
         return '❌ $tag';
-      case LogLevel.fatal:
+      case TLogLevel.fatal:
         return '☠️ $tag';
     }
   }

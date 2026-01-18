@@ -64,10 +64,10 @@ export 'extensions/t_map_extension.dart';
 export 'mixins/t_exception_handler.dart';
 
 /// Data models and utilities
-export 'models/sensitive_data.dart';
+export 'models/t_sensitive_data.dart';
 export 'models/t_api_vars.dart';
 export 'models/t_auth_vars.dart';
-export 'models/write_batch_with_reference.dart';
+export 'models/t_write_batch_with_reference.dart';
 
 /// Services for state management
 export 'services/t_auth_sync_service.dart';
@@ -77,9 +77,9 @@ export 'services/t_document_service.dart';
 /// Type definitions
 export 'typedefs/collection_reference_def.dart';
 export 'typedefs/create_doc_def.dart';
-export 'typedefs/turbo_locator_def.dart';
+export 'typedefs/t_locator_def.dart';
 export 'typedefs/update_doc_def.dart';
 export 'typedefs/upsert_doc_def.dart';
 
 /// Core utilities for logging, debugging and
-export 'util/turbo_firestore_logger.dart';
+export 'util/t_firestore_logger.dart';

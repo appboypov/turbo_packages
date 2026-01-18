@@ -67,7 +67,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Finding without converter..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),
@@ -97,7 +97,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to find document',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),
@@ -163,7 +163,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Finding with converter..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),
@@ -195,7 +195,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
         message: 'Unable to find document',
         error: error,
         stackTrace: stackTrace,
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),
@@ -252,7 +252,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     );
     _log.debug(
       message: 'Finding document..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: collectionPathOverride ?? _collectionPath(),
         id: id,
       ),
@@ -278,7 +278,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
           _log.error(
             message:
                 'Unexpected error caught while adding local id and document reference',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: snapshot.id,
               data: data,
@@ -302,7 +302,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
           _log.error(
             message:
                 'Unexpected error caught while removing local id and document reference',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: id,
               data: data,
@@ -354,7 +354,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     );
     _log.debug(
       message: 'Finding document with converter..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: collectionPathOverride ?? _collectionPath(),
         id: id,
       ),
@@ -382,7 +382,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
           _log.error(
             message:
                 'Unexpected error caught while adding local id and document reference',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: snapshot.id,
               data: data,
@@ -413,7 +413,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
             _log.error(
               message:
                   'Unexpected error caught while adding local id and document reference',
-              sensitiveData: SensitiveData(
+              sensitiveData: TSensitiveData(
                 path: collectionPathOverride ?? _collectionPath(),
                 id: snapshot.id,
                 data: data,
@@ -440,7 +440,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
           _log.error(
             message:
                 'Unexpected error caught while removing local id and document reference',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: id,
               data: data,
@@ -493,7 +493,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
         getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
     _log.debug(
       message: 'Finding document snapshot..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: collectionPathOverride ?? _collectionPath(),
         id: id,
       ),
@@ -545,7 +545,7 @@ extension TurboFirestoreGetApi<T> on TFirestoreApi<T> {
     );
     _log.debug(
       message: 'Finding doc snapshot with converter..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: collectionPathOverride ?? _collectionPath(),
         id: id,
       ),

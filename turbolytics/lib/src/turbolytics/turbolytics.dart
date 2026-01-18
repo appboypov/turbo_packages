@@ -7,52 +7,52 @@ import 'package:turbolytics/turbolytics.dart';
 
 import '../extensions/date_time_extensions.dart';
 
-part '../analytics/analytics_service.dart';
-part '../log/log.dart';
-part 'event_bus.dart';
+part '../analytics/t_analytics_service.dart';
+part '../log/t_log.dart';
+part 't_event_bus.dart';
 
 /// Used to provide all logging, analytics and crashlytics functionality to a class of your choosing.
 ///
 /// If you want to make use of the analytic functionality use [Turbolytics.setUp] to provide your
-/// implementations of the [AnalyticsInterface] and [CrashReportsInterface]. After doing so you can
+/// implementations of the [TAnalyticsInterface] and [CrashReportsInterface]. After doing so you can
 /// add the [Turbolytics] mixin to any class where you would like to add logging and/or analytics to.
-/// In order to have access to the appropriate [Analytics] implementation for a specific
+/// In order to have access to the appropriate [TAnalytics] implementation for a specific
 /// feature or part of your project you should add the implementation as generic arguments to a
 /// [Turbolytics] like `Turbolytics<CounterAnalytics>`.
 ///
-/// Defining the generic [Analytics] is optional however as the [Turbolytics] will also work without
+/// Defining the generic [TAnalytics] is optional however as the [Turbolytics] will also work without
 /// it. When no generic is specified you can even use our basic analytic functionality through the
-/// default [Analytics.core] getter that's accessible through [Turbolytics.analytics].
-mixin Turbolytics<D extends Analytics> {
+/// default [TAnalytics.core] getter that's accessible through [Turbolytics.analytics].
+mixin Turbolytics<D extends TAnalytics> {
   // Used to register and provider the proper [Analytics]
   static final GetIt _getIt = GetIt.asNewInstance();
 
   // Used to create an instance of Turbolytics when using a mixin is not possible or breaks a const constructor.
-  static Turbolytics<T> create<T extends Analytics>(
+  static Turbolytics<T> create<T extends TAnalytics>(
           {required String location,}) =>
       _Turbolytics<T>(
         location: location,
       );
 
   /// Used to handle events in the proper order that they are sent.
-  static final EventBus _eventBus = EventBus();
+  static final TEventBus _eventBus = TEventBus();
 
-  /// Provides the configured [Analytics] functionality through the [Turbolytics] mixin per type of [D].
+  /// Provides the configured [TAnalytics] functionality through the [Turbolytics] mixin per type of [D].
   late final D analytics = _getIt.get<D>()
-    ..service = AnalyticsService(log: log);
+    ..service = TAnalyticsService(log: log);
 
-  /// Provides the configured [Analytics] functionality through the [Turbolytics] mixin per type of [A].
-  A analyticsAs<A extends Analytics>() =>
-      _getIt.get<A>()..service = AnalyticsService(log: log);
+  /// Provides the configured [TAnalytics] functionality through the [Turbolytics] mixin per type of [A].
+  A analyticsAs<A extends TAnalytics>() =>
+      _getIt.get<A>()..service = TAnalyticsService(log: log);
 
-  /// Provides any registered [Analytics] object per generic argument of [E].
+  /// Provides any registered [TAnalytics] object per generic argument of [E].
   ///
   /// [location] is used for logging purposes, can be left out if desired.
-  static E getAnalytics<E extends Analytics>({String? location}) =>
-      _getIt.get<E>()..service = AnalyticsService(log: Log(location: location));
+  static E getAnalytics<E extends TAnalytics>({String? location}) =>
+      _getIt.get<E>()..service = TAnalyticsService(log: TLog(location: location));
 
   /// Used to provide all logging capabilities.
-  late final Log log = Log(
+  late final TLog log = TLog(
     location: location,
     maxLinesStackTrace: _maxLinesStackTrace,
   );
@@ -62,7 +62,7 @@ mixin Turbolytics<D extends Analytics> {
 
   // --------------- SETUP --------------- SETUP --------------- SETUP --------------- \\
 
-  static AnalyticsInterface? _analyticsInterface;
+  static TAnalyticsInterface? _analyticsInterface;
   static CrashReportsInterface? _crashReportsInterface;
 
   static int? _maxLinesStackTrace;
@@ -70,27 +70,27 @@ mixin Turbolytics<D extends Analytics> {
   static bool _isActive = false;
   static bool get isActive => _isActive;
   static bool _addAnalyticsToCrashReports = true;
-  static CrashReportType _crashReportType = CrashReportType.location;
+  static TCrashReportType _crashReportType = TCrashReportType.location;
 
   /// Used to configure the logging and analytic abilities of the [Turbolytics].
   ///
   /// Use the [analyticsInterface] and [crashReportsInterface] to specify your implementations
   /// of both functionalities. This is optional as the [Turbolytics] can also be used as a pure logger.
-  /// Populate the [analytics] parameter with callbacks to your [Analytics] implementations.
+  /// Populate the [analytics] parameter with callbacks to your [TAnalytics] implementations.
   /// Example: `[() => CounterAnalytics(), () => CookieAnalytics()]`.
   static void setUp({
     bool logTime = false,
-    LogLevel logLevel = LogLevel.info,
-    AnalyticsInterface? analyticsInterface,
+    TLogLevel logLevel = TLogLevel.info,
+    TAnalyticsInterface? analyticsInterface,
     CrashReportsInterface? crashReportsInterface,
-    void Function(AnalyticsFactory analyticsFactory)? analytics,
+    void Function(TAnalyticsFactory analyticsFactory)? analytics,
     int? maxLinesStackTrace,
     bool combineEvents = true,
     bool addAnalyticsToCrashReports = true,
-    CrashReportType crashReportType = CrashReportType.location,
+    TCrashReportType crashReportType = TCrashReportType.location,
   }) {
-    Log.logTime = logTime;
-    Log.level = logLevel;
+    TLog.logTime = logTime;
+    TLog.level = logLevel;
     _analyticsInterface = analyticsInterface;
     _crashReportsInterface = crashReportsInterface;
     if (analytics != null) {
@@ -106,12 +106,12 @@ mixin Turbolytics<D extends Analytics> {
 
   /// Used to register analytics objects, default to .
   static void registerAnalytics({
-    required void Function(AnalyticsFactory analyticsFactory) analytics,
+    required void Function(TAnalyticsFactory analyticsFactory) analytics,
     bool registerDefaultAnalytics = true,
   }) {
-    final analyticsFactory = AnalyticsFactory(getIt: _getIt);
+    final analyticsFactory = TAnalyticsFactory(getIt: _getIt);
     if (registerDefaultAnalytics) {
-      analyticsFactory.registerAnalytic(() => Analytics());
+      analyticsFactory.registerAnalytic(() => TAnalytics());
     }
     analytics(analyticsFactory);
   }
@@ -131,7 +131,7 @@ mixin Turbolytics<D extends Analytics> {
 }
 
 /// Used to provide [Turbolytics] as a an object while keeping mixin functionality.
-class _Turbolytics<X extends Analytics> with Turbolytics<X> {
+class _Turbolytics<X extends TAnalytics> with Turbolytics<X> {
   _Turbolytics({
     required String location,
   }) : _location = location;

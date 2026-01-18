@@ -69,7 +69,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Deleting document..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -157,7 +157,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
 
       _log.error(
         message: 'Unable to delete document',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),
@@ -220,7 +220,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [deleteDoc] single document deletion
   /// [updateDocInBatch] batch updates
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
       deleteDocInBatch({
     required String id,
     WriteBatch? writeBatch,
@@ -235,7 +235,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
     try {
       _log.debug(
         message: 'Deleting document with batch..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -255,7 +255,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
         sensitiveData: null,
       );
       return TurboResponse.success(
-        result: WriteBatchWithReference(
+        result: TWriteBatchWithReference(
           writeBatch: nullSafeWriteBatch,
           documentReference: documentReference,
         ),
@@ -263,7 +263,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to delete document with batch',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
         ),

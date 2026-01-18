@@ -159,7 +159,7 @@ abstract class TCollectionService<T extends TWriteableId,
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   /// Returns a new instance of [V] with basic variables filled in.
-  V turboVars<V extends TurboAuthVars>({String? id}) => TurboAuthVars(
+  V turboVars<V extends TAuthVars>({String? id}) => TAuthVars(
         id: id ?? api.genId,
         now: DateTime.now(),
         userId: cachedUserId ?? TValues.noAuthId,

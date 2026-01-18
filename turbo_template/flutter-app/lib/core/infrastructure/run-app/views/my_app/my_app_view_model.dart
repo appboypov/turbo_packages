@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/analytics_implementation.dart';
+import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/crash_reports_implementation.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/analytics/user_analytics.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
@@ -143,11 +144,7 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
         analyticsInterface: AnalyticsImplementation(),
         crashReportsInterface: CrashReportsImplementation(),
         analytics: (analyticsFactory) {
-          analyticsFactory.registerAnalytic(() => HouseholdAnalytics());
           analyticsFactory.registerAnalytic(() => UserAnalytics());
-          analyticsFactory.registerAnalytic(() => CleaningAnalytics());
-          analyticsFactory.registerAnalytic(() => PaymentAnalytics());
-          analyticsFactory.registerAnalytic(() => NotificationPermissionAnalytics());
         },
       );
     } catch (error, stackTrace) {
@@ -156,11 +153,8 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
   }
 
   Future<void> _setupStrings() async {
-    try {
-      await S.load(_languageService().language.value.toLocale);
-    } catch (error, stackTrace) {
-      log.error('$error caught while setting up Strings!', error: error, stackTrace: stackTrace);
-    }
+    // Flutter's gen-l10n handles localization automatically through delegates
+    // No manual loading needed - the locale is set via MaterialApp.locale
   }
 
   void onShakeDetected({required BuildContext context}) {

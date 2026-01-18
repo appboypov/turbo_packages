@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/constants/routes.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/view_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
@@ -10,7 +9,7 @@ import 'package:veto/veto.dart';
 class ShellView extends StatelessWidget {
   const ShellView({super.key});
 
-  static const String path = Routes.shell;
+  static const String path = 'pew';
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<ShellViewModel>(

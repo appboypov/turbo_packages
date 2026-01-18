@@ -9,7 +9,7 @@ import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
 import 'package:turbo_firestore_api/models/t_auth_vars.dart';
 import 'package:turbo_firestore_api/services/t_auth_sync_service.dart';
 import 'package:turbo_firestore_api/typedefs/create_doc_def.dart';
-import 'package:turbo_firestore_api/typedefs/turbo_locator_def.dart';
+import 'package:turbo_firestore_api/typedefs/t_locator_def.dart';
 import 'package:turbo_firestore_api/typedefs/update_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
@@ -154,8 +154,8 @@ abstract class TDocumentService<T extends TWriteableId,
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   /// Returns a new instance of [V] with basic variables filled in.
-  V turboVars<V extends TurboAuthVars>({String? id}) {
-    return TurboAuthVars(
+  V turboVars<V extends TAuthVars>({String? id}) {
+    return TAuthVars(
       id: id ?? api.genId,
       now: DateTime.now(),
       userId: cachedUserId ?? TValues.noAuthId,
@@ -163,10 +163,10 @@ abstract class TDocumentService<T extends TWriteableId,
   }
 
   /// Function to provide initial document value.
-  LazyLocatorDef<T>? initialValueLocator;
+  TLocatorDef<T>? initialValueLocator;
 
   /// Function to provide default document value.
-  LazyLocatorDef<T>? defaultValueLocator;
+  TLocatorDef<T>? defaultValueLocator;
 
   /// Called before local state is updated.
   ValueChanged<T?>? beforeLocalNotifyUpdate;

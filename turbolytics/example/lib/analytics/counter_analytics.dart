@@ -1,6 +1,6 @@
 import 'package:turbolytics/turbolytics.dart';
 
-class CounterAnalytics extends Analytics {
+class CounterAnalytics extends TAnalytics {
   final String counterButton = 'counter_button';
   final String _counterView = 'counter_view';
 

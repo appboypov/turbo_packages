@@ -1,4 +1,4 @@
-import 'package:turbo_firestore_api/models/sensitive_data.dart';
+import 'package:turbo_firestore_api/models/t_sensitive_data.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 /// A logger for the TurboFirestoreApi that handles different log levels and sensitive data.
@@ -18,14 +18,14 @@ import 'package:turbolytics/turbolytics.dart';
 ///   );
 /// }
 /// ```
-class TurboFirestoreLogger {
+class TFirestoreLogger {
   /// Creates a logger with customizable settings.
   ///
   /// The [turboLogLevel] determines which log messages are shown, defaulting to [TurboLogLevel.debug].
   /// If [hideInProduction] is true, logging is disabled in release mode.
   /// Set [showSensitiveData] to false to hide sensitive data in logs.
   /// The prefix parameters customize the prefix text for each log type.
-  TurboFirestoreLogger({
+  TFirestoreLogger({
     Log? log,
     this.showSensitiveData = true,
   }) : _log = log ?? Log(location: 'TurboFirestoreApi');
@@ -41,7 +41,7 @@ class TurboFirestoreLogger {
   /// if [showSensitiveData] is true.
   void debug({
     required String message,
-    SensitiveData? sensitiveData,
+    TSensitiveData? sensitiveData,
   }) {
     _log.debug(message);
     if (showSensitiveData && sensitiveData != null) {
@@ -55,7 +55,7 @@ class TurboFirestoreLogger {
   /// if [showSensitiveData] is true.
   void info({
     required String message,
-    SensitiveData? sensitiveData,
+    TSensitiveData? sensitiveData,
   }) {
     _log.info(message);
     if (showSensitiveData && sensitiveData != null) {
@@ -69,7 +69,7 @@ class TurboFirestoreLogger {
   /// if [showSensitiveData] is true.
   void warning({
     required String message,
-    SensitiveData? sensitiveData,
+    TSensitiveData? sensitiveData,
   }) {
     _log.warning(message);
     if (showSensitiveData && sensitiveData != null) {
@@ -87,7 +87,7 @@ class TurboFirestoreLogger {
   void error({
     Object? error,
     StackTrace? stackTrace,
-    required SensitiveData? sensitiveData,
+    required TSensitiveData? sensitiveData,
     required String message,
   }) {
     _log.error(

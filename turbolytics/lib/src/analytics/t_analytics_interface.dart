@@ -1,7 +1,7 @@
 import 'package:turbolytics/turbolytics.dart';
 
 /// Exposes all analytic methods for implementation.
-abstract class AnalyticsInterface {
+abstract class TAnalyticsInterface {
   /// Logs an event by [name] and possible [parameters].
   Future<void> logEvent({
     required String name,
@@ -30,6 +30,6 @@ abstract class AnalyticsInterface {
 class IndividualUsage {
   late final Turbolytics turbolytics =
       Turbolytics.create(location: runtimeType.toString());
-  late final Log log = Log(location: runtimeType.toString());
-  late final AnalyticsService analyticsService = AnalyticsService();
+  late final TLog log = TLog(location: runtimeType.toString());
+  late final TAnalyticsService analyticsService = TAnalyticsService();
 }

@@ -60,7 +60,7 @@ abstract class SyncService<T extends Object?> {
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
-  late final Log log = Log(location: runtimeType.toString());
+  late final Log log = TLog(location: runtimeType.toString());
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\

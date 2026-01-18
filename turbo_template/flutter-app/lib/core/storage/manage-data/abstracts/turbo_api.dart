@@ -14,7 +14,7 @@ abstract class TurboApi<T extends Object> extends TFirestoreApi<T> {
           documentReferenceFieldName: TValues.documentReference,
           fromJson: firestoreCollection.fromJson<T>(),
           isCollectionGroup: firestoreCollection.isCollectionGroup,
-          logger: TurboFirestoreLogger(showSensitiveData: kDebugMode),
+          logger: TFirestoreLogger(showSensitiveData: kDebugMode),
           toJson: firestoreCollection.toJson<T>(),
           tryAddLocalDocumentReference: firestoreCollection.tryAddLocalDocumentReference,
           tryAddLocalId: true,

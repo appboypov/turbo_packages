@@ -58,7 +58,7 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
 
   Future<TurboResponse> updateLastChangelogVersionRead({
     required String? version,
-    required S strings,
+    required Strings strings,
   }) async {
     if (id == null) {
       return TurboResponse.failAsBool(message: strings.userIdIsNull);

@@ -6,11 +6,11 @@ import 'package:turbo_firestore_api/enums/t_timestamp_type.dart';
 import 'package:turbo_firestore_api/exceptions/invalid_json_exception.dart';
 import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
 import 'package:turbo_firestore_api/extensions/t_map_extension.dart';
-import 'package:turbo_firestore_api/models/sensitive_data.dart';
+import 'package:turbo_firestore_api/models/t_sensitive_data.dart';
 import 'package:turbo_firestore_api/models/t_api_vars.dart';
-import 'package:turbo_firestore_api/models/write_batch_with_reference.dart';
+import 'package:turbo_firestore_api/models/t_write_batch_with_reference.dart';
 import 'package:turbo_firestore_api/typedefs/collection_reference_def.dart';
-import 'package:turbo_firestore_api/util/turbo_firestore_logger.dart';
+import 'package:turbo_firestore_api/util/t_firestore_logger.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
@@ -121,7 +121,7 @@ class TFirestoreApi<T> {
     T Function(Map<String, dynamic> json)? fromJson,
     T Function(Map<String, dynamic> json)? fromJsonError,
     bool tryAddLocalId = false,
-    TurboFirestoreLogger? logger,
+    TFirestoreLogger? logger,
     String createdAtFieldName = 'createdAt',
     String updatedAtFieldName = 'updatedAt',
     String idFieldName = 'id',
@@ -135,7 +135,7 @@ class TFirestoreApi<T> {
         _fromJson = fromJson,
         _fromJsonError = fromJsonError,
         _tryAddLocalId = tryAddLocalId,
-        _log = logger ?? TurboFirestoreLogger(),
+        _log = logger ?? TFirestoreLogger(),
         _createdAtFieldName = createdAtFieldName,
         _updatedAtFieldName = updatedAtFieldName,
         _idFieldName = idFieldName,
@@ -188,7 +188,7 @@ class TFirestoreApi<T> {
   final bool _tryAddLocalDocumentReference;
 
   /// Used to provide proper logging when performing any operation inside the [TFirestoreApi].
-  final TurboFirestoreLogger _log;
+  final TFirestoreLogger _log;
 
   /// Used to provide a default 'createdAt' field based on the provided [TTimestampType] of create methods.
   final String _createdAtFieldName;
@@ -255,7 +255,7 @@ class TFirestoreApi<T> {
         getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
     _log.debug(
       message: 'Checking if document exists..',
-      sensitiveData: SensitiveData(
+      sensitiveData: TSensitiveData(
         path: collectionPathOverride ?? _collectionPath(),
         id: id,
       ),
@@ -270,14 +270,14 @@ class TFirestoreApi<T> {
     if (result.isNotEmpty) {
       _log.info(
         message: 'Found ${result.length} item(s)!',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
         ),
       );
     } else {
       _log.warning(
         message: 'Found 0 items!',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: _collectionPath(),
         ),
       );
@@ -287,10 +287,10 @@ class TFirestoreApi<T> {
   /// Helper method to handle batch responses and extract the result.
   ///
   /// This method properly unwraps the TurboResponse and handles error cases.
-  WriteBatchWithReference<Map<String, dynamic>>? _handleBatchResponse(
-    TurboResponse<WriteBatchWithReference<Map<String, dynamic>>> response,
+  TWriteBatchWithReference<Map<String, dynamic>>? _handleBatchResponse(
+    TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>> response,
   ) {
-    return response.when<WriteBatchWithReference<Map<String, dynamic>>?>(
+    return response.when<TWriteBatchWithReference<Map<String, dynamic>>?>(
       success: (success) => success.result,
       fail: (_) => null,
     );
@@ -300,7 +300,7 @@ class TFirestoreApi<T> {
   ///
   /// This method properly handles the batch response and executes the commit operation.
   Future<TurboResponse<DocumentReference>> _handleBatchOperation(
-    TurboResponse<WriteBatchWithReference<Map<String, dynamic>>> batchResponse,
+    TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>> batchResponse,
   ) async {
     final batchResult = _handleBatchResponse(batchResponse);
     if (batchResult != null) {

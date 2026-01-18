@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/logout_management.dart';
 import 'package:turbolytics/turbolytics.dart';
 import 'package:veto/data/models/base_view_model.dart';
 

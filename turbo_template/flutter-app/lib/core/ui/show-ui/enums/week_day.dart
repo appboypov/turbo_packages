@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum WeekDay {
@@ -10,7 +11,7 @@ enum WeekDay {
   saturday,
   sunday;
 
-  String fullName(S strings) {
+  String fullName(Strings strings) {
     switch (this) {
       case WeekDay.monday:
         return strings.monday;
@@ -30,7 +31,7 @@ enum WeekDay {
   }
 
   String abbreviation(BuildContext context) {
-    final s = S.of(context);
+    final strings = context.strings;
     switch (this) {
       case WeekDay.monday:
         return strings.mon;

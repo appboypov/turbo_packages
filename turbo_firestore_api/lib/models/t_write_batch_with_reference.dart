@@ -32,13 +32,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 ///   fail: (error) => print('Error: $error'),
 /// );
 /// ```
-class WriteBatchWithReference<T> {
+class TWriteBatchWithReference<T> {
   /// Creates a new write batch with reference container
   ///
   /// Parameters:
   /// [writeBatch] the Firestore batch operation
   /// [documentReference] reference to the last document operated on
-  const WriteBatchWithReference({
+  const TWriteBatchWithReference({
     required this.writeBatch,
     required this.documentReference,
   });

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
 import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
-import 'package:turbo_firestore_api/models/t_auth_vars.dart' as turbo_firestore_api;
 import 'package:turbo_serializable/turbo_serializable.dart';
 
 part 'settings_dto.g.dart';
@@ -17,7 +17,7 @@ class SettingsDto extends TWriteableId {
     required this.verifyEmailSnoozeCount,
   });
 
-  factory SettingsDto.create({required TurboAuthVars vars}) {
+  factory SettingsDto.create({required TAuthVars vars}) {
     return SettingsDto(
       userId: vars.userId,
       id: vars.userId,

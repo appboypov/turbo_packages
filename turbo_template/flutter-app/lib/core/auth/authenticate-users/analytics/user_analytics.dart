@@ -1,9 +1,9 @@
 
-import 'package:turbo_flutter_template/core/auth/authenticate-users/abstracts/t_analytics.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/abstracts/analytics.dart';
 import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class UserAnalytics extends TAnalytics {
+class UserAnalytics extends Analytics {
   static UserAnalytics locate({required String location}) =>
           Turbolytics.getAnalytics(location: location);
 

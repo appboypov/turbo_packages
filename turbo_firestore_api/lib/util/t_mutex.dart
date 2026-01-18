@@ -24,7 +24,7 @@ import 'dart:ui';
 /// // Clean up
 /// mutex.dispose();
 /// ```
-class TurboMutex {
+class TMutex {
   /// Queue of completers for managing locks.
   final _completerQueue = Queue<Completer<void>>();
 

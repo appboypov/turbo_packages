@@ -43,7 +43,7 @@ class EmulatorConfig {
   ///
   /// Only configures emulators in debug mode when `env=emulators` or `env=demo` is set.
   static Future<void> tryConfigureEmulators() async {
-    final log = Log(location: 'EmulatorConfig');
+    final log = TLog(location: 'EmulatorConfig');
     log.info('Checking if emulators should be configured...');
     log.info('Debug mode: $kDebugMode, Emulators enabled: $_shouldUseEmulators');
 

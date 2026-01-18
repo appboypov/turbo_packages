@@ -2,21 +2,21 @@ part of '../turbolytics/turbolytics.dart';
 
 /// Used to provide an easy interface for sending analytics.
 ///
-/// Each [AnalyticsTypes] has its own method that receives a subject and possible parameters.
-/// For example when using the [AnalyticsService.viewed] method with given subject 'counter_page'
-/// your [AnalyticsService._analyticsInterface] will attempt to send a 'counter_page_viewed'
+/// Each [TAnalyticsType] has its own method that receives a subject and possible parameters.
+/// For example when using the [TAnalyticsService.viewed] method with given subject 'counter_page'
+/// your [TAnalyticsService._analyticsInterface] will attempt to send a 'counter_page_viewed'
 /// event.
-class AnalyticsService {
-  AnalyticsService({Log? log}) : _log = log;
+class TAnalyticsService {
+  TAnalyticsService({TLog? log}) : _log = log;
 
   /// Used to log analytics from where they are sent.
-  final Log? _log;
+  final TLog? _log;
 
   /// Used to handle analytics in proper order that they are sent.
-  late final EventBus _eventBus = EventBus();
+  late final TEventBus _eventBus = TEventBus();
 
   /// Used to identify the first input when sending a stream of similar analytics.
-  Analytic? _firstInput;
+  TAnalytic? _firstInput;
 
   /// Sets a [userId] that persists throughout the app's lifecycle.
   ///
@@ -62,267 +62,267 @@ class AnalyticsService {
   void custom({required CustomAnalytic analytic}) =>
       _logCustomAnalytic(analytic);
 
-  /// Sends an [AnalyticsTypes.tapped] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.tapped] based on given [subject] and possible [parameters].
   void tapped({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.tapped,
+          type: TAnalyticsType.tapped,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.clicked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.clicked] based on given [subject] and possible [parameters].
   void clicked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.clicked,
+          type: TAnalyticsType.clicked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.focussed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.focussed] based on given [subject] and possible [parameters].
   void focussed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.focussed,
+          type: TAnalyticsType.focussed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.selected] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.selected] based on given [subject] and possible [parameters].
   void selected({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.selected,
+          type: TAnalyticsType.selected,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.connected] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.connected] based on given [subject] and possible [parameters].
   void connected({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.connected,
+          type: TAnalyticsType.connected,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.disconnected] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.disconnected] based on given [subject] and possible [parameters].
   void disconnected({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.disconnected,
+          type: TAnalyticsType.disconnected,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.viewed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.viewed] based on given [subject] and possible [parameters].
   void viewed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.viewed,
+          type: TAnalyticsType.viewed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.hidden] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.hidden] based on given [subject] and possible [parameters].
   void hidden({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.hidden,
+          type: TAnalyticsType.hidden,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.opened] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.opened] based on given [subject] and possible [parameters].
   void opened({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.opened,
+          type: TAnalyticsType.opened,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.closed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.closed] based on given [subject] and possible [parameters].
   void closed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.closed,
+          type: TAnalyticsType.closed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.failed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.failed] based on given [subject] and possible [parameters].
   void failed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.failed,
+          type: TAnalyticsType.failed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.succeeded] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.succeeded] based on given [subject] and possible [parameters].
   void succeeded({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.succeeded,
+          type: TAnalyticsType.succeeded,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.sent] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.sent] based on given [subject] and possible [parameters].
   void sent({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.sent,
+          type: TAnalyticsType.sent,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.received] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.received] based on given [subject] and possible [parameters].
   void received({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.received,
+          type: TAnalyticsType.received,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.validated] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.validated] based on given [subject] and possible [parameters].
   void validated({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.validated,
+          type: TAnalyticsType.validated,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.invalidated] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.invalidated] based on given [subject] and possible [parameters].
   void invalidated({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.invalidated,
+          type: TAnalyticsType.invalidated,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.searched] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.searched] based on given [subject] and possible [parameters].
   void searched({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.searched,
+          type: TAnalyticsType.searched,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.liked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.liked] based on given [subject] and possible [parameters].
   void liked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.liked,
+          type: TAnalyticsType.liked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.shared] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.shared] based on given [subject] and possible [parameters].
   void shared({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.shared,
+          type: TAnalyticsType.shared,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.commented] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.commented] based on given [subject] and possible [parameters].
   void commented({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.commented,
+          type: TAnalyticsType.commented,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.input] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.input] based on given [subject] and possible [parameters].
   ///
   /// Defaults to only sending the first analytic by settings [onlyFirstValue] to true.
   void input({
@@ -330,10 +330,10 @@ class AnalyticsService {
     Map<String, Object>? parameters,
     bool onlyFirstValue = true,
   }) {
-    final analytic = Analytic(
+    final analytic = TAnalytic(
       subject: subject,
       parameters: parameters,
-      type: AnalyticsTypes.input,
+      type: TAnalyticsType.input,
     );
     if (_firstInput == null ||
         !onlyFirstValue ||
@@ -343,900 +343,900 @@ class AnalyticsService {
     _firstInput = analytic;
   }
 
-  /// Sends an [AnalyticsTypes.incremented] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.incremented] based on given [subject] and possible [parameters].
   void incremented({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.incremented,
+          type: TAnalyticsType.incremented,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.decremented] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.decremented] based on given [subject] and possible [parameters].
   void decremented({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.decremented,
+          type: TAnalyticsType.decremented,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.accepted] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.accepted] based on given [subject] and possible [parameters].
   void accepted({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.accepted,
+          type: TAnalyticsType.accepted,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.declined] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.declined] based on given [subject] and possible [parameters].
   void declined({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.declined,
+          type: TAnalyticsType.declined,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.alert] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.alert] based on given [subject] and possible [parameters].
   void alert({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.alert,
+          type: TAnalyticsType.alert,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.scrolled] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.scrolled] based on given [subject] and possible [parameters].
   void scrolled({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.scrolled,
+          type: TAnalyticsType.scrolled,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.started] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.started] based on given [subject] and possible [parameters].
   void started({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.started,
+          type: TAnalyticsType.started,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.stopped] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.stopped] based on given [subject] and possible [parameters].
   void stopped({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.stopped,
+          type: TAnalyticsType.stopped,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.initialised] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.initialised] based on given [subject] and possible [parameters].
   void initialised({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.initialised,
+          type: TAnalyticsType.initialised,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.disposed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.disposed] based on given [subject] and possible [parameters].
   void disposed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.disposed,
+          type: TAnalyticsType.disposed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.fetched] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.fetched] based on given [subject] and possible [parameters].
   void fetched({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.fetched,
+          type: TAnalyticsType.fetched,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.set] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.set] based on given [subject] and possible [parameters].
   void set({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.set,
+          type: TAnalyticsType.set,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.get] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.get] based on given [subject] and possible [parameters].
   void get({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.get,
+          type: TAnalyticsType.get,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.foreground] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.foreground] based on given [subject] and possible [parameters].
   void foreground({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.foreground,
+          type: TAnalyticsType.foreground,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.background] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.background] based on given [subject] and possible [parameters].
   void background({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.background,
+          type: TAnalyticsType.background,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.purchased] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.purchased] based on given [subject] and possible [parameters].
   void purchased({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.purchased,
+          type: TAnalyticsType.purchased,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.dismissed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.dismissed] based on given [subject] and possible [parameters].
   void dismissed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.dismissed,
+          type: TAnalyticsType.dismissed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.upgraded] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.upgraded] based on given [subject] and possible [parameters].
   void upgraded({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.upgraded,
+          type: TAnalyticsType.upgraded,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.downgraded] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.downgraded] based on given [subject] and possible [parameters].
   void downgraded({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.downgraded,
+          type: TAnalyticsType.downgraded,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.interaction] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.interaction] based on given [subject] and possible [parameters].
   void interaction({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.interaction,
+          type: TAnalyticsType.interaction,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.query] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.query] based on given [subject] and possible [parameters].
   void query({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.query,
+          type: TAnalyticsType.query,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.confirmed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.confirmed] based on given [subject] and possible [parameters].
   void confirmed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.confirmed,
+          type: TAnalyticsType.confirmed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.canceled] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.canceled] based on given [subject] and possible [parameters].
   void canceled({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.canceled,
+          type: TAnalyticsType.canceled,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.created] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.created] based on given [subject] and possible [parameters].
   void created({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.created,
+          type: TAnalyticsType.created,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.read] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.read] based on given [subject] and possible [parameters].
   void read({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.read,
+          type: TAnalyticsType.read,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.updated] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.updated] based on given [subject] and possible [parameters].
   void updated({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.updated,
+          type: TAnalyticsType.updated,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.deleted] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.deleted] based on given [subject] and possible [parameters].
   void deleted({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.deleted,
+          type: TAnalyticsType.deleted,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.added] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.added] based on given [subject] and possible [parameters].
   void added({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.added,
+          type: TAnalyticsType.added,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.removed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.removed] based on given [subject] and possible [parameters].
   void removed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.removed,
+          type: TAnalyticsType.removed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.subscribed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.subscribed] based on given [subject] and possible [parameters].
   void subscribed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.subscribed,
+          type: TAnalyticsType.subscribed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.unsubscribed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.unsubscribed] based on given [subject] and possible [parameters].
   void unsubscribed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.unsubscribed,
+          type: TAnalyticsType.unsubscribed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.changed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.changed] based on given [subject] and possible [parameters].
   void changed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.changed,
+          type: TAnalyticsType.changed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.denied] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.denied] based on given [subject] and possible [parameters].
   void denied({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.denied,
+          type: TAnalyticsType.denied,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.skipped] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.skipped] based on given [subject] and possible [parameters].
   void skipped({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.skipped,
+          type: TAnalyticsType.skipped,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.checked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.checked] based on given [subject] and possible [parameters].
   void checked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.checked,
+          type: TAnalyticsType.checked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.unchecked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.unchecked] based on given [subject] and possible [parameters].
   void unchecked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.unchecked,
+          type: TAnalyticsType.unchecked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.attempted] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.attempted] based on given [subject] and possible [parameters].
   void attempted({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.attempted,
+          type: TAnalyticsType.attempted,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.reset] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.reset] based on given [subject] and possible [parameters].
   void reset({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.reset,
+          type: TAnalyticsType.reset,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.enabled] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.enabled] based on given [subject] and possible [parameters].
   void enabled({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.enabled,
+          type: TAnalyticsType.enabled,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.disabled] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.disabled] based on given [subject] and possible [parameters].
   void disabled({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.disabled,
+          type: TAnalyticsType.disabled,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.began] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.began] based on given [subject] and possible [parameters].
   void began({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.began,
+          type: TAnalyticsType.began,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.ended] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.ended] based on given [subject] and possible [parameters].
   void ended({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.ended,
+          type: TAnalyticsType.ended,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.refreshed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.refreshed] based on given [subject] and possible [parameters].
   void refreshed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.refreshed,
+          type: TAnalyticsType.refreshed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.generated] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.generated] based on given [subject] and possible [parameters].
   void generated({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.generated,
+          type: TAnalyticsType.generated,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.unsupported] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.unsupported] based on given [subject] and possible [parameters].
   void unsupported({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.unsupported,
+          type: TAnalyticsType.unsupported,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.invalid] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.invalid] based on given [subject] and possible [parameters].
   void invalid({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.invalid,
+          type: TAnalyticsType.invalid,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.valid] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.valid] based on given [subject] and possible [parameters].
   void valid({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.valid,
+          type: TAnalyticsType.valid,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.shown] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.shown] based on given [subject] and possible [parameters].
   void shown({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.shown,
+          type: TAnalyticsType.shown,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.saved] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.saved] based on given [subject] and possible [parameters].
   void saved({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.saved,
+          type: TAnalyticsType.saved,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.loaded] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.loaded] based on given [subject] and possible [parameters].
   void loaded({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.loaded,
+          type: TAnalyticsType.loaded,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.found] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.found] based on given [subject] and possible [parameters].
   void found({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.found,
+          type: TAnalyticsType.found,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.notFound] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.notFound] based on given [subject] and possible [parameters].
   void notFound({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.notFound,
+          type: TAnalyticsType.notFound,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.completed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.completed] based on given [subject] and possible [parameters].
   void completed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.completed,
+          type: TAnalyticsType.completed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.error] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.error] based on given [subject] and possible [parameters].
   void error({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.error,
+          type: TAnalyticsType.error,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.given] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.given] based on given [subject] and possible [parameters].
   void given({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.given,
+          type: TAnalyticsType.given,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.taken] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.taken] based on given [subject] and possible [parameters].
   void taken({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.taken,
+          type: TAnalyticsType.taken,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.snoozed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.snoozed] based on given [subject] and possible [parameters].
   void snoozed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.snoozed,
+          type: TAnalyticsType.snoozed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.verified] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.verified] based on given [subject] and possible [parameters].
   void verified({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.verified,
+          type: TAnalyticsType.verified,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.swiped] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.swiped] based on given [subject] and possible [parameters].
   void swiped({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.swiped,
+          type: TAnalyticsType.swiped,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.used] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.used] based on given [subject] and possible [parameters].
   void used({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.used,
+          type: TAnalyticsType.used,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.filled] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.filled] based on given [subject] and possible [parameters].
   void filled({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.filled,
+          type: TAnalyticsType.filled,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.cleared] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.cleared] based on given [subject] and possible [parameters].
   void cleared({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.cleared,
+          type: TAnalyticsType.cleared,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.unverified] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.unverified] based on given [subject] and possible [parameters].
   void unverified({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.unverified,
+          type: TAnalyticsType.unverified,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.paused] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.paused] based on given [subject] and possible [parameters].
   void paused({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.paused,
+          type: TAnalyticsType.paused,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.resumed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.resumed] based on given [subject] and possible [parameters].
   void resumed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.resumed,
+          type: TAnalyticsType.resumed,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.linked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.linked] based on given [subject] and possible [parameters].
   void linked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.linked,
+          type: TAnalyticsType.linked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.unlinked] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.unlinked] based on given [subject] and possible [parameters].
   void unlinked({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.unlinked,
+          type: TAnalyticsType.unlinked,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.requested] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.requested] based on given [subject] and possible [parameters].
   void requested({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.requested,
+          type: TAnalyticsType.requested,
         ),
       );
 
-  /// Sends an [AnalyticsTypes.pressed] based on given [subject] and possible [parameters].
+  /// Sends an [TAnalyticsType.pressed] based on given [subject] and possible [parameters].
   void pressed({
     required String subject,
     Map<String, Object>? parameters,
   }) =>
       _logAnalytic(
-        Analytic(
+        TAnalytic(
           subject: subject,
           parameters: parameters,
-          type: AnalyticsTypes.pressed,
+          type: TAnalyticsType.pressed,
         ),
       );
 
@@ -1257,11 +1257,11 @@ class AnalyticsService {
   Future<void> resetAnalytics() async =>
       Turbolytics._analyticsInterface?.resetAnalyticsData();
 
-  /// Resets the [_firstInput] used by [AnalyticsService.input].
+  /// Resets the [_firstInput] used by [TAnalyticsService.input].
   void resetFirstInput() => _firstInput = null;
 
   /// Main method used for sending any [analytic] in this class.
-  void _logAnalytic(Analytic analytic) {
+  void _logAnalytic(TAnalytic analytic) {
     final name = analytic.name;
     final parameters = analytic.parameters;
     _eventBus.tryAddAnalytic(Turbolytics._analyticsInterface

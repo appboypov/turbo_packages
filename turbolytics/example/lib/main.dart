@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  late final Log log = Log(location: runtimeType.toString());
+  late final TLog log = TLog(location: runtimeType.toString());
   late final Turbolytics<CounterAnalytics> turbolytics =
       Turbolytics.create<CounterAnalytics>(location: runtimeType.toString());
 

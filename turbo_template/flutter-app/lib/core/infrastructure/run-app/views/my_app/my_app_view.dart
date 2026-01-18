@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shake_gesture/shake_gesture.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/show-version/services/package_info_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/is_busy_icon.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusable.dart';
@@ -15,15 +15,14 @@ import 'package:turbo_flutter_template/core/state/manage-state/widgets/value_lis
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/config/no_thumb_scroll_behaviour.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/spacings.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider_builder.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
-import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
 import 'package:veto/veto.dart';
 
@@ -67,12 +66,12 @@ class MyAppView extends StatelessWidget {
             scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
-              S.delegate,
+              Strings.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: S.delegate.supportedLocales,
+            supportedLocales: Strings.supportedLocales,
             builder: (context, child) => TProviderBuilder(
               tSupportedLanguage: language,
               tThemeMode: turboThemeMode,
@@ -136,8 +135,7 @@ class MyAppView extends StatelessWidget {
       );
     },
     viewModelBuilder: () => MyAppViewModel(
-      authService: () => AuthService.locate,
-      shakeGestureService: () => ShakeGestureService.locate,
+      packageInfoService: () => PackageInfoService(),
       baseRouterService: () => BaseRouterService.locate,
       busyService: () => BusyService.instance(),
       connectionService: () => ConnectionService.locate,

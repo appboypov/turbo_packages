@@ -23,7 +23,7 @@ import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 ///   sensitiveData: sensitiveData,
 /// );
 /// ```
-class SensitiveData {
+class TSensitiveData {
   /// Creates a new sensitive data container
   ///
   /// Parameters:
@@ -43,7 +43,7 @@ class SensitiveData {
   /// [type] operation type identifier
   /// [updateTimeStampType] timestamp type for document updates
   /// [data] additional operation data
-  const SensitiveData({
+  const TSensitiveData({
     required this.path,
     this.id,
     this.whereDescription,

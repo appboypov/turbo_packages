@@ -5,8 +5,8 @@ import 'package:turbo_firestore_api/models/t_api_vars.dart';
 /// [id] - The unique identifier for the document
 /// [now] - The timestamp when the document was created/updated
 /// [userId] - The ID of the user who owns/created the document
-class TurboAuthVars extends TApiVars {
-  const TurboAuthVars({
+class TAuthVars extends TApiVars {
+  const TAuthVars({
     required super.id,
     required super.now,
     required this.userId,
@@ -17,7 +17,7 @@ class TurboAuthVars extends TApiVars {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TurboAuthVars &&
+      other is TAuthVars &&
           runtimeType == other.runtimeType &&
           userId == other.userId;
 

@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:roomy_mobile/l10n/globals/g_strings.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum Month {
@@ -18,7 +14,7 @@ enum Month {
   november,
   december;
 
-  String fullName(S strings) {
+  String fullName(Strings strings) {
     switch (this) {
       case Month.january:
         return strings.january;
@@ -47,7 +43,7 @@ enum Month {
     }
   }
 
-  String abbreviation(S strings) {
+  String abbreviation(Strings strings) {
     switch (this) {
       case Month.january:
         return strings.jan;

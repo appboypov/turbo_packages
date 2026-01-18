@@ -30,7 +30,7 @@ void main() {
       await EmulatorConfig.tryConfigureEmulators();
 
       FlutterError.onError = (errorDetails) {
-        Log(location: 'FlutterError').error(
+        TLog(location: 'FlutterError').error(
           'Flutter framework error',
           error: errorDetails.exception,
           stackTrace: errorDetails.stack,
@@ -38,7 +38,7 @@ void main() {
       };
 
       PlatformDispatcher.instance.onError = (error, stack) {
-        Log(
+        TLog(
           location: 'PlatformDispatcher',
         ).error('Uncaught async error', error: error, stackTrace: stack);
         return true;
@@ -47,7 +47,7 @@ void main() {
       runApp(const MyAppView());
     },
     (error, stack) {
-      Log(
+      TLog(
         location: 'Zoned',
       ).error('Unhandled exception caught: ${error.toString()}', error: error, stackTrace: stack);
     },

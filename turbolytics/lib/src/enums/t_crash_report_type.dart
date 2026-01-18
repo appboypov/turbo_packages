@@ -1,24 +1,24 @@
 import '../extensions/log_type_extensions.dart';
-import 'log_level.dart';
+import 't_log_level.dart';
 
 /// Used to indicate what type of leading information is added to the crash report.
-enum CrashReportType {
+enum TCrashReportType {
   location,
   tagLocation,
   iconTagLocation,
 }
 
-extension CrashReportTypeExtension on CrashReportType {
+extension CrashReportTypeExtension on TCrashReportType {
   String parseLogLevel({
     required String location,
-    required LogLevel logLevel,
+    required TLogLevel logLevel,
   }) {
     switch (this) {
-      case CrashReportType.location:
+      case TCrashReportType.location:
         return '[$location]';
-      case CrashReportType.tagLocation:
+      case TCrashReportType.tagLocation:
         return '${logLevel.tag} [$location]';
-      case CrashReportType.iconTagLocation:
+      case TCrashReportType.iconTagLocation:
         return '${logLevel.iconTag} [$location]';
     }
   }

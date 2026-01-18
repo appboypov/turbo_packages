@@ -102,7 +102,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -170,7 +170,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         if (transaction == null) {
           _log.debug(
             message: 'Setting data with documentReference.set..',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
               data: writeableAsJson,
@@ -183,7 +183,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         } else {
           _log.debug(
             message: 'Setting data with transaction.set..',
-            sensitiveData: SensitiveData(
+            sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
               data: writeableAsJson,
@@ -214,7 +214,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
 
       _log.error(
         message: 'Unable to create document',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -256,7 +256,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - [collectionPathOverride]: Optional different collection path
   ///
   /// Returns a [TurboResponse] containing either:
-  /// - Success with [WriteBatchWithReference] containing the batch and document reference
+  /// - Success with [TWriteBatchWithReference] containing the batch and document reference
   /// - Failure with validation errors or operation errors
   ///
   /// Features:
@@ -289,8 +289,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   ///
   /// See also:
   /// - [createDoc] for single document operations
-  /// - [WriteBatchWithReference] for batch result structure
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
+  /// - [TWriteBatchWithReference] for batch result structure
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
       createDocInBatch({
     required TWriteable writeable,
     String? id,
@@ -308,7 +308,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       'in order to make this method work.',
     );
     try {
-      final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>?
+      final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>?
           invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
@@ -320,7 +320,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document with batch..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,
@@ -355,7 +355,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
             );
       _log.debug(
         message: 'Setting data with writeBatch.set..',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: documentReference.id,
           data: writeableAsJson,
@@ -375,7 +375,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         sensitiveData: null,
       );
       return TurboResponse.success(
-        result: WriteBatchWithReference(
+        result: TWriteBatchWithReference(
           writeBatch: nullSafeWriteBatch,
           documentReference: documentReference,
         ),
@@ -383,7 +383,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
     } catch (error, stackTrace) {
       _log.error(
         message: 'Unable to create document with batch',
-        sensitiveData: SensitiveData(
+        sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: id,
           isBatch: writeBatch != null,

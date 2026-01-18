@@ -6,6 +6,7 @@ import 'package:turbo_flutter_template/core/auth/globals/g_busy.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
+import 'package:turbolytics/turbolytics.dart';
 import 'package:veto/data/models/base_view_model.dart';
 
 mixin LogoutManagement on BaseViewModel {
@@ -54,7 +55,7 @@ mixin LogoutManagement on BaseViewModel {
             },
           );
         } catch (error, stackTrace) {
-          Log(
+          TLog(
             location: 'LogoutMixin',
           ).error('$error caught while logging out', error: error, stackTrace: stackTrace);
         } finally {
@@ -62,7 +63,7 @@ mixin LogoutManagement on BaseViewModel {
         }
       }
     } catch (error, stackTrace) {
-      Log(location: 'LogoutMixin').error(
+      TLog(location: 'LogoutMixin').error(
         'Unexpected ${error.runtimeType} caught while logging out.',
         error: error,
         stackTrace: stackTrace,

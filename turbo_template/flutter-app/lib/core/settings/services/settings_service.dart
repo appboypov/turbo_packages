@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
-import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
-import 'package:turbo_flutter_template/core/settings/dtos/settings_dto.dart';
+import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api/services/t_document_service.dart';
 import 'package:turbo_firestore_api/typedefs/create_doc_def.dart';
-import 'package:turbo_firestore_api/typedefs/turbo_locator_def.dart';
+import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
+import 'package:turbo_flutter_template/core/settings/dtos/settings_dto.dart';
+import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_response/turbo_response.dart';
 

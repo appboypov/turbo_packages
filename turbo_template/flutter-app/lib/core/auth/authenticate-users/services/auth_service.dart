@@ -5,9 +5,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/analytics/user_analytics.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/firebase_auth_exception_handler.dart';
+import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
+import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
+import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_null_exception.dart';
+import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_state_exception.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/map_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/annotations/called_by_mutex.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
+import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
+import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/turbo_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
+
+import '../../../state/manage-state/extensions/completer_extension.dart';
 
 class AuthService extends SyncService<User?>
     with Turbolytics<UserAnalytics>, FirebaseAuthExceptionHandler {
@@ -15,7 +33,7 @@ class AuthService extends SyncService<User?>
 
   static AuthService get locate => GetIt.I.get();
   static AuthService Function() get lazyLocate =>
-          () => GetIt.I.get<AuthService>();
+      () => GetIt.I.get<AuthService>();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(
     AuthService.new,
     dispose: (param) async {
@@ -37,7 +55,7 @@ class AuthService extends SyncService<User?>
 
   @override
   void Function(User? value) get onData =>
-          (user) => _mutex.lockAndRun(
+      (user) => _mutex.lockAndRun(
         run: (unlock) async {
           try {
             log.debug('New user data received, user: ${user?.uid}');
@@ -50,7 +68,6 @@ class AuthService extends SyncService<User?>
               _hasLoggedOut = false;
               return;
             } else {
-              analytics.reset();
               _hasAuth.update(false);
               _claimsUserLevel.update(UserLevel.unknown);
               if (_hasLoggedOut) {
@@ -80,10 +97,10 @@ class AuthService extends SyncService<User?>
 
   User? _lastUser;
   bool _hasLoggedOut = false;
-  final _claimsUserLevel = Informer<UserLevel>(UserLevel.unknown);
+  final _claimsUserLevel = TNotifier<UserLevel>(UserLevel.unknown);
   final _currentUser = BehaviorSubject<User?>();
   final _didManageUserLevel = Completer();
-  final _hasAuth = Informer<bool>(false);
+  final _hasAuth = TNotifier<bool>(false);
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
@@ -120,7 +137,7 @@ class AuthService extends SyncService<User?>
       final refreshedUser = _firebaseAuth.currentUser;
       return _getEmailVerificationStatus(refreshedUser);
     } catch (error, stackTrace) {
-      log.error(kValuesEmailVerificationReloadError, error: error, stackTrace: stackTrace);
+      log.error('Failed to reload user for email verification check', error: error, stackTrace: stackTrace);
       return _getEmailVerificationStatus(currentUser);
     }
   }
@@ -184,7 +201,7 @@ class AuthService extends SyncService<User?>
           // Exponential backoff
           Future.delayed(
             Duration(milliseconds: 500 * _claimsRetryCount),
-                () => _tryManageUserLevel(user),
+            () => _tryManageUserLevel(user),
           );
           return;
         }
@@ -210,7 +227,7 @@ class AuthService extends SyncService<User?>
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  Future<TurboResponse> deleteAccount() async {
+  Future<TurboResponse> deleteAccount({required Strings strings}) async {
     try {
       final user = _firebaseAuth.currentUser;
       if (user == null) {
@@ -220,8 +237,8 @@ class AuthService extends SyncService<User?>
       }
       await user.delete();
       return TurboResponse.successAsBool(
-        title: gStrings.accountDeletedTitle,
-        message: gStrings.accountDeletedMessage,
+        title: strings.accountDeletedTitle,
+        message: strings.accountDeletedMessage,
       );
     } catch (error, stackTrace) {
       log.error(
@@ -231,8 +248,8 @@ class AuthService extends SyncService<User?>
       );
       return TurboResponse.fail(
         error: error,
-        title: gStrings.failedToDeleteAccountTitle,
-        message: gStrings.failedToDeleteAccountMessage,
+        title: strings.failedToDeleteAccountTitle,
+        message: strings.failedToDeleteAccountMessage,
       );
     }
   }
@@ -264,7 +281,10 @@ class AuthService extends SyncService<User?>
     }
   }
 
-  Future<TurboResponse> linkAuthCredential({required AuthCredential authCredential}) async {
+  Future<TurboResponse> linkAuthCredential({
+    required AuthCredential authCredential,
+    required Strings strings,
+  }) async {
     try {
       final currentUser = _firebaseAuth.currentUser;
       if (currentUser == null) {
@@ -274,8 +294,8 @@ class AuthService extends SyncService<User?>
       }
       await currentUser.linkWithCredential(authCredential);
       return TurboResponse.successAsBool(
-        title: gStrings.accountLinkedTitle,
-        message: gStrings.accountLinkedMessage,
+        title: strings.accountLinkedTitle,
+        message: strings.accountLinkedMessage,
       );
     } catch (error, stackTrace) {
       log.error(
@@ -318,10 +338,11 @@ class AuthService extends SyncService<User?>
           await _firebaseAuth.signOut();
           await _onLogout(context: context);
           _hasLoggedOut = _firebaseAuth.currentUser == null;
+          final strings = context.strings;
           if (_hasLoggedOut) {
             return TurboResponse.successAsBool(
-              title: gStrings.logoutSuccessfulTitle,
-              message: gStrings.logoutSuccessfulMessage,
+              title: strings.logoutSuccessfulTitle,
+              message: strings.logoutSuccessfulMessage,
             );
           } else {
             throw const UnexpectedStateException(
@@ -335,11 +356,12 @@ class AuthService extends SyncService<User?>
             stackTrace: stackTrace,
           );
           _hasLoggedOut = _firebaseAuth.currentUser == null;
+          final strings = context.strings;
           return TurboResponse.fail(
             error: error,
-            title: gStrings.logoutFailedTitle,
+            title: strings.logoutFailedTitle,
             message:
-            'An unknown error occurred.${_hasLoggedOut ? ' But we were still able to log you out.' : 'We were not able to log you out.'}',
+                'An unknown error occurred.${_hasLoggedOut ? ' But we were still able to log you out.' : 'We were not able to log you out.'}',
           );
         } finally {
           unlock();
@@ -348,7 +370,7 @@ class AuthService extends SyncService<User?>
     );
   }
 
-  Future<TurboResponse> sendVerifyEmailEmail() async {
+  Future<TurboResponse> sendVerifyEmailEmail({required Strings strings}) async {
     try {
       log.info('Sending verify email email..');
       final user = _firebaseAuth.currentUser;
@@ -359,8 +381,8 @@ class AuthService extends SyncService<User?>
       }
       await user.sendEmailVerification();
       return TurboResponse.successAsBool(
-        title: gStrings.verifyEmailSentTitle,
-        message: gStrings.verifyEmailSentMessage,
+        title: strings.verifyEmailSentTitle,
+        message: strings.verifyEmailSentMessage,
       );
     } catch (error, stackTrace) {
       log.error(

@@ -41,7 +41,6 @@ class NavigationTabService with Turbolytics {
       case NavigationTab.settings:
         throw UnimplementedError();
     }
-    throw UnimplementedError();
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\

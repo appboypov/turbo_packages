@@ -49,7 +49,7 @@ class TEnsureVisible extends StatefulWidget {
       final scrollAgain = newMaxExtent != oldMaxExtent;
       return scrollAgain;
     } catch (error, stackTrace) {
-      Log(location: 'TEnsureVisible').error(
+      TLog(location: 'TEnsureVisible').error(
         'Unexpected ${error.runtimeType} caught while trying to ensure visible',
         error: error,
         stackTrace: stackTrace,

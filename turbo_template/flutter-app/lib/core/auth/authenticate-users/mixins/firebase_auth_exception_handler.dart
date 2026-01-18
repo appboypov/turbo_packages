@@ -5,7 +5,7 @@ import 'package:turbolytics/turbolytics.dart';
 mixin FirebaseAuthExceptionHandler {
   TurboResponse<T> tryHandleFirebaseAuthException<T>({
     required FirebaseAuthException firebaseAuthException,
-    required Log log,
+    required TLog log,
   }) {
     log.debug('Starting to handle FirebaseAuthException');
     log.error('FirebaseAuthException code: ${firebaseAuthException.code}');
