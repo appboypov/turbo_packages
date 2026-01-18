@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_flutter_template/core/storage/converters/document_reference_converter.dart';
 import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';

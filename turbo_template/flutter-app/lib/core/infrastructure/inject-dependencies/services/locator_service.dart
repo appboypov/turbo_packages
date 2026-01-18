@@ -12,11 +12,11 @@ import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/s
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/overlay_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
+import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/vibrate_service.dart';
-import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class LocatorService with Turbolytics {

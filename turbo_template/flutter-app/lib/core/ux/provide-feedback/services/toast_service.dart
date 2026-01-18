@@ -4,7 +4,6 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_snackbar.dart';
-import 'package:turbo_flutter_template/environment/globals/g_env.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
 import 'package:turbolytics/turbolytics.dart';
 

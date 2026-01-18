@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
 import 'package:turbo_serializable/turbo_serializable.dart';
 
