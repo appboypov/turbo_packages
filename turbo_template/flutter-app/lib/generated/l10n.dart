@@ -172,7 +172,7 @@ abstract class Strings {
   /// No description provided for @addRoomy.
   ///
   /// In en, this message translates to:
-  /// **'Add Roomy'**
+  /// **'Add member'**
   String get addRoomy;
 
   /// No description provided for @addSubtask.
@@ -3303,7 +3303,7 @@ abstract class Strings {
   /// No description provided for @roomies.
   ///
   /// In en, this message translates to:
-  /// **'Roomies'**
+  /// **'Members'**
   String get roomies;
 
   /// No description provided for @theseAreYourRoommates.
@@ -3321,13 +3321,13 @@ abstract class Strings {
   /// No description provided for @roomy.
   ///
   /// In en, this message translates to:
-  /// **'Roomy'**
+  /// **'Template'**
   String get roomy;
 
   /// No description provided for @roomy123.
   ///
   /// In en, this message translates to:
-  /// **'Roomy123!'**
+  /// **'Password123!'**
   String get roomy123;
 
   /// No description provided for @sat.
@@ -3801,7 +3801,7 @@ abstract class Strings {
   /// No description provided for @thankYouAndWelcomeToRoomy.
   ///
   /// In en, this message translates to:
-  /// **'Thank you and welcome to Roomy.'**
+  /// **'Thank you and welcome.'**
   String get thankYouAndWelcomeToRoomy;
 
   /// No description provided for @thankYouForSharingYourInsightsWithUsWeTruly.
@@ -4083,7 +4083,7 @@ abstract class Strings {
   /// No description provided for @usernameFieldHint.
   ///
   /// In en, this message translates to:
-  /// **'@roomydoe'**
+  /// **'@username'**
   String get usernameFieldHint;
 
   /// No description provided for @usernameFieldLabel.
@@ -4269,7 +4269,7 @@ abstract class Strings {
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Roomy 🎉'**
+  /// **'Welcome 🎉'**
   String get welcome;
 
   /// No description provided for @welcomeBack.
@@ -4377,7 +4377,7 @@ abstract class Strings {
   /// No description provided for @welcomeToRoomy.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Roomy!'**
+  /// **'Welcome!'**
   String get welcomeToRoomy;
 
   /// No description provided for @welcomeHome.
@@ -4959,7 +4959,7 @@ abstract class Strings {
   /// No description provided for @showThisToYourRoomy.
   ///
   /// In en, this message translates to:
-  /// **'Send this to your roomy.'**
+  /// **'Share this with a member.'**
   String get showThisToYourRoomy;
 
   /// No description provided for @invalidCredentialsMessage.
@@ -5499,7 +5499,7 @@ abstract class Strings {
   /// No description provided for @welcomeToRoomyDescription.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Roomy'**
+  /// **'Welcome to the app'**
   String get welcomeToRoomyDescription;
 
   /// No description provided for @emailInputFieldLabel.

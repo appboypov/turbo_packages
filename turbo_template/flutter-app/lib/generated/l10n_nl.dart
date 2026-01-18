@@ -49,7 +49,7 @@ class StringsNl extends Strings {
   String get addPhoneNumber => 'Telefoonnummer toevoegen';
 
   @override
-  String get addRoomy => 'Huisgenoot toevoegen';
+  String get addRoomy => 'Lid toevoegen';
 
   @override
   String get addSubtask => 'Subtaak toevoegen';
@@ -1787,7 +1787,7 @@ class StringsNl extends Strings {
   }
 
   @override
-  String get roomies => 'Huisgenoten';
+  String get roomies => 'Leden';
 
   @override
   String get theseAreYourRoommates => 'De uitverkorenen.';
@@ -1796,10 +1796,10 @@ class StringsNl extends Strings {
   String get administration => 'Beheer';
 
   @override
-  String get roomy => 'Roomy';
+  String get roomy => 'Template';
 
   @override
-  String get roomy123 => 'Roomy123!';
+  String get roomy123 => 'Wachtwoord123!';
 
   @override
   String get sat => 'za';
@@ -2049,7 +2049,7 @@ class StringsNl extends Strings {
   String get thankYou => 'Dank je!';
 
   @override
-  String get thankYouAndWelcomeToRoomy => 'Dank je en welkom bij Roomy.';
+  String get thankYouAndWelcomeToRoomy => 'Bedankt en welkom.';
 
   @override
   String get thankYouForSharingYourInsightsWithUsWeTruly =>
@@ -2212,7 +2212,7 @@ class StringsNl extends Strings {
   String get usernameCopied => 'Gebruikersnaam gekopieerd';
 
   @override
-  String get usernameFieldHint => '@roomydoe';
+  String get usernameFieldHint => '@gebruikersnaam';
 
   @override
   String get usernameFieldLabel => 'Gebruikersnaam';
@@ -2322,7 +2322,7 @@ class StringsNl extends Strings {
   }
 
   @override
-  String get welcome => 'Welkom bij Roomy 🎉';
+  String get welcome => 'Welkom 🎉';
 
   @override
   String get welcomeBack => 'Welkom terug';
@@ -2386,7 +2386,7 @@ class StringsNl extends Strings {
       'Je verzoek om lid te worden van het huishouden is verzonden. Een beheerder zal het binnenkort beoordelen.';
 
   @override
-  String get welcomeToRoomy => 'Welkom bij Roomy!';
+  String get welcomeToRoomy => 'Welkom!';
 
   @override
   String get welcomeHome => 'Welkom thuis';
@@ -2706,7 +2706,7 @@ class StringsNl extends Strings {
   String get allTasksCompleted => 'Alle taken voltooid';
 
   @override
-  String get showThisToYourRoomy => 'Stuur dit naar je huisgenoot.';
+  String get showThisToYourRoomy => 'Deel dit met een lid.';
 
   @override
   String get invalidCredentialsMessage =>
@@ -3000,7 +3000,7 @@ class StringsNl extends Strings {
   String get contactTypeUnknown => 'Onbekend';
 
   @override
-  String get welcomeToRoomyDescription => 'Welkom bij Roomy';
+  String get welcomeToRoomyDescription => 'Welkom in de app';
 
   @override
   String get emailInputFieldLabel => 'E-mail invoerveld';

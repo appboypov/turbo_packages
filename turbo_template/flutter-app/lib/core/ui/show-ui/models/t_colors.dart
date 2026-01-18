@@ -124,7 +124,7 @@ class TColors {
   Color get cardMidground {
     switch (themeMode) {
       case TThemeMode.dark:
-        return const Color(0xFF3C295A);
+        return TColors.secondaryDark;
       case TThemeMode.light:
         return card.darken(3);
     }

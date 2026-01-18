@@ -143,7 +143,7 @@ class AuthView extends StatelessWidget {
                                             child: ShadInput(
                                               obscureText: true,
                                               placeholder: Text(
-                                                context.strings.roomy123,
+                                                context.strings.hiddenPass,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               leading: const TIconSmall(Icons.lock_rounded),

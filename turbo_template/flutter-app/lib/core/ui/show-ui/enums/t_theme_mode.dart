@@ -45,7 +45,7 @@ enum TThemeMode {
     );
     final buttonTheme = (TThemeMode themeMode) => ShadButtonTheme(
       hoverBackgroundColor: switch (themeMode) {
-        TThemeMode.dark => const Color(0xFF382556).onHover,
+        TThemeMode.dark => TColors.cardDark.onHover,
         TThemeMode.light => TColors.cardLight.onHover,
       },
       hoverForegroundColor: switch (themeMode) {

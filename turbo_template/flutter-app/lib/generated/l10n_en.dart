@@ -49,7 +49,7 @@ class StringsEn extends Strings {
   String get addPhoneNumber => 'Add phone number';
 
   @override
-  String get addRoomy => 'Add Roomy';
+  String get addRoomy => 'Add member';
 
   @override
   String get addSubtask => 'Add subtask';
@@ -1775,7 +1775,7 @@ class StringsEn extends Strings {
   }
 
   @override
-  String get roomies => 'Roomies';
+  String get roomies => 'Members';
 
   @override
   String get theseAreYourRoommates => 'The chosen few.';
@@ -1784,10 +1784,10 @@ class StringsEn extends Strings {
   String get administration => 'Administration';
 
   @override
-  String get roomy => 'Roomy';
+  String get roomy => 'Template';
 
   @override
-  String get roomy123 => 'Roomy123!';
+  String get roomy123 => 'Password123!';
 
   @override
   String get sat => 'sat';
@@ -2037,7 +2037,7 @@ class StringsEn extends Strings {
   String get thankYou => 'Thank you!';
 
   @override
-  String get thankYouAndWelcomeToRoomy => 'Thank you and welcome to Roomy.';
+  String get thankYouAndWelcomeToRoomy => 'Thank you and welcome.';
 
   @override
   String get thankYouForSharingYourInsightsWithUsWeTruly =>
@@ -2200,7 +2200,7 @@ class StringsEn extends Strings {
   String get usernameCopied => 'Username copied';
 
   @override
-  String get usernameFieldHint => '@roomydoe';
+  String get usernameFieldHint => '@username';
 
   @override
   String get usernameFieldLabel => 'Username';
@@ -2310,7 +2310,7 @@ class StringsEn extends Strings {
   }
 
   @override
-  String get welcome => 'Welcome to Roomy 🎉';
+  String get welcome => 'Welcome 🎉';
 
   @override
   String get welcomeBack => 'Welcome back';
@@ -2374,7 +2374,7 @@ class StringsEn extends Strings {
       'Your request to join the household has been sent. An admin will review it shortly.';
 
   @override
-  String get welcomeToRoomy => 'Welcome to Roomy!';
+  String get welcomeToRoomy => 'Welcome!';
 
   @override
   String get welcomeHome => 'Welcome Home';
@@ -2691,7 +2691,7 @@ class StringsEn extends Strings {
   String get allTasksCompleted => 'All tasks completed';
 
   @override
-  String get showThisToYourRoomy => 'Send this to your roomy.';
+  String get showThisToYourRoomy => 'Share this with a member.';
 
   @override
   String get invalidCredentialsMessage =>
@@ -2986,7 +2986,7 @@ class StringsEn extends Strings {
   String get contactTypeUnknown => 'Unknown';
 
   @override
-  String get welcomeToRoomyDescription => 'Welcome to Roomy';
+  String get welcomeToRoomyDescription => 'Welcome to the app';
 
   @override
   String get emailInputFieldLabel => 'Email input field';
