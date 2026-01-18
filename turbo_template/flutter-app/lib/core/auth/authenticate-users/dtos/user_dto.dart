@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/user_level_dto.dart';
+import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
+import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
+import 'package:turbo_serializable/turbo_serializable.dart';
 
 part 'user_dto.g.dart';
 
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
-class UserDto extends TWriteableId<String, void> {
+class UserDto extends TWriteableId {
   UserDto({
     required this.acceptedPrivacyAndTermsAt,
     required this.createdAt,
@@ -15,9 +16,6 @@ class UserDto extends TWriteableId<String, void> {
     required this.tags,
     required this.updatedAt,
     required this.userLevel,
-    required this.addressLine1,
-    required this.phone,
-    this.initialHouseholdId,
     this.lastChangelogVersionRead,
     this.emailVerifiedAt,
     this.welcomeEmailSent,
@@ -37,9 +35,6 @@ class UserDto extends TWriteableId<String, void> {
       email: email,
       tags: [],
       userLevel: UserLevelDto.defaultValue(),
-      addressLine1: null,
-      phone: null,
-      initialHouseholdId: null,
       lastChangelogVersionRead: null,
       emailVerifiedAt: null,
       welcomeEmailSent: null,
@@ -97,9 +92,6 @@ class UserDto extends TWriteableId<String, void> {
         id: id,
         acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt ?? this.acceptedPrivacyAndTermsAt,
         email: email ?? this.email,
-        phone: phone ?? this.phone,
-        addressLine1: addressLine1 ?? this.addressLine1,
-        initialHouseholdId: initialHouseholdId ?? this.initialHouseholdId,
         createdAt: createdAt,
         updatedAt: updatedAt,
         tags: tags ?? this.tags,
@@ -111,7 +103,7 @@ class UserDto extends TWriteableId<String, void> {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-class UpdateUserDtoRequest extends TurboWriteable {
+class UpdateUserDtoRequest extends TWriteable {
   UpdateUserDtoRequest({
     this.email,
     this.phone,

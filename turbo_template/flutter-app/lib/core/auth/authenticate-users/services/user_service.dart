@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/user_dto.dart';
 import 'package:turbo_response/turbo_response.dart';
 
 class UserService extends TDocumentService<UserDto, UsersApi> with Loglytics {

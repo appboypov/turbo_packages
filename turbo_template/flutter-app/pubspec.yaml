@@ -35,15 +35,11 @@ dependencies:
   smooth_sheets: ^0.16.0
   top_snackbar_flutter: ^3.3.0
   turbo_notifiers:
-    path: ../../turbo_notifiers
   turbo_response:
-    path: ../../turbo_response
   turbo_widgets:
-    path: ../../turbo_widgets
   turbolytics:
-    path: ../../turbolytics
   turbo_mvvm:
-    path: ../../turbo_mvvm
+  turbo_serializable:
   url_launcher: ^6.3.2
   url_strategy: ^0.3.0
 

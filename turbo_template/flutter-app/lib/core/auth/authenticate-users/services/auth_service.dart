@@ -65,7 +65,7 @@ class AuthService extends SyncService<User?> with Turbolytics {
   User? _lastUser;
   bool _hasLoggedOut = false;
   final _currentUser = BehaviorSubject<User?>();
-  final _hasAuth = TurboNotifier<bool>(false);
+  final _hasAuth = TNotifier<bool>(false);
 
   final _isReady = Completer<bool>();
   final _mutex = Mutex();

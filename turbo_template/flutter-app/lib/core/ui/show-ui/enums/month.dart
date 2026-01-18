@@ -18,61 +18,61 @@ enum Month {
   november,
   december;
 
-  String fullName(BuildContext context) {
+  String fullName(S strings) {
     switch (this) {
       case Month.january:
-        return context.strings.january;
+        return strings.january;
       case Month.february:
-        return context.strings.february;
+        return strings.february;
       case Month.march:
-        return context.strings.march;
+        return strings.march;
       case Month.april:
-        return context.strings.april;
+        return strings.april;
       case Month.may:
-        return context.strings.may;
+        return strings.may;
       case Month.june:
-        return context.strings.june;
+        return strings.june;
       case Month.july:
-        return context.strings.july;
+        return strings.july;
       case Month.august:
-        return context.strings.august;
+        return strings.august;
       case Month.september:
-        return context.strings.september;
+        return strings.september;
       case Month.october:
-        return context.strings.october;
+        return strings.october;
       case Month.november:
-        return context.strings.november;
+        return strings.november;
       case Month.december:
-        return context.strings.december;
+        return strings.december;
     }
   }
 
   String abbreviation(S strings) {
     switch (this) {
       case Month.january:
-        return gStrings.jan;
+        return strings.jan;
       case Month.february:
-        return gStrings.feb;
+        return strings.feb;
       case Month.march:
-        return gStrings.mar;
+        return strings.mar;
       case Month.april:
-        return gStrings.apr;
+        return strings.apr;
       case Month.may:
-        return gStrings.may;
+        return strings.may;
       case Month.june:
-        return gStrings.jun;
+        return strings.jun;
       case Month.july:
-        return gStrings.jul;
+        return strings.jul;
       case Month.august:
-        return gStrings.aug;
+        return strings.aug;
       case Month.september:
-        return gStrings.sep;
+        return strings.sep;
       case Month.october:
-        return gStrings.oct;
+        return strings.oct;
       case Month.november:
-        return gStrings.nov;
+        return strings.nov;
       case Month.december:
-        return gStrings.dec;
+        return strings.dec;
     }
   }
 }

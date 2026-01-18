@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 extension ListAnimationExtension on List<Widget> {

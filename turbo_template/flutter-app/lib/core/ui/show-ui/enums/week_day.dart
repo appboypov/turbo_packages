@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../generated/l10n.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum WeekDay {
   monday,
@@ -11,23 +10,22 @@ enum WeekDay {
   saturday,
   sunday;
 
-  String fullName(BuildContext context) {
-    final s = S.of(context);
+  String fullName(S strings) {
     switch (this) {
       case WeekDay.monday:
-        return s.monday;
+        return strings.monday;
       case WeekDay.tuesday:
-        return s.tuesday;
+        return strings.tuesday;
       case WeekDay.wednesday:
-        return s.wednesday;
+        return strings.wednesday;
       case WeekDay.thursday:
-        return s.thursday;
+        return strings.thursday;
       case WeekDay.friday:
-        return s.friday;
+        return strings.friday;
       case WeekDay.saturday:
-        return s.saturday;
+        return strings.saturday;
       case WeekDay.sunday:
-        return s.sunday;
+        return strings.sunday;
     }
   }
 
@@ -35,19 +33,19 @@ enum WeekDay {
     final s = S.of(context);
     switch (this) {
       case WeekDay.monday:
-        return s.mon;
+        return strings.mon;
       case WeekDay.tuesday:
-        return s.tue;
+        return strings.tue;
       case WeekDay.wednesday:
-        return s.wed;
+        return strings.wed;
       case WeekDay.thursday:
-        return s.thu;
+        return strings.thu;
       case WeekDay.friday:
-        return s.fri;
+        return strings.fri;
       case WeekDay.saturday:
-        return s.sat;
+        return strings.sat;
       case WeekDay.sunday:
-        return s.sun;
+        return strings.sun;
     }
   }
 }

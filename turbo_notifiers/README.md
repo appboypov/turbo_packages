@@ -8,7 +8,7 @@
 
 ## Features
 
-- **Enhanced ValueNotifier**: `TurboNotifier` extends `ValueNotifier` with additional capabilities
+- **Enhanced ValueNotifier**: `TNotifier` extends `ValueNotifier` with additional capabilities
 - **Force Update Mode**: Trigger rebuilds even when the value hasn't changed (useful for reference types)
 - **Silent Updates**: Update state without triggering listeners
 
@@ -31,7 +31,7 @@ flutter pub get
 
 ## Usage
 
-### Basic TurboNotifier
+### Basic TNotifier
 
 ```dart
 import 'package:turbo_notifiers/turbo_notifiers.dart';
@@ -42,7 +42,7 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  final _counter = TurboNotifier<int>(0);
+  final _counter = TNotifier<int>(0);
 
   @override
   void dispose() {
@@ -65,7 +65,7 @@ class _MyWidgetState extends State<MyWidget> {
 ### Using Lists
 
 ```dart
-final _items = TurboNotifier<List<String>>([]);
+final _items = TNotifier<List<String>>([]);
 
 // Update the list
 _items.update(['Item 1', 'Item 2']);
@@ -88,7 +88,7 @@ ValueListenableBuilder<List<String>>(
 ### Using Maps
 
 ```dart
-final _data = TurboNotifier<Map<String, int>>({});
+final _data = TNotifier<Map<String, int>>({});
 
 // Update the map
 _data.update({'key1': 10, 'key2': 20});
@@ -99,7 +99,7 @@ _data.updateCurrent((current) => current..['key3'] = 30);
 
 ## API Reference
 
-### TurboNotifier<T>
+### TNotifier<T>
 
 Enhanced `ValueNotifier` with additional methods:
 

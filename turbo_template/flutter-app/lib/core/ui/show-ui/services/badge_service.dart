@@ -3,8 +3,16 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/user_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/utils/throttler.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
+import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/turbo_notifier.dart';
+import 'package:turbo_notifiers/turbo_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
+
+import '../../../state/manage-state/extensions/completer_extension.dart';
 
 /// A service that manages badge states across the application.
 ///
@@ -38,8 +46,6 @@ class BadgeService with Turbolytics {
   final _localStorageService = LocalStorageService.locate;
   final _userService = UserService.locate;
   final _versionComparatorService = VersionComparatorService.locate;
-  final _householdInvitesService = HouseholdInvitesService.locate;
-  final _notificationService = NotificationService.locate;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -59,8 +65,6 @@ class BadgeService with Turbolytics {
 
       log.debug('Checking for unread changelog');
       unawaited(manageHasUnreadChangelog());
-      _householdInvitesService.householdInvites.addListener(_manageHasHouseholdInvites);
-      _notificationService.unreadCountListenable.addListener(_manageHasUnreadNotifications);
     } catch (error, stackTrace) {
       log.error(
         '$error caught while initialising ${runtimeType.toString()}',
@@ -79,8 +83,6 @@ class BadgeService with Turbolytics {
   /// the service can be properly reinitialized if needed.
   void dispose() {
     log.debug('Disposing BadgeService');
-    _householdInvitesService.householdInvites.removeListener(_manageHasHouseholdInvites);
-    _notificationService.unreadCountListenable.removeListener(_manageHasUnreadNotifications);
     _isReady = Completer();
   }
 
@@ -90,9 +92,9 @@ class BadgeService with Turbolytics {
 
   bool _hasHouseholdInvites = false;
   bool _hasUnreadNotifications = false;
-  final _hasUnreadChangelog = Informer<bool>(false);
-  final _shoppingListsCount = Informer<int>(1);
-  final _showInboxBadge = Informer<bool>(false);
+  final _hasUnreadChangelog = TNotifier<bool>(false);
+  final _shoppingListsCount = TNotifier<int>(1);
+  final _showInboxBadge = TNotifier<bool>(false);
   var _isReady = Completer();
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\

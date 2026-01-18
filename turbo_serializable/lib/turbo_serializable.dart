@@ -6,6 +6,9 @@
 ///
 /// ## Core Classes
 ///
+/// - [TWriteable]: Base class for objects that can be written to Firestore
+///   with validation support
+/// - [TWriteableId]: Base class for writeable objects with string identifiers
 /// - [TSerializable]: Base class for objects that can be serialized to
 ///   multiple formats (JSON, YAML, Markdown, XML)
 /// - [TSerializableId]: Base class for serializable objects with identifiers
@@ -66,5 +69,7 @@
 /// ```
 library turbo_serializable;
 
+export 'abstracts/t_writeable.dart';
+export 'abstracts/t_writeable_id.dart';
 export 'abstracts/t_serializable.dart';
 export 'abstracts/t_serializable_id.dart';

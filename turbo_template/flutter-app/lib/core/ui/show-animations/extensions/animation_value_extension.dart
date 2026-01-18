@@ -1,4 +1,4 @@
-import 'package:roomy_mobile/data/extensions/num_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/num_extension.dart';
 
 extension AnimationValueExtension on double {
   double get reversed => 1.0 - this;

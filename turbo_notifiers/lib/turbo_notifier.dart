@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:turbo_notifiers/turbo_change_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended capabilities.
-class TurboNotifier<T> extends TurboChangeNotifier
+class TNotifier<T> extends TurboChangeNotifier
     implements ValueListenable<T> {
-  TurboNotifier(
+  TNotifier(
     this._value, {
     bool forceUpdate = false,
   }) : _forceUpdate = forceUpdate;
@@ -78,6 +78,6 @@ class TurboNotifier<T> extends TurboChangeNotifier
 
   @override
   String toString() {
-    return 'TurboNotifier{_value: $_value, _forceUpdate: $_forceUpdate}';
+    return 'TNotifier{_value: $_value, _forceUpdate: $_forceUpdate}';
   }
 }

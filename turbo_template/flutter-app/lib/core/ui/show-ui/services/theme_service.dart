@@ -11,7 +11,7 @@ class ThemeService with Turbolytics {
 
   final _localStorageService = LocalStorageService.locate;
 
-  late final _themeMode = TurboNotifier<TThemeMode>(TThemeMode.defaultValue);
+  late final _themeMode = TNotifier<TThemeMode>(TThemeMode.defaultValue);
 
   TThemeMode get themeMode => _themeMode.value;
   ValueListenable<TThemeMode> get themeModeListenable => _themeMode;

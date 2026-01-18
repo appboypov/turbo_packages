@@ -27,7 +27,7 @@ class NavigationTabService with Turbolytics {
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  final _navigationTab = TurboNotifier(NavigationTab.defaultValue);
+  final _navigationTab = TNotifier(NavigationTab.defaultValue);
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 

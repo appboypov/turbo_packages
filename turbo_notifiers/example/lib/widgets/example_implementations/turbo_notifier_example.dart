@@ -5,8 +5,8 @@ import '../../main.dart';
 import '../examples/feature_example.dart';
 import '../examples/method_example.dart';
 
-class TurboNotifierExample extends StatefulWidget {
-  const TurboNotifierExample({
+class TNotifierExample extends StatefulWidget {
+  const TNotifierExample({
     required this.model,
     super.key,
   });
@@ -14,13 +14,13 @@ class TurboNotifierExample extends StatefulWidget {
   final HomeViewModel model;
 
   @override
-  State<TurboNotifierExample> createState() => _TurboNotifierExampleState();
+  State<TNotifierExample> createState() => _TNotifierExampleState();
 }
 
-class _TurboNotifierExampleState extends State<TurboNotifierExample> {
+class _TNotifierExampleState extends State<TNotifierExample> {
   final _informerUpdateController = TextEditingController();
-  final TurboNotifier<String?> _counterErrorText =
-      TurboNotifier(null, forceUpdate: false);
+  final TNotifier<String?> _counterErrorText =
+      TNotifier(null, forceUpdate: false);
 
   @override
   void dispose() {
@@ -45,7 +45,7 @@ class _TurboNotifierExampleState extends State<TurboNotifierExample> {
   Widget build(BuildContext context) {
     final model = widget.model;
     return FeatureExample(
-      title: 'TurboNotifier',
+      title: 'TNotifier',
       child: Column(
         children: [
           const SizedBox(height: 16),

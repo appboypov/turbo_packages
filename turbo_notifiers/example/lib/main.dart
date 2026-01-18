@@ -43,7 +43,7 @@ class HomeView extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 16),
-                    TurboNotifierExample(model: model),
+                    TNotifierExample(model: model),
                     const SizedBox(height: kBottomNavigationBarHeight),
                   ],
                 ),
@@ -56,7 +56,7 @@ class HomeView extends StatelessWidget {
 }
 
 class HomeViewModel extends TurboViewModel<Object?> {
-  final TurboNotifier<int> _counter = TurboNotifier(0);
+  final TNotifier<int> _counter = TNotifier(0);
   ValueListenable<int> get counterListenable => _counter;
 
   late final random = Random();
@@ -72,7 +72,7 @@ class HomeViewModel extends TurboViewModel<Object?> {
     super.dispose();
   }
 
-  // -------- TurboNotifier ---- TurboNotifier ---- TurboNotifier -------- \\
+  // -------- TNotifier ---- TNotifier ---- TNotifier -------- \\
 
   void updateCounter({required int value}) => _counter.update(value);
 

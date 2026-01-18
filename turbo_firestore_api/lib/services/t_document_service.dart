@@ -141,7 +141,7 @@ abstract class TDocumentService<T extends TWriteableId,
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   /// Local state for the document.
-  late final _doc = TurboNotifier<T?>(
+  late final _doc = TNotifier<T?>(
     initialValueLocator?.call() ?? defaultValueLocator?.call(),
     forceUpdate: true,
   );

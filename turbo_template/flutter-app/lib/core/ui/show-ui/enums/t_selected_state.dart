@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/data/extensions/object_extension.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
 
 enum SelectedState {
   deselected,

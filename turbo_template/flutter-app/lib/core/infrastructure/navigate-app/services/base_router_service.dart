@@ -55,7 +55,7 @@ class BaseRouterService with Turbolytics {
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  static final _routerType = TurboNotifier<RouterType>(RouterType.defaultValue);
+  static final _routerType = TNotifier<RouterType>(RouterType.defaultValue);
 
   static final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
     debugLabel: 'root',

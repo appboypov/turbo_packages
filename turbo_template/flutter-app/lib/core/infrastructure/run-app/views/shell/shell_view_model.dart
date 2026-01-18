@@ -17,7 +17,7 @@ class ShellViewModel extends BaseViewModel with Turbolytics {
       GetIt.I.registerFactory(() => ShellViewModel(authService: () => AuthService.locate));
 
   final LazyLocatorDef<AuthService> _authService;
-  final _viewType = TurboNotifier<ViewType>(ViewType.defaultValue);
+  final _viewType = TNotifier<ViewType>(ViewType.defaultValue);
 
   void _initialise() {
     _authService().hasAuth.addListener(_onAuthStateChanged);

@@ -16,7 +16,7 @@ import '../../../shared/extensions/string_extension.dart';
 part 't_form_field_extensions.dart';
 part 't_form_field_state.dart';
 
-class TFormFieldConfig<T> extends TurboNotifier<TFormFieldState<T>> with Turbolytics {
+class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics {
   TFormFieldConfig({
     FormFieldValidator<T>? valueValidator,
     List<T>? initialValues,

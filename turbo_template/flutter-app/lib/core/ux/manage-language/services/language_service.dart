@@ -39,7 +39,7 @@ class LanguageService with Turbolytics {
   }
 
   final Completer _isReady = Completer();
-  late final _language = TurboNotifier<TSupportedLanguage>(TSupportedLanguage.defaultValue);
+  late final _language = TNotifier<TSupportedLanguage>(TSupportedLanguage.defaultValue);
 
   Future get isReady => _isReady.future;
   String get languageCode => _language.value.languageCode;

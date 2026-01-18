@@ -80,7 +80,7 @@ abstract class TCollectionService<T extends TWriteableId,
 
   /// Disposes of the service by cleaning up resources.
   ///
-  /// Disposes the [docsPerIdNotifier] TurboNotifier and completes the [_isReady] completer
+  /// Disposes the [docsPerIdNotifier] TNotifier and completes the [_isReady] completer
   /// if not already completed. Then calls the parent dispose method.
   @override
   Future<void> dispose() {
@@ -150,7 +150,7 @@ abstract class TCollectionService<T extends TWriteableId,
   /// Local state for documents, indexed by their IDs.
   @protected
   final docsPerIdNotifier =
-      TurboNotifier<Map<String, T>>({}, forceUpdate: true);
+      TNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer<void>();

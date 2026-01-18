@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-06
 
 ### Added
-- Enhanced `ValueNotifier` with `TurboNotifier` class
+- Enhanced `ValueNotifier` with `TNotifier` class
 - Force update mode for reference types
 - Silent updates without triggering listeners
 - `data` getter/setter as alias for `value`/`update()`
@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Package renamed from `informers` to `turbo_listenables` and then to `turbo_notifiers`
-- Class renamed from `Informer` to `TurboNotifier`
+- Class renamed from `Informer` to `TNotifier`
 - Updated import paths to use `package:turbo_notifiers/turbo_notifiers.dart`
 - Default `forceUpdate` behavior set to false
 - Improved equality checks for `updateCurrent` methods
@@ -32,10 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced example project and documentation
 
 ### Removed
-- `ListInformer` - use `TurboNotifier<List<T>>` instead
-- `MapInformer` - use `TurboNotifier<Map<K, V>>` instead
-- `SetInformer` - use `TurboNotifier<Set<T>>` instead
-- `MaxLengthListInformer` - use `TurboNotifier<List<T>>` with custom logic instead
+- `ListInformer` - use `TNotifier<List<T>>` instead
+- `MapInformer` - use `TNotifier<Map<K, V>>` instead
+- `SetInformer` - use `TNotifier<Set<T>>` instead
+- `MaxLengthListInformer` - use `TNotifier<List<T>>` with custom logic instead
 
 ### Fixed
 - Fixed equality checks in update methods

@@ -3,35 +3,35 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:turbo_notifiers/turbo_notifier.dart';
 
 void main() {
-  group('TurboNotifier', () {
+  group('TNotifier', () {
     group('Initialization', () {
       test('should initialize with initial value', () {
-        final notifier = TurboNotifier<int>(42);
+        final notifier = TNotifier<int>(42);
         expect(notifier.value, equals(42));
         expect(notifier.data, equals(42));
       });
 
       test('should initialize with forceUpdate false by default', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         notifier.update(0); // Same value
         // Should not notify when value doesn't change and forceUpdate is false
         expect(notifier.value, equals(0));
       });
 
       test('should initialize with forceUpdate true when specified', () {
-        final notifier = TurboNotifier<int>(0, forceUpdate: true);
+        final notifier = TNotifier<int>(0, forceUpdate: true);
         expect(notifier.value, equals(0));
       });
     });
 
     group('Value getters and setters', () {
       test('value getter should return current value', () {
-        final notifier = TurboNotifier<String>('initial');
+        final notifier = TNotifier<String>('initial');
         expect(notifier.value, equals('initial'));
       });
 
       test('value setter should update value and notify listeners', () {
-        final notifier = TurboNotifier<String>('initial');
+        final notifier = TNotifier<String>('initial');
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -43,12 +43,12 @@ void main() {
       });
 
       test('data getter should return current value', () {
-        final notifier = TurboNotifier<int>(100);
+        final notifier = TNotifier<int>(100);
         expect(notifier.data, equals(100));
       });
 
       test('data setter should update value and notify listeners', () {
-        final notifier = TurboNotifier<int>(100);
+        final notifier = TNotifier<int>(100);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -62,7 +62,7 @@ void main() {
 
     group('update() method', () {
       test('should update value when different', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -74,7 +74,7 @@ void main() {
       });
 
       test('should not update or notify when value is same and forceUpdate is false', () {
-        final notifier = TurboNotifier<int>(5);
+        final notifier = TNotifier<int>(5);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -86,7 +86,7 @@ void main() {
       });
 
       test('should update and notify when value is same but forceUpdate is true', () {
-        final notifier = TurboNotifier<int>(5, forceUpdate: true);
+        final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -98,7 +98,7 @@ void main() {
       });
 
       test('should not notify when doNotifyListeners is false', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -110,7 +110,7 @@ void main() {
       });
 
       test('should update value even when doNotifyListeners is false', () {
-        final notifier = TurboNotifier<String>('old');
+        final notifier = TNotifier<String>('old');
         notifier.update('new', doNotifyListeners: false);
         expect(notifier.value, equals('new'));
       });
@@ -118,7 +118,7 @@ void main() {
 
     group('updateCurrent() method', () {
       test('should update value using function', () {
-        final notifier = TurboNotifier<int>(10);
+        final notifier = TNotifier<int>(10);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -130,7 +130,7 @@ void main() {
       });
 
       test('should not update or notify when function returns same value and forceUpdate is false', () {
-        final notifier = TurboNotifier<int>(5);
+        final notifier = TNotifier<int>(5);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -142,7 +142,7 @@ void main() {
       });
 
       test('should update and notify when function returns same value but forceUpdate is true', () {
-        final notifier = TurboNotifier<int>(5, forceUpdate: true);
+        final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -154,7 +154,7 @@ void main() {
       });
 
       test('should not notify when doNotifyListeners is false', () {
-        final notifier = TurboNotifier<int>(10);
+        final notifier = TNotifier<int>(10);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -166,7 +166,7 @@ void main() {
       });
 
       test('should work with complex transformations', () {
-        final notifier = TurboNotifier<List<int>>([1, 2, 3]);
+        final notifier = TNotifier<List<int>>([1, 2, 3]);
         notifier.updateCurrent((current) => current..add(4));
         expect(notifier.value, equals([1, 2, 3, 4]));
       });
@@ -174,7 +174,7 @@ void main() {
 
     group('silentUpdate() method', () {
       test('should update value without notifying listeners', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -186,7 +186,7 @@ void main() {
       });
 
       test('should still respect forceUpdate flag', () {
-        final notifier = TurboNotifier<int>(5, forceUpdate: true);
+        final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -201,7 +201,7 @@ void main() {
 
     group('silentUpdateCurrent() method', () {
       test('should update value without notifying listeners', () {
-        final notifier = TurboNotifier<int>(10);
+        final notifier = TNotifier<int>(10);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -213,7 +213,7 @@ void main() {
       });
 
       test('should still respect forceUpdate flag', () {
-        final notifier = TurboNotifier<int>(5, forceUpdate: true);
+        final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
           notified = true;
@@ -228,7 +228,7 @@ void main() {
 
     group('Listener notifications', () {
       test('should notify single listener on value change', () {
-        final notifier = TurboNotifier<String>('initial');
+        final notifier = TNotifier<String>('initial');
         var callCount = 0;
         notifier.addListener(() {
           callCount++;
@@ -239,7 +239,7 @@ void main() {
       });
 
       test('should notify multiple listeners on value change', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var callCount1 = 0;
         var callCount2 = 0;
 
@@ -256,7 +256,7 @@ void main() {
       });
 
       test('should not notify when value does not change', () {
-        final notifier = TurboNotifier<int>(5);
+        final notifier = TNotifier<int>(5);
         var callCount = 0;
         notifier.addListener(() {
           callCount++;
@@ -268,7 +268,7 @@ void main() {
 
       test('should notify when value changes even if same reference (with forceUpdate)', () {
         final list = [1, 2, 3];
-        final notifier = TurboNotifier<List<int>>(list, forceUpdate: true);
+        final notifier = TNotifier<List<int>>(list, forceUpdate: true);
         var callCount = 0;
         notifier.addListener(() {
           callCount++;
@@ -282,15 +282,15 @@ void main() {
 
     group('toString()', () {
       test('should return correct string representation', () {
-        final notifier = TurboNotifier<int>(42, forceUpdate: false);
+        final notifier = TNotifier<int>(42, forceUpdate: false);
         final str = notifier.toString();
-        expect(str, contains('TurboNotifier'));
+        expect(str, contains('TNotifier'));
         expect(str, contains('_value: 42'));
         expect(str, contains('_forceUpdate: false'));
       });
 
       test('should include forceUpdate flag in string representation', () {
-        final notifier = TurboNotifier<String>('test', forceUpdate: true);
+        final notifier = TNotifier<String>('test', forceUpdate: true);
         final str = notifier.toString();
         expect(str, contains('_forceUpdate: true'));
       });
@@ -298,12 +298,12 @@ void main() {
 
     group('ValueListenable interface', () {
       test('should implement ValueListenable', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         expect(notifier, isA<ValueListenable<int>>());
       });
 
       test('should work with ValueListenableBuilder pattern', () {
-        final notifier = TurboNotifier<String>('initial');
+        final notifier = TNotifier<String>('initial');
         expect(notifier.value, equals('initial'));
 
         notifier.value = 'updated';
@@ -313,7 +313,7 @@ void main() {
 
     group('rebuild() from TurboChangeNotifier', () {
       test('should notify listeners when rebuild is called', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var callCount = 0;
         notifier.addListener(() {
           callCount++;
@@ -326,20 +326,20 @@ void main() {
 
     group('Edge cases', () {
       test('should handle null values', () {
-        final notifier = TurboNotifier<String?>('initial');
+        final notifier = TNotifier<String?>('initial');
         notifier.update(null);
         expect(notifier.value, isNull);
       });
 
       test('should handle empty collections', () {
-        final notifier = TurboNotifier<List<int>>([]);
+        final notifier = TNotifier<List<int>>([]);
         expect(notifier.value, isEmpty);
         notifier.update([1, 2, 3]);
         expect(notifier.value, hasLength(3));
       });
 
       test('should handle removing listeners', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var callCount = 0;
         void listener() {
           callCount++;
@@ -355,7 +355,7 @@ void main() {
       });
 
       test('should handle dispose', () {
-        final notifier = TurboNotifier<int>(0);
+        final notifier = TNotifier<int>(0);
         var callCount = 0;
         notifier.addListener(() {
           callCount++;

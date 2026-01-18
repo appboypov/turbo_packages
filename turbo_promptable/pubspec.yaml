@@ -15,8 +15,8 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
-  turbo_serializable: ^0.2.0
-  turbo_response: ^1.0.1
+  turbo_serializable:
+  turbo_response:
   json_annotation: ^4.9.0
 
 dev_dependencies:

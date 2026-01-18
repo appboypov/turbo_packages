@@ -204,16 +204,16 @@ turbo_template/flutter-app (uses turbo_response)
 | **AfterSyncTurboCollectionService** | `turbo_firestore_api/lib/services/after_sync_turbo_collection_service.dart` | Abstract | TurboCollectionService | turbo_firestore_api |
 | **AnalyticsService** | `turbolytics/lib/src/analytics/analytics_service.dart` | Service | Log, EventBus | turbolytics |
 | **LocatorService** | `turbo_template/flutter-app/lib/core/infrastructure/inject-dependencies/services/locator_service.dart` | Singleton | GetIt, Turbolytics | turbo_template |
-| **AuthService** | `turbo_template/flutter-app/lib/core/auth/authenticate-users/services/auth_service.dart` | Lazy Singleton | FirebaseAuth, RxDart, TurboNotifiers | turbo_template |
+| **AuthService** | `turbo_template/flutter-app/lib/core/auth/authenticate-users/services/auth_service.dart` | Lazy Singleton | FirebaseAuth, RxDart, TNotifiers | turbo_template |
 | **EmailService** | `turbo_template/flutter-app/lib/core/auth/authenticate-users/services/email_service.dart` | Factory | FirebaseAuth, Turbolytics | turbo_template |
 | **ConnectionService** | `turbo_template/flutter-app/lib/core/connection/manage-connection/services/connection_service.dart` | Lazy Singleton | Connectivity, Turbolytics | turbo_template |
 | **BaseRouterService** | `turbo_template/flutter-app/lib/core/infrastructure/navigate-app/services/base_router_service.dart` | Lazy Singleton | GoRouter, AuthService | turbo_template |
-| **NavigationTabService** | `turbo_template/flutter-app/lib/core/infrastructure/navigate-app/services/navigation_tab_service.dart` | Lazy Singleton | Turbolytics, TurboNotifiers | turbo_template |
+| **NavigationTabService** | `turbo_template/flutter-app/lib/core/infrastructure/navigate-app/services/navigation_tab_service.dart` | Lazy Singleton | Turbolytics, TNotifiers | turbo_template |
 | **PackageInfoService** | `turbo_template/flutter-app/lib/core/infrastructure/show-version/services/package_info_service.dart` | Regular | PackageInfo | turbo_template |
 | **LocalStorageService** | `turbo_template/flutter-app/lib/core/storage/save-local-data/services/local_storage_service.dart` | Lazy Singleton | ChangeNotifier, Turbolytics | turbo_template |
 | **OverlayService** | `turbo_template/flutter-app/lib/core/ui/show-ui/services/overlay_service.dart` | Lazy Singleton | Turbolytics, BuildContext | turbo_template |
-| **ThemeService** | `turbo_template/flutter-app/lib/core/ui/show-ui/services/theme_service.dart` | Lazy Singleton | Turbolytics, TurboNotifiers, LocalStorageService | turbo_template |
-| **LanguageService** | `turbo_template/flutter-app/lib/core/ux/manage-language/services/language_service.dart` | Lazy Singleton | Turbolytics, TurboNotifiers, LocalStorageService | turbo_template |
+| **ThemeService** | `turbo_template/flutter-app/lib/core/ui/show-ui/services/theme_service.dart` | Lazy Singleton | Turbolytics, TNotifiers, LocalStorageService | turbo_template |
+| **LanguageService** | `turbo_template/flutter-app/lib/core/ux/manage-language/services/language_service.dart` | Lazy Singleton | Turbolytics, TNotifiers, LocalStorageService | turbo_template |
 | **ShakeGestureService** | `turbo_template/flutter-app/lib/core/ux/provide-feedback/services/shake_gesture_service.dart` | Lazy Singleton | Turbolytics, VibrateService, OverlayService | turbo_template |
 | **ToastService** | `turbo_template/flutter-app/lib/core/ux/provide-feedback/services/toast_service.dart` | Lazy Singleton | Turbolytics, BuildContext | turbo_template |
 | **VibrateService** | `turbo_template/flutter-app/lib/core/ux/provide-feedback/services/vibrate_service.dart` | Lazy Singleton | Turbolytics, Haptics | turbo_template |
@@ -248,7 +248,7 @@ turbo_template/flutter-app (uses turbo_response)
 | **AuthViewModel** | `turbo_template/flutter-app/lib/core/auth/authenticate-users/views/auth/auth_view_model.dart` | ToastService, EmailService, AuthService, LoginForm, RegisterForm, ForgotPasswordForm | turbo_template |
 | **ShellViewModel** | `turbo_template/flutter-app/lib/core/infrastructure/run-app/views/shell/shell_view_model.dart` | AuthService | turbo_template |
 | **MyAppViewModel** | `turbo_template/flutter-app/lib/core/infrastructure/run-app/views/my_app/my_app_view_model.dart` | BaseRouterService, BusyService, ConnectionService, LocatorService, LocalStorageService, LanguageService, ThemeService, ShakeGestureService, AuthService | turbo_template |
-| **TurboNotifier** | `turbo_notifiers/lib/turbo_notifier.dart` | None (base class) | turbo_notifiers |
+| **TNotifier** | `turbo_notifiers/lib/turbo_notifier.dart` | None (base class) | turbo_notifiers |
 | **TurboChangeNotifier** | `turbo_notifiers/lib/turbo_change_notifier.dart` | None (base class) | turbo_notifiers |
 
 ### Widgets / Components
@@ -345,7 +345,7 @@ turbo_template/flutter-app (uses turbo_response)
 2. **Service Layer** (`TurboCollectionService`, `TurboDocumentService`)
    - Manages local state synchronization
    - Listens to Firestore streams via `TurboAuthSyncService`
-   - Updates local state (`TurboNotifier<T>`) when data changes
+   - Updates local state (`TNotifier<T>`) when data changes
    - Provides optimistic updates with rollback capability
 
 3. **ViewModel Layer** (`TurboViewModel`)
@@ -361,14 +361,14 @@ turbo_template/flutter-app (uses turbo_response)
 ### Authentication Flow
 
 1. **AuthService** monitors Firebase Auth state
-2. **AuthService** exposes `hasAuth` via `TurboNotifier<bool>`
+2. **AuthService** exposes `hasAuth` via `TNotifier<bool>`
 3. **ShellViewModel** listens to `hasAuth`
 4. **ShellView** switches between `AuthView` and `HomeView` based on auth state
 5. **BaseRouterService** provides `onAuthAccess()` guard for protected routes
 
 ### State Management Flow
 
-1. **Services** use `TurboNotifier<T>` (from `turbo_notifiers` package) for reactive state
+1. **Services** use `TNotifier<T>` (from `turbo_notifiers` package) for reactive state
 2. **ViewModels** consume services and expose UI-specific state
 3. **Views** use `ValueListenableBuilder` or `TurboViewModelBuilder` to react to changes
 4. **BusyService** provides global loading state management
@@ -465,9 +465,9 @@ turbolytics (standalone)
 - All APIs return `TurboResponse` for consistent error handling
 
 ### State Management
-- Use `TurboNotifier<T>` for reactive state in services
+- Use `TNotifier<T>` for reactive state in services
 - Use `TurboViewModel` for UI state management
-- Use `TurboNotifier` for enhanced ValueNotifier functionality
+- Use `TNotifier` for enhanced ValueNotifier functionality
 
 ## API Patterns
 
