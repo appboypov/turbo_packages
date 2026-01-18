@@ -146,7 +146,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
   /// Logger instance for this service.
-  late final _log = Log(location: runtimeType.toString());
+  late final _log = TLog(location: runtimeType.toString());
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\

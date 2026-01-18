@@ -40,7 +40,7 @@ mixin TExceptionHandler {
   /// Returns a [TurboResponse] with appropriate error details
   TurboResponse<T> tryHandleFirebaseAuthException<T>({
     required FirebaseAuthException firebaseAuthException,
-    required Log log,
+    required TLog log,
   }) {
     log.error('Handling FirebaseAuthException: ${firebaseAuthException.code}');
     log.error(

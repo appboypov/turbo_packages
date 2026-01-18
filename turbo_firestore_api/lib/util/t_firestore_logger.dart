@@ -26,11 +26,11 @@ class TFirestoreLogger {
   /// Set [showSensitiveData] to false to hide sensitive data in logs.
   /// The prefix parameters customize the prefix text for each log type.
   TFirestoreLogger({
-    Log? log,
+    TLog? log,
     this.showSensitiveData = true,
-  }) : _log = log ?? Log(location: 'TurboFirestoreApi');
+  }) : _log = log ?? TLog(location: 'TurboFirestoreApi');
 
-  final Log _log;
+  final TLog _log;
 
   /// Whether to include sensitive data in log messages
   final bool showSensitiveData;
