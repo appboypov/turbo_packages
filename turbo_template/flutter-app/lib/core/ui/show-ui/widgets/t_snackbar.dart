@@ -6,6 +6,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extensio
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/text_style_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TSnackbar extends StatelessWidget {
   const TSnackbar({
@@ -64,7 +65,10 @@ class TSnackbar extends StatelessWidget {
         ],
       ],
     );
-    return TMargin.horizontal(
+    return TMargin.only(
+      top: TSizes.appPadding,
+      left: TSizes.appPadding,
+      right: TSizes.appPadding,
       child: ShadCard(
         radius: hasSubtitle ? null : BorderRadius.circular(12),
         shadows: context.decorations.outerShadow,

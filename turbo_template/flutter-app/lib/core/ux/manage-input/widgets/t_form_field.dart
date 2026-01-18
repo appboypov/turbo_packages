@@ -130,7 +130,10 @@ class StatelessTFormField extends StatelessWidget {
               ),
               const Gap(6),
             ],
-            formFieldContent,
+            MouseRegion(
+              cursor: SystemMouseCursors.text,
+              child: formFieldContent,
+            ),
             TErrorLabel(
               errorText: errorText,
               shouldValidate: shouldValidate,

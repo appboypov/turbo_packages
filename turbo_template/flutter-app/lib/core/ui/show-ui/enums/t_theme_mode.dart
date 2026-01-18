@@ -124,6 +124,10 @@ enum TThemeMode {
       },
     );
     final shadInputTheme = (TThemeMode themeMode) => ShadInputTheme(
+      decoration: ShadDecoration(
+        border: ShadBorder(radius: BorderRadius.circular(12)),
+        focusedBorder: ShadBorder(radius: BorderRadius.circular(12)),
+      ),
       placeholderStyle: mutedTheme(themeMode).copyWith(
         color: switch (themeMode) {
           TThemeMode.dark => TColors.focusDark.withAlpha(100),
