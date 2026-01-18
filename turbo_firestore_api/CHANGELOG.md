@@ -15,8 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 * Added null-check guards for `toJson()` calls in create/update APIs with proper `TurboResponse.fail` error handling
 * Added type aliases for backwards compatibility:
-  * `TurboWriteable<M> = TurboSerializable<M>`
-  * `TurboWriteableId<T, M> = TurboSerializableId<T, M>`
+  * `TWriteable<M> = TurboSerializable<M>`
+  * `TWriteableId<T, M> = TurboSerializableId<T, M>`
 * Converted `turbo_writeable.dart` and `turbo_writeable_id.dart` to re-export modules
 * Renamed `docsPerIdInformer` to `docsPerIdNotifier` in `TurboCollectionService` for consistency with turbo_notifiers package naming
 

@@ -2,7 +2,7 @@
 ///
 /// Prevents instantiation by having a private constructor and is abstract to discourage inheritance.
 abstract class TAuthErrors {
-  TAuthErrors._(); // Private constructor
+  TAuthErrors._();
 
   /// Error code when an account already exists with different credentials.
   static const accountExistsWithDifferentCredentials = 'account-exists-with-different-credential';

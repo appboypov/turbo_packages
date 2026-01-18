@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_firestore_api/enums/t_search_term_type.dart';
 import 'package:turbo_firestore_api/enums/t_timestamp_type.dart';
 import 'package:turbo_firestore_api/exceptions/invalid_json_exception.dart';
@@ -13,6 +12,8 @@ import 'package:turbo_firestore_api/models/write_batch_with_reference.dart';
 import 'package:turbo_firestore_api/typedefs/collection_reference_def.dart';
 import 'package:turbo_firestore_api/util/turbo_firestore_logger.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_serializable/abstracts/t_writeable.dart';
+import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
 part 't_firestore_create_api.dart';
 part 't_firestore_delete_api.dart';
@@ -31,7 +32,7 @@ part 't_firestore_update_api.dart';
 ///
 /// Features:
 /// - Automatic type conversion between Firestore documents and Dart objects
-/// - Built-in validation through [TurboWriteable]
+/// - Built-in validation through [TWriteable]
 /// - Automatic timestamp management for createdAt/updatedAt fields
 /// - Local ID management for easier document tracking
 /// - Sensitive data handling

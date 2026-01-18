@@ -6,9 +6,9 @@ part of 't_document_service.dart';
 /// the local state is updated with new data from Firestore.
 ///
 /// Type Parameters:
-/// - [T] - The document type, must extend [TurboWriteableId<String, void>]
+/// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
-abstract class BeforeAfterSyncTDocumentService<T extends TSerializableId<String, void>,
+abstract class BeforeAfterSyncTDocumentService<T extends TWriteableId,
     API extends TFirestoreApi<T>> extends TDocumentService<T, API> {
   /// Creates a new [BeforeAfterSyncTDocumentService] instance.
   BeforeAfterSyncTDocumentService({required super.api});

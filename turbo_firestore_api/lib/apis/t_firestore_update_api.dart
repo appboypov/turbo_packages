@@ -9,7 +9,7 @@ part of 't_firestore_api.dart';
 /// - Batch operations
 /// - Transaction support
 /// - Automatic timestamp management
-/// - Validation through [TurboWriteable]
+/// - Validation through [TWriteable]
 ///
 /// Example:
 /// ```dart
@@ -31,7 +31,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// Automatically manages timestamps based on [timestampType]
   ///
   /// Parameters:
-  /// [writeable] data to update, must implement [TurboWriteable]
+  /// [writeable] data to update, must implement [TWriteable]
   /// [id] unique identifier of the document
   /// [writeBatch] optional batch to include this operation in
   /// [timestampType] type of timestamp to add when updating
@@ -66,7 +66,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// [updateDocInBatch] batch updates
   /// [createDoc] document creation
   Future<TurboResponse<DocumentReference>> updateDoc({
-    required TurboWriteable<T> writeable,
+    required TWriteableId writeable,
     required String id,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,
@@ -87,12 +87,12 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
-          message: 'TurboWriteable was invalid!',
+          message: 'TWriteable was invalid!',
           sensitiveData: null,
         );
         return invalidResponse;
       }
-      _log.info(message: 'TurboWriteable is valid!', sensitiveData: null);
+      _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Updating document..',
         sensitiveData: SensitiveData(
@@ -134,15 +134,6 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
           sensitiveData: null,
         );
         final json = writeable.toJson();
-        if (json == null) {
-          return const TurboResponse.fail(
-            error: TurboException(
-              title: 'Serialization Error',
-              message:
-                  'The writeable object did not provide JSON serialization (toJson returned null)',
-            ),
-          );
-        }
         final writeableAsJson = timestampType.add(
           json,
           createdAtFieldName: _createdAtFieldName,
@@ -219,7 +210,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// Automatically manages timestamps based on [timestampType]
   ///
   /// Parameters:
-  /// [writeable] data to update, must implement [TurboWriteable]
+  /// [writeable] data to update, must implement [TWriteable]
   /// [id] unique identifier of the document
   /// [writeBatch] optional existing batch to add to
   /// [timestampType] type of timestamp to add when updating
@@ -258,7 +249,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// [updateDoc] single document updates
   /// [createDocInBatch] batch creation
   Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>> updateDocInBatch({
-    required TurboWriteable<T> writeable,
+    required TWriteableId writeable,
     required String id,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,
@@ -274,13 +265,13 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         writeable.validate();
     if (invalidResponse != null && invalidResponse.isFail) {
       _log.warning(
-        message: 'TurboWriteable was invalid!',
+        message: 'TWriteable was invalid!',
         sensitiveData: null,
       );
       return invalidResponse;
     }
     try {
-      _log.info(message: 'TurboWriteable is valid!', sensitiveData: null);
+      _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document with batch..',
         sensitiveData: SensitiveData(
@@ -294,15 +285,6 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       final documentReference = getDocRefById(id: id);
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
-      if (json == null) {
-        return const TurboResponse.fail(
-          error: TurboException(
-            title: 'Serialization Error',
-            message:
-                'The writeable object did not provide JSON serialization (toJson returned null)',
-          ),
-        );
-      }
       final writeableAsJson = timestampType.add(
         json,
         createdAtFieldName: _createdAtFieldName,

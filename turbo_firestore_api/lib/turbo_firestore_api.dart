@@ -39,51 +39,38 @@
 /// See the individual components for detailed documentation:
 library;
 
-/// Abstract interfaces for API functionality
-export 'abstracts/turbo_writeable.dart';
-export 'abstracts/turbo_writeable_id.dart';
-
 /// Main API class and extensions
 export 'apis/t_firestore_api.dart';
-export 'constants/t_error_codes.dart';
-
 /// Constants
 export 'constants/t_auth_errors.dart';
+export 'constants/t_error_codes.dart';
 export 'enums/t_parse_type.dart';
-
 /// Enums for configuring API behavior
 export 'enums/t_search_term_type.dart';
 export 'enums/t_timestamp_type.dart';
-
 /// Exception types for error handling
 export 'exceptions/invalid_json_exception.dart';
 export 'exceptions/t_firestore_exception.dart';
-
 /// Extensions for enhanced functionality
 export 'extensions/completer_extension.dart';
 export 'extensions/t_list_extension.dart';
 export 'extensions/t_map_extension.dart';
-
 /// Mixins for shared behavior
 export 'mixins/t_exception_handler.dart';
-
 /// Data models and utilities
 export 'models/sensitive_data.dart';
 export 'models/t_api_vars.dart';
 export 'models/t_auth_vars.dart';
 export 'models/write_batch_with_reference.dart';
-
 /// Services for state management
 export 'services/t_auth_sync_service.dart';
 export 'services/t_collection_service.dart';
 export 'services/t_document_service.dart';
-
 /// Type definitions
 export 'typedefs/collection_reference_def.dart';
 export 'typedefs/create_doc_def.dart';
 export 'typedefs/turbo_locator_def.dart';
 export 'typedefs/update_doc_def.dart';
 export 'typedefs/upsert_doc_def.dart';
-
 /// Core utilities for logging, debugging and
 export 'util/turbo_firestore_logger.dart';

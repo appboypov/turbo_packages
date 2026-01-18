@@ -6,7 +6,9 @@
 /// These constants ensure consistent error handling and reporting across
 /// the entire API, making it easier to maintain and update error messages
 /// in a single place.
-class TErrorCodes {
+abstract class TErrorCodes {
+  TErrorCodes._();
+
   // Error Codes
   /// Error code for permission denied errors.
   static const permissionDenied = 'permission-denied';

@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api/constants/t_values.dart';
 import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
@@ -19,6 +17,7 @@ import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_serializable.dart';
 import 'package:turbo_serializable/abstracts/t_serializable_id.dart';
+import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 part 'after_sync_t_collection_service.dart';
@@ -37,7 +36,7 @@ part 'before_sync_t_collection_service.dart';
 /// - Automatic user authentication state sync
 ///
 /// Type Parameters:
-/// - [T] - The document type, must extend [TurboWriteableId<String, void>]
+/// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
 ///
 /// Example:
@@ -61,7 +60,7 @@ part 'before_sync_t_collection_service.dart';
 /// - Automatic stream update blocking during mutations
 /// - Error handling and logging
 /// - User authentication state synchronization
-abstract class TCollectionService<T extends TSerializableId<String, void>,
+abstract class TCollectionService<T extends TWriteableId,
     API extends TFirestoreApi<T>> extends TAuthSyncService<List<T>> with Turbolytics {
   /// Creates a new [TCollectionService] instance.
   ///
@@ -401,7 +400,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpsertDocDef<T> doc,
-    TSerializable<T> Function(T doc)? remoteUpdateRequestBuilder,
+    TSerializable Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -412,7 +411,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable<T>,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable,
         id: id,
         transaction: transaction,
         merge: true,
@@ -454,7 +453,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpdateDocDef<T> doc,
-    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
+    TWriteableId Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -465,7 +464,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
       );
@@ -563,7 +562,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
           (await api.updateDoc(
             id: pDoc.id,
             transaction: transaction,
-            writeable: pDoc as TurboWriteable<T>,
+            writeable: pDoc as TWriteableId,
           ))
               .throwWhenFail();
         }
@@ -574,7 +573,7 @@ abstract class TCollectionService<T extends TSerializableId<String, void>,
           await api.updateDocInBatch(
             id: pDoc.id,
             writeBatch: batch,
-            writeable: pDoc as TurboWriteable<T>,
+            writeable: pDoc as TWriteableId,
           );
         }
         final future = batch.commit();

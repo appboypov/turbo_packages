@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
-import 'package:turbo_firestore_api/abstracts/turbo_writeable_id.dart';
 import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api/constants/t_values.dart';
 import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
@@ -17,6 +15,7 @@ import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_serializable_id.dart';
+import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 import '../extensions/completer_extension.dart';
@@ -37,9 +36,9 @@ part 'before_sync_t_document_service.dart';
 /// - Before/after update notifications
 ///
 /// Type Parameters:
-/// - [T] - The document type, must extend [TurboWriteableId<String, void>]
+/// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
-abstract class TDocumentService<T extends TurboWriteableId<String, void>,
+abstract class TDocumentService<T extends TWriteableId,
     API extends TFirestoreApi<T>> extends TAuthSyncService<T?> with Turbolytics {
   /// Creates a new [TDocumentService] instance.
   ///
@@ -158,7 +157,7 @@ abstract class TDocumentService<T extends TurboWriteableId<String, void>,
     return TurboAuthVars(
       id: id ?? api.genId,
       now: DateTime.now(),
-      userId: cachedUserId ?? kValuesNoAuthId,
+      userId: cachedUserId ?? TValues.noAuthId,
     ) as V;
   }
 
@@ -362,7 +361,7 @@ abstract class TDocumentService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpdateDocDef<T> doc,
-    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
+    TWriteableId Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -373,7 +372,7 @@ abstract class TDocumentService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
       );
@@ -462,7 +461,7 @@ abstract class TDocumentService<T extends TurboWriteableId<String, void>,
     Transaction? transaction,
     required String id,
     required UpsertDocDef<T> doc,
-    TurboWriteable<T> Function(T doc)? remoteUpdateRequestBuilder,
+    TWriteableId Function(T doc)? remoteUpdateRequestBuilder,
     bool doNotifyListeners = true,
   }) async {
     try {
@@ -473,7 +472,7 @@ abstract class TDocumentService<T extends TurboWriteableId<String, void>,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TurboWriteable<T>,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
         merge: true,

@@ -2,7 +2,7 @@ import 'package:turbo_firestore_api/abstracts/turbo_writeable.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/models/turbo_serializable_config.dart';
 
-class ExampleDTO extends TurboWriteable {
+class ExampleDTO extends TWriteable {
   ExampleDTO({
     required this.thisIsAString,
     required this.thisIsANumber,

@@ -11,7 +11,7 @@ part of 't_firestore_api.dart';
 /// - Automatic timestamp management
 /// - Document merging
 /// - Field-level merging
-/// - Validation through [TurboWriteable]
+/// - Validation through [TWriteable]
 ///
 /// Example:
 /// ```dart
@@ -30,7 +30,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// for handling timestamps, batching, transactions, and merging.
   ///
   /// Parameters:
-  /// - [writeable] The data to write, must implement [TurboWriteable]
+  /// - [writeable] The data to write, must implement [TWriteable]
   /// - [id] Optional custom document ID (auto-generated if not provided)
   /// - [writeBatch] Optional batch to include this operation in
   /// - [createTimeStampType] Type of timestamp to add for new documents
@@ -45,7 +45,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - Failure with validation errors or operation errors
   ///
   /// Features:
-  /// - Automatic validation through [TurboWriteable.validate]
+  /// - Automatic validation through [TWriteable.validate]
   /// - Timestamp management based on operation type
   /// - Support for batch operations
   /// - Support for transactions
@@ -69,7 +69,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - [createDocInBatch] for batch operations
   /// - [TTimestampType] for timestamp options
   Future<TurboResponse<DocumentReference>> createDoc({
-    required TurboWriteable writeable,
+    required TWriteable writeable,
     String? id,
     WriteBatch? writeBatch,
     TTimestampType createTimeStampType = TTimestampType.createdAtAndUpdatedAt,
@@ -93,12 +93,12 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
-          message: 'TurboWriteable was invalid!',
+          message: 'TWriteable was invalid!',
           sensitiveData: null,
         );
         return invalidResponse;
       }
-      _log.info(message: 'TurboWriteable is valid!', sensitiveData: null);
+      _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document..',
         sensitiveData: SensitiveData(
@@ -148,15 +148,6 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
           sensitiveData: null,
         );
         final json = writeable.toJson();
-        if (json == null) {
-          return const TurboResponse.fail(
-            error: TurboException(
-              title: 'Serialization Error',
-              message:
-                  'The writeable object did not provide JSON serialization (toJson returned null)',
-            ),
-          );
-        }
         final writeableAsJson =
             (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
                 ? updateTimeStampType.add(
@@ -252,7 +243,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// allowing multiple document writes to be atomic.
   ///
   /// Parameters:
-  /// - [writeable] The data to write, must implement [TurboWriteable]
+  /// - [writeable] The data to write, must implement [TWriteable]
   /// - [id] Optional custom document ID (auto-generated if not provided)
   /// - [writeBatch] Optional existing batch to add to (creates new if null)
   /// - [createTimeStampType] Type of timestamp to add for new documents
@@ -266,7 +257,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - Failure with validation errors or operation errors
   ///
   /// Features:
-  /// - Automatic validation through [TurboWriteable.validate]
+  /// - Automatic validation through [TWriteable.validate]
   /// - Timestamp management based on operation type
   /// - Creates new batch if none provided
   /// - Merge/upsert capabilities
@@ -297,7 +288,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - [createDoc] for single document operations
   /// - [WriteBatchWithReference] for batch result structure
   Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>> createDocInBatch({
-    required TurboWriteable writeable,
+    required TWriteable writeable,
     String? id,
     WriteBatch? writeBatch,
     TTimestampType createTimeStampType = TTimestampType.createdAtAndUpdatedAt,
@@ -317,12 +308,12 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
           writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
-          message: 'TurboWriteable was invalid!',
+          message: 'TWriteable was invalid!',
           sensitiveData: null,
         );
         return invalidResponse;
       }
-      _log.info(message: 'TurboWriteable is valid!', sensitiveData: null);
+      _log.info(message: 'TWriteable is valid!', sensitiveData: null);
       _log.debug(
         message: 'Creating document with batch..',
         sensitiveData: SensitiveData(
@@ -344,15 +335,6 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
           : _firebaseFirestore.collection(collectionPathOverride ?? _collectionPath()).doc();
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
-      if (json == null) {
-        return const TurboResponse.fail(
-          error: TurboException(
-            title: 'Serialization Error',
-            message:
-                'The writeable object did not provide JSON serialization (toJson returned null)',
-          ),
-        );
-      }
       final writeableAsJson =
           (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
               ? updateTimeStampType.add(
