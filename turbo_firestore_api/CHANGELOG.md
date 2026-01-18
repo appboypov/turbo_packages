@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-01-18
+
+### Fixes
+* Fixed example code imports to use correct `turbo_serializable` package paths
+* Fixed example DTO class to properly extend `TWriteable` with correct method signatures
+* Fixed example `validate()` method to use correct generic type parameter signature
+* Fixed broken imports and missing method implementations in example code
+* Fixed dependency references and package structure inconsistencies
+* Resolved type safety issues across API extensions
+
+### Improvements
+* Enhanced type safety in Firestore API extensions
+* Streamlined logging and error handling in Firestore API
+* Updated import paths to reflect new package structure
+* Improved code consistency and documentation
+* Cleaned up example code to match current API patterns
+
 ## [0.8.4] - 2026-01-09
 
 ### Features

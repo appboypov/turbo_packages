@@ -5,7 +5,8 @@ abstract class TAuthErrors {
   TAuthErrors._();
 
   /// Error code when an account already exists with different credentials.
-  static const accountExistsWithDifferentCredentials = 'account-exists-with-different-credential';
+  static const accountExistsWithDifferentCredentials =
+      'account-exists-with-different-credential';
 
   /// Error code when the captcha verification fails.
   static const captchaCheckFailed = 'captcha-check-failed';

@@ -63,7 +63,8 @@ mixin TExceptionHandler {
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Invalid credential',
-          message: 'Something went wrong verifying the credential, please try again.',
+          message:
+              'Something went wrong verifying the credential, please try again.',
         );
       case TAuthErrors.operationNotAllowed:
         return TurboResponse.fail(
@@ -76,13 +77,15 @@ mixin TExceptionHandler {
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Account disabled',
-          message: 'The account corresponding to the credential is disabled, please try again.',
+          message:
+              'The account corresponding to the credential is disabled, please try again.',
         );
       case TAuthErrors.userNotFound:
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Account not found',
-          message: 'The account corresponding to the credential was not found, please try again.',
+          message:
+              'The account corresponding to the credential was not found, please try again.',
         );
       case TAuthErrors.wrongPassword:
         return TurboResponse.fail(
@@ -94,13 +97,15 @@ mixin TExceptionHandler {
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Invalid verification code',
-          message: 'The verification code of the credential is invalid, please try again.',
+          message:
+              'The verification code of the credential is invalid, please try again.',
         );
       case TAuthErrors.invalidVerificationId:
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Invalid verification id',
-          message: 'The verification id of the credential is invalid, please try again.',
+          message:
+              'The verification id of the credential is invalid, please try again.',
         );
       case TAuthErrors.invalidEmail:
         return TurboResponse.fail(
@@ -112,7 +117,8 @@ mixin TExceptionHandler {
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Email already in use',
-          message: 'The email used already exists, please use a different email or try to log in.',
+          message:
+              'The email used already exists, please use a different email or try to log in.',
         );
       case TAuthErrors.weakPassword:
         return TurboResponse.fail(
@@ -124,7 +130,8 @@ mixin TExceptionHandler {
         return TurboResponse.fail(
           error: firebaseAuthException,
           title: 'Invalid Phone Number',
-          message: 'The phone number has an invalid format. Please input a valid phone number.',
+          message:
+              'The phone number has an invalid format. Please input a valid phone number.',
         );
       case TAuthErrors.captchaCheckFailed:
         return TurboResponse.fail(

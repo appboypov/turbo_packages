@@ -90,7 +90,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse =
+          writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -142,24 +143,26 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
                 id: id,
                 collectionPathOverride: collectionPathOverride,
               )
-            : _firebaseFirestore.collection(collectionPathOverride ?? _collectionPath()).doc();
+            : _firebaseFirestore
+                .collection(collectionPathOverride ?? _collectionPath())
+                .doc();
         _log.debug(
           message: 'Creating JSON..',
           sensitiveData: null,
         );
         final json = writeable.toJson();
-        final writeableAsJson =
-            (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
-                ? updateTimeStampType.add(
-                    json,
-                    updatedAtFieldName: _updatedAtFieldName,
-                    createdAtFieldName: _createdAtFieldName,
-                  )
-                : createTimeStampType.add(
-                    json,
-                    createdAtFieldName: _createdAtFieldName,
-                    updatedAtFieldName: _updatedAtFieldName,
-                  );
+        final writeableAsJson = (merge || mergeFields != null) &&
+                (await documentReference.get(_getOptions)).exists
+            ? updateTimeStampType.add(
+                json,
+                updatedAtFieldName: _updatedAtFieldName,
+                createdAtFieldName: _createdAtFieldName,
+              )
+            : createTimeStampType.add(
+                json,
+                createdAtFieldName: _createdAtFieldName,
+                updatedAtFieldName: _updatedAtFieldName,
+              );
         final setOptions = SetOptions(
           merge: mergeFields == null ? merge : null,
           mergeFields: mergeFields,
@@ -287,7 +290,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// See also:
   /// - [createDoc] for single document operations
   /// - [WriteBatchWithReference] for batch result structure
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>> createDocInBatch({
+  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
+      createDocInBatch({
     required TWriteable writeable,
     String? id,
     WriteBatch? writeBatch,
@@ -304,8 +308,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       'in order to make this method work.',
     );
     try {
-      final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>? invalidResponse =
-          writeable.validate();
+      final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>?
+          invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -332,21 +336,23 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
               id: id,
               collectionPathOverride: collectionPathOverride,
             )
-          : _firebaseFirestore.collection(collectionPathOverride ?? _collectionPath()).doc();
+          : _firebaseFirestore
+              .collection(collectionPathOverride ?? _collectionPath())
+              .doc();
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
-      final writeableAsJson =
-          (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
-              ? updateTimeStampType.add(
-                  json,
-                  updatedAtFieldName: _updatedAtFieldName,
-                  createdAtFieldName: _createdAtFieldName,
-                )
-              : createTimeStampType.add(
-                  json,
-                  createdAtFieldName: _createdAtFieldName,
-                  updatedAtFieldName: _updatedAtFieldName,
-                );
+      final writeableAsJson = (merge || mergeFields != null) &&
+              (await documentReference.get(_getOptions)).exists
+          ? updateTimeStampType.add(
+              json,
+              updatedAtFieldName: _updatedAtFieldName,
+              createdAtFieldName: _createdAtFieldName,
+            )
+          : createTimeStampType.add(
+              json,
+              createdAtFieldName: _createdAtFieldName,
+              updatedAtFieldName: _updatedAtFieldName,
+            );
       _log.debug(
         message: 'Setting data with writeBatch.set..',
         sensitiveData: SensitiveData(
@@ -364,7 +370,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         ),
       );
       _log.info(
-        message: 'Adding create to batch done! Returning WriteBatchWithReference..',
+        message:
+            'Adding create to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(

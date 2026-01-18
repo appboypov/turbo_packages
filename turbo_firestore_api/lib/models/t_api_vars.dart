@@ -14,7 +14,10 @@ class TApiVars {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TApiVars && runtimeType == other.runtimeType && id == other.id && now == other.now;
+      other is TApiVars &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          now == other.now;
 
   @override
   int get hashCode => id.hashCode ^ now.hashCode;

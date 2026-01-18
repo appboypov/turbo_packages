@@ -16,7 +16,6 @@ import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_serializable.dart';
-import 'package:turbo_serializable/abstracts/t_serializable_id.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -61,7 +60,8 @@ part 'before_sync_t_collection_service.dart';
 /// - Error handling and logging
 /// - User authentication state synchronization
 abstract class TCollectionService<T extends TWriteableId,
-    API extends TFirestoreApi<T>> extends TAuthSyncService<List<T>> with Turbolytics {
+        API extends TFirestoreApi<T>> extends TAuthSyncService<List<T>>
+    with Turbolytics {
   /// Creates a new [TCollectionService] instance.
   ///
   /// Parameters:
@@ -149,7 +149,8 @@ abstract class TCollectionService<T extends TWriteableId,
 
   /// Local state for documents, indexed by their IDs.
   @protected
-  final docsPerIdNotifier = TurboNotifier<Map<String, T>>({}, forceUpdate: true);
+  final docsPerIdNotifier =
+      TurboNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer<void>();
@@ -411,7 +412,8 @@ abstract class TCollectionService<T extends TWriteableId,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable,
         id: id,
         transaction: transaction,
         merge: true,
@@ -464,7 +466,8 @@ abstract class TCollectionService<T extends TWriteableId,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
       );

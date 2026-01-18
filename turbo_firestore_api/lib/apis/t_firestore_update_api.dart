@@ -84,7 +84,8 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse =
+          writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -248,7 +249,8 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [updateDoc] single document updates
   /// [createDocInBatch] batch creation
-  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>> updateDocInBatch({
+  Future<TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>>
+      updateDocInBatch({
     required TWriteableId writeable,
     required String id,
     WriteBatch? writeBatch,
@@ -261,8 +263,8 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>? invalidResponse =
-        writeable.validate();
+    final TurboResponse<WriteBatchWithReference<Map<String, dynamic>>>?
+        invalidResponse = writeable.validate();
     if (invalidResponse != null && invalidResponse.isFail) {
       _log.warning(
         message: 'TWriteable was invalid!',
@@ -303,7 +305,8 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         writeableAsJson,
       );
       _log.info(
-        message: 'Adding update to batch done! Returning WriteBatchWithReference..',
+        message:
+            'Adding update to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(

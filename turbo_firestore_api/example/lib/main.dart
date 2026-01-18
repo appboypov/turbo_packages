@@ -20,7 +20,7 @@ class ExampleAPI extends TFirestoreApi<ExampleDTO> {
           collectionPath: () => 'Examples',
           firebaseFirestore: FirebaseFirestore.instance,
           fromJson: ExampleDTO.fromJson,
-          toJson: (dto) => dto.toJson() ?? {},
+          toJson: (dto) => dto.toJson(),
         );
 
   Future<TurboResponse<DocumentReference>> createExample() {

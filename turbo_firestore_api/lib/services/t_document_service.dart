@@ -14,7 +14,6 @@ import 'package:turbo_firestore_api/typedefs/update_doc_def.dart';
 import 'package:turbo_firestore_api/typedefs/upsert_doc_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
-import 'package:turbo_serializable/abstracts/t_serializable_id.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -39,7 +38,8 @@ part 'before_sync_t_document_service.dart';
 /// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
 abstract class TDocumentService<T extends TWriteableId,
-    API extends TFirestoreApi<T>> extends TAuthSyncService<T?> with Turbolytics {
+        API extends TFirestoreApi<T>> extends TAuthSyncService<T?>
+    with Turbolytics {
   /// Creates a new [TDocumentService] instance.
   ///
   /// Parameters:
@@ -372,7 +372,8 @@ abstract class TDocumentService<T extends TWriteableId,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
       );
@@ -472,7 +473,8 @@ abstract class TDocumentService<T extends TWriteableId,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
         merge: true,
