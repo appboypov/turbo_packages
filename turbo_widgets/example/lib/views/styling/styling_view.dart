@@ -72,24 +72,6 @@ class StylingView extends StatelessWidget {
                       onToggleSafeArea: model.toggleSafeArea,
                       parametersListenable: model.componentParameters,
                       onParametersChanged: model.setComponentParameters,
-                      childBuilder: (context, params) => Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: TMarkdownFileItem(
-                          fileName: params.strings['fileName'] ?? 'untitled.md',
-                          content: params.textAreas['content'] ?? '',
-                          maxPreviewLines: params.ints['maxPreviewLines'] ?? 5,
-                          onOpen: () {
-                            ShadToaster.of(context).show(
-                              const ShadToast(
-                                title: Text('Opening File'),
-                                description: Text(
-                                  'Opening example.md in external app...',
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                     ),
                   ),
                 );
