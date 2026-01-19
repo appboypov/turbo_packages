@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
+import 'package:turbo_flutter_template/core/settings/views/settings/settings_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_notifiers/t_notifier.dart';

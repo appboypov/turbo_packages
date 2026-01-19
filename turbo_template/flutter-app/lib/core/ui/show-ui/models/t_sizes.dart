@@ -16,6 +16,7 @@ class TSizes {
   static const appBarSpacing = 16.0;
   static const appBarRadius = 12.0;
   static const appPadding = 24.0;
+  static const avatar = 40.0;
   static const appPaddingX0p5 = appPadding / 2;
   static const appPaddingX0p75 = appPadding * 0.75;
   static const appPaddingX2 = appPadding * 2;

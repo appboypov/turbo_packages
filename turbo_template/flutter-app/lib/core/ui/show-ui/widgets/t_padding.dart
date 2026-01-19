@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TPadding extends EdgeInsets {
   const TPadding.all(super.value) : super.all();

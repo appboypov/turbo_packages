@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
-import 'package:roomy_mobile/data/extensions/object_extension.dart';
-import 'package:roomy_mobile/data/extensions/string_extension.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/config/t_icon_vars.dart';
-import 'package:roomy_mobile/ui/enums/emoji.dart';
-import 'package:roomy_mobile/ui/enums/t_color_container.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/t_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_row.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_row.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TSectionHeader extends StatelessWidget {
   const TSectionHeader({
@@ -27,7 +24,7 @@ class TSectionHeader extends StatelessWidget {
   final Emoji? emoji;
   final String? title;
   final String? subtitle;
-  final List<TIconTextButtonVars> actions;
+  final List<Widget> actions;
   final Widget Function(Widget title)? titleBuilder;
   final Widget Function(Widget subtitle)? subtitleBuilder;
   final Widget Function(Widget actions)? actionsBuilder;
@@ -81,19 +78,7 @@ class TSectionHeader extends StatelessWidget {
                     : EdgeInsets.zero,
                 child: TRow(
                   children: [
-                    for (final action in actions)
-                      TButton(
-                        height: null,
-                        onPressed: action.onPressed,
-                        hoverBuilder: (context, isHovered, child) => TColorContainer(
-                          color: action
-                              .pIconColor(context: context)
-                              .withReactiveHover(isHovered: isHovered),
-                          iconData: action.iconData,
-                          text: action.text,
-                          iconTextColor: action.textColor,
-                        ),
-                      ),
+                    for (final action in actions) action,
                   ],
                 ),
               );

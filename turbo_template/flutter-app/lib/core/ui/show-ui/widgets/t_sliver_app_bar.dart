@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/state/typedefs/context_def.dart';
-import 'package:roomy_mobile/typography/widgets/emoji_title.dart';
-import 'package:roomy_mobile/ui/enums/emoji.dart';
-import 'package:roomy_mobile/ui/widgets/t_gap.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
-import 'package:roomy_mobile/ui/widgets/t_row.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/typedefs/context_def.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_row.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/emoji_title.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gap.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TSliverAppBar extends StatefulWidget {
   const TSliverAppBar({

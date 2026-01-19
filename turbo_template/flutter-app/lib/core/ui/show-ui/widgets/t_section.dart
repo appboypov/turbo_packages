@@ -1,11 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/config/t_icon_vars.dart';
-import 'package:roomy_mobile/ui/enums/emoji.dart';
-import 'package:roomy_mobile/ui/widgets/t_column.dart';
-import 'package:roomy_mobile/ui/widgets/t_margin.dart';
-import 'package:roomy_mobile/ui/widgets/t_section_header.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_column.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_section_header.dart';
 
 class TSection extends StatelessWidget {
   const TSection({
@@ -28,7 +27,7 @@ class TSection extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final Widget child;
-  final List<TIconTextButtonVars> actions;
+  final List<Widget> actions;
   final double topSectionGap;
   final double bottomSectionGap;
   final double childPadding;

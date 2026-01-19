@@ -258,8 +258,6 @@ class HomeViewModel extends BaseViewModel with Loglytics, SlidableManagement {
         context: context,
       );
 
-  ValueListenable<bool> get shouldShowNotificationBanner => _shouldShowNotificationBanner;
-
   // 🏗 HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
@@ -304,10 +302,6 @@ class HomeViewModel extends BaseViewModel with Loglytics, SlidableManagement {
       },
     );
   }
-
-  void onSettingsPressed() => _coreRouter().pushSettingsView();
-
-  void onViewPaymentsPressed() => _paymentsRouter().goPaymentsView();
 
   void onManageHouseholdPressed() {
     final householdId = _householdService.doc.value?.id;

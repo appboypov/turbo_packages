@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/extensions/box_constraints_extension.dart';
-import 'package:roomy_mobile/ui/models/t_data.dart';
-import 'package:roomy_mobile/ui/utils/t_tools.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/box_constraints_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/models/t_data.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/utils/t_tools.dart';
 
 class TResponsiveBuilder extends StatelessWidget {
   const TResponsiveBuilder({super.key, required this.builder, this.child});
@@ -33,8 +33,8 @@ class TResponsiveBuilder extends StatelessWidget {
         context.data.copyWith(
           currentWidth: constraints.maxWidth,
           currentHeight: constraints.maxHeight,
-          deviceType: constraints.turboDeviceType(breakpointConfig: context.breakpointConfig),
-          orientation: constraints.turboOrientation,
+          deviceType: constraints.deviceType(breakpointConfig: context.breakpointConfig),
+          orientation: constraints.orientation,
         ),
       );
 

@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/animations/extensions/animation_value_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/feedback/globals/g_vibrate.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/opacity_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/extensions/animation_value_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/opacity_button.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ux/provide-feedback/globals/g_vibrate.dart';
 
 class TTabHeader<T> extends StatefulWidget {
   const TTabHeader({

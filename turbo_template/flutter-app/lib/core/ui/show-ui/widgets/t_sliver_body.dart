@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/ui/widgets/t_sliver_app_bar.dart';
-import 'package:roomy_mobile/ui/widgets/t_sliver_scrollview.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_sliver_app_bar.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_sliver_scrollview.dart';
 

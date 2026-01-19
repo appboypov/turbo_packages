@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 /// A responsive layout widget that automatically arranges children in columns based on available width
 class TResponsiveColumn extends StatelessWidget {
