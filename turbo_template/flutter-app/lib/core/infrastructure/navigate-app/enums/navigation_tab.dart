@@ -5,15 +5,12 @@ import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart'
 import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum NavigationTab {
-  home,
-  settings;
+  home;
 
   int get branchIndex {
     switch (this) {
       case NavigationTab.home:
         return 0;
-      case NavigationTab.settings:
-        return 1;
     }
   }
 
@@ -32,8 +29,6 @@ enum NavigationTab {
     switch (this) {
       case NavigationTab.home:
         return strings.home;
-      case NavigationTab.settings:
-        return strings.settings;
     }
   }
 
@@ -41,11 +36,8 @@ enum NavigationTab {
     switch (this) {
       case NavigationTab.home:
         return Icons.home_rounded;
-      case NavigationTab.settings:
-        return Icons.settings;
     }
   }
 
-  bool get isSettings => this == NavigationTab.settings;
   bool get isHome => this == NavigationTab.home;
 }

@@ -5,6 +5,7 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 class StylingViewModel extends TViewModel<Object?> {
   StylingViewModel();
 
+  final TNotifier<bool> _isPlaygroundExpanded = TNotifier(false);
   final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.desktop);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');
@@ -12,6 +13,7 @@ class StylingViewModel extends TViewModel<Object?> {
   final TNotifier<String> _activeTab = TNotifier('request');
   final TNotifier<String> _instructions = TNotifier('');
 
+  TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
   TNotifier<bool> get isGeneratorOpen => _isGeneratorOpen;
   TNotifier<String> get userRequest => _userRequest;
@@ -21,6 +23,7 @@ class StylingViewModel extends TViewModel<Object?> {
 
   @override
   void dispose() {
+    _isPlaygroundExpanded.dispose();
     _screenType.dispose();
     _isGeneratorOpen.dispose();
     _userRequest.dispose();
@@ -28,6 +31,10 @@ class StylingViewModel extends TViewModel<Object?> {
     _activeTab.dispose();
     _instructions.dispose();
     super.dispose();
+  }
+
+  void togglePlayground() {
+    _isPlaygroundExpanded.updateCurrent((current) => !current);
   }
 
   void setScreenType(TurboWidgetsScreenTypes value) {

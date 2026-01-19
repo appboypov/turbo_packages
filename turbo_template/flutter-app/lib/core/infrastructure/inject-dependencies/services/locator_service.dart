@@ -6,6 +6,8 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/services/aut
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/email_service.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view_model.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/core_router.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
@@ -42,6 +44,8 @@ class LocatorService with Turbolytics {
 
   void _registerRouters() {
     BaseRouterService.registerLazySingleton();
+    HomeRouter.registerFactory();
+    CoreRouter.registerFactory();
   }
 
   void _registerLazySingletons() {

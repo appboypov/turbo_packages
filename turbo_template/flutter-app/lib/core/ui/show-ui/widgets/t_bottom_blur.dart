@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:soft_edge_blur/soft_edge_blur.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 
 class TBottomBlur extends StatelessWidget {

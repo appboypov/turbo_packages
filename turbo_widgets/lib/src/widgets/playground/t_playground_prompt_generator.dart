@@ -3,33 +3,29 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 const String _kDefaultInstructions = '''Context:
-We are working in the Component Playground, which is integrated into the Styling page (turbo_widgets/example/lib/views/styling/styling_view.dart).
-The TPlayground widget (turbo_widgets/lib/src/widgets/t_playground.dart) provides a controlled environment with a screen size selector (Mobile, Tablet, Desktop) and a layout wrapper to test responsiveness.
+We are working in the Component Playground, a controlled environment with a screen size selector (Mobile, Tablet, Desktop) and a layout wrapper to test widget responsiveness.
 
 Structure:
-1. The TPlayground uses TViewModel to manage state like screen size and generator visibility.
-2. It renders a 'TPlaygroundPromptGenerator' (this card) and a 'TPlaygroundComponentWrapper'.
-3. Inside the TPlaygroundComponentWrapper, there is a placeholder area where components under test should be placed.
-4. The playground is located at the top of the styling page, before the Design System Tokens section.
+1. The TPlayground renders a prompt generator card and a component wrapper area.
+2. Inside the component wrapper, there is a placeholder area where widgets under test should be placed.
+3. The playground can be integrated into any styling/components page in your project.
 
 Theme Support:
-- The project supports two themes: 'light' and 'dark' (default is 'dark')
-- Themes are applied via the ShadApp theme configuration
 - Components MUST work correctly in both light and dark themes
 - Use theme-aware colors from ShadTheme that automatically adapt to the theme
-- Test components in both themes using the theme toggle in the app bar
+- Test components in both themes to ensure proper appearance and contrast
 - Ensure proper contrast ratios and visibility in both themes
 
 Your Goal:
-- Create the requested widget(s) in an appropriate location within the project structure (typically in a domain area's core/widgets folder, or shared/core/widgets if it's truly shared).
-- Add the widget(s) inside the TPlaygroundComponentWrapper's children area in t_playground.dart, replacing the placeholder content.
+- Create the requested widget(s) in an appropriate location within the project structure.
+- Add the widget(s) inside the playground's child parameter, replacing the placeholder content.
 - If multiple variants are requested, stack them vertically within the wrapper or use multiple sections with titles.
 - IMPORTANT: When multiple variants are requested, they MUST share the exact same props interface but have completely different visual designs/layouts. We are brainstorming distinct design approaches, not minor style tweaks.
 - CRITICAL: Create ALL variants of the widget (if variants are requested, create all of them, not just one)
 - CRITICAL: Test the widget(s) in BOTH light and dark themes to ensure proper appearance and contrast
 - Ensure the widget is stateless and follows the design system.
 - Use theme-aware design tokens from ShadTheme (colors, typography, spacing, etc.)
-- After creating and testing in the playground, add the widget to the Styling page's widget catalog (styling_view.dart) for documentation.
+- After creating and testing in the playground, add the widget to the appropriate showcase section in your components/styling page. Create a new section if one doesn't exist for this widget type.
 
 <components_rules_and_knowledge>
     - Stateless unless used for temporary user input or animation states
@@ -48,40 +44,36 @@ Your Goal:
 </components_rules_and_knowledge>''';
 
 const String _kSolidifyInstructions = '''Context:
-We are working in the Component Playground, which is integrated into the Styling page.
+We are working in the Component Playground.
 A widget has been created and tested in the playground and is ready to be added to the project.
 
 Theme Support:
-- The project supports two themes: 'light' and 'dark' (default is 'dark')
 - Widgets MUST work correctly in both light and dark themes
 - Use theme-aware colors and design tokens from ShadTheme
 - Verify the widget looks correct in both themes before solidifying
 
 Your Goal:
 1. Move the widget from the playground to its proper location:
-   - Determine the appropriate domain/category (Product, Vendor, Category, Recipe, Meal Plan, Shopping Bag, Health, Specialist, User, Search, Price, Layout, Form, Action, Proposal, Admin, or create new)
-   - Place in the appropriate folder following project structure:
-     * Shared widgets: lib/src/widgets/{category}/
-     * Domain-specific: lib/{domain}/widgets/
-   - Follow naming conventions (snake_case for files, PascalCase with T prefix for widget classes)
+   - Determine the appropriate category based on what the widget does
+   - Place in the appropriate folder following your project structure
+   - Follow naming conventions (snake_case for files, PascalCase for widget classes)
    - Ensure ALL variants of the widget are included (if multiple variants were created, include all of them)
 
-2. Add the widget to the Styling page catalog:
-   - Open turbo_widgets/example/lib/views/styling/styling_view.dart
+2. Add the widget to the components/styling page catalog:
    - Import the widget at the top with other widget imports
-   - Find the appropriate TShowcaseSection or create a new one
-   - Add TShowcaseItem entries for ALL variants within the section
+   - Find the appropriate showcase section or create a new one if it doesn't exist
+   - Add showcase entries for ALL variants within the section
    - If multiple variants exist, add a showcase for each variant with descriptive names
    - Ensure demo props showcase the widget properly in both light and dark themes
 
 3. Clear the playground canvas:
-   - Remove all widgets from TPlaygroundComponentWrapper in t_playground.dart
-   - Restore the placeholder content (Component Testing Area with title and description)
+   - Remove all widgets from the playground's child parameter
+   - Restore the placeholder content
 
 4. Follow project conventions:
    - Widgets are stateless and receive state from ViewModels
    - Use primitive parameters (String, int, double, bool) not DTOs
-   - Follow the existing TShowcaseItem pattern
+   - Follow existing showcase patterns in your project
    - Ensure proper Dart types and imports
    - Verify theme compatibility: widgets should use ShadTheme colors that adapt to theme
    - Test in both light and dark themes before considering the widget complete
@@ -105,22 +97,13 @@ Your Goal:
 ALWAYS apply these widget rules and knowledge when creating or modifying widgets.''';
 
 const String _kClearCanvasInstructions = '''Context:
-We are working in the Component Playground, which is integrated into the Styling page (turbo_widgets/example/lib/views/styling/styling_view.dart).
-The TPlaygroundComponentWrapper currently contains widgets that need to be cleared to prepare for new widget creation.
-
-Structure:
-1. The TPlayground widget is located at turbo_widgets/lib/src/widgets/t_playground.dart
-2. Inside the TPlayground, there is a TPlaygroundComponentWrapper that contains the widgets under test
-3. The placeholder content should be restored to its original state
+We are working in the Component Playground.
+The playground currently contains widgets that need to be cleared to prepare for new widget creation.
 
 Your Goal:
-- Remove all widgets currently inside the TPlaygroundComponentWrapper's children area in t_playground.dart
-- Restore the original placeholder content (Component Testing Area with title and description)
-- The placeholder should be located in t_playground.dart, inside the TPlaygroundComponentWrapper
-- Ensure the placeholder matches the original structure:
-  - A Column with centered content
-  - A Text widget with "Component Testing Area" as the title
-  - A Text widget with description "Use the prompt generator above to create new widgets, or add widgets here to test them."
+- Remove all widgets currently passed to the TPlayground's child parameter
+- Set the child parameter to null or remove it entirely to restore the default placeholder
+- The default placeholder shows "Component Testing Area" with a description
 - This clears the canvas for starting fresh with a new widget creation''';
 
 class TPlaygroundPromptGenerator extends StatelessWidget {
@@ -152,17 +135,13 @@ class TPlaygroundPromptGenerator extends StatelessWidget {
   String _buildPrompt() {
     if (activeTab == 'solidify') {
       return '''Solidify the widget from the Component Playground.
-Current File: turbo_widgets/lib/src/widgets/t_playground.dart
-Styling Page: turbo_widgets/example/lib/views/styling/styling_view.dart
 
 $_kSolidifyInstructions
 
 Task:
-Add the widget from the playground to the project following conventions, add it to the styling page catalog, and clear the canvas.''';
+Add the widget from the playground to the project following conventions, add it to your components/styling page catalog, and clear the canvas.''';
     } else if (activeTab == 'clear') {
       return '''Clear the Component Playground canvas.
-Current File: turbo_widgets/lib/src/widgets/t_playground.dart
-Playground Location: Integrated into the Styling page at turbo_widgets/example/lib/views/styling/styling_view.dart
 
 $_kClearCanvasInstructions
 
@@ -170,8 +149,6 @@ Task:
 Clear the playground canvas and restore the placeholder content.''';
     } else {
       return '''We are working on a new widget in the Component Playground.
-Current File: turbo_widgets/lib/src/widgets/t_playground.dart
-Playground Location: Integrated into the Styling page at turbo_widgets/example/lib/views/styling/styling_view.dart
 
 $_effectiveInstructions
 
@@ -182,7 +159,7 @@ $userRequest
 Requirements:
 - Create $variations variant(s) of this widget.
 - Ensure it follows the rules above.
-- Add the widget(s) inside the TPlaygroundComponentWrapper's children area, replacing the placeholder content.
+- Add the widget(s) to the TPlayground's child parameter, replacing the placeholder content.
 ''';
     }
   }

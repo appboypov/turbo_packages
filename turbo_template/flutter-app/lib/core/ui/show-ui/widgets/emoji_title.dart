@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/data/extensions/object_extension.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/typography/widgets/t_auto_size_text.dart';
-import 'package:roomy_mobile/ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_auto_size_text.dart';
 
 enum EmojiTitleType { scaffoldTitle, h1, h2, h3 }
 

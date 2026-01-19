@@ -1,13 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/view_arguments.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 abstract class BaseNavigation with Turbolytics {
   final _baseRouterService = BaseRouterService.locate;
+  final _navigationTabService = NavigationTabService.locate;
 
   String get root;
+  NavigationTab? get navigationTab;
+  NavigationTab get currentNavigationTab => _navigationTabService.navigationTab.value;
+
+  void goBranch({required StatefulNavigationShell statefulNavigationShell}) {
+    final initialLocation = currentNavigationTab;
+    final cNavigationTab = navigationTab;
+    final branchIndex = cNavigationTab!.branchIndex;
+
+    // Add bounds checking to prevent go_router assertion failure
+    if (branchIndex < 0 || branchIndex >= statefulNavigationShell.route.branches.length) {
+      log.error(
+        'Invalid branch index: $branchIndex, available branches: ${statefulNavigationShell.route.branches.length}',
+      );
+      return;
+    }
+
+    statefulNavigationShell.goBranch(
+      branchIndex,
+      initialLocation: switch (cNavigationTab) {
+        NavigationTab.home => initialLocation.isHome,
+      },
+    );
+  }
 
   void go({required String location, List<ViewArguments>? extra, BuildContext? context}) {
     log.debug('Going to route: $location');
