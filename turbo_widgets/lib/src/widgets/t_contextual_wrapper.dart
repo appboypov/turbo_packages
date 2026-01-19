@@ -340,11 +340,6 @@ class _TContextualWrapperState extends State<TContextualWrapper>
     return result;
   }
 
-  bool _isPositionAllowed(TContextualPosition position) {
-    if (widget.allowFilter == TContextualAllowFilter.all) return true;
-    return widget.allowFilter.name == position.name;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
