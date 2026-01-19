@@ -41,6 +41,9 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
           'showBottomContent': true,
           'showLeftContent': true,
           'showRightContent': true,
+          'showPrimaryVariation': true,
+          'showSecondaryVariation': true,
+          'showTertiaryVariation': false,
         },
         ints: {
           'animationDuration': 300,

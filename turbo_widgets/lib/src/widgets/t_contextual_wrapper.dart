@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
+import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 
 /// A wrapper widget that displays contextual content at configurable positions
 /// (top, bottom, left, right) as overlays on top of the main content.
@@ -39,6 +40,19 @@ class TContextualWrapper extends StatefulWidget {
     this.bottomContent = const [],
     this.leftContent = const [],
     this.rightContent = const [],
+    this.topSecondaryContent = const [],
+    this.topTertiaryContent = const [],
+    this.bottomSecondaryContent = const [],
+    this.bottomTertiaryContent = const [],
+    this.leftSecondaryContent = const [],
+    this.leftTertiaryContent = const [],
+    this.rightSecondaryContent = const [],
+    this.rightTertiaryContent = const [],
+    this.activeVariations = const {
+      TContextualVariation.primary,
+      TContextualVariation.secondary,
+      TContextualVariation.tertiary,
+    },
     this.allowFilter = TContextualAllowFilter.all,
     this.positionOverrides = const {},
     this.topAlignment = Alignment.center,
@@ -71,6 +85,37 @@ class TContextualWrapper extends StatefulWidget {
 
   /// Content to display on the right (overlays main content).
   final List<Widget> rightContent;
+
+  /// Secondary content to display at the top (overlays main content).
+  final List<Widget> topSecondaryContent;
+
+  /// Tertiary content to display at the top (overlays main content).
+  final List<Widget> topTertiaryContent;
+
+  /// Secondary content to display at the bottom (overlays main content).
+  final List<Widget> bottomSecondaryContent;
+
+  /// Tertiary content to display at the bottom (overlays main content).
+  final List<Widget> bottomTertiaryContent;
+
+  /// Secondary content to display on the left (overlays main content).
+  final List<Widget> leftSecondaryContent;
+
+  /// Tertiary content to display on the left (overlays main content).
+  final List<Widget> leftTertiaryContent;
+
+  /// Secondary content to display on the right (overlays main content).
+  final List<Widget> rightSecondaryContent;
+
+  /// Tertiary content to display on the right (overlays main content).
+  final List<Widget> rightTertiaryContent;
+
+  /// Set of active variations to display.
+  ///
+  /// Only variations in this set will be rendered. If multiple variations
+  /// are active for the same position, they are stacked according to the
+  /// position's axis (vertical for top/bottom, horizontal for left/right).
+  final Set<TContextualVariation> activeVariations;
 
   /// Filter to restrict which positions can display content.
   ///
@@ -132,12 +177,11 @@ class TContextualWrapper extends StatefulWidget {
 
 enum _AnimationPhase { idle, animatingOut, animatingIn }
 
-class _TContextualWrapperState extends State<TContextualWrapper>
-    with TickerProviderStateMixin {
+class _TContextualWrapperState extends State<TContextualWrapper> with TickerProviderStateMixin {
   late final Map<TContextualPosition, AnimationController> _controllers;
   final Map<TContextualPosition, _AnimationPhase> _phases = {};
-  Map<TContextualPosition, List<Widget>> _displayedContent = {};
-  Map<TContextualPosition, List<Widget>>? _pendingContent;
+  Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> _displayedContent = {};
+  Map<TContextualPosition, Map<TContextualVariation, List<Widget>>>? _pendingContent;
   bool _isAnimating = false;
 
   @override
@@ -187,12 +231,39 @@ class _TContextualWrapperState extends State<TContextualWrapper>
     super.dispose();
   }
 
+  bool _variationMapsEqual(
+    Map<TContextualVariation, List<Widget>> a,
+    Map<TContextualVariation, List<Widget>> b,
+  ) {
+    for (final variation in TContextualVariation.values) {
+      if (!_listEquals(a[variation] ?? const [], b[variation] ?? const [])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool _hasAnyVariationContent(
+    Map<TContextualVariation, List<Widget>> contentByVariation,
+  ) {
+    for (final variation in TContextualVariation.values) {
+      final content = contentByVariation[variation] ?? const [];
+      if (content.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   bool _contentMapsEqual(
-    Map<TContextualPosition, List<Widget>> a,
-    Map<TContextualPosition, List<Widget>> b,
+    Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> a,
+    Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> b,
   ) {
     for (final position in TContextualPosition.values) {
-      if (!_listEquals(a[position] ?? const [], b[position] ?? const [])) {
+      if (!_variationMapsEqual(
+        a[position] ?? const {},
+        b[position] ?? const {},
+      )) {
         return false;
       }
     }
@@ -209,7 +280,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
   }
 
   Future<void> _animateContentChanges(
-    Map<TContextualPosition, List<Widget>> newContent,
+    Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> newContent,
   ) async {
     if (_isAnimating) {
       _pendingContent = newContent;
@@ -222,14 +293,17 @@ class _TContextualWrapperState extends State<TContextualWrapper>
     final positionsToAnimateIn = <TContextualPosition>[];
 
     for (final position in TContextualPosition.values) {
-      final oldContent = _displayedContent[position] ?? const [];
-      final newPositionContent = newContent[position] ?? const [];
+      final oldContentByVariation = _displayedContent[position] ?? const {};
+      final newContentByVariation = newContent[position] ?? const {};
 
-      if (!_listEquals(oldContent, newPositionContent)) {
-        if (oldContent.isNotEmpty) {
+      if (!_variationMapsEqual(oldContentByVariation, newContentByVariation)) {
+        final oldHasContent = _hasAnyVariationContent(oldContentByVariation);
+        final newHasContent = _hasAnyVariationContent(newContentByVariation);
+
+        if (oldHasContent) {
           positionsToAnimateOut.add(position);
         }
-        if (newPositionContent.isNotEmpty) {
+        if (newHasContent) {
           positionsToAnimateIn.add(position);
         }
       }
@@ -258,7 +332,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
 
       // Clear content from positions that animated out
       for (final position in positionsToAnimateOut) {
-        _displayedContent[position] = const [];
+        _displayedContent[position] = const {};
         _phases[position] = _AnimationPhase.idle;
       }
       setState(() {});
@@ -267,7 +341,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
     // Phase 2: Update displayed content and animate in positions gaining content
     if (positionsToAnimateIn.isNotEmpty) {
       for (final position in positionsToAnimateIn) {
-        _displayedContent[position] = newContent[position] ?? const [];
+        _displayedContent[position] = Map.from(newContent[position] ?? const {});
         _phases[position] = _AnimationPhase.animatingIn;
         _controllers[position]!.reset();
       }
@@ -289,9 +363,8 @@ class _TContextualWrapperState extends State<TContextualWrapper>
 
     // Update remaining positions that changed without animation
     for (final position in TContextualPosition.values) {
-      if (!positionsToAnimateOut.contains(position) &&
-          !positionsToAnimateIn.contains(position)) {
-        _displayedContent[position] = newContent[position] ?? const [];
+      if (!positionsToAnimateOut.contains(position) && !positionsToAnimateIn.contains(position)) {
+        _displayedContent[position] = Map.from(newContent[position] ?? const {});
       }
     }
 
@@ -311,46 +384,84 @@ class _TContextualWrapperState extends State<TContextualWrapper>
     }
   }
 
-  Map<TContextualPosition, List<Widget>> _resolveContent() {
-    var result = <TContextualPosition, List<Widget>>{
-      TContextualPosition.top: [...widget.topContent],
-      TContextualPosition.bottom: [...widget.bottomContent],
-      TContextualPosition.left: [...widget.leftContent],
-      TContextualPosition.right: [...widget.rightContent],
+  TContextualPosition _positionFromAllowFilter(TContextualAllowFilter filter) {
+    return TContextualPosition.values.firstWhere(
+      (p) => p.name == filter.name,
+    );
+  }
+
+  Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> _resolveContent() {
+    // Step 1: Build initial structure for each position with 3 variation buckets
+    var result = <TContextualPosition, Map<TContextualVariation, List<Widget>>>{
+      TContextualPosition.top: {
+        TContextualVariation.primary: [...widget.topContent],
+        TContextualVariation.secondary: [...widget.topSecondaryContent],
+        TContextualVariation.tertiary: [...widget.topTertiaryContent],
+      },
+      TContextualPosition.bottom: {
+        TContextualVariation.primary: [...widget.bottomContent],
+        TContextualVariation.secondary: [...widget.bottomSecondaryContent],
+        TContextualVariation.tertiary: [...widget.bottomTertiaryContent],
+      },
+      TContextualPosition.left: {
+        TContextualVariation.primary: [...widget.leftContent],
+        TContextualVariation.secondary: [...widget.leftSecondaryContent],
+        TContextualVariation.tertiary: [...widget.leftTertiaryContent],
+      },
+      TContextualPosition.right: {
+        TContextualVariation.primary: [...widget.rightContent],
+        TContextualVariation.secondary: [...widget.rightSecondaryContent],
+        TContextualVariation.tertiary: [...widget.rightTertiaryContent],
+      },
     };
 
-    // Apply overrides: move content from source to target position
+    // Step 2: Apply activeVariations by zeroing out inactive variation lists
+    for (final position in TContextualPosition.values) {
+      final contentByVariation = result[position]!;
+      for (final variation in TContextualVariation.values) {
+        if (!widget.activeVariations.contains(variation)) {
+          contentByVariation[variation] = const [];
+        }
+      }
+    }
+
+    // Step 3: Apply positionOverrides per variation
     for (final entry in widget.positionOverrides.entries) {
       final source = entry.key;
       final target = entry.value;
 
-      final sourceContent = result[source] ?? [];
-      if (sourceContent.isNotEmpty) {
-        result[target] = [...(result[target] ?? []), ...sourceContent];
-        result[source] = [];
+      for (final variation in TContextualVariation.values) {
+        final sourceContent = result[source]![variation] ?? const [];
+        if (sourceContent.isNotEmpty) {
+          result[target]![variation] = [
+            ...(result[target]![variation] ?? const []),
+            ...sourceContent,
+          ];
+          result[source]![variation] = const [];
+        }
       }
     }
 
-    // If allowFilter is not 'all', merge all content to the allowed position
+    // Step 4: Apply allowFilter (if not 'all') per variation
     if (widget.allowFilter != TContextualAllowFilter.all) {
-      final targetPosition = TContextualPosition.values.firstWhere(
-        (p) => p.name == widget.allowFilter.name,
-      );
+      final targetPosition = _positionFromAllowFilter(widget.allowFilter);
 
-      final allContent = <Widget>[
-        ...result[TContextualPosition.top] ?? [],
-        ...result[TContextualPosition.bottom] ?? [],
-        ...result[TContextualPosition.left] ?? [],
-        ...result[TContextualPosition.right] ?? [],
-      ];
+      for (final variation in TContextualVariation.values) {
+        final allContent = <Widget>[
+          ...result[TContextualPosition.top]![variation] ?? const [],
+          ...result[TContextualPosition.bottom]![variation] ?? const [],
+          ...result[TContextualPosition.left]![variation] ?? const [],
+          ...result[TContextualPosition.right]![variation] ?? const [],
+        ];
 
-      result = {
-        TContextualPosition.top: const [],
-        TContextualPosition.bottom: const [],
-        TContextualPosition.left: const [],
-        TContextualPosition.right: const [],
-      };
-      result[targetPosition] = allContent;
+        // Clear all positions for this variation
+        for (final position in TContextualPosition.values) {
+          result[position]![variation] = const [];
+        }
+
+        // Assign to target position
+        result[targetPosition]![variation] = allContent;
+      }
     }
 
     return result;
@@ -367,7 +478,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
           right: 0,
           child: RepaintBoundary(
             child: _TPositionContent(
-              content: _displayedContent[TContextualPosition.top] ?? const [],
+              contentByVariation: _displayedContent[TContextualPosition.top] ?? const {},
               position: TContextualPosition.top,
               alignment: widget.topAlignment,
               mainAxisSize: widget.topMainAxisSize,
@@ -384,8 +495,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
           right: 0,
           child: RepaintBoundary(
             child: _TPositionContent(
-              content:
-                  _displayedContent[TContextualPosition.bottom] ?? const [],
+              contentByVariation: _displayedContent[TContextualPosition.bottom] ?? const {},
               position: TContextualPosition.bottom,
               alignment: widget.bottomAlignment,
               mainAxisSize: widget.bottomMainAxisSize,
@@ -402,7 +512,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
           bottom: 0,
           child: RepaintBoundary(
             child: _TPositionContent(
-              content: _displayedContent[TContextualPosition.left] ?? const [],
+              contentByVariation: _displayedContent[TContextualPosition.left] ?? const {},
               position: TContextualPosition.left,
               alignment: widget.leftAlignment,
               mainAxisSize: widget.leftMainAxisSize,
@@ -419,8 +529,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
           bottom: 0,
           child: RepaintBoundary(
             child: _TPositionContent(
-              content:
-                  _displayedContent[TContextualPosition.right] ?? const [],
+              contentByVariation: _displayedContent[TContextualPosition.right] ?? const {},
               position: TContextualPosition.right,
               alignment: widget.rightAlignment,
               mainAxisSize: widget.rightMainAxisSize,
@@ -439,7 +548,7 @@ class _TContextualWrapperState extends State<TContextualWrapper>
 /// Stateless widget that renders content for a position with animation.
 class _TPositionContent extends StatelessWidget {
   const _TPositionContent({
-    required this.content,
+    required this.contentByVariation,
     required this.position,
     required this.alignment,
     required this.mainAxisSize,
@@ -449,7 +558,7 @@ class _TPositionContent extends StatelessWidget {
     this.builder,
   });
 
-  final List<Widget> content;
+  final Map<TContextualVariation, List<Widget>> contentByVariation;
   final TContextualPosition position;
   final Alignment alignment;
   final MainAxisSize mainAxisSize;
@@ -471,35 +580,74 @@ class _TPositionContent extends StatelessWidget {
     }
   }
 
-  bool get _isHorizontal =>
-      position == TContextualPosition.top ||
-      position == TContextualPosition.bottom;
+  bool get _isTopOrBottom =>
+      position == TContextualPosition.top || position == TContextualPosition.bottom;
 
-  Axis get _scrollDirection => _isHorizontal ? Axis.horizontal : Axis.vertical;
+  Axis get _variationStackAxis => _isTopOrBottom ? Axis.vertical : Axis.horizontal;
 
-  @override
-  Widget build(BuildContext context) {
-    if (content.isEmpty) {
+  Axis get _variationContentAxis => _isTopOrBottom ? Axis.horizontal : Axis.vertical;
+
+  bool get _reverseVariationOrder =>
+      position == TContextualPosition.bottom || position == TContextualPosition.right;
+
+  Widget _buildVariationGroup(List<Widget> widgets) {
+    if (widgets.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final Widget contentWidget;
     if (builder != null) {
-      contentWidget = builder!(content);
-    } else if (content.length == 1) {
-      contentWidget = Align(
+      return builder!(widgets);
+    } else if (widgets.length == 1) {
+      return Align(
         alignment: alignment,
-        child: content.first,
+        child: widgets.first,
       );
     } else {
-      contentWidget = SingleChildScrollView(
-        scrollDirection: _scrollDirection,
+      return SingleChildScrollView(
+        scrollDirection: _variationContentAxis,
         child: Flex(
-          direction: _scrollDirection,
+          direction: _variationContentAxis,
           mainAxisSize: mainAxisSize,
           mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
           crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
-          children: content,
+          children: widgets,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Build variation groups
+    final variationGroups = <Widget>[];
+    for (final variation in TContextualVariation.values) {
+      final widgets = contentByVariation[variation] ?? const [];
+      if (widgets.isNotEmpty) {
+        variationGroups.add(_buildVariationGroup(widgets));
+      }
+    }
+
+    if (variationGroups.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    // If only one variation group, use it directly
+    final Widget contentWidget;
+    if (variationGroups.length == 1) {
+      contentWidget = variationGroups.first;
+    } else {
+      // Multiple variation groups: stack them
+      final orderedGroups =
+          _reverseVariationOrder ? variationGroups.reversed.toList() : variationGroups;
+
+      contentWidget = SingleChildScrollView(
+        scrollDirection: _variationStackAxis,
+        child: Flex(
+          direction: _variationStackAxis,
+          mainAxisSize: mainAxisSize,
+          mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
+          crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
+          children: orderedGroups,
         ),
       );
     }
@@ -544,14 +692,14 @@ class _TPositionContent extends StatelessWidget {
   }
 
   MainAxisAlignment _alignmentToMainAxisAlignment(Alignment alignment) {
-    final value = _isHorizontal ? alignment.x : alignment.y;
+    final value = _isTopOrBottom ? alignment.x : alignment.y;
     if (value < 0) return MainAxisAlignment.start;
     if (value > 0) return MainAxisAlignment.end;
     return MainAxisAlignment.center;
   }
 
   CrossAxisAlignment _alignmentToCrossAxisAlignment(Alignment alignment) {
-    final value = _isHorizontal ? alignment.y : alignment.x;
+    final value = _isTopOrBottom ? alignment.y : alignment.x;
     if (value < 0) return CrossAxisAlignment.start;
     if (value > 0) return CrossAxisAlignment.end;
     return CrossAxisAlignment.center;

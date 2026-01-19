@@ -78,19 +78,57 @@ class StylingView extends StatelessWidget {
                         final showBottom = params.bools['showBottomContent'] ?? true;
                         final showLeft = params.bools['showLeftContent'] ?? true;
                         final showRight = params.bools['showRightContent'] ?? true;
+                        final showPrimary = params.bools['showPrimaryVariation'] ?? true;
+                        final showSecondary = params.bools['showSecondaryVariation'] ?? true;
+                        final showTertiary = params.bools['showTertiaryVariation'] ?? false;
                         final animationDuration = params.ints['animationDuration'] ?? 300;
+
+                        final activeVariations = <TContextualVariation>{
+                          if (showPrimary) TContextualVariation.primary,
+                          if (showSecondary) TContextualVariation.secondary,
+                          if (showTertiary) TContextualVariation.tertiary,
+                        };
 
                         return TContextualWrapper(
                           allowFilter: allowFilter,
+                          activeVariations: activeVariations,
                           animationDuration: Duration(milliseconds: animationDuration),
-                          topContent:
-                              showTop ? const [_DemoContentBar(label: 'Top Content')] : const [],
-                          bottomContent: showBottom
-                              ? const [_DemoContentBar(label: 'Bottom Content')]
+                          topContent: showTop
+                              ? const [_DemoContentBar(label: 'Top Primary')]
                               : const [],
-                          leftContent: showLeft ? const [_DemoContentBar(label: 'Left')] : const [],
-                          rightContent:
-                              showRight ? const [_DemoContentBar(label: 'Right')] : const [],
+                          topSecondaryContent: showTop
+                              ? const [_DemoContentBar(label: 'Top Secondary')]
+                              : const [],
+                          topTertiaryContent: showTop
+                              ? const [_DemoContentBar(label: 'Top Tertiary')]
+                              : const [],
+                          bottomContent: showBottom
+                              ? const [_DemoContentBar(label: 'Bottom Primary')]
+                              : const [],
+                          bottomSecondaryContent: showBottom
+                              ? const [_DemoContentBar(label: 'Bottom Secondary')]
+                              : const [],
+                          bottomTertiaryContent: showBottom
+                              ? const [_DemoContentBar(label: 'Bottom Tertiary')]
+                              : const [],
+                          leftContent: showLeft
+                              ? const [_DemoContentBar(label: 'Left Primary')]
+                              : const [],
+                          leftSecondaryContent: showLeft
+                              ? const [_DemoContentBar(label: 'Left Secondary')]
+                              : const [],
+                          leftTertiaryContent: showLeft
+                              ? const [_DemoContentBar(label: 'Left Tertiary')]
+                              : const [],
+                          rightContent: showRight
+                              ? const [_DemoContentBar(label: 'Right Primary')]
+                              : const [],
+                          rightSecondaryContent: showRight
+                              ? const [_DemoContentBar(label: 'Right Secondary')]
+                              : const [],
+                          rightTertiaryContent: showRight
+                              ? const [_DemoContentBar(label: 'Right Tertiary')]
+                              : const [],
                           child: const Center(
                             child: Text('Main Content Area'),
                           ),

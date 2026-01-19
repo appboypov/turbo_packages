@@ -7,6 +7,7 @@ export 'src/constants/turbo_widgets_defaults.dart';
 export 'src/constants/turbo_widgets_devices.dart';
 export 'src/enums/t_contextual_allow_filter.dart';
 export 'src/enums/t_contextual_position.dart';
+export 'src/enums/t_contextual_variation.dart';
 export 'src/enums/turbo_widgets_preview_mode.dart';
 export 'src/enums/turbo_widgets_screen_types.dart';
 export 'src/models/playground/t_playground_parameter_model.dart';
