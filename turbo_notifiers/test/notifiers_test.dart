@@ -73,7 +73,9 @@ void main() {
         expect(notified, isTrue);
       });
 
-      test('should not update or notify when value is same and forceUpdate is false', () {
+      test(
+          'should not update or notify when value is same and forceUpdate is false',
+          () {
         final notifier = TNotifier<int>(5);
         var notified = false;
         notifier.addListener(() {
@@ -85,7 +87,9 @@ void main() {
         expect(notified, isFalse);
       });
 
-      test('should update and notify when value is same but forceUpdate is true', () {
+      test(
+          'should update and notify when value is same but forceUpdate is true',
+          () {
         final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
@@ -129,7 +133,9 @@ void main() {
         expect(notified, isTrue);
       });
 
-      test('should not update or notify when function returns same value and forceUpdate is false', () {
+      test(
+          'should not update or notify when function returns same value and forceUpdate is false',
+          () {
         final notifier = TNotifier<int>(5);
         var notified = false;
         notifier.addListener(() {
@@ -141,7 +147,9 @@ void main() {
         expect(notified, isFalse);
       });
 
-      test('should update and notify when function returns same value but forceUpdate is true', () {
+      test(
+          'should update and notify when function returns same value but forceUpdate is true',
+          () {
         final notifier = TNotifier<int>(5, forceUpdate: true);
         var notified = false;
         notifier.addListener(() {
@@ -160,7 +168,8 @@ void main() {
           notified = true;
         });
 
-        notifier.updateCurrent((current) => current + 5, doNotifyListeners: false);
+        notifier.updateCurrent((current) => current + 5,
+            doNotifyListeners: false);
         expect(notifier.value, equals(15));
         expect(notified, isFalse);
       });
@@ -266,7 +275,9 @@ void main() {
         expect(callCount, equals(0));
       });
 
-      test('should notify when value changes even if same reference (with forceUpdate)', () {
+      test(
+          'should notify when value changes even if same reference (with forceUpdate)',
+          () {
         final list = [1, 2, 3];
         final notifier = TNotifier<List<int>>(list, forceUpdate: true);
         var callCount = 0;

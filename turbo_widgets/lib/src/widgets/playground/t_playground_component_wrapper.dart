@@ -10,6 +10,8 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
     required this.previewMode,
     required this.previewScale,
     required this.child,
+    required this.isDarkMode,
+    required this.isSafeAreaEnabled,
     this.selectedDevice,
     super.key,
   });
@@ -18,6 +20,8 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
   final TurboWidgetsPreviewMode previewMode;
   final double previewScale;
   final DeviceInfo? selectedDevice;
+  final bool isDarkMode;
+  final bool isSafeAreaEnabled;
   final Widget child;
 
   static const double _mobileWidth = 375;
@@ -32,7 +36,9 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
         availableWidth.isFinite ? availableWidth : _desktopFallbackWidth,
     };
     final scaledWidth = baseWidth * previewScale;
-    return availableWidth.isFinite ? scaledWidth.clamp(0, availableWidth) : scaledWidth;
+    return availableWidth.isFinite
+        ? scaledWidth.clamp(0, availableWidth)
+        : scaledWidth;
   }
 
   double _getMinHeight(double availableHeight) {
@@ -41,7 +47,9 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
     }
     const baseMinHeight = 600.0;
     final scaledHeight = baseMinHeight * previewScale;
-    return availableHeight.isFinite ? scaledHeight.clamp(0, availableHeight) : scaledHeight;
+    return availableHeight.isFinite
+        ? scaledHeight.clamp(0, availableHeight)
+        : scaledHeight;
   }
 
   @override
@@ -58,13 +66,18 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
       padding: const EdgeInsets.all(32),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          if (previewMode == TurboWidgetsPreviewMode.deviceFrame && selectedDevice != null) {
+          if (previewMode == TurboWidgetsPreviewMode.deviceFrame &&
+              selectedDevice != null) {
             return Center(
               child: Transform.scale(
                 scale: previewScale,
                 child: DeviceFrame(
                   device: selectedDevice!,
-                  screen: child,
+                  screen: _TPlaygroundPreviewContent(
+                    isDarkMode: isDarkMode,
+                    isSafeAreaEnabled: isSafeAreaEnabled,
+                    child: child,
+                  ),
                 ),
               ),
             );
@@ -72,6 +85,15 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
 
           final maxWidth = _getMaxWidth(constraints.maxWidth);
           final minHeight = _getMinHeight(constraints.maxHeight);
+          final previewThemeData = isDarkMode
+              ? ShadThemeData(
+                  brightness: Brightness.dark,
+                  colorScheme: const ShadSlateColorScheme.dark(),
+                )
+              : ShadThemeData(
+                  brightness: Brightness.light,
+                  colorScheme: const ShadSlateColorScheme.light(),
+                );
 
           return Center(
             child: AnimatedContainer(
@@ -82,15 +104,49 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
                 minHeight: minHeight,
               ),
               decoration: BoxDecoration(
-                color: theme.colorScheme.background,
-                border: Border.all(color: theme.colorScheme.border),
+                color: previewThemeData.colorScheme.background,
+                border: Border.all(color: previewThemeData.colorScheme.border),
                 boxShadow: ShadShadows.sm,
               ),
-              child: child,
+              child: _TPlaygroundPreviewContent(
+                isDarkMode: isDarkMode,
+                isSafeAreaEnabled: isSafeAreaEnabled,
+                child: child,
+              ),
             ),
           );
         },
       ),
+    );
+  }
+}
+
+class _TPlaygroundPreviewContent extends StatelessWidget {
+  const _TPlaygroundPreviewContent({
+    required this.isDarkMode,
+    required this.isSafeAreaEnabled,
+    required this.child,
+  });
+
+  final bool isDarkMode;
+  final bool isSafeAreaEnabled;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = isDarkMode
+        ? ShadThemeData(
+            brightness: Brightness.dark,
+            colorScheme: const ShadSlateColorScheme.dark(),
+          )
+        : ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+          );
+
+    return ShadTheme(
+      data: themeData,
+      child: isSafeAreaEnabled ? SafeArea(child: child) : child,
     );
   }
 }

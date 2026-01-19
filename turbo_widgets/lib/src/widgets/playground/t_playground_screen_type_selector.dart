@@ -17,6 +17,10 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
     required this.onDeviceChange,
     required this.previewScale,
     required this.onPreviewScaleChange,
+    required this.isDarkMode,
+    required this.onToggleDarkMode,
+    required this.isSafeAreaEnabled,
+    required this.onToggleSafeArea,
     super.key,
   });
 
@@ -30,12 +34,18 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
   final ValueChanged<DeviceInfo> onDeviceChange;
   final double previewScale;
   final ValueChanged<double> onPreviewScaleChange;
+  final bool isDarkMode;
+  final VoidCallback onToggleDarkMode;
+  final bool isSafeAreaEnabled;
+  final VoidCallback onToggleSafeArea;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final availableDevices = TurboWidgetsDevices.devicesForScreenType(currentType);
-    final isDeviceFrameMode = previewMode == TurboWidgetsPreviewMode.deviceFrame;
+    final availableDevices =
+        TurboWidgetsDevices.devicesForScreenType(currentType);
+    final isDeviceFrameMode =
+        previewMode == TurboWidgetsPreviewMode.deviceFrame;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -87,7 +97,9 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             ShadButton.raw(
-              variant: isDeviceFrameMode ? ShadButtonVariant.primary : ShadButtonVariant.outline,
+              variant: isDeviceFrameMode
+                  ? ShadButtonVariant.primary
+                  : ShadButtonVariant.outline,
               size: ShadButtonSize.sm,
               width: 36,
               height: 36,
@@ -98,6 +110,34 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
                     : TurboWidgetsPreviewMode.deviceFrame,
               ),
               child: const Icon(LucideIcons.frame, size: 16),
+            ),
+            const SizedBox(width: 8),
+            ShadButton.raw(
+              variant: isDarkMode
+                  ? ShadButtonVariant.primary
+                  : ShadButtonVariant.outline,
+              size: ShadButtonSize.sm,
+              width: 36,
+              height: 36,
+              padding: EdgeInsets.zero,
+              onPressed: onToggleDarkMode,
+              child: Icon(isDarkMode ? LucideIcons.moon : LucideIcons.sun,
+                  size: 16,),
+            ),
+            const SizedBox(width: 8),
+            ShadButton.raw(
+              variant: isSafeAreaEnabled
+                  ? ShadButtonVariant.primary
+                  : ShadButtonVariant.outline,
+              size: ShadButtonSize.sm,
+              width: 36,
+              height: 36,
+              padding: EdgeInsets.zero,
+              onPressed: onToggleSafeArea,
+              child: Icon(
+                isSafeAreaEnabled ? LucideIcons.shield : LucideIcons.shieldOff,
+                size: 16,
+              ),
             ),
             const SizedBox(width: 8),
             const SizedBox(
@@ -114,7 +154,9 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
               padding: EdgeInsets.zero,
               onPressed: onToggleGenerator,
               child: Icon(
-                isGeneratorOpen ? LucideIcons.chevronUp : LucideIcons.chevronDown,
+                isGeneratorOpen
+                    ? LucideIcons.chevronUp
+                    : LucideIcons.chevronDown,
                 size: 16,
               ),
             ),
@@ -132,7 +174,8 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
               child: ShadSlider(
                 min: 0.5,
                 max: isDeviceFrameMode ? 1.0 : 1.5,
-                initialValue: previewScale.clamp(0.5, isDeviceFrameMode ? 1.0 : 1.5),
+                initialValue:
+                    previewScale.clamp(0.5, isDeviceFrameMode ? 1.0 : 1.5),
                 onChanged: onPreviewScaleChange,
               ),
             ),

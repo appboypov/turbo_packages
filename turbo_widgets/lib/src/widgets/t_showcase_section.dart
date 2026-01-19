@@ -48,7 +48,8 @@ class _TShowcaseSectionState extends State<TShowcaseSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final headerColor = widget.headerColor ?? theme.colorScheme.primary;
-    final headerTextColor = widget.headerTextColor ?? theme.colorScheme.onPrimary;
+    final headerTextColor =
+        widget.headerTextColor ?? theme.colorScheme.onPrimary;
 
     return Container(
       margin: widget.margin,
@@ -73,7 +74,8 @@ class _TShowcaseSectionState extends State<TShowcaseSection> {
                   ),
                   borderRadius: BorderRadius.circular(32),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: Row(
                   children: [
                     const SizedBox(width: 32),

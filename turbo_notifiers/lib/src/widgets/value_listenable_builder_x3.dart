@@ -15,8 +15,9 @@ class ValueListenableBuilderX3<T1, T2, T3> extends StatefulWidget {
   final ValueListenable<T1> valueListenable;
   final ValueListenable<T2> valueListenable2;
   final ValueListenable<T3> valueListenable3;
-  final Widget Function(BuildContext context, T1 value, T2 value2, T3 value3, Widget? child)
-  builder;
+  final Widget Function(
+          BuildContext context, T1 value, T2 value2, T3 value3, Widget? child)
+      builder;
 
   @override
   ValueListenableBuilderX3State<T1, T2, T3> createState() =>
@@ -53,10 +54,10 @@ class ValueListenableBuilderX3State<T1, T2, T3>
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   List<Listenable> get _listenables => [
-    widget.valueListenable,
-    widget.valueListenable2,
-    widget.valueListenable3,
-  ];
+        widget.valueListenable,
+        widget.valueListenable2,
+        widget.valueListenable3,
+      ];
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
@@ -86,10 +87,10 @@ class ValueListenableBuilderX3State<T1, T2, T3>
 
   @override
   Widget build(BuildContext context) => widget.builder(
-    context,
-    widget.valueListenable.value,
-    widget.valueListenable2.value,
-    widget.valueListenable3.value,
-    widget.child,
-  );
+        context,
+        widget.valueListenable.value,
+        widget.valueListenable2.value,
+        widget.valueListenable3.value,
+        widget.child,
+      );
 }

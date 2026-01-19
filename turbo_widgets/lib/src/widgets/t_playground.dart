@@ -1,19 +1,23 @@
 import 'package:device_frame_plus/device_frame_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_widgets/src/enums/turbo_widgets_preview_mode.dart';
 import 'package:turbo_widgets/src/enums/turbo_widgets_screen_types.dart';
-import 'package:turbo_widgets/src/models/playground/t_playground_parameters.dart';
+import 'package:turbo_widgets/src/models/playground/t_playground_parameter_model.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_component_wrapper.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_parameter_panel.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_prompt_generator.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_screen_type_selector.dart';
 import 'package:turbo_widgets/src/widgets/t_shrink.dart';
 
-/// Builder function that creates a widget using the current parameter values.
+/// Builder function that creates a widget using the current parameter model.
+///
+/// The [model] contains all parameter values organized by primitive type.
+/// Components should extract their values from the model using their parameter keys.
 typedef TPlaygroundChildBuilder = Widget Function(
   BuildContext context,
-  TPlaygroundParameters parameters,
+  TPlaygroundParameterModel model,
 );
 
 class TPlayground extends StatelessWidget {
@@ -34,18 +38,25 @@ class TPlayground extends StatelessWidget {
     required this.onDeviceChanged,
     required this.previewScale,
     required this.onPreviewScaleChanged,
+    required this.isDarkMode,
+    required this.onToggleDarkMode,
+    required this.isSafeAreaEnabled,
+    required this.onToggleSafeArea,
     super.key,
     this.child,
     this.childBuilder,
-    this.parameters,
+    this.parametersListenable,
+    this.onParametersChanged,
     this.instructions,
     this.onInstructionsChanged,
+    this.solidifyInstructions,
+    this.clearCanvasInstructions,
     this.selectedDevice,
     this.isParameterPanelExpanded = true,
     this.onToggleParameterPanel,
   }) : assert(
-          childBuilder == null || parameters != null,
-          'childBuilder requires parameters to be provided',
+          childBuilder == null || parametersListenable != null,
+          'childBuilder requires parametersListenable to be provided',
         );
 
   final TurboWidgetsScreenTypes screenType;
@@ -65,11 +76,33 @@ class TPlayground extends StatelessWidget {
   final ValueChanged<DeviceInfo> onDeviceChanged;
   final double previewScale;
   final ValueChanged<double> onPreviewScaleChanged;
+  final bool isDarkMode;
+  final VoidCallback onToggleDarkMode;
+  final bool isSafeAreaEnabled;
+  final VoidCallback onToggleSafeArea;
+
+  /// Static child widget to display in the preview area.
+  /// Use this for simple cases where parameters are not needed.
   final Widget? child;
+
+  /// Builder function that receives the current parameter model.
+  /// Use this when the preview widget needs to react to parameter changes.
+  /// Requires [parametersListenable] to be provided.
   final TPlaygroundChildBuilder? childBuilder;
-  final TPlaygroundParameters? parameters;
+
+  /// The parameter model listenable that holds all component parameters.
+  /// When provided, the parameter panel is displayed and the preview
+  /// is wrapped in a ValueListenableBuilder to react to changes.
+  final ValueListenable<TPlaygroundParameterModel>? parametersListenable;
+
+  /// Callback invoked when a parameter value changes.
+  /// Use this to update the model in the view model.
+  final ValueChanged<TPlaygroundParameterModel>? onParametersChanged;
+
   final String? instructions;
   final ValueChanged<String>? onInstructionsChanged;
+  final String? solidifyInstructions;
+  final String? clearCanvasInstructions;
   final bool isParameterPanelExpanded;
   final VoidCallback? onToggleParameterPanel;
 
@@ -83,8 +116,44 @@ class TPlayground extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          TVerticalShrink(
+            show: isGeneratorOpen,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: TPlaygroundPromptGenerator(
+                userRequest: userRequest,
+                onUserRequestChanged: onUserRequestChanged,
+                variations: variations,
+                onVariationsChanged: onVariationsChanged,
+                activeTab: activeTab,
+                onActiveTabChanged: onActiveTabChanged,
+                onCopyPrompt: onCopyPrompt,
+                instructions: instructions,
+                onInstructionsChanged: onInstructionsChanged,
+                solidifyInstructions: solidifyInstructions,
+                clearCanvasInstructions: clearCanvasInstructions,
+              ),
+            ),
+          ),
+          if (parametersListenable != null)
+            ValueListenableBuilder<TPlaygroundParameterModel>(
+              valueListenable: parametersListenable!,
+              builder: (context, model, _) {
+                if (model.isEmpty) return const SizedBox.shrink();
+                return TVerticalShrink(
+                  show: isParameterPanelExpanded,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: TPlaygroundParameterPanel(
+                      model: model,
+                      onModelChanged: onParametersChanged,
+                    ),
+                  ),
+                );
+              },
+            ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: TPlaygroundScreenTypeSelector(
               currentType: screenType,
               onTypeChange: onScreenTypeChanged,
@@ -96,50 +165,42 @@ class TPlayground extends StatelessWidget {
               onDeviceChange: onDeviceChanged,
               previewScale: previewScale,
               onPreviewScaleChange: onPreviewScaleChanged,
+              isDarkMode: isDarkMode,
+              onToggleDarkMode: onToggleDarkMode,
+              isSafeAreaEnabled: isSafeAreaEnabled,
+              onToggleSafeArea: onToggleSafeArea,
             ),
           ),
-          TVerticalShrink(
-            show: isGeneratorOpen,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: TPlaygroundPromptGenerator(
-                userRequest: userRequest,
-                onUserRequestChanged: onUserRequestChanged,
-                variations: variations,
-                onVariationsChanged: onVariationsChanged,
-                activeTab: activeTab,
-                onActiveTabChanged: onActiveTabChanged,
-                onCopyPrompt: onCopyPrompt,
-                instructions: instructions,
-                onInstructionsChanged: onInstructionsChanged,
-              ),
-            ),
-          ),
-          if (parameters != null && parameters!.isNotEmpty)
-            TVerticalShrink(
-              show: isParameterPanelExpanded,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: TPlaygroundParameterPanel(parameters: parameters!),
-              ),
-            ),
-          TPlaygroundComponentWrapper(
-            screenType: screenType,
-            previewMode: previewMode,
-            previewScale: previewScale,
-            selectedDevice: selectedDevice,
-            child: _buildPreviewContent(context, theme),
-          ),
+          _buildPreviewArea(context, theme),
         ],
       ),
     );
   }
 
-  Widget _buildPreviewContent(BuildContext context, ShadThemeData theme) {
-    if (childBuilder != null && parameters != null) {
-      return childBuilder!(context, parameters!);
+  Widget _buildPreviewArea(BuildContext context, ShadThemeData theme) {
+    final Widget previewChild;
+
+    if (parametersListenable != null && childBuilder != null) {
+      previewChild = ValueListenableBuilder<TPlaygroundParameterModel>(
+        valueListenable: parametersListenable!,
+        builder: (context, model, _) => childBuilder!(context, model),
+      );
+    } else {
+      previewChild = _buildStaticContent(context, theme);
     }
 
+    return TPlaygroundComponentWrapper(
+      screenType: screenType,
+      previewMode: previewMode,
+      previewScale: previewScale,
+      selectedDevice: selectedDevice,
+      isDarkMode: isDarkMode,
+      isSafeAreaEnabled: isSafeAreaEnabled,
+      child: previewChild,
+    );
+  }
+
+  Widget _buildStaticContent(BuildContext context, ShadThemeData theme) {
     if (child != null) {
       return child!;
     }

@@ -30,8 +30,7 @@ class ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> extends StatefulWidget {
     T5 value5,
     T6 value6,
     Widget? child,
-  )
-  builder;
+  ) builder;
 
   @override
   ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6> createState() =>
@@ -68,13 +67,13 @@ class ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6>
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   List<Listenable> get _listenables => [
-    widget.valueListenable,
-    widget.valueListenable2,
-    widget.valueListenable3,
-    widget.valueListenable4,
-    widget.valueListenable5,
-    widget.valueListenable6,
-  ];
+        widget.valueListenable,
+        widget.valueListenable2,
+        widget.valueListenable3,
+        widget.valueListenable4,
+        widget.valueListenable5,
+        widget.valueListenable6,
+      ];
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
@@ -83,7 +82,8 @@ class ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6>
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   @override
-  void didUpdateWidget(ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget) {
+  void didUpdateWidget(
+      ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.valueListenable != widget.valueListenable) {
@@ -119,13 +119,13 @@ class ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6>
 
   @override
   Widget build(BuildContext context) => widget.builder(
-    context,
-    widget.valueListenable.value,
-    widget.valueListenable2.value,
-    widget.valueListenable3.value,
-    widget.valueListenable4.value,
-    widget.valueListenable5.value,
-    widget.valueListenable6.value,
-    widget.child,
-  );
+        context,
+        widget.valueListenable.value,
+        widget.valueListenable2.value,
+        widget.valueListenable3.value,
+        widget.valueListenable4.value,
+        widget.valueListenable5.value,
+        widget.valueListenable6.value,
+        widget.child,
+      );
 }

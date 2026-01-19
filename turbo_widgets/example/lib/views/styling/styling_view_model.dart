@@ -15,6 +15,44 @@ class StylingViewModel extends TViewModel<Object?> {
   final TNotifier<TurboWidgetsPreviewMode> _previewMode = TNotifier(TurboWidgetsPreviewMode.none);
   final TNotifier<DeviceInfo?> _selectedDevice = TNotifier(null);
   final TNotifier<double> _previewScale = TNotifier(1.0);
+  final TNotifier<bool> _isDarkMode = TNotifier(false);
+  final TNotifier<bool> _isSafeAreaEnabled = TNotifier(false);
+
+  /// The component parameters model.
+  /// Agents update this with default values when creating components.
+  /// Form fields are auto-generated from this model's type-specific maps.
+  final TNotifier<TPlaygroundParameterModel> _componentParameters = TNotifier(
+    const TPlaygroundParameterModel(
+      strings: {
+        'fileName': 'example.md',
+      },
+      textAreas: {
+        'content': '''# Example Markdown File
+
+This is a sample markdown file that demonstrates the preview widget.
+
+## Features
+
+- **Bold text** support
+- Code blocks
+- Headers of different sizes
+- Regular paragraphs
+
+### Code Example
+
+```dart
+void main() {
+  print('Hello, World!');
+}
+```
+
+This widget provides a clean way to preview markdown files before opening them in an external application.''',
+      },
+      ints: {
+        'maxPreviewLines': 5,
+      },
+    ),
+  );
 
   TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
@@ -26,6 +64,9 @@ class StylingViewModel extends TViewModel<Object?> {
   TNotifier<TurboWidgetsPreviewMode> get previewMode => _previewMode;
   TNotifier<DeviceInfo?> get selectedDevice => _selectedDevice;
   TNotifier<double> get previewScale => _previewScale;
+  TNotifier<bool> get isDarkMode => _isDarkMode;
+  TNotifier<bool> get isSafeAreaEnabled => _isSafeAreaEnabled;
+  TNotifier<TPlaygroundParameterModel> get componentParameters => _componentParameters;
 
   @override
   void dispose() {
@@ -39,6 +80,9 @@ class StylingViewModel extends TViewModel<Object?> {
     _previewMode.dispose();
     _selectedDevice.dispose();
     _previewScale.dispose();
+    _isDarkMode.dispose();
+    _isSafeAreaEnabled.dispose();
+    _componentParameters.dispose();
     super.dispose();
   }
 
@@ -89,6 +133,20 @@ class StylingViewModel extends TViewModel<Object?> {
 
   void setPreviewScale(double value) {
     _previewScale.update(value);
+  }
+
+  void toggleDarkMode() {
+    _isDarkMode.updateCurrent((current) => !current);
+  }
+
+  void toggleSafeArea() {
+    _isSafeAreaEnabled.updateCurrent((current) => !current);
+  }
+
+  /// Updates the component parameters model.
+  /// Use this when form fields change or when setting initial component defaults.
+  void setComponentParameters(TPlaygroundParameterModel value) {
+    _componentParameters.update(value);
   }
 
   static StylingViewModel get locate => StylingViewModel();

@@ -23,56 +23,72 @@ class StylingView extends StatelessWidget {
                   subtitle: 'Create and test widgets with responsive preview',
                   isExpanded: isPlaygroundExpanded,
                   onToggle: model.togglePlayground,
-                  child: ValueListenableBuilderX6<TurboWidgetsScreenTypes, bool, String, String,
-                      String, String>(
-                    valueListenable: model.screenType,
-                    valueListenable2: model.isGeneratorOpen,
-                    valueListenable3: model.userRequest,
-                    valueListenable4: model.variations,
-                    valueListenable5: model.activeTab,
-                    valueListenable6: model.instructions,
-                    builder: (
-                      context,
-                      screenType,
-                      isGeneratorOpen,
-                      userRequest,
-                      variations,
-                      activeTab,
-                      instructions,
-                      _,
-                    ) =>
-                        ValueListenableBuilderX3<TurboWidgetsPreviewMode, DeviceInfo?, double>(
-                      valueListenable: model.previewMode,
-                      valueListenable2: model.selectedDevice,
-                      valueListenable3: model.previewScale,
-                      builder: (context, previewMode, selectedDevice, previewScale, _) =>
-                          TPlayground(
-                        screenType: screenType,
-                        onScreenTypeChanged: model.setScreenType,
-                        isGeneratorOpen: isGeneratorOpen,
-                        onToggleGenerator: model.toggleGenerator,
-                        userRequest: userRequest,
-                        onUserRequestChanged: model.setUserRequest,
-                        variations: variations,
-                        onVariationsChanged: model.setVariations,
-                        activeTab: activeTab,
-                        onActiveTabChanged: model.setActiveTab,
-                        onCopyPrompt: () {
-                          ShadToaster.of(context).show(
-                            const ShadToast(
-                              title: Text('Copied!'),
-                              description: Text('Prompt copied to clipboard.'),
-                            ),
-                          );
-                        },
-                        instructions: instructions.isEmpty ? null : instructions,
-                        onInstructionsChanged: model.setInstructions,
-                        previewMode: previewMode,
-                        onPreviewModeChanged: model.setPreviewMode,
-                        selectedDevice: selectedDevice,
-                        onDeviceChanged: model.setSelectedDevice,
-                        previewScale: previewScale,
-                        onPreviewScaleChanged: model.setPreviewScale,
+                  child: MultiListenableBuilder(
+                    listenables: [
+                      model.screenType,
+                      model.isGeneratorOpen,
+                      model.userRequest,
+                      model.variations,
+                      model.activeTab,
+                      model.instructions,
+                      model.previewMode,
+                      model.selectedDevice,
+                      model.previewScale,
+                      model.isDarkMode,
+                      model.isSafeAreaEnabled,
+                    ],
+                    builder: (context, _, __) => TPlayground(
+                      screenType: model.screenType.value,
+                      onScreenTypeChanged: model.setScreenType,
+                      isGeneratorOpen: model.isGeneratorOpen.value,
+                      onToggleGenerator: model.toggleGenerator,
+                      userRequest: model.userRequest.value,
+                      onUserRequestChanged: model.setUserRequest,
+                      variations: model.variations.value,
+                      onVariationsChanged: model.setVariations,
+                      activeTab: model.activeTab.value,
+                      onActiveTabChanged: model.setActiveTab,
+                      onCopyPrompt: () {
+                        ShadToaster.of(context).show(
+                          const ShadToast(
+                            title: Text('Copied!'),
+                            description: Text('Prompt copied to clipboard.'),
+                          ),
+                        );
+                      },
+                      instructions: model.instructions.value.isEmpty
+                          ? null
+                          : model.instructions.value,
+                      onInstructionsChanged: model.setInstructions,
+                      previewMode: model.previewMode.value,
+                      onPreviewModeChanged: model.setPreviewMode,
+                      selectedDevice: model.selectedDevice.value,
+                      onDeviceChanged: model.setSelectedDevice,
+                      previewScale: model.previewScale.value,
+                      onPreviewScaleChanged: model.setPreviewScale,
+                      isDarkMode: model.isDarkMode.value,
+                      onToggleDarkMode: model.toggleDarkMode,
+                      isSafeAreaEnabled: model.isSafeAreaEnabled.value,
+                      onToggleSafeArea: model.toggleSafeArea,
+                      parametersListenable: model.componentParameters,
+                      onParametersChanged: model.setComponentParameters,
+                      childBuilder: (context, params) => Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: TMarkdownFileItem(
+                          fileName: params.strings['fileName'] ?? 'untitled.md',
+                          content: params.textAreas['content'] ?? '',
+                          maxPreviewLines: params.ints['maxPreviewLines'] ?? 5,
+                          onOpen: () {
+                            ShadToaster.of(context).show(
+                              const ShadToast(
+                                title: Text('Opening File'),
+                                description: Text(
+                                  'Opening example.md in external app...',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

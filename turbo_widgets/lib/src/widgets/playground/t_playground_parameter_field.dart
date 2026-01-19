@@ -1,114 +1,314 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_widgets/src/models/playground/t_playground_parameter.dart';
+import 'package:turbo_widgets/src/models/playground/t_select_option.dart';
 
-/// Renders a single parameter as a labeled form control.
-///
-/// Automatically selects the appropriate control based on the parameter type:
-/// - If [TPlaygroundParameter.options] is non-null → [ShadSelect]
-/// - If value is [bool] → [ShadSwitch]
-/// - Otherwise → [ShadInput] (text field)
-class TPlaygroundParameterField extends StatelessWidget {
-  const TPlaygroundParameterField({
-    required this.parameter,
-    super.key,
+/// Base wrapper for playground parameter fields with consistent styling.
+class _TPlaygroundFieldWrapper extends StatelessWidget {
+  const _TPlaygroundFieldWrapper({
+    required this.label,
+    required this.child,
   });
 
-  final TPlaygroundParameter<dynamic> parameter;
-
-  String _getOptionLabel(dynamic value) {
-    if (parameter.optionLabel != null) {
-      return parameter.optionLabel!(value);
-    }
-    if (value is Enum) {
-      return value.name;
-    }
-    return value.toString();
-  }
+  final String label;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return ValueListenableBuilder<dynamic>(
-      valueListenable: parameter.valueListenable,
-      builder: (context, value, _) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              parameter.label,
-              style: theme.textTheme.small.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _buildControl(context, value),
-            if (parameter.description != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                parameter.description!,
-                style: theme.textTheme.muted,
-              ),
-            ],
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.small.copyWith(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        child,
+      ],
     );
   }
+}
 
-  Widget _buildControl(BuildContext context, dynamic value) {
-    if (parameter.options != null) {
-      return _buildSelectControl(value);
-    }
-    if (value is bool) {
-      return _buildSwitchControl(value);
-    }
-    return _buildInputControl(value);
-  }
+/// Single-line text input field.
+class TPlaygroundStringField extends StatelessWidget {
+  const TPlaygroundStringField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
 
-  Widget _buildSelectControl(dynamic value) {
-    final options = parameter.options!;
-    return ShadSelect<dynamic>(
-      initialValue: value,
-      enabled: parameter.enabled,
-      options: options
-          .map(
-            (option) => ShadOption(
-              value: option,
-              child: Text(_getOptionLabel(option)),
-            ),
-          )
-          .toList(),
-      selectedOptionBuilder: (context, selectedValue) {
-        return Text(_getOptionLabel(selectedValue));
-      },
-      onChanged: parameter.enabled ? parameter.onChanged : null,
-    );
-  }
+  final String label;
+  final String value;
+  final ValueChanged<String> onChanged;
 
-  Widget _buildSwitchControl(bool value) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: ShadSwitch(
-        value: value,
-        enabled: parameter.enabled,
-        onChanged: parameter.enabled
-            ? (newValue) => parameter.onChanged(newValue)
-            : null,
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadInput(
+        initialValue: value,
+        onChanged: onChanged,
       ),
     );
   }
+}
 
-  Widget _buildInputControl(dynamic value) {
-    return ShadInput(
-      key: ValueKey('${parameter.id}_input'),
-      initialValue: value?.toString() ?? '',
-      enabled: parameter.enabled,
-      onChanged: parameter.enabled
-          ? (newValue) => parameter.onChanged(newValue)
-          : null,
+/// Multi-line text area field.
+class TPlaygroundTextAreaField extends StatelessWidget {
+  const TPlaygroundTextAreaField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final String value;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadTextarea(
+        initialValue: value,
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+/// Integer input field.
+class TPlaygroundIntField extends StatelessWidget {
+  const TPlaygroundIntField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadInput(
+        initialValue: value.toString(),
+        keyboardType: TextInputType.number,
+        onChanged: (text) {
+          final parsed = int.tryParse(text);
+          if (parsed != null) {
+            onChanged(parsed);
+          }
+        },
+      ),
+    );
+  }
+}
+
+/// Double/slider field.
+class TPlaygroundDoubleField extends StatelessWidget {
+  const TPlaygroundDoubleField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    this.min = 0.0,
+    this.max = 100.0,
+    super.key,
+  });
+
+  final String label;
+  final double value;
+  final ValueChanged<double> onChanged;
+  final double min;
+  final double max;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: Row(
+        children: [
+          Expanded(
+            child: ShadSlider(
+              initialValue: value.clamp(min, max),
+              min: min,
+              max: max,
+              onChanged: onChanged,
+            ),
+          ),
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 48,
+            child: Text(
+              value.toStringAsFixed(1),
+              style: theme.textTheme.muted,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Boolean switch field.
+class TPlaygroundBoolField extends StatelessWidget {
+  const TPlaygroundBoolField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: ShadSwitch(
+          value: value,
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+}
+
+/// DateTime picker field.
+class TPlaygroundDateTimeField extends StatelessWidget {
+  const TPlaygroundDateTimeField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final DateTime value;
+  final ValueChanged<DateTime> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadDatePicker(
+        selected: value,
+        onChanged: (date) {
+          if (date != null) {
+            onChanged(date);
+          }
+        },
+      ),
+    );
+  }
+}
+
+/// Date range picker field.
+class TPlaygroundDateRangeField extends StatelessWidget {
+  const TPlaygroundDateRangeField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final ShadDateTimeRange value;
+  final ValueChanged<ShadDateTimeRange> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadDatePicker.range(
+        selected: value,
+        onRangeChanged: (range) {
+          if (range != null) {
+            onChanged(range);
+          }
+        },
+      ),
+    );
+  }
+}
+
+/// Time picker field.
+class TPlaygroundTimeField extends StatelessWidget {
+  const TPlaygroundTimeField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final ShadTimeOfDay value;
+  final ValueChanged<ShadTimeOfDay> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadTimePicker(
+        initialValue: value,
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+/// Select/dropdown field for enums and other options.
+class TPlaygroundSelectField<T> extends StatelessWidget {
+  const TPlaygroundSelectField({
+    required this.label,
+    required this.selectOption,
+    required this.onChanged,
+    super.key,
+  });
+
+  final String label;
+  final TSelectOption<T> selectOption;
+  final ValueChanged<T> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TPlaygroundFieldWrapper(
+      label: label,
+      child: ShadSelect<T>(
+        initialValue: selectOption.value,
+        options: selectOption.options
+            .map(
+              (option) => ShadOption(
+                value: option,
+                child: Text(selectOption.getLabel(option)),
+              ),
+            )
+            .toList(),
+        selectedOptionBuilder: (context, value) => Text(
+          selectOption.getLabel(value),
+        ),
+        onChanged: (value) {
+          if (value != null) {
+            onChanged(value);
+          }
+        },
+      ),
     );
   }
 }

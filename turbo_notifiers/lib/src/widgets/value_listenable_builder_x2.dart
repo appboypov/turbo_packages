@@ -13,13 +13,16 @@ class ValueListenableBuilderX2<T1, T2> extends StatefulWidget {
   final Widget? child;
   final ValueListenable<T1> valueListenable;
   final ValueListenable<T2> valueListenable2;
-  final Widget Function(BuildContext context, T1 value, T2 value2, Widget? child) builder;
+  final Widget Function(
+      BuildContext context, T1 value, T2 value2, Widget? child) builder;
 
   @override
-  ValueListenableBuilderX2State<T1, T2> createState() => ValueListenableBuilderX2State<T1, T2>();
+  ValueListenableBuilderX2State<T1, T2> createState() =>
+      ValueListenableBuilderX2State<T1, T2>();
 }
 
-class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilderX2<T1, T2>> {
+class ValueListenableBuilderX2State<T1, T2>
+    extends State<ValueListenableBuilderX2<T1, T2>> {
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -47,7 +50,8 @@ class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilder
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  List<Listenable> get _listenables => [widget.valueListenable, widget.valueListenable2];
+  List<Listenable> get _listenables =>
+      [widget.valueListenable, widget.valueListenable2];
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
@@ -72,9 +76,9 @@ class ValueListenableBuilderX2State<T1, T2> extends State<ValueListenableBuilder
 
   @override
   Widget build(BuildContext context) => widget.builder(
-    context,
-    widget.valueListenable.value,
-    widget.valueListenable2.value,
-    widget.child,
-  );
+        context,
+        widget.valueListenable.value,
+        widget.valueListenable2.value,
+        widget.child,
+      );
 }

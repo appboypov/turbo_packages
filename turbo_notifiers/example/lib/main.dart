@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
