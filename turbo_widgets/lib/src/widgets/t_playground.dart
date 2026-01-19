@@ -10,6 +10,7 @@ import 'package:turbo_widgets/src/widgets/playground/t_playground_parameter_pane
 import 'package:turbo_widgets/src/widgets/playground/t_playground_prompt_generator.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_screen_type_selector.dart';
 import 'package:turbo_widgets/src/widgets/t_shrink.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 /// Builder function that creates a widget using the current parameter model.
 ///
@@ -22,63 +23,63 @@ typedef TPlaygroundChildBuilder = Widget Function(
 
 class TPlayground extends StatelessWidget {
   const TPlayground({
-    required this.screenType,
-    required this.onScreenTypeChanged,
-    required this.isGeneratorOpen,
-    required this.onToggleGenerator,
-    required this.userRequest,
-    required this.onUserRequestChanged,
-    required this.variations,
-    required this.onVariationsChanged,
     required this.activeTab,
+    required this.isDarkMode,
+    required this.isGeneratorOpen,
+    required this.isSafeAreaEnabled,
     required this.onActiveTabChanged,
     required this.onCopyPrompt,
-    required this.previewMode,
-    required this.onPreviewModeChanged,
     required this.onDeviceChanged,
-    required this.previewScale,
+    required this.onPreviewModeChanged,
     required this.onPreviewScaleChanged,
-    required this.isDarkMode,
+    required this.onScreenTypeChanged,
     required this.onToggleDarkMode,
-    required this.isSafeAreaEnabled,
+    required this.onToggleGenerator,
     required this.onToggleSafeArea,
+    required this.onUserRequestChanged,
+    required this.onVariationsChanged,
+    required this.previewMode,
+    required this.previewScale,
+    required this.screenType,
+    required this.userRequest,
+    required this.variations,
     super.key,
     this.child,
     this.childBuilder,
-    this.parametersListenable,
-    this.onParametersChanged,
-    this.instructions,
-    this.onInstructionsChanged,
-    this.solidifyInstructions,
-    this.clearCanvasInstructions,
-    this.selectedDevice,
+    this.clearCanvasInstructions = TurboWidgetsDefaults.clearCanvasInstructions,
+    this.instructions = TurboWidgetsDefaults.instructions,
     this.isParameterPanelExpanded = true,
+    this.onInstructionsChanged,
+    this.onParametersChanged,
     this.onToggleParameterPanel,
+    this.parametersListenable,
+    this.selectedDevice,
+    this.solidifyInstructions = TurboWidgetsDefaults.solidifyInstructions,
   }) : assert(
           childBuilder == null || parametersListenable != null,
           'childBuilder requires parametersListenable to be provided',
         );
 
-  final TurboWidgetsScreenTypes screenType;
-  final ValueChanged<TurboWidgetsScreenTypes> onScreenTypeChanged;
-  final bool isGeneratorOpen;
-  final VoidCallback onToggleGenerator;
-  final String userRequest;
-  final ValueChanged<String> onUserRequestChanged;
-  final String variations;
-  final ValueChanged<String> onVariationsChanged;
-  final String activeTab;
-  final ValueChanged<String> onActiveTabChanged;
-  final VoidCallback onCopyPrompt;
-  final TurboWidgetsPreviewMode previewMode;
-  final ValueChanged<TurboWidgetsPreviewMode> onPreviewModeChanged;
-  final DeviceInfo? selectedDevice;
-  final ValueChanged<DeviceInfo> onDeviceChanged;
-  final double previewScale;
-  final ValueChanged<double> onPreviewScaleChanged;
   final bool isDarkMode;
-  final VoidCallback onToggleDarkMode;
+  final bool isGeneratorOpen;
   final bool isSafeAreaEnabled;
+  final DeviceInfo? selectedDevice;
+  final double previewScale;
+  final String activeTab;
+  final String userRequest;
+  final String variations;
+  final TurboWidgetsPreviewMode previewMode;
+  final TurboWidgetsScreenTypes screenType;
+  final ValueChanged<DeviceInfo> onDeviceChanged;
+  final ValueChanged<double> onPreviewScaleChanged;
+  final ValueChanged<String> onActiveTabChanged;
+  final ValueChanged<String> onUserRequestChanged;
+  final ValueChanged<String> onVariationsChanged;
+  final ValueChanged<TurboWidgetsPreviewMode> onPreviewModeChanged;
+  final ValueChanged<TurboWidgetsScreenTypes> onScreenTypeChanged;
+  final VoidCallback onCopyPrompt;
+  final VoidCallback onToggleDarkMode;
+  final VoidCallback onToggleGenerator;
   final VoidCallback onToggleSafeArea;
 
   /// Static child widget to display in the preview area.
@@ -99,11 +100,11 @@ class TPlayground extends StatelessWidget {
   /// Use this to update the model in the view model.
   final ValueChanged<TPlaygroundParameterModel>? onParametersChanged;
 
-  final String? instructions;
-  final ValueChanged<String>? onInstructionsChanged;
-  final String? solidifyInstructions;
-  final String? clearCanvasInstructions;
   final bool isParameterPanelExpanded;
+  final String clearCanvasInstructions;
+  final String instructions;
+  final String solidifyInstructions;
+  final ValueChanged<String>? onInstructionsChanged;
   final VoidCallback? onToggleParameterPanel;
 
   @override

@@ -56,9 +56,7 @@ class StylingView extends StatelessWidget {
                           ),
                         );
                       },
-                      instructions: model.instructions.value.isEmpty
-                          ? null
-                          : model.instructions.value,
+                      instructions: model.instructions.value,
                       onInstructionsChanged: model.setInstructions,
                       previewMode: model.previewMode.value,
                       onPreviewModeChanged: model.setPreviewMode,

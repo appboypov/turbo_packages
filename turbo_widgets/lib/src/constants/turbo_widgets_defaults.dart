@@ -14,7 +14,7 @@ abstract final class TurboWidgetsDefaults {
   static const Duration throttle = Duration(milliseconds: 100);
   static const Duration debounce = Duration(milliseconds: 300);
 
-  static const String defaultInstructions = '''## Role
+  static const String instructions = '''## Role
 Flutter Widget Developer
 
 ## Expertise

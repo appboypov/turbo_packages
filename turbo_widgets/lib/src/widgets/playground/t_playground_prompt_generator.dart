@@ -13,26 +13,25 @@ class TPlaygroundPromptGenerator extends StatelessWidget {
     required this.onActiveTabChanged,
     required this.onCopyPrompt,
     super.key,
-    this.instructions,
+    this.instructions = TurboWidgetsDefaults.instructions,
     this.onInstructionsChanged,
-    this.solidifyInstructions,
-    this.clearCanvasInstructions,
+    this.solidifyInstructions = TurboWidgetsDefaults.solidifyInstructions,
+    this.clearCanvasInstructions = TurboWidgetsDefaults.clearCanvasInstructions,
   });
 
-  final String userRequest;
-  final ValueChanged<String> onUserRequestChanged;
-  final String variations;
-  final ValueChanged<String> onVariationsChanged;
   final String activeTab;
+  final String clearCanvasInstructions;
+  final String instructions;
+  final String solidifyInstructions;
+  final String userRequest;
+  final String variations;
   final ValueChanged<String> onActiveTabChanged;
-  final VoidCallback onCopyPrompt;
-  final String? instructions;
+  final ValueChanged<String> onUserRequestChanged;
+  final ValueChanged<String> onVariationsChanged;
   final ValueChanged<String>? onInstructionsChanged;
-  final String? solidifyInstructions;
-  final String? clearCanvasInstructions;
+  final VoidCallback onCopyPrompt;
 
-  String get _effectiveInstructions =>
-      instructions ?? TurboWidgetsDefaults.defaultInstructions;
+  String get _effectiveInstructions => instructions ?? TurboWidgetsDefaults.instructions;
 
   String get _effectiveSolidifyInstructions =>
       solidifyInstructions ?? TurboWidgetsDefaults.solidifyInstructions;
