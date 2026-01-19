@@ -1,13 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/enums/character_activity.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/seals/t_image_seal.dart';
-import 'package:roomy_mobile/ui/widgets/t_card.dart';
-import 'package:roomy_mobile/ui/widgets/t_image.dart';
-import 'package:roomy_mobile/ui/widgets/t_margin.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/seals/t_image_seal.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_card.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_image.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+
+import '../extensions/color_extension.dart' show ColorExtension;
 
 /// A reusable widget for displaying an empty or "no data" state.
 class TWelcomeMessage extends StatelessWidget {
@@ -51,11 +51,11 @@ class TWelcomeMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TCard(
-          icon: CharacterActivity.generalWelcoming1,
+          icon: Icons.diamond_rounded,
           description: title,
           color: context.colors.card.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: context.colors.border.asSoftText, width: 2),
+          border: ShadBorder.all(color: context.colors.border.asSoftText, width: 2),
           shadows: [
             BoxShadow(
               color: context.colors.border.asSoftText.withValues(alpha: 0.25),
