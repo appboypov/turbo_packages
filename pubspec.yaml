@@ -84,3 +84,5 @@ melos:
         ignore:
           - turbo_flutter_template
       description: Validate packages for publishing without actually publishing (dry-run)
+dependencies:
+  flutter_hooks: ^0.21.3+1

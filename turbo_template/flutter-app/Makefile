@@ -149,12 +149,18 @@ flutter-emulators: ## Run Flutter connected to emulators
 	./scripts/run_flutter.sh
 
 staging: ## Run Flutter with staging environment
+	cp ios/flavors/staging/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+	cp macos/flavors/staging/GoogleService-Info.plist macos/Runner/GoogleService-Info.plist
 	flutter run --dart-define=env=staging
 
 prod: ## Run Flutter with production environment
+	cp ios/flavors/prod/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+	cp macos/flavors/prod/GoogleService-Info.plist macos/Runner/GoogleService-Info.plist
 	flutter run --dart-define=env=prod
 
 demo: ## Run Flutter in demo mode
+	cp ios/flavors/staging/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
+	cp macos/flavors/staging/GoogleService-Info.plist macos/Runner/GoogleService-Info.plist
 	flutter run --dart-define=env=demo
 
 # Code Generation

@@ -19,17 +19,10 @@ class EmulatorConfig {
   static const _localhost = 'localhost';
   static const _defaultHost = '127.0.0.1';
 
-  /// Port configuration keys (lowercase to match shell scripts)
-  static const _authPortKey = 'authPort';
-  static const _firestorePortKey = 'firestorePort';
-  static const _functionsPortKey = 'functionsPort';
-  static const _storagePortKey = 'storagePort';
-
-  /// Default ports matching firebase/firebase.json
-  static const _defaultAuthPort = 9199;
-  static const _defaultFirestorePort = 9180;
-  static const _defaultFunctionsPort = 5001;
-  static const _defaultStoragePort = 9199;
+  static const _kAuthPort = 'AUTH_PORT';
+  static const _kFirestorePort = 'FIRESTORE_PORT';
+  static const _kFunctionsPort = 'FUNCTIONS_PORT';
+  static const _kStoragePort = 'STORAGE_PORT';
 
   static int _readPort(String key, int defaultValue) {
     final value = String.fromEnvironment(key, defaultValue: '$defaultValue');
@@ -72,10 +65,10 @@ class EmulatorConfig {
       }
 
       try {
-        final authPort = _readPort(_authPortKey, _defaultAuthPort);
-        final firestorePort = _readPort(_firestorePortKey, _defaultFirestorePort);
-        final functionsPort = _readPort(_functionsPortKey, _defaultFunctionsPort);
-        final storagePort = _readPort(_storagePortKey, _defaultStoragePort);
+        final authPort = _readPort(_kAuthPort, 9200);
+        final firestorePort = _readPort(_kFirestorePort, 9201);
+        final functionsPort = _readPort(_kFunctionsPort, 9202);
+        final storagePort = _readPort(_kStoragePort, 9203);
 
         log.info(
           'Using emulator ports -> auth:$authPort firestore:$firestorePort functions:$functionsPort storage:$storagePort',

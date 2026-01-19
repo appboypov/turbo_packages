@@ -55,7 +55,7 @@ class BlockDebouncer with Turbolytics {
   /// Takes an optional [future] parameter that will be added to a queue of futures
   /// to be executed. Sets [canContinue] to false while processing and true when complete.
   /// Uses mutex locking to safely manage concurrent access to the futures list.
-  /// All futures are executed with a timeout specified by [kDurationsTimeout].
+  /// All futures are executed with a timeout specified by [TDurations.timeOut].
   void onChanged([Future? future]) {
     log.debug('BlockDebouncer.onChanged called with future: ${future != null}');
     _canContinue = false;

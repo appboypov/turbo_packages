@@ -22,6 +22,7 @@ import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher
 import 'package:turbo_flutter_template/core/ux/manage-input/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
+import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/environment/globals/g_env.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
@@ -58,6 +59,10 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
     _showAgreeToPrivacyCheckBox.addListener(_onShowAgreePrivacyCheckbox);
     _onAuthViewModeChanged();
     _onShowAgreePrivacyCheckbox();
+    if (Environment.isEmulators) {
+      _loginForm.email.updateValue('appboy@apewpew.app');
+      _loginForm.password.updateValue('123123123');
+    }
     super.initialise();
   }
 

@@ -255,10 +255,10 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
       _boxInsert(userId: _userId, id: null, boxKey: BoxKey.skippedVerifyEmailDate, value: gNow);
 
   void updateBottomNavigationIndex({required NavigationTab navigationTab}) => _boxInsert(
-    userId: null,
+    userId: _userId,
     boxKey: BoxKey.bottomNavigationIndex,
     value: navigationTab.index,
-    id: _userId,
+    id: null,
   );
 
   Future<void> updateLastChangelogVersionRead({required String? version}) async {
