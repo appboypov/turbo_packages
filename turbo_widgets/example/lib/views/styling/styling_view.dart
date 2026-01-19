@@ -41,27 +41,39 @@ class StylingView extends StatelessWidget {
                       instructions,
                       _,
                     ) =>
-                        TPlayground(
-                      screenType: screenType,
-                      onScreenTypeChanged: model.setScreenType,
-                      isGeneratorOpen: isGeneratorOpen,
-                      onToggleGenerator: model.toggleGenerator,
-                      userRequest: userRequest,
-                      onUserRequestChanged: model.setUserRequest,
-                      variations: variations,
-                      onVariationsChanged: model.setVariations,
-                      activeTab: activeTab,
-                      onActiveTabChanged: model.setActiveTab,
-                      onCopyPrompt: () {
-                        ShadToaster.of(context).show(
-                          const ShadToast(
-                            title: Text('Copied!'),
-                            description: Text('Prompt copied to clipboard.'),
-                          ),
-                        );
-                      },
-                      instructions: instructions.isEmpty ? null : instructions,
-                      onInstructionsChanged: model.setInstructions,
+                        ValueListenableBuilderX3<TurboWidgetsPreviewMode, DeviceInfo?, double>(
+                      valueListenable: model.previewMode,
+                      valueListenable2: model.selectedDevice,
+                      valueListenable3: model.previewScale,
+                      builder: (context, previewMode, selectedDevice, previewScale, _) =>
+                          TPlayground(
+                        screenType: screenType,
+                        onScreenTypeChanged: model.setScreenType,
+                        isGeneratorOpen: isGeneratorOpen,
+                        onToggleGenerator: model.toggleGenerator,
+                        userRequest: userRequest,
+                        onUserRequestChanged: model.setUserRequest,
+                        variations: variations,
+                        onVariationsChanged: model.setVariations,
+                        activeTab: activeTab,
+                        onActiveTabChanged: model.setActiveTab,
+                        onCopyPrompt: () {
+                          ShadToaster.of(context).show(
+                            const ShadToast(
+                              title: Text('Copied!'),
+                              description: Text('Prompt copied to clipboard.'),
+                            ),
+                          );
+                        },
+                        instructions: instructions.isEmpty ? null : instructions,
+                        onInstructionsChanged: model.setInstructions,
+                        previewMode: previewMode,
+                        onPreviewModeChanged: model.setPreviewMode,
+                        selectedDevice: selectedDevice,
+                        onDeviceChanged: model.setSelectedDevice,
+                        previewScale: previewScale,
+                        onPreviewScaleChanged: model.setPreviewScale,
+                      ),
                     ),
                   ),
                 );

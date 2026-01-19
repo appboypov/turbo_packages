@@ -6,12 +6,15 @@ class StylingViewModel extends TViewModel<Object?> {
   StylingViewModel();
 
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(false);
-  final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.desktop);
+  final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.mobile);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');
   final TNotifier<String> _variations = TNotifier('1');
   final TNotifier<String> _activeTab = TNotifier('request');
   final TNotifier<String> _instructions = TNotifier('');
+  final TNotifier<TurboWidgetsPreviewMode> _previewMode = TNotifier(TurboWidgetsPreviewMode.none);
+  final TNotifier<DeviceInfo?> _selectedDevice = TNotifier(null);
+  final TNotifier<double> _previewScale = TNotifier(1.0);
 
   TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
@@ -20,6 +23,9 @@ class StylingViewModel extends TViewModel<Object?> {
   TNotifier<String> get variations => _variations;
   TNotifier<String> get activeTab => _activeTab;
   TNotifier<String> get instructions => _instructions;
+  TNotifier<TurboWidgetsPreviewMode> get previewMode => _previewMode;
+  TNotifier<DeviceInfo?> get selectedDevice => _selectedDevice;
+  TNotifier<double> get previewScale => _previewScale;
 
   @override
   void dispose() {
@@ -30,6 +36,9 @@ class StylingViewModel extends TViewModel<Object?> {
     _variations.dispose();
     _activeTab.dispose();
     _instructions.dispose();
+    _previewMode.dispose();
+    _selectedDevice.dispose();
+    _previewScale.dispose();
     super.dispose();
   }
 
@@ -39,6 +48,7 @@ class StylingViewModel extends TViewModel<Object?> {
 
   void setScreenType(TurboWidgetsScreenTypes value) {
     _screenType.update(value);
+    _selectedDevice.update(TurboWidgetsDevices.deviceForScreenType(value));
   }
 
   void toggleGenerator() {
@@ -59,6 +69,26 @@ class StylingViewModel extends TViewModel<Object?> {
 
   void setInstructions(String value) {
     _instructions.update(value);
+  }
+
+  void setPreviewMode(TurboWidgetsPreviewMode value) {
+    _previewMode.update(value);
+    if (value == TurboWidgetsPreviewMode.deviceFrame) {
+      if (_selectedDevice.value == null) {
+        _selectedDevice.update(TurboWidgetsDevices.deviceForScreenType(_screenType.value));
+      }
+      if (_previewScale.value > 1.0) {
+        _previewScale.update(1.0);
+      }
+    }
+  }
+
+  void setSelectedDevice(DeviceInfo value) {
+    _selectedDevice.update(value);
+  }
+
+  void setPreviewScale(double value) {
+    _previewScale.update(value);
   }
 
   static StylingViewModel get locate => StylingViewModel();

@@ -72,6 +72,7 @@ class TCollapsibleSection extends StatelessWidget {
             ),
           ),
           TVerticalShrink(
+            alignment: Alignment.topCenter,
             show: isExpanded,
             child: Padding(
               padding: EdgeInsets.only(

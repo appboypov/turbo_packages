@@ -6,9 +6,10 @@ const String _kDefaultInstructions = '''Context:
 We are working in the Component Playground, a controlled environment with a screen size selector (Mobile, Tablet, Desktop) and a layout wrapper to test widget responsiveness.
 
 Structure:
-1. The TPlayground renders a prompt generator card and a component wrapper area.
+1. The TPlayground renders a prompt generator card, optional parameter panel, and a component wrapper area.
 2. Inside the component wrapper, there is a placeholder area where widgets under test should be placed.
 3. The playground can be integrated into any styling/components page in your project.
+4. When parameters are configured, the parameter panel displays form controls for adjusting widget props in real-time.
 
 Theme Support:
 - Components MUST work correctly in both light and dark themes
@@ -16,9 +17,51 @@ Theme Support:
 - Test components in both themes to ensure proper appearance and contrast
 - Ensure proper contrast ratios and visibility in both themes
 
+Parameter Configuration:
+- When testing widgets with configurable props, use TPlaygroundParameters with TPlaygroundParameter entries
+- Define parameters in the ViewModel using TNotifier for each prop value
+- Pass parameters to TPlayground.parameters and use childBuilder instead of child
+- The childBuilder receives current parameter values and rebuilds the widget when they change
+- Use primitive types (String, int, double, bool) or options lists for enum-like values
+
+Example parameter setup:
+```dart
+// In ViewModel
+final TNotifier<String> title = TNotifier('Default Title');
+final TNotifier<bool> isEnabled = TNotifier(true);
+
+// Build parameters
+TPlaygroundParameters get parameters => TPlaygroundParameters(
+  parameters: [
+    TPlaygroundParameter<String>(
+      id: 'title',
+      label: 'Title',
+      valueListenable: title,
+      onChanged: (v) => title.value = v,
+    ),
+    TPlaygroundParameter<bool>(
+      id: 'isEnabled',
+      label: 'Is Enabled',
+      valueListenable: isEnabled,
+      onChanged: (v) => isEnabled.value = v,
+    ),
+  ],
+);
+
+// In TPlayground
+TPlayground(
+  parameters: viewModel.parameters,
+  childBuilder: (context, params) => MyWidget(
+    title: params.value<String>('title'),
+    isEnabled: params.value<bool>('isEnabled'),
+  ),
+  // ... other props
+)
+```
+
 Your Goal:
 - Create the requested widget(s) in an appropriate location within the project structure.
-- Add the widget(s) inside the playground's child parameter, replacing the placeholder content.
+- Add the widget(s) using childBuilder (if parameters are configured) or child parameter.
 - If multiple variants are requested, stack them vertically within the wrapper or use multiple sections with titles.
 - IMPORTANT: When multiple variants are requested, they MUST share the exact same props interface but have completely different visual designs/layouts. We are brainstorming distinct design approaches, not minor style tweaks.
 - CRITICAL: Create ALL variants of the widget (if variants are requested, create all of them, not just one)
@@ -67,7 +110,7 @@ Your Goal:
    - Ensure demo props showcase the widget properly in both light and dark themes
 
 3. Clear the playground canvas:
-   - Remove all widgets from the playground's child parameter
+   - Remove widgets from the playground's childBuilder or child parameter
    - Restore the placeholder content
 
 4. Follow project conventions:
@@ -101,8 +144,8 @@ We are working in the Component Playground.
 The playground currently contains widgets that need to be cleared to prepare for new widget creation.
 
 Your Goal:
-- Remove all widgets currently passed to the TPlayground's child parameter
-- Set the child parameter to null or remove it entirely to restore the default placeholder
+- Remove all widgets currently passed to the TPlayground's childBuilder or child parameter
+- Set childBuilder/child to null or remove them entirely to restore the default placeholder
 - The default placeholder shows "Component Testing Area" with a description
 - This clears the canvas for starting fresh with a new widget creation''';
 
@@ -159,7 +202,7 @@ $userRequest
 Requirements:
 - Create $variations variant(s) of this widget.
 - Ensure it follows the rules above.
-- Add the widget(s) to the TPlayground's child parameter, replacing the placeholder content.
+- Add the widget(s) to the TPlayground's childBuilder (or child if not using parameters), replacing the placeholder content.
 ''';
     }
   }
