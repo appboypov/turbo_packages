@@ -30,11 +30,7 @@ $ARGUMENTS
    - For changes: run `splx get tasks` to see all tasks.
    - For reviews: identify review aspects (architecture, scope, testing, etc.).
    - For other work: enumerate the discrete units of work.
-2. Generate progress file for tracking:
-   ```bash
-   splx create progress --change-id <change-id>
-   ```
-3. For each unit of work:
+2. For each unit of work:
    a. Get detailed context (`splx get task --id <id>` or equivalent).
    b. Spawn a sub-agent with clear, scoped instructions; select model based on task skill-level (junior→haiku, medior→sonnet, senior→opus).
    c. Wait for sub-agent to complete work.
@@ -50,7 +46,6 @@ $ARGUMENTS
 6. If approved:
    - For tasks: mark complete with `splx complete task --id <id>`.
    - For reviews: consolidate feedback.
-   - Regenerate progress: `splx create progress --change-id <change-id>`
    - Proceed to next unit of work.
 7. Continue until all work is complete.
 8. Final validation: run `splx validate` if applicable.

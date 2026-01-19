@@ -1,6 +1,6 @@
 ---
 name: Plan Implementation
-description: Generate PROGRESS.md and orchestrate multi-agent task handoff.
+description: Orchestrate multi-agent task handoff for a change.
 category: OpenSplx
 tags: [splx, orchestrate, workflow]
 ---
@@ -10,9 +10,7 @@ tags: [splx, orchestrate, workflow]
 @workspace/AGENTS.md
 
 **Guardrails**
-- Generate workspace/PROGRESS.md before outputting task blocks.
 - Output task blocks to chat for immediate copy to external agents.
-- Do NOT reference PROGRESS.md in task blocks—agents must work without knowledge of it.
 - Verify each agent's work against scope, TracelessChanges, conventions, and acceptance criteria.
 - Enforce TracelessChanges:
   - No comments referencing removed code.
@@ -31,11 +29,12 @@ tags: [splx, orchestrate, workflow]
 
 **Steps**
 1. Parse `$ARGUMENTS` to extract change-id.
-2. Generate progress file:
+2. Retrieve the change and its tasks:
    ```bash
-   splx create progress --change-id <change-id>
+   splx get change --id <change-id>
+   splx get tasks --parent-id <change-id> --parent-type change
    ```
-3. Read the generated workspace/PROGRESS.md and identify the first non-completed task.
+3. Identify the first non-completed task (to-do or in-progress).
 4. Output the first task block to chat. Format:
    ```markdown
    ## Task: <task-name>
@@ -82,8 +81,7 @@ tags: [splx, orchestrate, workflow]
    ```
 8. If all checks pass:
    - Mark task complete: `splx complete task --id <task-id>`
-   - Regenerate progress: `splx create progress --change-id <change-id>`
-   - If more tasks remain, output next task block (return to step 4)
+   - If more tasks remain, retrieve next task and output task block (return to step 3)
 9. When all tasks are complete:
    - Run final validation: `splx validate change --id <change-id> --strict`
    - Report completion summary with all tasks marked done.
@@ -91,5 +89,5 @@ tags: [splx, orchestrate, workflow]
 **Reference**
 - Use `splx get change --id <change-id>` for proposal context.
 - Use `splx get tasks --parent-id <change-id> --parent-type change` to see all tasks.
-- Use `splx create progress --change-id <id>` to regenerate progress file.
+- Use `splx get task` to get the next prioritized task.
 <!-- PLX:END -->

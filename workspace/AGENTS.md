@@ -243,7 +243,7 @@ project-root/
 ```
 New request?
 ├─ Bug fix restoring spec behavior? → Fix directly
-├─ Typo/format/comment? → Fix directly  
+├─ Typo/format/comment? → Fix directly
 ├─ New feature/capability? → Create proposal
 ├─ Breaking change? → Create proposal
 ├─ Architecture change? → Create proposal
@@ -301,44 +301,34 @@ Create task files in `workspace/tasks/` with numbered files. Minimum 3 files rec
 For parented tasks, use format `NNN-<parent-id>-<kebab-case-name>.md` (e.g., `001-add-feature-implement.md`).
 For standalone tasks, use format `NNN-<kebab-case-name>.md` (e.g., `003-standalone-task.md`).
 
-Example `workspace/tasks/001-add-feature-implement.md`:
-```markdown
+**Task File Structure:**
+
+Each task file has two parts:
+
+1. **Frontmatter** (YAML between `---` markers):
+```yaml
 ---
 status: to-do
 skill-level: junior|medior|senior
 parent-type: change
-parent-id: add-feature
+parent-id: <change-id>
+type: <template-type>
+blocked-by:
+  - <task-id-1>
+  - <task-id-2>
 ---
-
-# Task: Implement feature
-
-## End Goal
-What this task accomplishes.
-
-## Currently
-Current state before this task.
-
-## Should
-Expected state after this task.
-
-## Constraints
-- [ ] Constraint 1
-- [ ] Constraint 2
-
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Implementation Checklist
-- [ ] 1.1 Create database schema
-- [ ] 1.2 Implement API endpoint
-- [ ] 1.3 Add frontend component
-
-## Notes
-Additional context if needed.
 ```
 
-**Note:** Checkboxes under `## Constraints` and `## Acceptance Criteria` are ignored when calculating task progress. Only `## Implementation Checklist` checkboxes count.
+2. **Body**: Copy the structure from `workspace/templates/<type>.md` and fill in the `<!-- REPLACE: ... -->` placeholders with task-specific content.
+
+**Example workflow:**
+1. Choose task type (e.g., `components`, `business-logic`, `implementation`)
+2. Read `workspace/templates/<type>.md`
+3. Create task file with frontmatter + template body structure
+4. Replace all `<!-- REPLACE: ... -->` placeholders with actual content
+5. Keep all emoji headers and sections from the template
+
+**Note:** Checkboxes under constraint and acceptance criteria sections are ignored when calculating task progress. Only implementation checklist checkboxes count.
 
 ### Task Skill Level
 
@@ -364,6 +354,105 @@ For non-Claude models, the agent determines an equivalent model or ignores the f
 - Add `skill-level` to task frontmatter during proposal creation
 - `splx validate change --id <id> --strict` warns when skill-level is missing
 - Skill level appears in `splx get task` output
+
+### Task Templates
+
+Task templates are Markdown files stored in `workspace/templates/` that define reusable task structures for different types of work. Templates are discovered via frontmatter `type:` field.
+
+**How It Works:**
+1. Create a Markdown file in `workspace/templates/` with frontmatter containing `type: <name>`
+2. Template discovery scans for all .md files with `type:` in frontmatter
+3. User templates automatically override built-in templates with the same type
+4. When creating tasks, you can reference any available type in the `type:` field
+
+**Built-in Types** (12 templates provided by default):
+
+| Type | Title Format | Purpose |
+|------|-------------|---------|
+| story | ✨ <Actor> is able to <capability> | User-facing features with business value |
+| bug | 🐞 <Thing> fails when <condition> | Bug fixes restoring intended behavior |
+| business-logic | ⚙️ <Feature> business logic | ViewModels, Services, APIs, DTOs, tests |
+| components | 🧩 <Feature> UI components | Stateless UI components and widgets |
+| research | 🔬 Investigate <unknown> | Best practices research and package evaluation |
+| discovery | 💡 Explore <idea> | Idea exploration and problem validation |
+| chore | 🧹 <Verb> <thing> | Maintenance, cleanup, housekeeping |
+| refactor | 🧱 Refactor <component> to <goal> | Code restructuring without behavior changes |
+| infrastructure | 🏗️ Set up <infrastructure> | CI/CD, deployment, hosting, DevOps |
+| documentation | 📄 Document <thing> | READMEs, API docs, architecture guides |
+| release | 🚀 Prepare release v<version> | Version bumping, changelog, release prep |
+| implementation | 🔧 Wire <feature> to business logic | Integration work wiring components to logic |
+
+**Creating Custom Templates:**
+When no built-in template matches your use case, propose a new type:
+
+1. Create `workspace/templates/custom-type.md`
+2. Add frontmatter: `---
+type: custom-type
+---`
+3. Write template structure following conventions
+4. New type becomes immediately available and valid
+5. Reference it in task `type:` field
+
+**User Templates Override:**
+Create a file with the same `type:` in `workspace/templates/` to override any built-in template. This is useful for project-specific customization of standard types.
+
+### Task Dependencies
+
+Tasks can declare dependencies using the `blocked-by:` field in frontmatter. This allows sequencing work logically.
+
+**Syntax:**
+- Same-change tasks: `blocked-by: [001-component-name, 002-logic-name]`
+- Cross-change tasks: `blocked-by: [other-change/001-task-name]`
+- Can reference task IDs or full task file names
+
+**Important:**
+- Dependencies are **advisory only** - warnings, not hard blocks
+- AI agents use `blocked-by` for task ordering and planning
+- Dependencies help prevent ordering mistakes but don't prevent task creation
+- Document blockers to improve change coordination
+
+**Example:**
+```yaml
+---
+status: to-do
+type: implementation
+blocked-by:
+  - 001-add-feature-components
+  - 002-add-feature-business-logic
+---
+```
+
+### Recommended Task Ordering
+
+Follow this proven ordering pattern for features:
+
+1. **Components Task** (🧩 UI components)
+   - Create stateless UI components first
+   - Test in isolation before connecting to logic
+   - Establishes visual contract
+
+2. **Business Logic Task** (⚙️ business logic)
+   - Implement ViewModels, Services, APIs, DTOs
+   - Write unit tests
+   - Ready for connection to UI
+
+3. **Implementation Task** (🔧 wire to business logic)
+   - Connect components to ViewModels/Services
+   - Wire data flow end-to-end
+   - Write integration tests
+
+**Why This Order:**
+- UI-first prevents discovering logic gaps too late
+- Bottom-up testing (tests → logic → integration)
+- Parallel work possible: logic can proceed while UI designed
+- Reduces rework when UI and logic don't align
+
+**Other Recommended Patterns:**
+- Research (🔬) before implementation to validate approaches
+- Discovery (💡) before Research to validate ideas
+- Refactor (🧱) after features stabilize
+- Documentation (📄) as features complete
+- Infrastructure (🏗️) when deployment needs emerge
 
 5. **Create design.md when needed:**
 Create `design.md` if any of the following apply; otherwise omit it:
@@ -432,7 +521,7 @@ Headers matched with `trim(header)` - whitespace ignored.
 - MODIFIED: Changes the behavior, scope, or acceptance criteria of an existing requirement. Always paste the full, updated requirement content (header + all scenarios). The archiver will replace the entire requirement with what you provide here; partial deltas will drop previous details.
 - RENAMED: Use when only the name changes. If you also change behavior, use RENAMED (name) plus MODIFIED (content) referencing the new name.
 
-Common pitfall: Using MODIFIED to add a new concern without including the previous text. This causes loss of detail at archive time. If you aren’t explicitly changing the existing requirement, add a new requirement under ADDED instead.
+Common pitfall: Using MODIFIED to add a new concern without including the previous text. This causes loss of detail at archive time. If you aren't explicitly changing the existing requirement, add a new requirement under ADDED instead.
 
 Authoring a MODIFIED requirement correctly:
 1) Locate the existing requirement in `workspace/specs/<capability>/spec.md`.
@@ -490,7 +579,9 @@ splx get changes
 CHANGE=add-two-factor-auth
 mkdir -p workspace/changes/$CHANGE/specs/auth
 printf "## Why\n...\n\n## What Changes\n- ...\n\n## Impact\n- ...\n" > workspace/changes/$CHANGE/proposal.md
-printf "---\nstatus: to-do\nskill-level: junior|medior|senior\nparent-type: change\nparent-id: add-two-factor-auth\n---\n\n# Task: Implement feature\n\n## End Goal\n...\n\n## Implementation Checklist\n- [ ] 1.1 ...\n" > workspace/tasks/001-add-two-factor-auth-implement.md
+# Copy template and fill in placeholders
+cp workspace/templates/implementation.md workspace/tasks/001-add-two-factor-auth-implement.md
+# Then edit to add frontmatter and replace <!-- REPLACE: ... --> placeholders
 
 # 3) Add deltas (example)
 cat > workspace/changes/$CHANGE/specs/auth/spec.md << 'EOF'
@@ -618,208 +709,5 @@ splx get spec --id [item]   # View spec details
 splx validate change --id <id> --strict  # Is it correct?
 splx archive change --id <change-id> [--yes|-y]  # Mark complete (add --yes for automation)
 ```
-
-## Publishing Packages to pub.dev
-
-The turbo_packages monorepo uses Melos to manage and publish packages to pub.dev. All packages must achieve 160/160 pub points before publication.
-
-### 160/160 Pub Points Breakdown
-
-Pub.dev awards up to 160 points across six categories:
-
-1. **Dart Conventions (30 points)**
-   - Valid `pubspec.yaml` (10 pts)
-   - Valid `README.md` (5 pts)
-   - Valid `CHANGELOG.md` (5 pts)
-   - OSI-approved license (10 pts)
-
-2. **Documentation (20 points)**
-   - 20% or more of public API has dartdoc comments (10 pts)
-   - Package has an example (10 pts)
-
-3. **Platform Support (20 points)**
-   - Supports multiple platforms (iOS, Android, Web, Windows, macOS, Linux) (20 pts)
-
-4. **Static Analysis (50 points)**
-   - Code has no errors, warnings, lints, or formatting issues (50 pts)
-
-5. **Up-to-date Dependencies (20 points)**
-   - All dependencies supported in latest version (10 pts)
-   - Package supports latest stable Dart and Flutter SDKs (10 pts)
-
-6. **Null Safety (20 points)**
-   - Compatible with dependency constraint lower bounds (20 pts)
-
-### Pre-Publish Checklist
-
-Before publishing any package:
-
-- [ ] Run `melos pub-check` locally - This automatically runs analysis, formatting, tests, and pana validation
-- [ ] Verify `CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com/) format
-- [ ] Verify `README.md` includes usage examples
-- [ ] Verify `LICENSE` file exists and is OSI-approved
-- [ ] Verify `pubspec.yaml` has correct version number
-- [ ] Verify `pubspec.yaml` declares supported platforms
-- [ ] Verify at least 20% of public API is documented with dartdoc comments
-- [ ] Run `melos pub-publish-dry-run` to validate without publishing
-
-### CHANGELOG.md Format
-
-Follow the [Keep a Changelog](https://keepachangelog.com/) format:
-
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## [1.0.0] - 2026-01-13
-
-### Added
-- Initial release
-- Feature X
-- Feature Y
-
-### Changed
-- Updated dependency Z
-
-### Fixed
-- Bug fix description
-
-## [0.1.0] - 2026-01-01
-
-### Added
-- Initial development version
-```
-
-### Semantic Versioning
-
-Follow [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH):
-
-- **MAJOR** (1.0.0 → 2.0.0): Breaking changes to public API
-- **MINOR** (1.0.0 → 1.1.0): New features, backward compatible
-- **PATCH** (1.0.0 → 1.0.1): Bug fixes, backward compatible
-
-**Important:** Publishing is permanent. Versions cannot be deleted, only retracted. Choose versions carefully.
-
-### Melos Publishing Commands
-
-#### Validate Packages
-
-```bash
-# Check all packages for 160/160 pub points
-melos pub-check
-```
-
-This command runs a complete validation flow for each package:
-1. **Required files check**: Validates LICENSE, README.md, CHANGELOG.md exist
-2. **Dart analysis**: Runs `dart analyze --fatal-infos` (must pass)
-3. **Formatting check**: Runs `dart format --set-exit-if-changed` (must pass)
-4. **Tests**: Runs `flutter test` if test directory exists (must pass)
-5. **Pana validation**: Runs pana for 160/160 pub points scoring
-
-The command:
-- Validates each package sequentially
-- Reports pub points score for each package
-- Fails early if analysis, formatting, or tests fail
-- Uses pana for official pub.dev scoring
-- Provides clear error messages for each validation step
-
-#### Dry-Run Publish
-
-```bash
-# Validate without publishing (safe to run anytime)
-melos pub-publish-dry-run
-```
-
-This command:
-- Runs full validation (pub-check)
-- Runs `dart pub publish --dry-run` for each package
-- Does NOT publish to pub.dev
-- Safe to run locally anytime
-
-#### Publish to pub.dev
-
-```bash
-# Publish packages (requires confirmation)
-melos pub-publish
-```
-
-This command:
-- Validates all packages first
-- Requires `--confirmed` flag (built into the command)
-- Publishes to pub.dev
-- **Publishing is manual only** - developers must run this command locally when ready to publish
-
-### Common Issues and Solutions
-
-1. **Missing 10 points from static analysis**
-   - Run `melos format` to fix formatting
-   - Run `melos analyze` and fix any errors/warnings
-   - Ensure no linter violations
-
-2. **Missing points from documentation**
-   - Add dartdoc comments to public API members
-   - Ensure at least 20% of public API is documented
-   - Add example code in README.md
-
-3. **Missing points from platform support**
-   - Add `platforms:` section to `pubspec.yaml`:
-     ```yaml
-     platforms:
-       android:
-       ios:
-       web:
-       windows:
-       macos:
-       linux:
-     ```
-
-4. **Dependency constraint issues**
-   - Run `dart pub upgrade --tighten` to update constraints
-   - Ensure all dependencies support latest versions
-   - Fix any `pub downgrade` failures
-
-5. **CHANGELOG.md format issues**
-   - Follow Keep a Changelog format exactly
-   - Use `## [Version] - YYYY-MM-DD` format
-   - Include Added/Changed/Fixed sections
-
-6. **Missing LICENSE file**
-   - Add LICENSE file to package root
-   - Use OSI-approved license (MIT, Apache 2.0, etc.)
-
-7. **Example missing or incomplete**
-   - Add `example/` directory with working example
-   - Ensure example demonstrates main package features
-
-### Local Validation Before Publishing
-
-**Important:** All publishing is manual. Before publishing any package, developers MUST run validation locally:
-
-- Run `melos pub-check` to validate all packages meet 160/160 pub points
-- Fix any issues identified by the validation
-- Run `melos pub-publish-dry-run` to verify packages are ready for publication
-- Only proceed with `melos pub-publish` after validation passes
-
-There is no automated CI validation. Developers are responsible for ensuring packages meet all requirements before publishing.
-
-### When to Publish
-
-- **Major version**: Breaking API changes, major refactoring
-- **Minor version**: New features, backward compatible additions
-- **Patch version**: Bug fixes, documentation updates, dependency updates
-
-**Decision tree:**
-- Breaking change? → Major version bump
-- New feature? → Minor version bump
-- Bug fix only? → Patch version bump
-
-### Resources
-
-- [pub.dev Publishing Guide](https://dart.dev/tools/pub/publishing)
-- [pub.dev Package Scoring](https://pub.dev/help/scoring)
-- [Keep a Changelog](https://keepachangelog.com/)
-- [Semantic Versioning](https://semver.org/)
-- [Pana Tool](https://github.com/dart-lang/pana) - Official pub.dev scoring tool
 
 Remember: Specs are truth. Changes are proposals. Keep them in sync.
