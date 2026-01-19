@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:roomy_mobile/core/models/list_progress_model.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/t_gradient.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gradient.dart';
 
 class TProgressBar extends StatelessWidget {
   const TProgressBar({

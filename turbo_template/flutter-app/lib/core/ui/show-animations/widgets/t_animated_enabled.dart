@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
-class AnimatedEnabled extends StatelessWidget {
-  const AnimatedEnabled({
+class TAnimatedEnabled extends StatelessWidget {
+  const TAnimatedEnabled({
     required this.isEnabled,
     required this.child,
     this.animationDuration = TDurations.animation,

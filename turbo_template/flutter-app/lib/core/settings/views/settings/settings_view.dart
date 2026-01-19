@@ -10,6 +10,7 @@ import 'package:roomy_mobile/settings/widgets/staging_environment_badge.dart';
 import 'package:roomy_mobile/settings/widgets/t_settings_section.dart';
 import 'package:roomy_mobile/state/extensions/context_extension.dart';
 import 'package:roomy_mobile/storage/providers/local_storage_provider.dart';
+import 'package:turbo_flutter_template/core/storage/save-local-data/providers/local_storage_provider.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:roomy_mobile/ui/enums/emoji.dart';
 import 'package:roomy_mobile/ui/extensions/color_extension.dart';
@@ -27,6 +28,8 @@ import 'package:roomy_mobile/ui/widgets/t_trailing_arrow.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/settings/views/settings/settings_view_model.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_compact_user_card.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_scaffold.dart';
 import 'package:veto/data/models/base_view_model.dart';
 
 class SettingsView extends StatelessWidget {

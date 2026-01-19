@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/data/constants/k_sizes.dart';
-import 'package:roomy_mobile/ui/widgets/tu_divider.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_divider.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
 
 class SectionDivider extends StatelessWidget {
   const SectionDivider({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) =>
-      const TuDivider(topPadding: kSizesSectionGap, bottomPadding: kAppPadding);
+  Widget build(BuildContext context) => const TMargin(
+    child: TDivider(),
+  );
 }

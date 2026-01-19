@@ -17,6 +17,7 @@ workspace:
   - turbo_serializable
   - turbo_template/flutter-app
   - turbo_widgets
+  - turbo_widgets/example
   - turbolytics
   - turbolytics/example
 

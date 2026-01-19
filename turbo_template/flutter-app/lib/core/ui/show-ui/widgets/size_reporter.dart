@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-import '../../state/utils/debouncer.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 
 class SizeReporter extends SingleChildRenderObjectWidget {
   const SizeReporter({Key? key, required Widget child, required this.onSizeChanged})

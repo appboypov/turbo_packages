@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:roomy_mobile/animations/widgets/animated_enabled.dart';
-import 'package:roomy_mobile/animations/widgets/shrinks.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/data/constants/k_svgs.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/t_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_gap.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/shrinks.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/t_animated_enabled.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gap.dart';
+import 'package:turbo_flutter_template/generated/assets.gen.dart';
 
 class TBigChip extends StatelessWidget {
   const TBigChip({
@@ -38,10 +38,10 @@ class TBigChip extends StatelessWidget {
         ? activeColor ?? context.colors.background
         : inactiveColor ?? context.colors.card;
     const height = 32.0;
-    return TButdton(
+    return TButton(
       scaleEnd: 1,
       onPressed: () => onPressed(isActive),
-      child: AnimatedEnabled(
+      child: TAnimatedEnabled(
         isEnabled: isActive,
         child: RepaintBoundary(
           child: AnimatedContainer(
@@ -71,7 +71,7 @@ class TBigChip extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 6),
                         child: SvgPicture.asset(
                           height: iconHeight,
-                          kSvgsCheck,
+                          const $AssetsSvgsGen().check.path,
                           colorFilter: ColorFilter.mode(color.onColor, BlendMode.srcIn),
                         ),
                       ),

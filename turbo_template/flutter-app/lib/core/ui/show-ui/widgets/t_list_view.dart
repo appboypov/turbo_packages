@@ -1,6 +1,6 @@
 import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/animations/widgets/t_animated_size.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/t_animated_size.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 
 /// A reusable list view widget that supports reordering and animations.

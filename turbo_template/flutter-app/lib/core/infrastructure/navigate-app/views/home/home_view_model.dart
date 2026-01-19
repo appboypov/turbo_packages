@@ -17,7 +17,7 @@ import 'package:roomy_mobile/cleaning/services/cleaning_tasks_service.dart';
 import 'package:roomy_mobile/core/dtos/icon_label_dto.dart';
 import 'package:roomy_mobile/core/enums/icon_collection.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/data/extensions/duration_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
 import 'package:roomy_mobile/data/globals/g_user_id.dart';
 import 'package:roomy_mobile/feedback/globals/g_feedback.dart';
 import 'package:roomy_mobile/feedback/services/dialog_service.dart';

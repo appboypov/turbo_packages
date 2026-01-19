@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/state/widgets/is_busy_icon.dart';
-import 'package:roomy_mobile/typography/extensions/text_style_extension.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/widgets/is_busy_icon.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/text_style_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:veto/data/enums/busy_type.dart';
 import 'package:veto/data/models/busy_model.dart';
 
