@@ -45,6 +45,10 @@ class TContextualWrapper extends StatefulWidget {
     this.bottomAlignment = Alignment.center,
     this.leftAlignment = Alignment.center,
     this.rightAlignment = Alignment.center,
+    this.topMainAxisSize = MainAxisSize.min,
+    this.bottomMainAxisSize = MainAxisSize.min,
+    this.leftMainAxisSize = MainAxisSize.min,
+    this.rightMainAxisSize = MainAxisSize.min,
     this.topBuilder,
     this.bottomBuilder,
     this.leftBuilder,
@@ -91,6 +95,18 @@ class TContextualWrapper extends StatefulWidget {
 
   /// Alignment for right content.
   final Alignment rightAlignment;
+
+  /// Main axis size for top content.
+  final MainAxisSize topMainAxisSize;
+
+  /// Main axis size for bottom content.
+  final MainAxisSize bottomMainAxisSize;
+
+  /// Main axis size for left content.
+  final MainAxisSize leftMainAxisSize;
+
+  /// Main axis size for right content.
+  final MainAxisSize rightMainAxisSize;
 
   /// Builder to wrap top content with custom widgets (e.g., padding, margin).
   final Widget Function(List<Widget> children)? topBuilder;
@@ -344,70 +360,75 @@ class _TContextualWrapperState extends State<TContextualWrapper>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Main content - not positioned so it sizes the Stack
         widget.child,
-
-        // Top overlay
         Positioned(
           top: 0,
           left: 0,
           right: 0,
-          child: _TPositionContent(
-            content: _displayedContent[TContextualPosition.top] ?? const [],
-            position: TContextualPosition.top,
-            alignment: widget.topAlignment,
-            builder: widget.topBuilder,
-            phase: _phases[TContextualPosition.top]!,
-            controller: _controllers[TContextualPosition.top]!,
-            curve: widget.animationCurve,
+          child: RepaintBoundary(
+            child: _TPositionContent(
+              content: _displayedContent[TContextualPosition.top] ?? const [],
+              position: TContextualPosition.top,
+              alignment: widget.topAlignment,
+              mainAxisSize: widget.topMainAxisSize,
+              builder: widget.topBuilder,
+              phase: _phases[TContextualPosition.top]!,
+              controller: _controllers[TContextualPosition.top]!,
+              curve: widget.animationCurve,
+            ),
           ),
         ),
-
-        // Bottom overlay
         Positioned(
           bottom: 0,
           left: 0,
           right: 0,
-          child: _TPositionContent(
-            content: _displayedContent[TContextualPosition.bottom] ?? const [],
-            position: TContextualPosition.bottom,
-            alignment: widget.bottomAlignment,
-            builder: widget.bottomBuilder,
-            phase: _phases[TContextualPosition.bottom]!,
-            controller: _controllers[TContextualPosition.bottom]!,
-            curve: widget.animationCurve,
+          child: RepaintBoundary(
+            child: _TPositionContent(
+              content:
+                  _displayedContent[TContextualPosition.bottom] ?? const [],
+              position: TContextualPosition.bottom,
+              alignment: widget.bottomAlignment,
+              mainAxisSize: widget.bottomMainAxisSize,
+              builder: widget.bottomBuilder,
+              phase: _phases[TContextualPosition.bottom]!,
+              controller: _controllers[TContextualPosition.bottom]!,
+              curve: widget.animationCurve,
+            ),
           ),
         ),
-
-        // Left overlay
         Positioned(
           top: 0,
           left: 0,
           bottom: 0,
-          child: _TPositionContent(
-            content: _displayedContent[TContextualPosition.left] ?? const [],
-            position: TContextualPosition.left,
-            alignment: widget.leftAlignment,
-            builder: widget.leftBuilder,
-            phase: _phases[TContextualPosition.left]!,
-            controller: _controllers[TContextualPosition.left]!,
-            curve: widget.animationCurve,
+          child: RepaintBoundary(
+            child: _TPositionContent(
+              content: _displayedContent[TContextualPosition.left] ?? const [],
+              position: TContextualPosition.left,
+              alignment: widget.leftAlignment,
+              mainAxisSize: widget.leftMainAxisSize,
+              builder: widget.leftBuilder,
+              phase: _phases[TContextualPosition.left]!,
+              controller: _controllers[TContextualPosition.left]!,
+              curve: widget.animationCurve,
+            ),
           ),
         ),
-
-        // Right overlay
         Positioned(
           top: 0,
           right: 0,
           bottom: 0,
-          child: _TPositionContent(
-            content: _displayedContent[TContextualPosition.right] ?? const [],
-            position: TContextualPosition.right,
-            alignment: widget.rightAlignment,
-            builder: widget.rightBuilder,
-            phase: _phases[TContextualPosition.right]!,
-            controller: _controllers[TContextualPosition.right]!,
-            curve: widget.animationCurve,
+          child: RepaintBoundary(
+            child: _TPositionContent(
+              content:
+                  _displayedContent[TContextualPosition.right] ?? const [],
+              position: TContextualPosition.right,
+              alignment: widget.rightAlignment,
+              mainAxisSize: widget.rightMainAxisSize,
+              builder: widget.rightBuilder,
+              phase: _phases[TContextualPosition.right]!,
+              controller: _controllers[TContextualPosition.right]!,
+              curve: widget.animationCurve,
+            ),
           ),
         ),
       ],
@@ -421,6 +442,7 @@ class _TPositionContent extends StatelessWidget {
     required this.content,
     required this.position,
     required this.alignment,
+    required this.mainAxisSize,
     required this.phase,
     required this.controller,
     required this.curve,
@@ -430,6 +452,7 @@ class _TPositionContent extends StatelessWidget {
   final List<Widget> content;
   final TContextualPosition position;
   final Alignment alignment;
+  final MainAxisSize mainAxisSize;
   final _AnimationPhase phase;
   final AnimationController controller;
   final Curve curve;
@@ -452,10 +475,33 @@ class _TPositionContent extends StatelessWidget {
       position == TContextualPosition.top ||
       position == TContextualPosition.bottom;
 
+  Axis get _scrollDirection => _isHorizontal ? Axis.horizontal : Axis.vertical;
+
   @override
   Widget build(BuildContext context) {
     if (content.isEmpty) {
       return const SizedBox.shrink();
+    }
+
+    final Widget contentWidget;
+    if (builder != null) {
+      contentWidget = builder!(content);
+    } else if (content.length == 1) {
+      contentWidget = Align(
+        alignment: alignment,
+        child: content.first,
+      );
+    } else {
+      contentWidget = SingleChildScrollView(
+        scrollDirection: _scrollDirection,
+        child: Flex(
+          direction: _scrollDirection,
+          mainAxisSize: mainAxisSize,
+          mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
+          crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
+          children: content,
+        ),
+      );
     }
 
     return AnimatedBuilder(
@@ -493,28 +539,7 @@ class _TPositionContent extends StatelessWidget {
           ),
         );
       },
-      child: _buildContent(),
-    );
-  }
-
-  Widget _buildContent() {
-    if (builder != null) {
-      return builder!(content);
-    }
-
-    if (content.length == 1) {
-      return Align(
-        alignment: alignment,
-        child: content.first,
-      );
-    }
-
-    return Flex(
-      direction: _isHorizontal ? Axis.horizontal : Axis.vertical,
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
-      crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
-      children: content,
+      child: contentWidget,
     );
   }
 

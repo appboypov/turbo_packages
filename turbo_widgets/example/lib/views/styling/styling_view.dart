@@ -71,34 +71,26 @@ class StylingView extends StatelessWidget {
                       previewScale: model.previewScale.value,
                       selectedDevice: model.selectedDevice.value,
                       childBuilder: (context, params) {
-                        final allowFilter = params.selects['allowFilter']?.value
-                                as TContextualAllowFilter? ??
-                            TContextualAllowFilter.all;
+                        final allowFilter =
+                            params.selects['allowFilter']?.value as TContextualAllowFilter? ??
+                                TContextualAllowFilter.all;
                         final showTop = params.bools['showTopContent'] ?? true;
-                        final showBottom =
-                            params.bools['showBottomContent'] ?? true;
+                        final showBottom = params.bools['showBottomContent'] ?? true;
                         final showLeft = params.bools['showLeftContent'] ?? true;
-                        final showRight =
-                            params.bools['showRightContent'] ?? true;
-                        final animationDuration =
-                            params.ints['animationDuration'] ?? 300;
+                        final showRight = params.bools['showRightContent'] ?? true;
+                        final animationDuration = params.ints['animationDuration'] ?? 300;
 
                         return TContextualWrapper(
                           allowFilter: allowFilter,
-                          animationDuration:
-                              Duration(milliseconds: animationDuration),
-                          topContent: showTop
-                              ? const [_DemoContentBar(label: 'Top Content')]
-                              : const [],
+                          animationDuration: Duration(milliseconds: animationDuration),
+                          topContent:
+                              showTop ? const [_DemoContentBar(label: 'Top Content')] : const [],
                           bottomContent: showBottom
                               ? const [_DemoContentBar(label: 'Bottom Content')]
                               : const [],
-                          leftContent: showLeft
-                              ? const [_DemoContentBar(label: 'Left')]
-                              : const [],
-                          rightContent: showRight
-                              ? const [_DemoContentBar(label: 'Right')]
-                              : const [],
+                          leftContent: showLeft ? const [_DemoContentBar(label: 'Left')] : const [],
+                          rightContent:
+                              showRight ? const [_DemoContentBar(label: 'Right')] : const [],
                           child: const Center(
                             child: Text('Main Content Area'),
                           ),
