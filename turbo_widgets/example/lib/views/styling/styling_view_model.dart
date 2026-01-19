@@ -3,7 +3,9 @@ import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 class StylingViewModel extends TViewModel<Object?> {
-  StylingViewModel();
+  StylingViewModel() {
+    _initializePlaygroundParameters();
+  }
 
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(false);
   final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.mobile);
@@ -11,48 +13,41 @@ class StylingViewModel extends TViewModel<Object?> {
   final TNotifier<String> _userRequest = TNotifier('');
   final TNotifier<String> _variations = TNotifier('1');
   final TNotifier<String> _activeTab = TNotifier('request');
-  final TNotifier<String> _instructions = TNotifier('');
+  final TNotifier<String> _instructions = TNotifier(TurboWidgetsDefaults.instructions);
   final TNotifier<TurboWidgetsPreviewMode> _previewMode = TNotifier(TurboWidgetsPreviewMode.none);
   final TNotifier<DeviceInfo?> _selectedDevice = TNotifier(null);
   final TNotifier<double> _previewScale = TNotifier(1.0);
-  final TNotifier<bool> _isDarkMode = TNotifier(false);
+final TNotifier<bool> _isDarkMode = TNotifier(false);
   final TNotifier<bool> _isSafeAreaEnabled = TNotifier(false);
 
   /// The component parameters model.
   /// Agents update this with default values when creating components.
   /// Form fields are auto-generated from this model's type-specific maps.
   final TNotifier<TPlaygroundParameterModel> _componentParameters = TNotifier(
-    const TPlaygroundParameterModel(
-      strings: {
-        'fileName': 'example.md',
-      },
-      textAreas: {
-        'content': '''# Example Markdown File
-
-This is a sample markdown file that demonstrates the preview widget.
-
-## Features
-
-- **Bold text** support
-- Code blocks
-- Headers of different sizes
-- Regular paragraphs
-
-### Code Example
-
-```dart
-void main() {
-  print('Hello, World!');
-}
-```
-
-This widget provides a clean way to preview markdown files before opening them in an external application.''',
-      },
-      ints: {
-        'maxPreviewLines': 5,
-      },
-    ),
+    const TPlaygroundParameterModel.empty(),
   );
+
+  void _initializePlaygroundParameters() {
+    _componentParameters.update(
+      TPlaygroundParameterModel(
+        selects: {
+          'allowFilter': TSelectOption<TContextualAllowFilter>(
+            value: TContextualAllowFilter.all,
+            options: TContextualAllowFilter.values,
+          ),
+        },
+        bools: {
+          'showTopContent': true,
+          'showBottomContent': true,
+          'showLeftContent': true,
+          'showRightContent': true,
+        },
+        ints: {
+          'animationDuration': 300,
+        },
+      ),
+    );
+  }
 
   TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;

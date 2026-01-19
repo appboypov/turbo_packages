@@ -31,13 +31,11 @@ class TPlaygroundPromptGenerator extends StatelessWidget {
   final ValueChanged<String>? onInstructionsChanged;
   final VoidCallback onCopyPrompt;
 
-  String get _effectiveInstructions => instructions ?? TurboWidgetsDefaults.instructions;
+  String get _effectiveInstructions => instructions;
 
-  String get _effectiveSolidifyInstructions =>
-      solidifyInstructions ?? TurboWidgetsDefaults.solidifyInstructions;
+  String get _effectiveSolidifyInstructions => solidifyInstructions;
 
-  String get _effectiveClearCanvasInstructions =>
-      clearCanvasInstructions ?? TurboWidgetsDefaults.clearCanvasInstructions;
+  String get _effectiveClearCanvasInstructions => clearCanvasInstructions;
 
   String _buildPrompt() {
     if (activeTab == 'solidify') {
@@ -66,7 +64,7 @@ $userRequest
 Requirements:
 - Create $variations variant(s) of this widget.
 - Ensure it follows the rules above.
-- MANDATORY: Configure TPlaygroundParameters with a TPlaygroundParameter for EVERY widget prop.
+- MANDATORY: Configure TPlaygroundParameterModel with entries in the typed maps (strings, bools, ints, doubles, selects) for EVERY widget prop.
 - MANDATORY: Use childBuilder to render the widget - NEVER use child directly.
 - Add the widget(s) to the TPlayground's childBuilder, replacing the placeholder content.
 ''';

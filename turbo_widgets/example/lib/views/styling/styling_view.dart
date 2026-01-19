@@ -57,19 +57,53 @@ class StylingView extends StatelessWidget {
                         );
                       },
                       instructions: model.instructions.value,
-                      onInstructionsChanged: model.setInstructions,
-                      previewMode: model.previewMode.value,
-                      onPreviewModeChanged: model.setPreviewMode,
-                      selectedDevice: model.selectedDevice.value,
-                      onDeviceChanged: model.setSelectedDevice,
-                      previewScale: model.previewScale.value,
-                      onPreviewScaleChanged: model.setPreviewScale,
                       isDarkMode: model.isDarkMode.value,
-                      onToggleDarkMode: model.toggleDarkMode,
                       isSafeAreaEnabled: model.isSafeAreaEnabled.value,
+                      onDeviceChanged: model.setSelectedDevice,
+                      onInstructionsChanged: model.setInstructions,
+                      onParametersChanged: model.setComponentParameters,
+                      onPreviewModeChanged: model.setPreviewMode,
+                      onPreviewScaleChanged: model.setPreviewScale,
+                      onToggleDarkMode: model.toggleDarkMode,
                       onToggleSafeArea: model.toggleSafeArea,
                       parametersListenable: model.componentParameters,
-                      onParametersChanged: model.setComponentParameters,
+                      previewMode: model.previewMode.value,
+                      previewScale: model.previewScale.value,
+                      selectedDevice: model.selectedDevice.value,
+                      childBuilder: (context, params) {
+                        final allowFilter = params.selects['allowFilter']?.value
+                                as TContextualAllowFilter? ??
+                            TContextualAllowFilter.all;
+                        final showTop = params.bools['showTopContent'] ?? true;
+                        final showBottom =
+                            params.bools['showBottomContent'] ?? true;
+                        final showLeft = params.bools['showLeftContent'] ?? true;
+                        final showRight =
+                            params.bools['showRightContent'] ?? true;
+                        final animationDuration =
+                            params.ints['animationDuration'] ?? 300;
+
+                        return TContextualWrapper(
+                          allowFilter: allowFilter,
+                          animationDuration:
+                              Duration(milliseconds: animationDuration),
+                          topContent: showTop
+                              ? const [_DemoContentBar(label: 'Top Content')]
+                              : const [],
+                          bottomContent: showBottom
+                              ? const [_DemoContentBar(label: 'Bottom Content')]
+                              : const [],
+                          leftContent: showLeft
+                              ? const [_DemoContentBar(label: 'Left')]
+                              : const [],
+                          rightContent: showRight
+                              ? const [_DemoContentBar(label: 'Right')]
+                              : const [],
+                          child: const Center(
+                            child: Text('Main Content Area'),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );
@@ -79,4 +113,29 @@ class StylingView extends StatelessWidget {
         },
         viewModelBuilder: () => StylingViewModel.locate,
       );
+}
+
+class _DemoContentBar extends StatelessWidget {
+  const _DemoContentBar({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary,
+        border: Border.all(color: theme.colorScheme.border),
+      ),
+      child: Text(
+        label,
+        style: theme.textTheme.small.copyWith(
+          color: theme.colorScheme.secondaryForeground,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
 }

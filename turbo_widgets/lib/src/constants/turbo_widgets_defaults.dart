@@ -50,68 +50,48 @@ Theme Support:
 - Ensure proper contrast ratios and visibility in both themes
 
 Parameter Configuration (MANDATORY):
-- EVERY parameter of EVERY stateless widget MUST be configurable through TPlaygroundParameters
+- EVERY parameter of EVERY stateless widget MUST be configurable through TPlaygroundParameterModel
 - ALWAYS use childBuilder, NEVER use child directly - all widget values must be adjustable in real-time
-- Define a TNotifier in the ViewModel for EACH widget parameter (no hardcoded values)
-- Pass ALL parameters to TPlayground.parameters and build the widget via childBuilder
-- Use primitive types (String, int, double, bool) or options lists for enum-like values
-- If a widget has 5 parameters, you MUST have 5 TPlaygroundParameter entries - no exceptions
+- Initialize componentParameters in the ViewModel with a TPlaygroundParameterModel containing all widget parameters
+- Use the typed maps: strings, ints, doubles, bools, selects (for enums via TSelectOption)
+- If a widget has 5 parameters, you MUST have 5 entries across the typed maps - no exceptions
 
 Example parameter setup (note: ALL props are parameters):
 ```dart
-// In ViewModel - one TNotifier per widget prop
-final TNotifier<String> title = TNotifier('Default Title');
-final TNotifier<String> subtitle = TNotifier('Subtitle text');
-final TNotifier<bool> isEnabled = TNotifier(true);
-final TNotifier<double> size = TNotifier(48.0);
-final TNotifier<String> variant = TNotifier('primary');
-
-// Build parameters - EVERY prop becomes a parameter
-TPlaygroundParameters get parameters => TPlaygroundParameters(
-  parameters: [
-    TPlaygroundParameter<String>(
-      id: 'title',
-      label: 'Title',
-      valueListenable: title,
-      onChanged: (v) => title.value = v,
+// In ViewModel - initialize componentParameters with TPlaygroundParameterModel
+void _initializePlaygroundParameters() {
+  _componentParameters.update(
+    TPlaygroundParameterModel(
+      strings: {
+        'title': 'Default Title',
+        'subtitle': 'Subtitle text',
+      },
+      bools: {
+        'isEnabled': true,
+      },
+      doubles: {
+        'size': 48.0,
+      },
+      selects: {
+        'variant': TSelectOption<String>(
+          value: 'primary',
+          options: ['primary', 'secondary', 'destructive'],
+        ),
+      },
     ),
-    TPlaygroundParameter<String>(
-      id: 'subtitle',
-      label: 'Subtitle',
-      valueListenable: subtitle,
-      onChanged: (v) => subtitle.value = v,
-    ),
-    TPlaygroundParameter<bool>(
-      id: 'isEnabled',
-      label: 'Is Enabled',
-      valueListenable: isEnabled,
-      onChanged: (v) => isEnabled.value = v,
-    ),
-    TPlaygroundParameter<double>(
-      id: 'size',
-      label: 'Size',
-      valueListenable: size,
-      onChanged: (v) => size.value = v,
-    ),
-    TPlaygroundParameter<String>(
-      id: 'variant',
-      label: 'Variant',
-      valueListenable: variant,
-      onChanged: (v) => variant.value = v,
-      options: ['primary', 'secondary', 'destructive'],
-    ),
-  ],
-);
+  );
+}
 
 // In TPlayground - ALWAYS use childBuilder, NEVER child
 TPlayground(
-  parameters: viewModel.parameters,
-  childBuilder: (context, params) => MyWidget(
-    title: params.value<String>('title'),
-    subtitle: params.value<String>('subtitle'),
-    isEnabled: params.value<bool>('isEnabled'),
-    size: params.value<double>('size'),
-    variant: params.value<String>('variant'),
+  parametersListenable: viewModel.componentParameters,
+  onParametersChanged: viewModel.setComponentParameters,
+  childBuilder: (context, model) => MyWidget(
+    title: model.strings['title'] ?? '',
+    subtitle: model.strings['subtitle'] ?? '',
+    isEnabled: model.bools['isEnabled'] ?? true,
+    size: model.doubles['size'] ?? 48.0,
+    variant: model.selects['variant']?.value ?? 'primary',
   ),
   // ... other TPlayground props
 )
