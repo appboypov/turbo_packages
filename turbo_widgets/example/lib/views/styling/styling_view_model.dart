@@ -7,7 +7,7 @@ class StylingViewModel extends TViewModel<Object?> {
     _initializePlaygroundParameters();
   }
 
-  final TNotifier<bool> _isPlaygroundExpanded = TNotifier(false);
+  final TNotifier<bool> _isPlaygroundExpanded = TNotifier(true);
   final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.mobile);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');

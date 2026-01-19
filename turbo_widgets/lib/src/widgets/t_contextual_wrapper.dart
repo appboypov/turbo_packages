@@ -585,36 +585,8 @@ class _TPositionContent extends StatelessWidget {
 
   Axis get _variationStackAxis => _isTopOrBottom ? Axis.vertical : Axis.horizontal;
 
-  Axis get _variationContentAxis => _isTopOrBottom ? Axis.horizontal : Axis.vertical;
-
   bool get _reverseVariationOrder =>
       position == TContextualPosition.bottom || position == TContextualPosition.right;
-
-  Widget _buildVariationGroup(List<Widget> widgets) {
-    if (widgets.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    if (builder != null) {
-      return builder!(widgets);
-    } else if (widgets.length == 1) {
-      return Align(
-        alignment: alignment,
-        child: widgets.first,
-      );
-    } else {
-      return SingleChildScrollView(
-        scrollDirection: _variationContentAxis,
-        child: Flex(
-          direction: _variationContentAxis,
-          mainAxisSize: mainAxisSize,
-          mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
-          crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
-          children: widgets,
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -623,7 +595,15 @@ class _TPositionContent extends StatelessWidget {
     for (final variation in TContextualVariation.values) {
       final widgets = contentByVariation[variation] ?? const [];
       if (widgets.isNotEmpty) {
-        variationGroups.add(_buildVariationGroup(widgets));
+        variationGroups.add(
+          _VariationGroup(
+            widgets: widgets,
+            position: position,
+            alignment: alignment,
+            mainAxisSize: mainAxisSize,
+            builder: builder,
+          ),
+        );
       }
     }
 
@@ -645,63 +625,160 @@ class _TPositionContent extends StatelessWidget {
         child: Flex(
           direction: _variationStackAxis,
           mainAxisSize: mainAxisSize,
-          mainAxisAlignment: _alignmentToMainAxisAlignment(alignment),
-          crossAxisAlignment: _alignmentToCrossAxisAlignment(alignment),
+          mainAxisAlignment: _TPositionContent.alignmentToMainAxisAlignment(
+            alignment,
+            _isTopOrBottom,
+          ),
+          crossAxisAlignment: _TPositionContent.alignmentToCrossAxisAlignment(
+            alignment,
+            _isTopOrBottom,
+          ),
           children: orderedGroups,
         ),
       );
     }
 
+    // Create opacity animation for FadeTransition based on phase
+    final opacityTween = switch (phase) {
+      _AnimationPhase.idle => Tween<double>(begin: 1.0, end: 1.0),
+      _AnimationPhase.animatingOut => Tween<double>(begin: 1.0, end: 0.0),
+      _AnimationPhase.animatingIn => Tween<double>(begin: 0.0, end: 1.0),
+    };
+
+    final opacityAnimation = opacityTween.animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: curve,
+      ),
+    );
+
     return AnimatedBuilder(
-      animation: controller,
+      animation: Listenable.merge([controller, opacityAnimation]),
       builder: (context, child) {
         final curvedValue = curve.transform(controller.value);
 
-        final double opacity;
         final Offset offset;
         final slideOffset = _getSlideOffset();
 
         switch (phase) {
           case _AnimationPhase.idle:
-            opacity = 1.0;
             offset = Offset.zero;
           case _AnimationPhase.animatingOut:
-            opacity = 1.0 - curvedValue;
             offset = Offset(
               slideOffset.dx * curvedValue,
               slideOffset.dy * curvedValue,
             );
           case _AnimationPhase.animatingIn:
-            opacity = curvedValue;
             offset = Offset(
               slideOffset.dx * (1.0 - curvedValue),
               slideOffset.dy * (1.0 - curvedValue),
             );
         }
 
-        return Opacity(
-          opacity: opacity.clamp(0.0, 1.0),
+        // Use FadeTransition instead of Opacity to avoid saveLayer()
+        return FadeTransition(
+          opacity: opacityAnimation,
           child: FractionalTranslation(
             translation: offset,
             child: child,
           ),
         );
       },
-      child: contentWidget,
+      child: Semantics(
+        label: _getPositionLabel(),
+        child: contentWidget,
+      ),
     );
   }
 
-  MainAxisAlignment _alignmentToMainAxisAlignment(Alignment alignment) {
-    final value = _isTopOrBottom ? alignment.x : alignment.y;
+  String _getPositionLabel() {
+    final variationLabels = <String>[];
+    for (final variation in TContextualVariation.values) {
+      final widgets = contentByVariation[variation] ?? const [];
+      if (widgets.isNotEmpty) {
+        variationLabels.add(variation.name);
+      }
+    }
+
+    if (variationLabels.isEmpty) {
+      return '${position.name} contextual content';
+    }
+
+    return '${position.name} contextual content: ${variationLabels.join(", ")}';
+  }
+
+  static MainAxisAlignment alignmentToMainAxisAlignment(
+    Alignment alignment,
+    bool isTopOrBottom,
+  ) {
+    final value = isTopOrBottom ? alignment.x : alignment.y;
     if (value < 0) return MainAxisAlignment.start;
     if (value > 0) return MainAxisAlignment.end;
     return MainAxisAlignment.center;
   }
 
-  CrossAxisAlignment _alignmentToCrossAxisAlignment(Alignment alignment) {
-    final value = _isTopOrBottom ? alignment.y : alignment.x;
+  static CrossAxisAlignment alignmentToCrossAxisAlignment(
+    Alignment alignment,
+    bool isTopOrBottom,
+  ) {
+    final value = isTopOrBottom ? alignment.y : alignment.x;
     if (value < 0) return CrossAxisAlignment.start;
     if (value > 0) return CrossAxisAlignment.end;
     return CrossAxisAlignment.center;
+  }
+}
+
+/// Stateless widget that renders a single variation group of widgets.
+class _VariationGroup extends StatelessWidget {
+  const _VariationGroup({
+    required this.widgets,
+    required this.position,
+    required this.alignment,
+    required this.mainAxisSize,
+    this.builder,
+  });
+
+  final List<Widget> widgets;
+  final TContextualPosition position;
+  final Alignment alignment;
+  final MainAxisSize mainAxisSize;
+  final Widget Function(List<Widget> children)? builder;
+
+  bool get _isTopOrBottom =>
+      position == TContextualPosition.top || position == TContextualPosition.bottom;
+
+  Axis get _variationContentAxis => _isTopOrBottom ? Axis.horizontal : Axis.vertical;
+
+  @override
+  Widget build(BuildContext context) {
+    if (widgets.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    if (builder != null) {
+      return builder!(widgets);
+    } else if (widgets.length == 1) {
+      return Align(
+        alignment: alignment,
+        child: widgets.first,
+      );
+    } else {
+      return SingleChildScrollView(
+        scrollDirection: _variationContentAxis,
+        child: Flex(
+          direction: _variationContentAxis,
+          mainAxisSize: mainAxisSize,
+          mainAxisAlignment: _TPositionContent.alignmentToMainAxisAlignment(
+            alignment,
+            _isTopOrBottom,
+          ),
+          crossAxisAlignment: _TPositionContent.alignmentToCrossAxisAlignment(
+            alignment,
+            _isTopOrBottom,
+          ),
+          children: widgets,
+        ),
+      );
+    }
   }
 }
