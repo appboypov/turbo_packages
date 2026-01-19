@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_widgets/src/enums/t_screen_type.dart';
+import 'package:turbo_widgets/src/enums/turbo_widgets_screen_types.dart';
 
 class TPlaygroundComponentWrapper extends StatelessWidget {
   const TPlaygroundComponentWrapper({
@@ -9,7 +9,7 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
     super.key,
   });
 
-  final TScreenType screenType;
+  final TurboWidgetsScreenTypes screenType;
   final Widget child;
 
   static const double _mobileWidth = 375;
@@ -18,11 +18,11 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
 
   double _getMaxWidth(double availableWidth) {
     switch (screenType) {
-      case TScreenType.mobile:
+      case TurboWidgetsScreenTypes.mobile:
         return _mobileWidth;
-      case TScreenType.tablet:
+      case TurboWidgetsScreenTypes.tablet:
         return _tabletWidth;
-      case TScreenType.desktop:
+      case TurboWidgetsScreenTypes.desktop:
         return availableWidth.isFinite ? availableWidth : _desktopFallbackWidth;
     }
   }
@@ -49,7 +49,7 @@ class TPlaygroundComponentWrapper extends StatelessWidget {
               curve: Curves.easeInOut,
               constraints: BoxConstraints(
                 maxWidth: maxWidth,
-                minHeight: screenType != TScreenType.desktop ? 600 : 0,
+                minHeight: screenType != TurboWidgetsScreenTypes.desktop ? 600 : 0,
               ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.background,

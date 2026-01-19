@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/enums/t_color_container.dart';
-import 'package:roomy_mobile/ui/enums/t_theme_mode.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/t_icon.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_color_container.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_icon.dart';
 
 class TFancyIconContainer extends StatelessWidget {
   const TFancyIconContainer({
@@ -39,7 +39,7 @@ class TFancyIconContainer extends StatelessWidget {
       builder: (context) {
         final color = bgColor ?? context.colors.cardMidground;
         return Container(
-          child: TIconOld.small(iconData, color: color.onColor),
+          child: TIconSmall.small(iconData, color: color.onColor),
           width: size ?? TColorContainerType.icon.height,
           height: size ?? TColorContainerType.icon.height,
           decoration: BoxDecoration(

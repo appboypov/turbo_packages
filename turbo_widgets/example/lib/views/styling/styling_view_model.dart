@@ -5,14 +5,14 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 class StylingViewModel extends TViewModel<Object?> {
   StylingViewModel();
 
-  final TNotifier<TScreenType> _screenType = TNotifier(TScreenType.desktop);
+  final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.desktop);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');
   final TNotifier<String> _variations = TNotifier('1');
   final TNotifier<String> _activeTab = TNotifier('request');
   final TNotifier<String> _instructions = TNotifier('');
 
-  TNotifier<TScreenType> get screenType => _screenType;
+  TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
   TNotifier<bool> get isGeneratorOpen => _isGeneratorOpen;
   TNotifier<String> get userRequest => _userRequest;
   TNotifier<String> get variations => _variations;
@@ -30,7 +30,7 @@ class StylingViewModel extends TViewModel<Object?> {
     super.dispose();
   }
 
-  void setScreenType(TScreenType value) {
+  void setScreenType(TurboWidgetsScreenTypes value) {
     _screenType.update(value);
   }
 

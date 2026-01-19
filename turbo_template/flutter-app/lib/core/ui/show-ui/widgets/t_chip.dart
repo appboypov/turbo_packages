@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 
 class TChip extends StatelessWidget {
   const TChip({Key? key, required this.text}) : super(key: key);

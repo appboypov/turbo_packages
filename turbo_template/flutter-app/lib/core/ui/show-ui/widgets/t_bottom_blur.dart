@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
 import 'package:soft_edge_blur/soft_edge_blur.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 
 class TBottomBlur extends StatelessWidget {
   const TBottomBlur({Key? key, required this.child, this.size = 80, this.sigma = 40, this.color})

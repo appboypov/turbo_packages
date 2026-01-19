@@ -1,4 +1,4 @@
-enum TScreenType {
+enum TurboWidgetsScreenTypes {
   mobile,
   tablet,
   desktop,

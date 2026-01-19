@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:roomy_mobile/animations/widgets/shrinks.dart';
-import 'package:roomy_mobile/routing/enums/navigation_tab.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/enums/t_theme_mode.dart';
-import 'package:roomy_mobile/ui/extensions/color_extension.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/t_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_gap.dart';
-import 'package:roomy_mobile/ui/widgets/t_gradient.dart';
-import 'package:roomy_mobile/ui/widgets/t_icon.dart';
-import 'package:roomy_mobile/ui/widgets/t_margin.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/shrinks.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gap.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gradient.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_icon.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_margin.dart';
 
 class TBottomNavigation extends StatelessWidget {
   const TBottomNavigation({
@@ -48,7 +48,7 @@ class TBottomNavigation extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const TGap(16),
-                        TIconOld(
+                        TIconSmall(
                           navigationTab.icon,
                           iconSize: IconSize.medium,
                           color: switch (context.themeMode) {
@@ -66,7 +66,7 @@ class TBottomNavigation extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 2),
                             child: Text(
-                              navigationTab.label(),
+                              navigationTab.label(strings: context.strings),
                               style: context.texts.small.copyWith(
                                 color: switch (context.themeMode) {
                                   TThemeMode.dark =>

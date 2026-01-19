@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/models/icon_value_model.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_row.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_flex.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_icon.dart';
 
 enum TIconValueUseCase { listItem, button }
 
@@ -40,7 +44,7 @@ class TIconValueRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: spacing,
       children: [
-        TIconOld.small(iconValueModel.iconData, color: context.colors.icon),
+        TIconSmall.small(iconValueModel.iconData, color: context.colors.icon),
         Padding(
           padding: EdgeInsets.only(right: rightPadding),
           child: text,

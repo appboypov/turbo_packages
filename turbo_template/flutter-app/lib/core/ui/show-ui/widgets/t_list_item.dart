@@ -1,26 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:roomy_mobile/cleaning/dtos/cleaning_task_dto.dart';
-import 'package:roomy_mobile/cleaning/services/recurrence_service.dart';
-import 'package:roomy_mobile/data/extensions/date_time_extension.dart';
-import 'package:roomy_mobile/data/extensions/string_extension.dart';
-import 'package:roomy_mobile/data/globals/g_now.dart';
-import 'package:roomy_mobile/households/models/household_member.dart';
-import 'package:roomy_mobile/l10n/globals/g_strings.dart';
-import 'package:roomy_mobile/shopping/models/shopping_list.dart';
-import 'package:roomy_mobile/state/extensions/context_extension.dart';
-import 'package:roomy_mobile/ui/enums/date_format.dart';
-import 'package:roomy_mobile/ui/typedefs/on_item_pressed_def.dart';
-import 'package:roomy_mobile/ui/utils/haptic_button_utils.dart';
-import 'package:roomy_mobile/ui/widgets/buttons/t_button.dart';
-import 'package:roomy_mobile/ui/widgets/t_gap.dart';
-import 'package:roomy_mobile/ui/widgets/t_icon.dart';
-import 'package:roomy_mobile/ui/widgets/t_provider.dart';
-import 'package:roomy_mobile/ui/widgets/t_row.dart';
-import 'package:roomy_mobile/ui/widgets/t_size_badge.dart';
-import 'package:roomy_mobile/utils/globals/g_random.dart';
 import 'package:shadcn_ui/shadcn_ui.dart' hide DateFormat;
+import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 
 class TListItem extends StatelessWidget {
   const TListItem({

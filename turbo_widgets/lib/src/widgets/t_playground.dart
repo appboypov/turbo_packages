@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_widgets/src/enums/t_screen_type.dart';
+import 'package:turbo_widgets/src/enums/turbo_widgets_screen_types.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_component_wrapper.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_prompt_generator.dart';
 import 'package:turbo_widgets/src/widgets/playground/t_playground_screen_type_selector.dart';
@@ -25,8 +25,8 @@ class TPlayground extends StatelessWidget {
     this.onInstructionsChanged,
   });
 
-  final TScreenType screenType;
-  final ValueChanged<TScreenType> onScreenTypeChanged;
+  final TurboWidgetsScreenTypes screenType;
+  final ValueChanged<TurboWidgetsScreenTypes> onScreenTypeChanged;
   final bool isGeneratorOpen;
   final VoidCallback onToggleGenerator;
   final String userRequest;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/list_position.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
+import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum NavigationTab {
   home,
@@ -27,8 +28,7 @@ enum NavigationTab {
   static const defaultValue = NavigationTab.home;
 
 
-  String label({required BuildContext context}) {
-    final strings = context.strings;
+  String label({required Strings strings}) {
     switch (this) {
       case NavigationTab.home:
         return strings.home;

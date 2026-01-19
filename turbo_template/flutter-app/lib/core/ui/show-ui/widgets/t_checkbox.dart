@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:roomy_mobile/data/constants/k_svgs.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_selected_state.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_selected_state.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/buttons/t_button.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_gradient.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/generated/assets.gen.dart';
 
 class TCheckBox extends StatelessWidget {
   const TCheckBox({
@@ -87,11 +87,11 @@ class TCheckBox extends StatelessWidget {
                       switch (selectedState) {
                         SelectedState.deselected => null,
                         SelectedState.selected => SvgPicture.asset(
-                          kSvgsCheck,
+                          Assets.svgs.check.path,
                           colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
                         ),
                         SelectedState.excluded => SvgPicture.asset(
-                          kSvgsHyphen,
+                          Assets.svgs.hyphen.path,
                           colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
                         ),
                       },

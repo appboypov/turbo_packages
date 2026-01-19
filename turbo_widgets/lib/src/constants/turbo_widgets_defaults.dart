@@ -1,4 +1,4 @@
-abstract final class TDurations {
+abstract final class TurboWidgetsDefaults {
   static const Duration animation = Duration(milliseconds: 225);
   static const Duration animationX0p5 = Duration(milliseconds: 113);
   static const Duration animationX1p5 = Duration(milliseconds: 338);

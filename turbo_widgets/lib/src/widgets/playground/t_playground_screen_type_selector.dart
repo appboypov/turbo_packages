@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_widgets/src/enums/t_screen_type.dart';
+import 'package:turbo_widgets/src/enums/turbo_widgets_screen_types.dart';
 
 class TPlaygroundScreenTypeSelector extends StatelessWidget {
   const TPlaygroundScreenTypeSelector({
@@ -11,8 +11,8 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
     super.key,
   });
 
-  final TScreenType currentType;
-  final ValueChanged<TScreenType> onTypeChange;
+  final TurboWidgetsScreenTypes currentType;
+  final ValueChanged<TurboWidgetsScreenTypes> onTypeChange;
   final bool isGeneratorOpen;
   final VoidCallback onToggleGenerator;
 
@@ -22,38 +22,38 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ShadButton.raw(
-          variant: currentType == TScreenType.mobile
+          variant: currentType == TurboWidgetsScreenTypes.mobile
               ? ShadButtonVariant.primary
               : ShadButtonVariant.outline,
           size: ShadButtonSize.sm,
           width: 36,
           height: 36,
           padding: EdgeInsets.zero,
-          onPressed: () => onTypeChange(TScreenType.mobile),
+          onPressed: () => onTypeChange(TurboWidgetsScreenTypes.mobile),
           child: const Icon(LucideIcons.smartphone, size: 16),
         ),
         const SizedBox(width: 8),
         ShadButton.raw(
-          variant: currentType == TScreenType.tablet
+          variant: currentType == TurboWidgetsScreenTypes.tablet
               ? ShadButtonVariant.primary
               : ShadButtonVariant.outline,
           size: ShadButtonSize.sm,
           width: 36,
           height: 36,
           padding: EdgeInsets.zero,
-          onPressed: () => onTypeChange(TScreenType.tablet),
+          onPressed: () => onTypeChange(TurboWidgetsScreenTypes.tablet),
           child: const Icon(LucideIcons.tablet, size: 16),
         ),
         const SizedBox(width: 8),
         ShadButton.raw(
-          variant: currentType == TScreenType.desktop
+          variant: currentType == TurboWidgetsScreenTypes.desktop
               ? ShadButtonVariant.primary
               : ShadButtonVariant.outline,
           size: ShadButtonSize.sm,
           width: 36,
           height: 36,
           padding: EdgeInsets.zero,
-          onPressed: () => onTypeChange(TScreenType.desktop),
+          onPressed: () => onTypeChange(TurboWidgetsScreenTypes.desktop),
           child: const Icon(LucideIcons.laptop, size: 16),
         ),
         const SizedBox(width: 8),

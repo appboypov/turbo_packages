@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:roomy_mobile/ui/widgets/bottom_positioned.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/bottom_positioned.dart';
 
 class TFooter extends StatelessWidget {

@@ -16,7 +16,7 @@ dependencies:
   turbo_mvvm:
   turbo_notifiers:
   cupertino_icons: ^1.0.8
-  shadcn_ui: ^0.43.3
+  shadcn_ui: ^0.43.4
 
 dev_dependencies:
   flutter_test:
