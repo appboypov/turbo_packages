@@ -133,8 +133,8 @@ class MyAppViewModel extends TViewModel with Turbolytics {
 
   Future<void> _initEssentials() async {
     await _authService().isReady;
-    await _handleEnvironmentChange();
     await _localStorageService().isReady;
+    await _handleEnvironmentChange();
     await _languageService().isReady;
   }
 
