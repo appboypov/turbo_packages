@@ -5,8 +5,7 @@ description: Orchestrate multi-agent task handoff for a change.
 $ARGUMENTS
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Output task blocks to chat for immediate copy to external agents.

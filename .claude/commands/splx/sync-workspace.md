@@ -6,8 +6,7 @@ tags: [splx, workspace, maintenance]
 ---
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Spawn sub-agents for complex assessments when context is heavy (multiple changes, many tasks).

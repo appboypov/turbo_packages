@@ -5,8 +5,7 @@ description: Clarify user intent through iterative yes/no questions before propo
 $ARGUMENTS
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Use iterative yes/no questions to clarify intent before proposal creation.

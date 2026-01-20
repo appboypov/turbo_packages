@@ -5,8 +5,7 @@ description: Orchestrate sub-agents to complete work collaboratively.
 $ARGUMENTS
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Spawn exactly one sub-agent per task—never parallelize task execution.

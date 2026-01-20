@@ -6,8 +6,7 @@ tags: [splx, orchestrate, workflow]
 ---
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Output task blocks to chat for immediate copy to external agents.

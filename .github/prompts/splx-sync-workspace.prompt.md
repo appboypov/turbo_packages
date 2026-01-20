@@ -5,8 +5,7 @@ description: Scan workspace state and suggest maintenance actions.
 $ARGUMENTS
 <!-- PLX:START -->
 **Context**
-@workspace/ARCHITECTURE.md
-@workspace/AGENTS.md
+workspace/AGENTS.md
 
 **Guardrails**
 - Spawn sub-agents for complex assessments when context is heavy (multiple changes, many tasks).
