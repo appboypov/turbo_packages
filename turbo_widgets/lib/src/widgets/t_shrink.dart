@@ -26,7 +26,7 @@ class TVerticalShrink extends StatelessWidget {
   final Widget? hideChild;
   final double? width;
 
-  static final _key = UniqueKey();
+  static const Key _hiddenKey = ValueKey<String>('t_vertical_shrink_hidden');
 
   @override
   Widget build(BuildContext context) {
@@ -44,40 +44,32 @@ class TVerticalShrink extends StatelessWidget {
                     opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                         parent: animation,
-                        curve:
-                            const Interval(0.15, 1.0, curve: Curves.easeInOut),
+                        curve: const Interval(0.15, 1.0, curve: Curves.easeInOut),
                       ),
                     ),
                     child: child,
                   )
               : AnimatedSwitcher.defaultTransitionBuilder,
           layoutBuilder: (currentChild, previousChildren) {
-            List<Widget> children = previousChildren;
-            if (currentChild != null) {
-              if (previousChildren.isEmpty) {
-                children = [currentChild];
-              } else {
-                children = [
-                  Positioned(
-                    left: 0.0,
-                    right: 0.0,
-                    child: previousChildren[0],
-                  ),
-                  currentChild,
-                ];
-              }
-            }
             return Stack(
               clipBehavior: Clip.none,
               alignment: alignment,
-              children: children,
+              children: <Widget>[
+                for (final child in previousChildren)
+                  Positioned(
+                    left: 0.0,
+                    right: 0.0,
+                    child: child,
+                  ),
+                if (currentChild != null) currentChild,
+              ],
             );
           },
           child: show
               ? child
               : (hideChild ??
                   SizedBox(
-                    key: _key,
+                    key: _hiddenKey,
                     width: width ?? double.infinity,
                     height: 0,
                   )),
@@ -113,7 +105,7 @@ class THorizontalShrink extends StatelessWidget {
   final Widget? hideChild;
   final double? height;
 
-  static final _key = UniqueKey();
+  static const Key _hiddenKey = ValueKey<String>('t_horizontal_shrink_hidden');
 
   @override
   Widget build(BuildContext context) {
@@ -127,32 +119,25 @@ class THorizontalShrink extends StatelessWidget {
           switchInCurve: fadeInCurve,
           switchOutCurve: fadeOutCurve,
           layoutBuilder: (currentChild, previousChildren) {
-            List<Widget> children = previousChildren;
-            if (currentChild != null) {
-              if (previousChildren.isEmpty) {
-                children = [currentChild];
-              } else {
-                children = [
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    child: previousChildren[0],
-                  ),
-                  currentChild,
-                ];
-              }
-            }
             return Stack(
               clipBehavior: Clip.none,
               alignment: alignment,
-              children: children,
+              children: <Widget>[
+                for (final child in previousChildren)
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    child: child,
+                  ),
+                if (currentChild != null) currentChild,
+              ],
             );
           },
           child: show
               ? child
               : (hideChild ??
                   SizedBox(
-                    key: _key,
+                    key: _hiddenKey,
                     width: 0,
                     height: height ?? double.infinity,
                   )),
