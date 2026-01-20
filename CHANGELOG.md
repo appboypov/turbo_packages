@@ -4,6 +4,12 @@ All notable changes to the turbo_packages monorepo will be documented in this fi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.1.0] - 2026-01-20
+
+### Changed
+- turbo_mvvm v1.1.0: Added TurboMvvmDefaults class, breaking renames (BaseViewModel → TurboViewModel, ViewModelBuilder → TurboViewModelBuilder)
+- turbo_widgets v1.1.0: Added TViewBuilder, TContextualButtons, navigation components, TPlayground enhancements
+
 ## [1.0.0] - 2026-01-13
 
 ### Added

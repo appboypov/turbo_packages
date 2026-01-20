@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TPlayground device frame preview mode with device selection
 - TPlayground dynamic parameter system with TPlaygroundParameterModel
 - TCollapsibleSection widget for expandable content sections
+- TViewBuilder widget combining TContextualButtons and TViewModelBuilder for views with contextual actions
+- turbo_mvvm dependency for TViewModelBuilder integration
 
 ### Changed
 - TPlayground layout restructured with improved padding and component organization
