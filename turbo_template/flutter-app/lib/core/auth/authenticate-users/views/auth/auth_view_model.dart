@@ -26,14 +26,14 @@ import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/environment/globals/g_env.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
-import 'package:veto/veto.dart';
 
 import '../../../../state/manage-state/extensions/completer_extension.dart';
 import '../../../../state/manage-state/utils/mutex.dart';
 
-class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagement {
+class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static AuthViewModel get locate => GetIt.I.get();
@@ -237,7 +237,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
       );
       if (shouldVisit != true) return;
 
-      setBusy(isBusy, busyType: BusyType.indicatorBackdropIgnorePointer);
+      setBusy(isBusy, busyType: TBusyType.indicatorBackdropIgnorePointer);
       await _urlLauncherService.tryLaunchUrl(url: TValues.noAuthId);
     } catch (error, stackTrace) {
       log.error(
@@ -259,7 +259,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
       );
       if (shouldVisit != true) return;
 
-      setBusy(isBusy, busyType: BusyType.indicatorBackdropIgnorePointer);
+      setBusy(isBusy, busyType: TBusyType.indicatorBackdropIgnorePointer);
       await _urlLauncherService.tryLaunchUrl(url: gConfig.privacyPolicyUrl);
     } catch (error, stackTrace) {
       log.error(
@@ -294,7 +294,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
           switch (authViewMode) {
             case AuthViewMode.login:
               if (_loginForm.isValid) {
-                setBusy(true, busyType: BusyType.indicatorBackdropIgnorePointer);
+                setBusy(true, busyType: TBusyType.indicatorBackdropIgnorePointer);
 
                 final email = _loginForm.email.cValue!;
                 final password = _loginForm.password.cValue!;
@@ -379,7 +379,7 @@ class AuthViewModel extends BaseViewModel with Turbolytics, BusyServiceManagemen
           case AuthViewMode.register:
             try {
               if (_registerForm.isValid) {
-                setBusy(true, busyType: BusyType.indicatorBackdropIgnorePointer);
+                setBusy(true, busyType: TBusyType.indicatorBackdropIgnorePointer);
 
                 final email = _registerForm.email.cValue!;
                 final password = _registerForm.password.cValue!;

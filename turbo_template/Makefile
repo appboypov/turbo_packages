@@ -1,10 +1,32 @@
-.PHONY: help emulators deploy deploy-staging deploy-prod deploy-functions deploy-rules deploy-remoteconfig functions-install functions-build functions-watch
+.PHONY: help init init-dry-run scripts-get sync-from-template sync-from-template-dry-run sync-to-template sync-to-template-dry-run emulators deploy deploy-staging deploy-prod deploy-functions deploy-rules deploy-remoteconfig functions-install functions-build functions-watch
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
 	@echo ''
 	@echo 'Available targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+# Template Initialization
+scripts-get: ## Install script dependencies
+	cd scripts && dart pub get
+
+init: scripts-get ## Initialize project from turbo_template_config.yaml
+	dart run scripts/init_project.dart --yes
+
+init-dry-run: scripts-get ## Preview initialization changes
+	dart run scripts/init_project.dart --dry-run --verbose
+
+sync-from-template: scripts-get ## Sync changes from template (downstream)
+	dart run scripts/sync_from_template.dart
+
+sync-from-template-dry-run: scripts-get ## Preview downstream sync changes
+	dart run scripts/sync_from_template.dart --dry-run --verbose
+
+sync-to-template: scripts-get ## Sync whitelisted changes to template (upstream)
+	dart run scripts/sync_to_template.dart
+
+sync-to-template-dry-run: scripts-get ## Preview upstream sync changes
+	dart run scripts/sync_to_template.dart --dry-run --verbose
 
 # Firebase Emulators
 emulators: ## Start Firebase emulators

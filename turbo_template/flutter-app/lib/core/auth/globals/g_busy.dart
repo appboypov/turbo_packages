@@ -8,7 +8,7 @@ void gSetIdle() => gSetBusy(isBusy: false);
 
 void gSetBusy({
   bool isBusy = true,
-  Duration minBusyDuration = TMVVMDurations.minBusy,
+  Duration minBusyDuration = TurboMvvmDefaults.minBusy,
   String? busyMessage,
   String? busyTitle,
   TBusyType? busyType,

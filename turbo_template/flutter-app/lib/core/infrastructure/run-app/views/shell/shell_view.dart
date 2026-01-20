@@ -4,7 +4,7 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/vi
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
-import 'package:veto/veto.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 class ShellView extends StatelessWidget {
   const ShellView({super.key});
@@ -12,7 +12,7 @@ class ShellView extends StatelessWidget {
   static const String path = 'pew';
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<ShellViewModel>(
+  Widget build(BuildContext context) => TViewBuilder<ShellViewModel>(
     builder: (context, model, isInitialised, child) {
       if (!isInitialised) return TWidgets.nothing;
 

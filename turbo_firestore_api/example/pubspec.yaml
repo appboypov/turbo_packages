@@ -20,7 +20,7 @@ dependencies:
   turbo_notifiers:
   turbo_serializable:
   turbo_firestore_api:
-  veto: ^0.0.16
+  turbo_mvvm:
 
 dev_dependencies:
   flutter_test:

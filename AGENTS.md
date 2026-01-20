@@ -103,3 +103,8 @@ Use `/workspace/AGENTS.md` to learn:
 Keep this managed block so 'splx update' can refresh the instructions.
 
 <!-- PLX:END -->
+
+<Memory>
+@workspace/PROGRESS.md
+@workspace/MEMORY.md
+</Memory>

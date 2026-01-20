@@ -23,7 +23,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_scroll_view.dar
 import 'package:turbo_flutter_template/core/ux/manage-input/widgets/t_form_field.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/utils/haptic_button_utils.dart';
 import 'package:turbo_flutter_template/generated/assets.gen.dart';
-import 'package:veto/data/models/base_view_model.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 import 'auth_view_model.dart';
 
@@ -34,7 +34,7 @@ class AuthView extends StatelessWidget {
   static const double _startupLogoWidth = 119;
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<AuthViewModel>(
+  Widget build(BuildContext context) => TViewModelBuilder<AuthViewModel>(
     builder: (context, model, isInitialised, child) {
       if (!isInitialised)
         return TScaffold(

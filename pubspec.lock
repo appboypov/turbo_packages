@@ -1761,14 +1761,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  veto:
-    dependency: transitive
-    description:
-      name: veto
-      sha256: "240bb46096758ffa4a86a0dc2578347d2b43709f483f443d0fa6162c86a43581"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.16"
   vm_service:
     dependency: transitive
     description:

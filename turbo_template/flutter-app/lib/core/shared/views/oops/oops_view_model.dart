@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/logout_management.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbolytics/turbolytics.dart';
-import 'package:veto/data/models/base_view_model.dart';
 
-class OopsViewModel extends BaseViewModel with Turbolytics, LogoutManagement {
+class OopsViewModel extends TViewModel with Turbolytics, LogoutManagement {
   OopsViewModel();
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\

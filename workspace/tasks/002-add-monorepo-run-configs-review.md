@@ -1,5 +1,5 @@
 ---
-status: to-do
+status: done
 skill-level: junior
 parent-type: change
 parent-id: add-monorepo-run-configs
@@ -31,15 +31,15 @@ All run configurations are validated, tested, and ready for use.
 - [ ] Documentation or comments explain any non-obvious configuration choices
 
 ## Implementation Checklist
-- [ ] 2.1 Review IntelliJ run configuration XML syntax
-- [ ] 2.2 Review Cursor/VS Code launch configuration JSON syntax
-- [ ] 2.3 Verify all Melos operation configurations use root as working directory
-- [ ] 2.4 Verify all turbo_template app configurations use turbo_template/flutter-app as working directory
-- [ ] 2.5 Compare configuration structure with turbo_template patterns
-- [ ] 2.6 Verify environment variables and dart-define flags are correct
-- [ ] 2.7 Check that all required configurations are present (no missing operations)
-- [ ] 2.8 Validate that configurations can be selected and executed in IDE
-- [ ] 2.9 Document any deviations from turbo_template patterns with rationale
+- [x] 2.1 Review IntelliJ run configuration XML syntax
+- [x] 2.2 Review Cursor/VS Code launch configuration JSON syntax
+- [x] 2.3 Verify all Melos operation configurations use root as working directory
+- [x] 2.4 Verify all turbo_template app configurations use turbo_template/flutter-app as working directory
+- [x] 2.5 Compare configuration structure with turbo_template patterns
+- [x] 2.6 Verify environment variables and dart-define flags are correct
+- [x] 2.7 Check that all required configurations are present (no missing operations)
+- [x] 2.8 Validate that configurations can be selected and executed in IDE
+- [x] 2.9 Document any deviations from turbo_template patterns with rationale
 
 ## Notes
 - Focus on consistency with turbo_template patterns

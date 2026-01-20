@@ -21,14 +21,14 @@ import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_g
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:turbo_flutter_template/environment/config/emulator_config.dart';
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbolytics/turbolytics.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'package:veto/veto.dart';
 
-class MyAppViewModel extends BaseViewModel with Turbolytics {
+class MyAppViewModel extends TViewModel with Turbolytics {
   MyAppViewModel({
     required LazyLocatorDef<BaseRouterService> baseRouterService,
-    required LazyLocatorDef<BusyService> busyService,
+    required LazyLocatorDef<TBusyService> busyService,
     required LazyLocatorDef<ConnectionService> connectionService,
     required LazyLocatorDef<PackageInfoService> packageInfoService,
     required LocatorService locatorService,
@@ -48,7 +48,7 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
   final LazyLocatorDef<BaseRouterService> _baseRouterService;
-  final LazyLocatorDef<BusyService> _busyService;
+  final LazyLocatorDef<TBusyService> _busyService;
   final LazyLocatorDef<ConnectionService> _connectionService;
   final LazyLocatorDef<PackageInfoService> _packageInfoService;
   final LocatorService _locatorService;
@@ -58,7 +58,7 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
   late final _shakeGestureService = ShakeGestureService.locate;
 
   BaseRouterService get baseRouterService => _baseRouterService();
-  BusyService get busyService => _busyService();
+  TBusyService get busyService => _busyService();
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -104,7 +104,7 @@ class MyAppViewModel extends BaseViewModel with Turbolytics {
   LazyLocatorDef<ToastService> get lazyToastService =>
           () => ToastService.locate;
   GoRouter get coreRouter => baseRouterService.coreRouter;
-  ValueListenable<BusyModel> get busyListenable => busyService.isBusyListenable;
+  ValueListenable<TBusyModel> get busyListenable => busyService.isBusyListenable;
   ValueListenable<TSupportedLanguage> get language => _languageService().language;
   ValueListenable<TThemeMode> get themeMode => _themeService().themeModeListenable;
   ValueListenable<bool> get hasInternetConnection => _connectionService().hasInternetConnection;

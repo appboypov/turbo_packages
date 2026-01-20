@@ -3,7 +3,7 @@ import 'package:turbo_flutter_template/core/state/manage-state/extensions/contex
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_empty_placeholder.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_scaffold.dart';
-import 'package:veto/data/models/base_view_model.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 import 'oops_view_model.dart';
 
@@ -14,7 +14,7 @@ class OopsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<OopsViewModel>(
+    return TViewModelBuilder<OopsViewModel>(
       builder: (context, model, isInitialised, child) {
         if (!isInitialised) return TWidgets.nothing;
         return Semantics(

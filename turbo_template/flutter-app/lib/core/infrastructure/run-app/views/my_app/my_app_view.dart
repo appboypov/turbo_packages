@@ -24,7 +24,7 @@ import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider_builder.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart';
-import 'package:veto/veto.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
@@ -32,7 +32,7 @@ class MyAppView extends StatelessWidget {
   static const String path = 'app';
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<MyAppViewModel>(
+  Widget build(BuildContext context) => TViewModelBuilder<MyAppViewModel>(
     isReactive: false,
     builder: (context, model, isInitialised, _) {
       if (!isInitialised) return TWidgets.nothing;
@@ -93,7 +93,7 @@ class MyAppView extends StatelessWidget {
                         initialEntries: [
                           OverlayEntry(
                             builder: (_) {
-                              return ValueListenableBuilderX2<BusyModel, bool>(
+                              return ValueListenableBuilderX2<TBusyModel, bool>(
                                 valueListenable: model.busyListenable,
                                 valueListenable2: model.hasInternetConnection,
                                 builder: (context, busyModel, hasInternetConnection, _) {
@@ -137,7 +137,7 @@ class MyAppView extends StatelessWidget {
     viewModelBuilder: () => MyAppViewModel(
       packageInfoService: () => PackageInfoService(),
       baseRouterService: () => BaseRouterService.locate,
-      busyService: () => BusyService.instance(),
+      busyService: () => TBusyService.instance(),
       connectionService: () => ConnectionService.locate,
       languageService: () => LanguageService.locate,
       themeService: () => ThemeService.locate,

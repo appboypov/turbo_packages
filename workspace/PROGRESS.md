@@ -1,251 +1,207 @@
-# Implementation Progress: remove-github-actions-pipelines
+# Bootstrap and Sync Turbo Template Progress
 
-## Tasks Overview
+## Workflow Instructions
 
-- [ ] Task 1: workflows
-- [ ] Task 2: docs
-- [ ] Task 3: changes
+**IMPORTANT**: Read this entire file after each conversation compact to restore context.
+
+### After Compact Checklist
+- [ ] Read this file fully
+- [ ] Check current status in Status Overview
+- [ ] Run `splx get task` to get next task
+- [ ] Resume from where left off
 
 ---
 
-## Task 1: workflows
+## Context
 
-**Status:** to-do
-**Task ID:** 001-remove-github-actions-pipelines-delete-workflows
+**Goal**: Make turbo_template ready for copy with TViewBuilder, configuration management, and bidirectional sync scripts.
 
-### Context
+**Linear Issue**: TURBO-19
 
-<details>
-<summary>Proposal Context (click to expand)</summary>
+**Source Files**:
+- `workspace/changes/bootstrap-sync-turbo-template/proposal.md`
+- `workspace/changes/bootstrap-sync-turbo-template/request.md`
+- `workspace/changes/bootstrap-sync-turbo-template/specs/turbo-template-sync/spec.md`
 
-## Why
+**Key Decisions**:
+1. TViewBuilder migration: Shell only (not all views)
+2. Config values: All identifiers, URLs, Firebase IDs (with current defaults)
+3. Script language: Dart CLI + Makefile targets
+4. Change detection: Git commit hash comparison
+5. Downstream sync: Leave project-only files untouched
+6. Upstream sync: Revert to template defaults, respect sync_upwards whitelist
+7. Script location: `turbo_template/scripts/` at template root
 
-Currently, GitHub Actions workflows automatically publish packages to pub.dev when version numbers change. This creates:
-- Risk of accidental publication without proper review
-- Loss of manual control over when packages are published
-- Automated tag and release creation that may not align with release strategy
-- CI complexity that may not be necessary for a monorepo with manual release cycles
+---
 
-By removing all GitHub Actions publishing pipelines, all publication will be manual, giving developers full control over when and how packages are published to pub.dev.
+## Status Overview
 
-## What Changes
+```
+1. 001-migrate-shell           🔴 NOT STARTED (refactor)
+2. 002-create-config           🔴 NOT STARTED (infrastructure)
+3. 003-init-script             🔴 NOT STARTED (infrastructure) [blocked: 002]
+4. 004-downstream-sync         🔴 NOT STARTED (infrastructure) [blocked: 002,003]
+5. 005-upstream-sync           🔴 NOT STARTED (infrastructure) [blocked: 002,003,004]
+6. 006-validate-envs           🔴 NOT STARTED (chore) [blocked: 001]
+7. 007-review                  🔴 NOT STARTED (chore) [blocked: all]
+```
 
-- **Remove root-level CI workflow**: Delete `.github/workflows/pub-check.yml` (PR validation workflow)
-- **Remove package-level publish workflows**: Delete all `.github/workflows/publish.yml` files from individual packages
-- **Update specifications**: Modify package-publication and monorepo-structure specs to reflect manual-only publishing
-- **Update documentation**: Remove references to CI automation from workspace/AGENTS.md
-</details>
+**Progress**: 0/7 tasks complete (0%)
 
-### Task Details
+---
 
-# Task: Delete GitHub Actions Workflow Files
+## Detailed Status
 
-## End Goal
-Remove all GitHub Actions workflow files that automate publishing or validation, ensuring all publishing is manual.
+### Task 001: Migrate ShellView to TViewBuilder
+**Status**: 🔴 NOT STARTED
+**Type**: refactor | **Skill**: junior
 
-## Currently
-- Root-level `.github/workflows/pub-check.yml` validates packages on PRs
-- Package-level `.github/workflows/publish.yml` files in turbo_mvvm, turbo_notifiers, and turbolytics automatically publish when version changes
-- These workflows create tags, releases, and publish to pub.dev automatically
+**Work**:
+- [ ] Replace ViewModelBuilder with TViewBuilder in shell_view.dart
+- [ ] Update imports
+- [ ] Verify behavior unchanged
 
-## Should
-- All GitHub Actions workflow files related to publishing are deleted
-- No automated publishing occurs
-- Developers must manually run `melos pub-publish` to publish packages
+**Key File**: `turbo_template/flutter-app/lib/core/infrastructure/run-app/views/shell/shell_view.dart`
 
-## Constraints
-- [ ] Must delete root-level pub-check.yml workflow
-- [ ] Must delete all package-level publish.yml workflows
-- [ ] Must not break any existing manual publishing commands (melos pub-publish)
-- [ ] Must preserve any non-publishing workflows if they exist
+---
 
-## Acceptance Criteria
-- [ ] `.github/workflows/pub-check.yml` is deleted
-- [ ] `turbo_mvvm/.github/workflows/publish.yml` is deleted
-- [ ] `turbo_notifiers/.github/workflows/publish.yml` is deleted
-- [ ] `turbolytics/.github/workflows/publish.yml` is deleted
-- [ ] No other publish-related workflows remain
-- [ ] Manual publishing via `melos pub-publish` still works
+### Task 002: Create turbo_template_config.yaml
+**Status**: 🔴 NOT STARTED
+**Type**: infrastructure | **Skill**: medior
 
-## Implementation Checklist
-- [ ] 1.1 Delete `.github/workflows/pub-check.yml`
-- [ ] 1.2 Delete `turbo_mvvm/.github/workflows/publish.yml`
-- [ ] 1.3 Delete `turbo_notifiers/.github/workflows/publish.yml`
-- [ ] 1.4 Delete `turbolytics/.github/workflows/publish.yml`
-- [ ] 1.5 Verify no other publish-related workflows exist
-- [ ] 1.6 Test that `melos pub-publish --dry-run` still works locally
+**Work**:
+- [ ] Document all hardcoded values in template
+- [ ] Create config file at template root
+- [ ] Include sync metadata (template_path, last_commit_sync, sync_upwards)
+- [ ] Remove flutter-app/template.yaml (consolidate)
 
-## Notes
-After deletion, all publishing must be done manually using `melos pub-publish`. Developers should run `melos pub-check` locally before publishing to ensure packages meet 160/160 pub points.
+**Key File**: `turbo_template/turbo_template_config.yaml` (new)
 
-### Agent Instructions
+---
 
-Pick up this task and implement it according to the specifications above.
-Focus on the Constraints and Acceptance Criteria sections.
-When complete, mark the task as done:
+### Task 003: Create init_project.dart
+**Status**: 🔴 NOT STARTED
+**Type**: infrastructure | **Skill**: medior
+**Blocked by**: 002
 
+**Work**:
+- [ ] Create Dart script for find-replace across template
+- [ ] Handle binary files (skip)
+- [ ] Add dry-run mode
+- [ ] Add Makefile target
+
+**Key Files**:
+- `turbo_template/scripts/init_project.dart` (new)
+- `turbo_template/scripts/pubspec.yaml` (new)
+
+---
+
+### Task 004: Create sync_from_template.dart
+**Status**: 🔴 NOT STARTED
+**Type**: infrastructure | **Skill**: senior
+**Blocked by**: 002, 003
+
+**Work**:
+- [ ] Git diff to find changed files
+- [ ] Copy with value replacement
+- [ ] Update last_commit_sync
+- [ ] Add Makefile target
+
+**Key File**: `turbo_template/scripts/sync_from_template.dart` (new)
+
+---
+
+### Task 005: Create sync_to_template.dart
+**Status**: 🔴 NOT STARTED
+**Type**: infrastructure | **Skill**: senior
+**Blocked by**: 002, 003, 004
+
+**Work**:
+- [ ] Filter to sync_upwards whitelist
+- [ ] Revert values to template defaults
+- [ ] Update last_commit_sync in both configs
+- [ ] Add Makefile target
+
+**Key File**: `turbo_template/scripts/sync_to_template.dart` (new)
+
+---
+
+### Task 006: Validate All Environments
+**Status**: 🔴 NOT STARTED
+**Type**: chore | **Skill**: medior
+**Blocked by**: 001
+
+**Work**:
+- [ ] flutter analyze passes
+- [ ] Build succeeds for all environments
+- [ ] Shell view switching works
+
+---
+
+### Task 007: Review All Changes
+**Status**: 🔴 NOT STARTED
+**Type**: chore | **Skill**: senior
+**Blocked by**: 001-006
+
+**Work**:
+- [ ] End-to-end test of all scripts
+- [ ] Verify Makefile targets
+- [ ] Final quality check
+
+---
+
+## Implementation Log
+
+<!-- APPEND ONLY - Never modify or delete existing entries -->
+
+### ══════════════════════════════════════════
+### Checkpoint: Session 1 — 2026-01-20
+### ══════════════════════════════════════════
+
+**What was done**:
+- Created change proposal `bootstrap-sync-turbo-template`
+- Clarified all requirements via iterative questions
+- Created 7 task files in workspace/tasks/
+- Created spec delta for turbo-template-sync capability
+- Validated change with `splx validate change --id bootstrap-sync-turbo-template --strict`
+
+**Decisions made**:
+- All decisions documented in request.md and Context section above
+
+**Blockers/Issues**:
+- None
+
+**Next steps**:
+- Get user approval on proposal
+- Run `splx get task` to start first task (001-migrate-shell)
+
+---
+
+## Quick Reference
+
+**Progress**: 0/7 tasks complete (0%)
+
+**Commands**:
 ```bash
-splx complete task --id 001-remove-github-actions-pipelines-delete-workflows
+# Get next task
+splx get task
+
+# Complete current task
+splx complete task --id <task-id>
+
+# Validate change
+splx validate change --id bootstrap-sync-turbo-template --strict
+
+# View proposal
+splx get change --id bootstrap-sync-turbo-template
 ```
 
 ---
 
-## Task 2: docs
+## Resume Instructions
 
-**Status:** to-do
-**Task ID:** 002-remove-github-actions-pipelines-update-docs
-
-### Context
-
-<details>
-<summary>Proposal Context (click to expand)</summary>
-
-## Why
-
-Currently, GitHub Actions workflows automatically publish packages to pub.dev when version numbers change. This creates:
-- Risk of accidental publication without proper review
-- Loss of manual control over when packages are published
-- Automated tag and release creation that may not align with release strategy
-- CI complexity that may not be necessary for a monorepo with manual release cycles
-
-By removing all GitHub Actions publishing pipelines, all publication will be manual, giving developers full control over when and how packages are published to pub.dev.
-
-## What Changes
-
-- **Remove root-level CI workflow**: Delete `.github/workflows/pub-check.yml` (PR validation workflow)
-- **Remove package-level publish workflows**: Delete all `.github/workflows/publish.yml` files from individual packages
-- **Update specifications**: Modify package-publication and monorepo-structure specs to reflect manual-only publishing
-- **Update documentation**: Remove references to CI automation from workspace/AGENTS.md
-</details>
-
-### Task Details
-
-# Task: Update Documentation to Reflect Manual Publishing
-
-## End Goal
-Update workspace documentation to remove all references to CI automation and clarify that publishing is manual-only.
-
-## Currently
-- `workspace/AGENTS.md` contains references to GitHub Actions workflows for validation
-- Documentation mentions CI automation for publishing
-- Specs reference CI workflows that no longer exist
-
-## Should
-- All documentation clearly states publishing is manual-only
-- References to CI automation are removed
-- Instructions emphasize running `melos pub-check` locally before publishing
-- No mention of automated validation or publishing workflows
-
-## Constraints
-- [ ] Must update workspace/AGENTS.md to remove CI references
-- [ ] Must preserve all manual publishing instructions
-- [ ] Must clarify that developers must validate locally before publishing
-- [ ] Must not remove useful publishing guidance
-
-## Acceptance Criteria
-- [ ] workspace/AGENTS.md no longer references GitHub Actions workflows
-- [ ] Publishing section clearly states all publishing is manual
-- [ ] Instructions emphasize local validation with `melos pub-check`
-- [ ] No confusion about automated vs manual publishing
-
-## Implementation Checklist
-- [ ] 2.1 Review workspace/AGENTS.md for CI/publishing references
-- [ ] 2.2 Remove section about GitHub Actions workflow validation
-- [ ] 2.3 Update publishing instructions to emphasize manual process
-- [ ] 2.4 Add note that developers must run `melos pub-check` locally
-- [ ] 2.5 Verify all references to automated publishing are removed
-
-## Notes
-Focus on making it clear that publishing is a manual, intentional action. Developers should understand they have full control over when packages are published.
-
-### Agent Instructions
-
-Pick up this task and implement it according to the specifications above.
-Focus on the Constraints and Acceptance Criteria sections.
-When complete, mark the task as done:
-
-```bash
-splx complete task --id 002-remove-github-actions-pipelines-update-docs
-```
-
----
-
-## Task 3: changes
-
-**Status:** to-do
-**Task ID:** 003-remove-github-actions-pipelines-verify-changes
-
-### Context
-
-<details>
-<summary>Proposal Context (click to expand)</summary>
-
-## Why
-
-Currently, GitHub Actions workflows automatically publish packages to pub.dev when version numbers change. This creates:
-- Risk of accidental publication without proper review
-- Loss of manual control over when packages are published
-- Automated tag and release creation that may not align with release strategy
-- CI complexity that may not be necessary for a monorepo with manual release cycles
-
-By removing all GitHub Actions publishing pipelines, all publication will be manual, giving developers full control over when and how packages are published to pub.dev.
-
-## What Changes
-
-- **Remove root-level CI workflow**: Delete `.github/workflows/pub-check.yml` (PR validation workflow)
-- **Remove package-level publish workflows**: Delete all `.github/workflows/publish.yml` files from individual packages
-- **Update specifications**: Modify package-publication and monorepo-structure specs to reflect manual-only publishing
-- **Update documentation**: Remove references to CI automation from workspace/AGENTS.md
-</details>
-
-### Task Details
-
-# Task: Verify All Changes Are Complete
-
-## End Goal
-Ensure all GitHub Actions workflows are removed and documentation is updated correctly.
-
-## Currently
-After deleting workflows and updating docs, need to verify everything is complete and consistent.
-
-## Should
-- All workflow files are deleted
-- Documentation is updated
-- Specs reflect manual-only publishing
-- No broken references remain
-
-## Constraints
-- [ ] Must verify no workflow files remain
-- [ ] Must verify documentation is consistent
-- [ ] Must verify specs match implementation
-- [ ] Must ensure manual publishing commands still work
-
-## Acceptance Criteria
-- [ ] No GitHub Actions workflow files exist for publishing
-- [ ] Documentation accurately reflects manual-only publishing
-- [ ] Specs are updated to remove CI automation requirements
-- [ ] Manual publishing workflow (`melos pub-publish`) is functional
-- [ ] No broken references or dead links in documentation
-
-## Implementation Checklist
-- [ ] 3.1 Verify all workflow files are deleted (search for .github/workflows/*.yml)
-- [ ] 3.2 Review workspace/AGENTS.md for accuracy
-- [ ] 3.3 Verify specs match the new manual-only approach
-- [ ] 3.4 Test `melos pub-check` locally to ensure it still works
-- [ ] 3.5 Test `melos pub-publish --dry-run` to ensure it still works
-- [ ] 3.6 Check for any remaining references to CI automation
-
-## Notes
-This is a verification task to ensure the change is complete and consistent across all files.
-
-### Agent Instructions
-
-Pick up this task and implement it according to the specifications above.
-Focus on the Constraints and Acceptance Criteria sections.
-When complete, mark the task as done:
-
-```bash
-splx complete task --id 003-remove-github-actions-pipelines-verify-changes
-```
-
----
+After compact, to continue:
+1. Read this file completely
+2. Run `splx get task` to see next available task
+3. First unblocked tasks: 001 (shell migration) and 002 (config creation)
+4. Start with 001 as it's simpler (junior skill level)

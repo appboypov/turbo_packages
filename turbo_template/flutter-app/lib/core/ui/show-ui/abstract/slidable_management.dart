@@ -3,10 +3,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/utils/slidable_controller_box.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
-import 'package:veto/data/models/base_view_model.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
-mixin SlidableManagement<T> on BaseViewModel<T> {
+mixin SlidableManagement<T> on TViewModel<T> {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

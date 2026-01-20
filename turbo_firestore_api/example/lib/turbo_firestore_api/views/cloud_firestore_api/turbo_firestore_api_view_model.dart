@@ -1,8 +1,8 @@
 import 'package:turbo_firestore_api_example/main.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:veto/data/models/base_view_model.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
-class CloudFirestoreApiViewModel extends BaseViewModel {
+class CloudFirestoreApiViewModel extends TViewModel {
   CloudFirestoreApiViewModel();
 
   @override

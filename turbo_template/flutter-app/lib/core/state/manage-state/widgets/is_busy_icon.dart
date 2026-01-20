@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/widgets/fade_in.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
-import 'package:veto/data/enums/busy_type.dart';
-import 'package:veto/data/models/busy_model.dart';
+import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 class IsBusyIcon extends StatelessWidget {
   const IsBusyIcon({
@@ -16,7 +15,7 @@ class IsBusyIcon extends StatelessWidget {
 
   final Widget? isNotBusyWidget;
   final double height;
-  final BusyModel busyModel;
+  final TBusyModel busyModel;
   final double? fontSize;
   final double padding;
 
@@ -31,18 +30,18 @@ class IsBusyIcon extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             switch (busyType) {
-              BusyType.none => TWidgets.nothing,
-              BusyType.indicator => TWidgets.nothing,
-              BusyType.indicatorIgnorePointer => TWidgets.nothing,
-              BusyType.indicatorBackdrop => IgnorePointer(
+              TBusyType.none => TWidgets.nothing,
+              TBusyType.indicator => TWidgets.nothing,
+              TBusyType.indicatorIgnorePointer => TWidgets.nothing,
+              TBusyType.indicatorBackdrop => IgnorePointer(
                 child: Container(color: Colors.black.withValues(alpha: 0.3)),
               ),
-              BusyType.indicatorBackdropIgnorePointer => Container(
+              TBusyType.indicatorBackdropIgnorePointer => Container(
                 color: Colors.black.withValues(alpha: 0.3),
               ),
             },
             switch (busyType) {
-              BusyType.none => TWidgets.nothing,
+              TBusyType.none => TWidgets.nothing,
               (_) => const Center(child: CircularProgressIndicator()),
             },
           ],
