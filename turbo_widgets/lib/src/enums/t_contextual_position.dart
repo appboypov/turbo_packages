@@ -1,4 +1,4 @@
-/// Positions where contextual content can appear in a [TContextualWrapper].
+/// Positions where contextual content can appear in a [TContextualButtons].
 enum TContextualPosition {
   /// Content appears at the top of the wrapper.
   top,

@@ -1,6 +1,6 @@
 /// Filter for which positions are allowed to display contextual content.
 ///
-/// Used with [TContextualWrapper] to restrict which positions can show content.
+/// Used with [TContextualButtons] to restrict which positions can show content.
 /// For example, setting this to [left] will only allow left-positioned content
 /// to be displayed, filtering out top, bottom, and right content.
 enum TContextualAllowFilter {

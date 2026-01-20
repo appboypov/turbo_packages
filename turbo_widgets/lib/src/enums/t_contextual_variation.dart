@@ -1,4 +1,4 @@
-/// Variations for contextual content in a [TContextualWrapper].
+/// Variations for contextual content in a [TContextualButtons].
 ///
 /// Variations allow multiple content layers at the same position,
 /// stacked according to the position's axis (vertical for top/bottom,

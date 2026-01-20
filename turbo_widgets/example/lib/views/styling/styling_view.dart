@@ -89,46 +89,60 @@ class StylingView extends StatelessWidget {
                           if (showTertiary) TContextualVariation.tertiary,
                         };
 
-                        return TContextualWrapper(
-                          allowFilter: allowFilter,
-                          activeVariations: activeVariations,
-                          animationDuration: Duration(milliseconds: animationDuration),
-                          topContent: showTop
-                              ? const [_DemoContentBar(label: 'Top Primary')]
-                              : const [],
-                          topSecondaryContent: showTop
-                              ? const [_DemoContentBar(label: 'Top Secondary')]
-                              : const [],
-                          topTertiaryContent: showTop
-                              ? const [_DemoContentBar(label: 'Top Tertiary')]
-                              : const [],
-                          bottomContent: showBottom
-                              ? const [_DemoContentBar(label: 'Bottom Primary')]
-                              : const [],
-                          bottomSecondaryContent: showBottom
-                              ? const [_DemoContentBar(label: 'Bottom Secondary')]
-                              : const [],
-                          bottomTertiaryContent: showBottom
-                              ? const [_DemoContentBar(label: 'Bottom Tertiary')]
-                              : const [],
-                          leftContent: showLeft
-                              ? const [_DemoContentBar(label: 'Left Primary')]
-                              : const [],
-                          leftSecondaryContent: showLeft
-                              ? const [_DemoContentBar(label: 'Left Secondary')]
-                              : const [],
-                          leftTertiaryContent: showLeft
-                              ? const [_DemoContentBar(label: 'Left Tertiary')]
-                              : const [],
-                          rightContent: showRight
-                              ? const [_DemoContentBar(label: 'Right Primary')]
-                              : const [],
-                          rightSecondaryContent: showRight
-                              ? const [_DemoContentBar(label: 'Right Secondary')]
-                              : const [],
-                          rightTertiaryContent: showRight
-                              ? const [_DemoContentBar(label: 'Right Tertiary')]
-                              : const [],
+                        // Update service configuration based on parameters
+                        TContextualButtonsService.instance.update(
+                          TContextualButtonsConfig(
+                            allowFilter: allowFilter,
+                            activeVariations: activeVariations,
+                            animationDuration: Duration(milliseconds: animationDuration),
+                            top: TContextualButtonsSlotConfig(
+                              primary: showTop
+                                  ? const [_DemoContentBar(label: 'Top Primary')]
+                                  : const [],
+                              secondary: showTop
+                                  ? const [_DemoContentBar(label: 'Top Secondary')]
+                                  : const [],
+                              tertiary: showTop
+                                  ? const [_DemoContentBar(label: 'Top Tertiary')]
+                                  : const [],
+                            ),
+                            bottom: TContextualButtonsSlotConfig(
+                              primary: showBottom
+                                  ? const [_DemoContentBar(label: 'Bottom Primary')]
+                                  : const [],
+                              secondary: showBottom
+                                  ? const [_DemoContentBar(label: 'Bottom Secondary')]
+                                  : const [],
+                              tertiary: showBottom
+                                  ? const [_DemoContentBar(label: 'Bottom Tertiary')]
+                                  : const [],
+                            ),
+                            left: TContextualButtonsSlotConfig(
+                              primary: showLeft
+                                  ? const [_DemoContentBar(label: 'Left Primary')]
+                                  : const [],
+                              secondary: showLeft
+                                  ? const [_DemoContentBar(label: 'Left Secondary')]
+                                  : const [],
+                              tertiary: showLeft
+                                  ? const [_DemoContentBar(label: 'Left Tertiary')]
+                                  : const [],
+                            ),
+                            right: TContextualButtonsSlotConfig(
+                              primary: showRight
+                                  ? const [_DemoContentBar(label: 'Right Primary')]
+                                  : const [],
+                              secondary: showRight
+                                  ? const [_DemoContentBar(label: 'Right Secondary')]
+                                  : const [],
+                              tertiary: showRight
+                                  ? const [_DemoContentBar(label: 'Right Tertiary')]
+                                  : const [],
+                            ),
+                          ),
+                        );
+
+                        return TContextualButtons(
                           child: const Center(
                             child: Text('Main Content Area'),
                           ),
