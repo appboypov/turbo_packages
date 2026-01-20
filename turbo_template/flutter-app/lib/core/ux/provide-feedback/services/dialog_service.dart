@@ -25,10 +25,9 @@ import 'package:turbolytics/turbolytics.dart';
 class DialogService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
-  static DialogService Function() get lazyLocate =>
-          () => GetIt.I.get<DialogService>();
   static DialogService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(DialogService.new);
+  static DialogService Function() get lazyLocate => () => GetIt.I.get();
+  static void registerFactory() => GetIt.I.registerFactory(DialogService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

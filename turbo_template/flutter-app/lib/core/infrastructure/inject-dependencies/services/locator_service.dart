@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/user_profiles_api.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/users_api.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/usernames_api.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/register_form.dart';
@@ -16,13 +18,19 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
+import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
+import 'package:turbo_flutter_template/core/settings/services/settings_service.dart';
+import 'package:turbo_flutter_template/core/shared/views/oops/oops_view_model.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/overlay_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/services/random_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
 import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
 import 'package:turbo_flutter_template/core/ux/manage-language/services/language_service.dart';
+import 'package:turbo_flutter_template/core/ux/provide-feedback/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/shake_gesture_service.dart';
+import 'package:turbo_flutter_template/core/ux/provide-feedback/services/sheet_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/vibrate_service.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -66,13 +74,20 @@ class LocatorService with Turbolytics {
     UserService.registerLazySingleton();
     BadgeService.registerLazySingleton();
     NavigationTabService.registerLazySingleton();
+    SettingsService.registerLazySingleton();
   }
 
   void _registerFactories() {
+    DialogService.registerFactory();
+    SheetService.registerFactory();
     UsersApi.registerFactory();
+    UserProfilesApi.registerFactory();
+    UsernamesApi.registerFactory();
+    SettingsApi.registerFactory();
     EmailService.registerFactory();
     UrlLauncherService.registerFactory();
     VersionComparatorService.registerFactory();
+    RandomService.registerFactory();
     LoginForm.registerFactory();
     RegisterForm.registerFactory();
     ForgotPasswordForm.registerFactory();
@@ -80,6 +95,7 @@ class LocatorService with Turbolytics {
     ShellViewModel.registerFactory();
     MyAppViewModel.registerFactory();
     HomeViewModel.registerFactory();
+    OopsViewModel.registerFactory();
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\

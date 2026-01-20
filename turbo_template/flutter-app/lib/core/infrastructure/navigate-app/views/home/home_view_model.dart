@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/logout_management.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/abstract/slidable_management.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement {
+class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, LogoutManagement {
   HomeViewModel({
     required BadgeService badgeService,
   }) : _badgeService = badgeService;
@@ -48,4 +50,5 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement {
 
   // 🏗 HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
+
 }

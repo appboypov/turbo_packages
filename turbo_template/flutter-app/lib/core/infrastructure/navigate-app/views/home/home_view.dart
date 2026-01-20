@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/auth/widgets/logout_button.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
@@ -35,6 +36,9 @@ class HomeView extends StatelessWidget {
               appBar: TSliverAppBar(
                 title: context.strings.home,
                 emoji: Emoji.house,
+                actions: [
+                  LogoutButton(onPressed: model.onLogoutPressed),
+                ],
                 onBackPressed: null,
               ),
             ),
