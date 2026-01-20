@@ -8,6 +8,7 @@ class StylingViewModel extends TViewModel<Object?> {
   }
 
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(true);
+  final TNotifier<bool> _isContextualButtonsShowcaseExpanded = TNotifier(true);
   final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.mobile);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');
@@ -17,7 +18,7 @@ class StylingViewModel extends TViewModel<Object?> {
   final TNotifier<TurboWidgetsPreviewMode> _previewMode = TNotifier(TurboWidgetsPreviewMode.none);
   final TNotifier<DeviceInfo?> _selectedDevice = TNotifier(null);
   final TNotifier<double> _previewScale = TNotifier(1.0);
-final TNotifier<bool> _isDarkMode = TNotifier(false);
+  final TNotifier<bool> _isDarkMode = TNotifier(false);
   final TNotifier<bool> _isSafeAreaEnabled = TNotifier(false);
 
   /// The component parameters model.
@@ -28,31 +29,12 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
   );
 
   void _initializePlaygroundParameters() {
-    _componentParameters.update(
-      TPlaygroundParameterModel(
-        selects: {
-          'allowFilter': TSelectOption<TContextualAllowFilter>(
-            value: TContextualAllowFilter.all,
-            options: TContextualAllowFilter.values,
-          ),
-        },
-        bools: {
-          'showTopContent': true,
-          'showBottomContent': true,
-          'showLeftContent': true,
-          'showRightContent': true,
-          'showPrimaryVariation': true,
-          'showSecondaryVariation': true,
-          'showTertiaryVariation': false,
-        },
-        ints: {
-          'animationDuration': 300,
-        },
-      ),
-    );
+    _componentParameters.update(const TPlaygroundParameterModel.empty());
   }
 
   TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
+  TNotifier<bool> get isContextualButtonsShowcaseExpanded =>
+      _isContextualButtonsShowcaseExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
   TNotifier<bool> get isGeneratorOpen => _isGeneratorOpen;
   TNotifier<String> get userRequest => _userRequest;
@@ -69,6 +51,7 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
   @override
   void dispose() {
     _isPlaygroundExpanded.dispose();
+    _isContextualButtonsShowcaseExpanded.dispose();
     _screenType.dispose();
     _isGeneratorOpen.dispose();
     _userRequest.dispose();
@@ -86,6 +69,10 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
 
   void togglePlayground() {
     _isPlaygroundExpanded.updateCurrent((current) => !current);
+  }
+
+  void toggleContextualButtonsShowcase() {
+    _isContextualButtonsShowcaseExpanded.updateCurrent((current) => !current);
   }
 
   void setScreenType(TurboWidgetsScreenTypes value) {
@@ -145,11 +132,6 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
   /// Use this when form fields change or when setting initial component defaults.
   void setComponentParameters(TPlaygroundParameterModel value) {
     _componentParameters.update(value);
-  }
-
-  /// Updates the contextual buttons service configuration.
-  void updateContextualButtonsConfig(TContextualButtonsConfig config) {
-    TContextualButtonsService.instance.update(config);
   }
 
   static StylingViewModel get locate => StylingViewModel();

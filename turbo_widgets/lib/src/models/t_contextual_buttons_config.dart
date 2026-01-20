@@ -3,6 +3,16 @@ import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 
+/// Compares two widget lists by identity (not equality).
+bool _widgetListIdentical(List<Widget> a, List<Widget> b) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (!identical(a[i], b[i])) return false;
+  }
+  return true;
+}
+
 /// Data configuration containing the widget content for a slot.
 class TContextualButtonsSlotData {
   const TContextualButtonsSlotData({
@@ -38,9 +48,9 @@ class TContextualButtonsSlotData {
       identical(this, other) ||
       other is TContextualButtonsSlotData &&
           runtimeType == other.runtimeType &&
-          _listEquals(primary, other.primary) &&
-          _listEquals(secondary, other.secondary) &&
-          _listEquals(tertiary, other.tertiary);
+          _widgetListIdentical(primary, other.primary) &&
+          _widgetListIdentical(secondary, other.secondary) &&
+          _widgetListIdentical(tertiary, other.tertiary);
 
   @override
   int get hashCode => Object.hash(
@@ -48,15 +58,6 @@ class TContextualButtonsSlotData {
         secondary.length,
         tertiary.length,
       );
-
-  static bool _listEquals(List<Widget> a, List<Widget> b) {
-    if (identical(a, b)) return true;
-    if (a.length != b.length) return false;
-    for (var i = 0; i < a.length; i++) {
-      if (!identical(a[i], b[i])) return false;
-    }
-    return true;
-  }
 }
 
 /// Presentation configuration for how content is displayed at a slot.
@@ -193,9 +194,9 @@ class TContextualButtonsSlotConfig {
       identical(this, other) ||
       other is TContextualButtonsSlotConfig &&
           runtimeType == other.runtimeType &&
-          _listEquals(primary, other.primary) &&
-          _listEquals(secondary, other.secondary) &&
-          _listEquals(tertiary, other.tertiary) &&
+          _widgetListIdentical(primary, other.primary) &&
+          _widgetListIdentical(secondary, other.secondary) &&
+          _widgetListIdentical(tertiary, other.tertiary) &&
           alignment == other.alignment &&
           mainAxisSize == other.mainAxisSize &&
           builder == other.builder;
@@ -209,15 +210,6 @@ class TContextualButtonsSlotConfig {
         mainAxisSize,
         builder,
       );
-
-  static bool _listEquals(List<Widget> a, List<Widget> b) {
-    if (identical(a, b)) return true;
-    if (a.length != b.length) return false;
-    for (var i = 0; i < a.length; i++) {
-      if (!identical(a[i], b[i])) return false;
-    }
-    return true;
-  }
 }
 
 /// Configuration model for contextual buttons widget.

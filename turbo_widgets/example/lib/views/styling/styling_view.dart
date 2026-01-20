@@ -15,142 +15,134 @@ class StylingView extends StatelessWidget {
         builder: (context, model, isInitialised, child) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: model.isPlaygroundExpanded,
-              builder: (context, isPlaygroundExpanded, _) {
-                return TCollapsibleSection(
-                  title: 'Component Playground',
-                  subtitle: 'Create and test widgets with responsive preview',
-                  isExpanded: isPlaygroundExpanded,
-                  onToggle: model.togglePlayground,
-                  child: MultiListenableBuilder(
-                    listenables: [
-                      model.screenType,
-                      model.isGeneratorOpen,
-                      model.userRequest,
-                      model.variations,
-                      model.activeTab,
-                      model.instructions,
-                      model.previewMode,
-                      model.selectedDevice,
-                      model.previewScale,
-                      model.isDarkMode,
-                      model.isSafeAreaEnabled,
-                    ],
-                    builder: (context, _, __) => TPlayground(
-                      screenType: model.screenType.value,
-                      onScreenTypeChanged: model.setScreenType,
-                      isGeneratorOpen: model.isGeneratorOpen.value,
-                      onToggleGenerator: model.toggleGenerator,
-                      userRequest: model.userRequest.value,
-                      onUserRequestChanged: model.setUserRequest,
-                      variations: model.variations.value,
-                      onVariationsChanged: model.setVariations,
-                      activeTab: model.activeTab.value,
-                      onActiveTabChanged: model.setActiveTab,
-                      onCopyPrompt: () {
-                        ShadToaster.of(context).show(
-                          const ShadToast(
-                            title: Text('Copied!'),
-                            description: Text('Prompt copied to clipboard.'),
-                          ),
-                        );
-                      },
-                      instructions: model.instructions.value,
-                      isDarkMode: model.isDarkMode.value,
-                      isSafeAreaEnabled: model.isSafeAreaEnabled.value,
-                      onDeviceChanged: model.setSelectedDevice,
-                      onInstructionsChanged: model.setInstructions,
-                      onParametersChanged: model.setComponentParameters,
-                      onPreviewModeChanged: model.setPreviewMode,
-                      onPreviewScaleChanged: model.setPreviewScale,
-                      onToggleDarkMode: model.toggleDarkMode,
-                      onToggleSafeArea: model.toggleSafeArea,
-                      parametersListenable: model.componentParameters,
-                      previewMode: model.previewMode.value,
-                      previewScale: model.previewScale.value,
-                      selectedDevice: model.selectedDevice.value,
-                      childBuilder: (context, params) {
-                        final allowFilter =
-                            params.selects['allowFilter']?.value as TContextualAllowFilter? ??
-                                TContextualAllowFilter.all;
-                        final showTop = params.bools['showTopContent'] ?? true;
-                        final showBottom = params.bools['showBottomContent'] ?? true;
-                        final showLeft = params.bools['showLeftContent'] ?? true;
-                        final showRight = params.bools['showRightContent'] ?? true;
-                        final showPrimary = params.bools['showPrimaryVariation'] ?? true;
-                        final showSecondary = params.bools['showSecondaryVariation'] ?? true;
-                        final showTertiary = params.bools['showTertiaryVariation'] ?? false;
-                        final animationDuration = params.ints['animationDuration'] ?? 300;
-
-                        final activeVariations = <TContextualVariation>{
-                          if (showPrimary) TContextualVariation.primary,
-                          if (showSecondary) TContextualVariation.secondary,
-                          if (showTertiary) TContextualVariation.tertiary,
-                        };
-
-                        model.updateContextualButtonsConfig(
-                          TContextualButtonsConfig(
-                            allowFilter: allowFilter,
-                            activeVariations: activeVariations,
-                            animationDuration: Duration(milliseconds: animationDuration),
-                            top: TContextualButtonsSlotConfig(
-                              primary: showTop
-                                  ? const [_DemoContentBar(label: 'Top Primary')]
-                                  : const [],
-                              secondary: showTop
-                                  ? const [_DemoContentBar(label: 'Top Secondary')]
-                                  : const [],
-                              tertiary: showTop
-                                  ? const [_DemoContentBar(label: 'Top Tertiary')]
-                                  : const [],
-                            ),
-                            bottom: TContextualButtonsSlotConfig(
-                              primary: showBottom
-                                  ? const [_DemoContentBar(label: 'Bottom Primary')]
-                                  : const [],
-                              secondary: showBottom
-                                  ? const [_DemoContentBar(label: 'Bottom Secondary')]
-                                  : const [],
-                              tertiary: showBottom
-                                  ? const [_DemoContentBar(label: 'Bottom Tertiary')]
-                                  : const [],
-                            ),
-                            left: TContextualButtonsSlotConfig(
-                              primary: showLeft
-                                  ? const [_DemoContentBar(label: 'Left Primary')]
-                                  : const [],
-                              secondary: showLeft
-                                  ? const [_DemoContentBar(label: 'Left Secondary')]
-                                  : const [],
-                              tertiary: showLeft
-                                  ? const [_DemoContentBar(label: 'Left Tertiary')]
-                                  : const [],
-                            ),
-                            right: TContextualButtonsSlotConfig(
-                              primary: showRight
-                                  ? const [_DemoContentBar(label: 'Right Primary')]
-                                  : const [],
-                              secondary: showRight
-                                  ? const [_DemoContentBar(label: 'Right Secondary')]
-                                  : const [],
-                              tertiary: showRight
-                                  ? const [_DemoContentBar(label: 'Right Tertiary')]
-                                  : const [],
+            child: Column(
+              children: [
+                ValueListenableBuilder<bool>(
+                  valueListenable: model.isPlaygroundExpanded,
+                  builder: (context, isPlaygroundExpanded, _) {
+                    return TCollapsibleSection(
+                      title: 'Component Playground',
+                      subtitle: 'Create and test widgets with responsive preview',
+                      isExpanded: isPlaygroundExpanded,
+                      onToggle: model.togglePlayground,
+                      child: MultiListenableBuilder(
+                        listenables: [
+                          model.screenType,
+                          model.isGeneratorOpen,
+                          model.userRequest,
+                          model.variations,
+                          model.activeTab,
+                          model.instructions,
+                          model.previewMode,
+                          model.selectedDevice,
+                          model.previewScale,
+                          model.isDarkMode,
+                          model.isSafeAreaEnabled,
+                        ],
+                        builder: (context, _, __) => TPlayground(
+                          screenType: model.screenType.value,
+                          onScreenTypeChanged: model.setScreenType,
+                          isGeneratorOpen: model.isGeneratorOpen.value,
+                          onToggleGenerator: model.toggleGenerator,
+                          userRequest: model.userRequest.value,
+                          onUserRequestChanged: model.setUserRequest,
+                          variations: model.variations.value,
+                          onVariationsChanged: model.setVariations,
+                          activeTab: model.activeTab.value,
+                          onActiveTabChanged: model.setActiveTab,
+                          onCopyPrompt: () {
+                            ShadToaster.of(context).show(
+                              const ShadToast(
+                                title: Text('Copied!'),
+                                description: Text('Prompt copied to clipboard.'),
+                              ),
+                            );
+                          },
+                          instructions: model.instructions.value,
+                          isDarkMode: model.isDarkMode.value,
+                          isSafeAreaEnabled: model.isSafeAreaEnabled.value,
+                          onDeviceChanged: model.setSelectedDevice,
+                          onInstructionsChanged: model.setInstructions,
+                          onParametersChanged: model.setComponentParameters,
+                          onPreviewModeChanged: model.setPreviewMode,
+                          onPreviewScaleChanged: model.setPreviewScale,
+                          onToggleDarkMode: model.toggleDarkMode,
+                          onToggleSafeArea: model.toggleSafeArea,
+                          parametersListenable: model.componentParameters,
+                          previewMode: model.previewMode.value,
+                          previewScale: model.previewScale.value,
+                          selectedDevice: model.selectedDevice.value,
+                          childBuilder: (context, params) {
+                            return const Center(
+                              child: Text('Drop a widget here'),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+                ValueListenableBuilder<bool>(
+                  valueListenable: model.isContextualButtonsShowcaseExpanded,
+                  builder: (context, isExpanded, _) {
+                    return TCollapsibleSection(
+                      title: 'TContextualButtons',
+                      subtitle:
+                          'Contextual overlay buttons with position and variation support',
+                      isExpanded: isExpanded,
+                      onToggle: model.toggleContextualButtonsShowcase,
+                      child: Column(
+                        children: [
+                          _TContextualButtonsShowcase(
+                            title: 'Basic - All Positions',
+                            config: TContextualButtonsConfig(
+                              top: const TContextualButtonsSlotConfig(
+                                primary: [_ShowcaseBar(label: 'Top')],
+                              ),
+                              bottom: const TContextualButtonsSlotConfig(
+                                primary: [_ShowcaseBar(label: 'Bottom')],
+                              ),
+                              left: const TContextualButtonsSlotConfig(
+                                primary: [_ShowcaseBar(label: 'Left')],
+                              ),
+                              right: const TContextualButtonsSlotConfig(
+                                primary: [_ShowcaseBar(label: 'Right')],
+                              ),
                             ),
                           ),
-                        );
-
-                        return TContextualButtons(
-                          child: const Center(
-                            child: Text('Main Content Area'),
+                          const SizedBox(height: 16),
+                          _TContextualButtonsShowcase(
+                            title: 'Position Filter - Bottom Only',
+                            config: TContextualButtonsConfig(
+                              allowFilter: TContextualAllowFilter.bottom,
+                              top: const TContextualButtonsSlotConfig(
+                                primary: [
+                                  _ShowcaseBar(label: 'Filtered to Bottom')
+                                ],
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
+                          const SizedBox(height: 16),
+                          _TContextualButtonsShowcase(
+                            title: 'Multiple Variations',
+                            config: TContextualButtonsConfig(
+                              activeVariations: const {
+                                TContextualVariation.primary,
+                                TContextualVariation.secondary,
+                              },
+                              bottom: const TContextualButtonsSlotConfig(
+                                primary: [_ShowcaseBar(label: 'Primary')],
+                                secondary: [_ShowcaseBar(label: 'Secondary')],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           );
         },
@@ -158,8 +150,52 @@ class StylingView extends StatelessWidget {
       );
 }
 
-class _DemoContentBar extends StatelessWidget {
-  const _DemoContentBar({required this.label});
+class _TContextualButtonsShowcase extends StatelessWidget {
+  _TContextualButtonsShowcase({
+    required this.title,
+    required TContextualButtonsConfig config,
+  }) : _service = TContextualButtonsService(config);
+
+  final String title;
+  final TContextualButtonsService _service;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.small.copyWith(
+            color: theme.colorScheme.mutedForeground,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 200,
+          child: ShadCard(
+            padding: EdgeInsets.zero,
+            child: TContextualButtons(
+              service: _service,
+              child: Center(
+                child: Text(
+                  'Main Content',
+                  style: theme.textTheme.muted,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShowcaseBar extends StatelessWidget {
+  const _ShowcaseBar({required this.label});
 
   final String label;
 
