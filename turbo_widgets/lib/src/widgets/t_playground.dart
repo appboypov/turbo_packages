@@ -111,70 +111,64 @@ class TPlayground extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return ShadCard(
-      padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TVerticalShrink(
-            show: isGeneratorOpen,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: TPlaygroundPromptGenerator(
-                userRequest: userRequest,
-                onUserRequestChanged: onUserRequestChanged,
-                variations: variations,
-                onVariationsChanged: onVariationsChanged,
-                activeTab: activeTab,
-                onActiveTabChanged: onActiveTabChanged,
-                onCopyPrompt: onCopyPrompt,
-                instructions: instructions,
-                onInstructionsChanged: onInstructionsChanged,
-                solidifyInstructions: solidifyInstructions,
-                clearCanvasInstructions: clearCanvasInstructions,
-              ),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TVerticalShrink(
+          show: isGeneratorOpen,
+          child: TPlaygroundPromptGenerator(
+            userRequest: userRequest,
+            onUserRequestChanged: onUserRequestChanged,
+            variations: variations,
+            onVariationsChanged: onVariationsChanged,
+            activeTab: activeTab,
+            onActiveTabChanged: onActiveTabChanged,
+            onCopyPrompt: onCopyPrompt,
+            instructions: instructions,
+            onInstructionsChanged: onInstructionsChanged,
+            solidifyInstructions: solidifyInstructions,
+            clearCanvasInstructions: clearCanvasInstructions,
           ),
-          if (parametersListenable != null)
-            ValueListenableBuilder<TPlaygroundParameterModel>(
-              valueListenable: parametersListenable!,
-              builder: (context, model, _) {
-                if (model.isEmpty) return const SizedBox.shrink();
-                return TVerticalShrink(
-                  show: isParameterPanelExpanded,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    child: TPlaygroundParameterPanel(
-                      model: model,
-                      onModelChanged: onParametersChanged,
-                    ),
+        ),
+        if (parametersListenable != null)
+          ValueListenableBuilder<TPlaygroundParameterModel>(
+            valueListenable: parametersListenable!,
+            builder: (context, model, _) {
+              if (model.isEmpty) return const SizedBox.shrink();
+              return TVerticalShrink(
+                show: isParameterPanelExpanded,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: TPlaygroundParameterPanel(
+                    model: model,
+                    onModelChanged: onParametersChanged,
                   ),
-                );
-              },
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: TPlaygroundScreenTypeSelector(
-              currentType: screenType,
-              onTypeChange: onScreenTypeChanged,
-              isGeneratorOpen: isGeneratorOpen,
-              onToggleGenerator: onToggleGenerator,
-              previewMode: previewMode,
-              onPreviewModeChange: onPreviewModeChanged,
-              selectedDevice: selectedDevice,
-              onDeviceChange: onDeviceChanged,
-              previewScale: previewScale,
-              onPreviewScaleChange: onPreviewScaleChanged,
-              isDarkMode: isDarkMode,
-              onToggleDarkMode: onToggleDarkMode,
-              isSafeAreaEnabled: isSafeAreaEnabled,
-              onToggleSafeArea: onToggleSafeArea,
-            ),
+                ),
+              );
+            },
           ),
-          _buildPreviewArea(context, theme),
-        ],
-      ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: TPlaygroundScreenTypeSelector(
+            currentType: screenType,
+            onTypeChange: onScreenTypeChanged,
+            isGeneratorOpen: isGeneratorOpen,
+            onToggleGenerator: onToggleGenerator,
+            previewMode: previewMode,
+            onPreviewModeChange: onPreviewModeChanged,
+            selectedDevice: selectedDevice,
+            onDeviceChange: onDeviceChanged,
+            previewScale: previewScale,
+            onPreviewScaleChange: onPreviewScaleChanged,
+            isDarkMode: isDarkMode,
+            onToggleDarkMode: onToggleDarkMode,
+            isSafeAreaEnabled: isSafeAreaEnabled,
+            onToggleSafeArea: onToggleSafeArea,
+          ),
+        ),
+        _buildPreviewArea(context, theme),
+      ],
     );
   }
 
