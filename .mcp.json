@@ -1,50 +1,54 @@
 {
-    "mcpServers": {
-        "RepoPrompt": {
-            "type": "stdio",
-            "command": "/Users/codaveto/RepoPrompt/repoprompt_cli",
-            "args": [],
-            "env": {}
-        },
-        "auggie-mcp": {
-            "type": "stdio",
-            "command": "auggie",
-            "args": [
-                "--mcp"
-            ],
-            "env": {}
-        },
-        "playwright": {
-            "command": "npx",
-            "args": [
-                "@playwright/mcp@latest",
-                "--extension"
-            ],
-            "env": {
-                "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}"
-            }
-        },
-        "mobile-mcp": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@mobilenext/mobile-mcp@latest"
-            ]
-        },
-        "dart-mcp": {
-            "type": "stdio",
-            "command": "dart",
-            "args": [
-                "mcp-server"
-            ]
-        },
-        "firebase": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "firebase-tools@latest",
-                "mcp"
-            ]
-        }
+  "mcpServers": {
+    "RepoPrompt": {
+      "type": "stdio",
+      "command": "/Users/codaveto/RepoPrompt/repoprompt_cli",
+      "args": [],
+      "env": {}
+    },
+    "auggie-mcp": {
+      "type": "stdio",
+      "command": "auggie",
+      "args": [
+        "--mcp"
+      ],
+      "env": {}
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--extension"
+      ],
+      "env": {
+        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "MM4x_t9WZyVzmaQ-FgpQaY3EZNWtg3L6MrifnfLVM28"
+      }
+    },
+    "mobile-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mobilenext/mobile-mcp@latest"
+      ]
+    },
+    "dart-mcp": {
+      "type": "stdio",
+      "command": "dart",
+      "args": [
+        "mcp-server"
+      ]
+    },
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp"
+      ]
+    },
+    "linear": {
+      "type": "sse",
+      "url": "https://mcp.linear.app/sse"
     }
+  }
 }

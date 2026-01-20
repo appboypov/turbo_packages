@@ -15,6 +15,7 @@
 - **Contextual Buttons**: `TContextualButtons` for overlay buttons with position and variation support
 - **Navigation Components**: `TBottomNavigation`, `TTopNavigation`, `TSideNavigation` for flexible navigation bars
 - **Component Playground**: `TPlayground` for testing widgets with device frame preview
+- **View Builder**: `TViewBuilder` for combining `TContextualButtons` and `TViewModelBuilder` in a single widget
 
 ## Installation
 
@@ -123,6 +124,37 @@ TSideNavigation(
 TTopNavigation(
   buttons: buttonMap,
   selectedKey: 'home',
+)
+```
+
+### TViewBuilder
+
+`TViewBuilder` is a convenience widget that combines `TContextualButtons` and `TViewModelBuilder` for views that need both contextual actions and view model management.
+
+```dart
+// Basic usage
+TViewBuilder<MyViewModel>(
+  viewModelBuilder: () => MyViewModel(),
+  builder: (context, viewModel, isInitialised, child) {
+    return MyViewContent(viewModel: viewModel);
+  },
+)
+
+// With custom contextual buttons service
+final service = TContextualButtonsService(
+  TContextualButtonsConfig(
+    bottom: TContextualButtonsSlotConfig(
+      primary: [MyBottomBar()],
+    ),
+  ),
+);
+
+TViewBuilder<MyViewModel>(
+  service: service,
+  viewModelBuilder: () => MyViewModel(),
+  builder: (context, viewModel, isInitialised, child) {
+    return MyViewContent(viewModel: viewModel);
+  },
 )
 ```
 

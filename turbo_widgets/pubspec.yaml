@@ -21,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   device_frame_plus: ^1.5.0
+  turbo_mvvm:
   flutter_animate: ^4.5.0
   gap: ^3.0.0
   shadcn_ui: ^0.43.3

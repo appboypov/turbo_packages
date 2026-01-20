@@ -177,6 +177,32 @@ class StylingView extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 24),
+                ValueListenableBuilder<bool>(
+                  valueListenable: model.isViewBuilderShowcaseExpanded,
+                  builder: (context, isExpanded, _) {
+                    return TCollapsibleSection(
+                      title: 'TViewBuilder',
+                      subtitle:
+                          'Convenience wrapper combining TContextualButtons and TViewModelBuilder',
+                      isExpanded: isExpanded,
+                      onToggle: model.toggleViewBuilderShowcase,
+                      child: Column(
+                        children: [
+                          _TViewBuilderShowcase(
+                            title: 'With Custom Service',
+                            useCustomService: true,
+                          ),
+                          const SizedBox(height: 16),
+                          _TViewBuilderShowcase(
+                            title: 'With Default Singleton',
+                            useCustomService: false,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           );
@@ -334,6 +360,83 @@ class _TNavigationShowcase extends StatelessWidget {
                   style: theme.textTheme.muted,
                 ),
               ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ExampleViewModel extends TViewModel<Object?> {
+  int _counter = 0;
+
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    rebuild();
+  }
+}
+
+class _TViewBuilderShowcase extends StatelessWidget {
+  const _TViewBuilderShowcase({
+    required this.title,
+    required this.useCustomService,
+  });
+
+  final String title;
+  final bool useCustomService;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.small.copyWith(
+            color: theme.colorScheme.mutedForeground,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 200,
+          child: ShadCard(
+            padding: EdgeInsets.zero,
+            child: TViewBuilder<_ExampleViewModel>(
+              service: useCustomService
+                  ? TContextualButtonsService(
+                      TContextualButtonsConfig(
+                        bottom: const TContextualButtonsSlotConfig(
+                          primary: [_ShowcaseBar(label: 'Custom Service')],
+                        ),
+                      ),
+                    )
+                  : null,
+              viewModelBuilder: _ExampleViewModel.new,
+              builder: (context, viewModel, isInitialised, child) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Counter: ${viewModel.counter}',
+                        style: theme.textTheme.p,
+                      ),
+                      const SizedBox(height: 8),
+                      ShadButton(
+                        size: ShadButtonSize.sm,
+                        onPressed: viewModel.increment,
+                        child: const Text('Increment'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ),

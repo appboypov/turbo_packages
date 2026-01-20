@@ -1,6 +1,6 @@
 library turbo_mvvm;
 
-export 'data/constants/t_mvvm_durations.dart';
+export 'data/constants/turbo_mvvm_defaults.dart';
 export 'data/enums/t_busy_type.dart';
 export 'data/mixins/t_busy_management.dart';
 export 'data/mixins/t_busy_service_management.dart';

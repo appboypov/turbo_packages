@@ -10,6 +10,7 @@ class StylingViewModel extends TViewModel<Object?> {
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(true);
   final TNotifier<bool> _isContextualButtonsShowcaseExpanded = TNotifier(true);
   final TNotifier<bool> _isNavigationShowcaseExpanded = TNotifier(true);
+  final TNotifier<bool> _isViewBuilderShowcaseExpanded = TNotifier(true);
   final TNotifier<TurboWidgetsScreenTypes> _screenType = TNotifier(TurboWidgetsScreenTypes.mobile);
   final TNotifier<bool> _isGeneratorOpen = TNotifier(true);
   final TNotifier<String> _userRequest = TNotifier('');
@@ -35,6 +36,7 @@ class StylingViewModel extends TViewModel<Object?> {
 
   TNotifier<bool> get isPlaygroundExpanded => _isPlaygroundExpanded;
   TNotifier<bool> get isNavigationShowcaseExpanded => _isNavigationShowcaseExpanded;
+  TNotifier<bool> get isViewBuilderShowcaseExpanded => _isViewBuilderShowcaseExpanded;
   TNotifier<bool> get isContextualButtonsShowcaseExpanded =>
       _isContextualButtonsShowcaseExpanded;
   TNotifier<TurboWidgetsScreenTypes> get screenType => _screenType;
@@ -55,6 +57,7 @@ class StylingViewModel extends TViewModel<Object?> {
     _isPlaygroundExpanded.dispose();
     _isContextualButtonsShowcaseExpanded.dispose();
     _isNavigationShowcaseExpanded.dispose();
+    _isViewBuilderShowcaseExpanded.dispose();
     _screenType.dispose();
     _isGeneratorOpen.dispose();
     _userRequest.dispose();
@@ -80,6 +83,10 @@ class StylingViewModel extends TViewModel<Object?> {
 
   void toggleNavigationShowcase() {
     _isNavigationShowcaseExpanded.updateCurrent((current) => !current);
+  }
+
+  void toggleViewBuilderShowcase() {
+    _isViewBuilderShowcaseExpanded.updateCurrent((current) => !current);
   }
 
   void setScreenType(TurboWidgetsScreenTypes value) {

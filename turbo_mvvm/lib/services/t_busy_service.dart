@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:turbo_mvvm/data/constants/t_mvvm_durations.dart';
+import 'package:turbo_mvvm/data/constants/turbo_mvvm_defaults.dart';
 import 'package:turbo_mvvm/data/enums/t_busy_type.dart';
 import 'package:turbo_mvvm/data/models/t_busy_model.dart';
 
@@ -16,7 +16,7 @@ class TBusyService {
 
   static void initialise({
     TBusyType busyTypeDefault = TBusyType.defaultValue,
-    Duration timeoutDurationDefault = TMVVMDurations.timeout,
+    Duration timeoutDurationDefault = TurboMvvmDefaults.timeout,
     String? busyMessageDefault,
     String? busyTitleDefault,
     VoidCallback? onTimeoutDefault,
@@ -39,7 +39,7 @@ class TBusyService {
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   static TBusyType _busyTypeDefault = TBusyType.defaultValue;
-  static Duration _timeoutDurationDefault = TMVVMDurations.timeout;
+  static Duration _timeoutDurationDefault = TurboMvvmDefaults.timeout;
   static String? _busyMessageDefault;
   static String? _busyTitleDefault;
   static VoidCallback? _onTimeoutDefault;
@@ -73,7 +73,7 @@ class TBusyService {
   /// Sets the busy state of the application.
   void setBusy(
     bool isBusy, {
-    Duration minBusyDuration = TMVVMDurations.minBusy,
+    Duration minBusyDuration = TurboMvvmDefaults.minBusy,
     String? busyMessage,
     String? busyTitle,
     TBusyType? busyType,

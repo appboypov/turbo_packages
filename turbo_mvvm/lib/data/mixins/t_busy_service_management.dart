@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:turbo_mvvm/data/constants/t_mvvm_durations.dart';
+import 'package:turbo_mvvm/data/constants/turbo_mvvm_defaults.dart';
 import 'package:turbo_mvvm/data/enums/t_busy_type.dart';
 import 'package:turbo_mvvm/data/models/t_busy_model.dart';
 import 'package:turbo_mvvm/services/t_busy_service.dart';
@@ -24,7 +24,7 @@ mixin TBusyServiceManagement {
     bool isBusy, {
     String? busyTitle,
     String? busyMessage,
-    Duration minBusyDuration = TMVVMDurations.minBusy,
+    Duration minBusyDuration = TurboMvvmDefaults.minBusy,
     TBusyType? busyType,
     Duration? timeoutDuration,
     VoidCallback? onTimeout,
