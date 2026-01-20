@@ -1,0 +1,5 @@
+include: ../turbo_response/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"

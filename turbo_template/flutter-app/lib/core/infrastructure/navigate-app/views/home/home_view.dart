@@ -22,25 +22,21 @@ class HomeView extends StatelessWidget {
 
       return ValueListenableBuilder<bool>(
         valueListenable: model.showInboxBadge,
-        builder: (context, hasUnreadChangelog, _) => Semantics(
-          identifier: 'home_screen',
-          label: context.strings.homeScreenLabel,
-          child: TScaffold(
-            child: TSliverBody(
-              emptyPlaceholder: (context) => Center(
-                child: TEmptyPlaceholder(
-                  title: context.strings.welcome,
-                ),
+        builder: (context, hasUnreadChangelog, _) => TScaffold(
+          child: TSliverBody(
+            emptyPlaceholder: (context) => Center(
+              child: TEmptyPlaceholder(
+                title: context.strings.welcome,
               ),
-              isEmpty: true,
-              appBar: TSliverAppBar(
-                title: context.strings.home,
-                emoji: Emoji.house,
-                actions: [
-                  LogoutButton(onPressed: model.onLogoutPressed),
-                ],
-                onBackPressed: null,
-              ),
+            ),
+            isEmpty: true,
+            appBar: TSliverAppBar(
+              title: context.strings.home,
+              emoji: Emoji.house,
+              actions: [
+                LogoutButton(onPressed: model.onLogoutPressed),
+              ],
+              onBackPressed: null,
             ),
           ),
         ),
