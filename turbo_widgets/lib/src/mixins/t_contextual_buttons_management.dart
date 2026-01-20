@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:turbo_widgets/src/abstracts/t_contextual_buttons_service_interface.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
+import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 
@@ -14,16 +16,16 @@ import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 /// class MyViewModel with TContextualButtonsManagement {
 ///   // Uses default singleton service
 ///   void showTopButton() {
-///     setTopPrimary([MyButton()]);
+///     setContent(TContextualPosition.top, TContextualVariation.primary, [MyButton()]);
 ///   }
 /// }
 ///
 /// class MyCustomViewModel with TContextualButtonsManagement {
 ///   // Uses custom service instance
 ///   @override
-///   TContextualButtonsService get contextualButtonsService => _myService;
+///   TContextualButtonsServiceInterface get contextualButtonsService => _myService;
 ///
-///   final _myService = TContextualButtonsServiceNotifier();
+///   final _myService = TContextualButtonsService();
 /// }
 /// ```
 mixin TContextualButtonsManagement {
@@ -31,7 +33,7 @@ mixin TContextualButtonsManagement {
   ///
   /// Override this getter to provide a custom service instance.
   /// Defaults to the singleton [TContextualButtonsService.instance].
-  TContextualButtonsService get contextualButtonsService =>
+  TContextualButtonsServiceInterface get contextualButtonsService =>
       TContextualButtonsService.instance;
 
   /// Current configuration value from the service.
@@ -62,7 +64,7 @@ mixin TContextualButtonsManagement {
 
   /// Updates the configuration with animated transitions.
   ///
-  /// See [TContextualButtonsService.updateContextualButtons] for details.
+  /// See [TContextualButtonsServiceInterface.updateContextualButtons] for details.
   Future<void> updateContextualButtonsAnimated(
     TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
     bool doNotifyListeners = true,
@@ -114,44 +116,113 @@ mixin TContextualButtonsManagement {
     contextualButtonsService.reset(doNotifyListeners: doNotifyListeners);
   }
 
+  /// Sets content for a specific position and variation.
+  ///
+  /// This is the unified method for setting content. The position-specific
+  /// convenience methods (setTopPrimary, setBottomSecondary, etc.) delegate
+  /// to this method.
+  void setContent(
+    TContextualPosition position,
+    TContextualVariation variation,
+    List<Widget> widgets, {
+    bool doNotifyListeners = true,
+  }) {
+    updateContextualButtonsConfig(
+      (config) {
+        final slot = _getSlotForPosition(config, position);
+        final updatedSlot = _updateSlotVariation(slot, variation, widgets);
+        return _updateConfigWithSlot(config, position, updatedSlot);
+      },
+      doNotifyListeners: doNotifyListeners,
+    );
+  }
+
+  TContextualButtonsSlotConfig _getSlotForPosition(
+    TContextualButtonsConfig config,
+    TContextualPosition position,
+  ) {
+    switch (position) {
+      case TContextualPosition.top:
+        return config.top;
+      case TContextualPosition.bottom:
+        return config.bottom;
+      case TContextualPosition.left:
+        return config.left;
+      case TContextualPosition.right:
+        return config.right;
+    }
+  }
+
+  TContextualButtonsSlotConfig _updateSlotVariation(
+    TContextualButtonsSlotConfig slot,
+    TContextualVariation variation,
+    List<Widget> widgets,
+  ) {
+    switch (variation) {
+      case TContextualVariation.primary:
+        return slot.copyWith(primary: widgets);
+      case TContextualVariation.secondary:
+        return slot.copyWith(secondary: widgets);
+      case TContextualVariation.tertiary:
+        return slot.copyWith(tertiary: widgets);
+    }
+  }
+
+  TContextualButtonsConfig _updateConfigWithSlot(
+    TContextualButtonsConfig config,
+    TContextualPosition position,
+    TContextualButtonsSlotConfig slot,
+  ) {
+    switch (position) {
+      case TContextualPosition.top:
+        return config.copyWith(top: slot);
+      case TContextualPosition.bottom:
+        return config.copyWith(bottom: slot);
+      case TContextualPosition.left:
+        return config.copyWith(left: slot);
+      case TContextualPosition.right:
+        return config.copyWith(right: slot);
+    }
+  }
+
   // Convenience methods for setting content at specific positions
 
   /// Sets primary content for top position.
   void setTopPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        top: config.top.copyWith(primary: widgets),
-      ),
+    setContent(
+      TContextualPosition.top,
+      TContextualVariation.primary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets secondary content for top position.
   void setTopSecondary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        top: config.top.copyWith(secondary: widgets),
-      ),
+    setContent(
+      TContextualPosition.top,
+      TContextualVariation.secondary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets tertiary content for top position.
   void setTopTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        top: config.top.copyWith(tertiary: widgets),
-      ),
+    setContent(
+      TContextualPosition.top,
+      TContextualVariation.tertiary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets primary content for bottom position.
   void setBottomPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        bottom: config.bottom.copyWith(primary: widgets),
-      ),
+    setContent(
+      TContextualPosition.bottom,
+      TContextualVariation.primary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
@@ -161,10 +232,10 @@ mixin TContextualButtonsManagement {
     List<Widget> widgets, {
     bool doNotifyListeners = true,
   }) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        bottom: config.bottom.copyWith(secondary: widgets),
-      ),
+    setContent(
+      TContextualPosition.bottom,
+      TContextualVariation.secondary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
@@ -174,50 +245,50 @@ mixin TContextualButtonsManagement {
     List<Widget> widgets, {
     bool doNotifyListeners = true,
   }) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        bottom: config.bottom.copyWith(tertiary: widgets),
-      ),
+    setContent(
+      TContextualPosition.bottom,
+      TContextualVariation.tertiary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets primary content for left position.
   void setLeftPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        left: config.left.copyWith(primary: widgets),
-      ),
+    setContent(
+      TContextualPosition.left,
+      TContextualVariation.primary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets secondary content for left position.
   void setLeftSecondary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        left: config.left.copyWith(secondary: widgets),
-      ),
+    setContent(
+      TContextualPosition.left,
+      TContextualVariation.secondary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets tertiary content for left position.
   void setLeftTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        left: config.left.copyWith(tertiary: widgets),
-      ),
+    setContent(
+      TContextualPosition.left,
+      TContextualVariation.tertiary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets primary content for right position.
   void setRightPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        right: config.right.copyWith(primary: widgets),
-      ),
+    setContent(
+      TContextualPosition.right,
+      TContextualVariation.primary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
@@ -227,20 +298,20 @@ mixin TContextualButtonsManagement {
     List<Widget> widgets, {
     bool doNotifyListeners = true,
   }) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        right: config.right.copyWith(secondary: widgets),
-      ),
+    setContent(
+      TContextualPosition.right,
+      TContextualVariation.secondary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
   /// Sets tertiary content for right position.
   void setRightTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    updateContextualButtonsConfig(
-      (config) => config.copyWith(
-        right: config.right.copyWith(tertiary: widgets),
-      ),
+    setContent(
+      TContextualPosition.right,
+      TContextualVariation.tertiary,
+      widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }

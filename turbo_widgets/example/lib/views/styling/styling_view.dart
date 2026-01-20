@@ -89,8 +89,7 @@ class StylingView extends StatelessWidget {
                           if (showTertiary) TContextualVariation.tertiary,
                         };
 
-                        // Update service configuration based on parameters
-                        TContextualButtonsService.instance.update(
+                        model.updateContextualButtonsConfig(
                           TContextualButtonsConfig(
                             allowFilter: allowFilter,
                             activeVariations: activeVariations,

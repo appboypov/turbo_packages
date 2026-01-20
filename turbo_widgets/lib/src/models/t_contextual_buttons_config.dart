@@ -3,7 +3,113 @@ import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 
+/// Data configuration containing the widget content for a slot.
+class TContextualButtonsSlotData {
+  const TContextualButtonsSlotData({
+    this.primary = const [],
+    this.secondary = const [],
+    this.tertiary = const [],
+  });
+
+  /// Primary content widgets for this position.
+  final List<Widget> primary;
+
+  /// Secondary content widgets for this position.
+  final List<Widget> secondary;
+
+  /// Tertiary content widgets for this position.
+  final List<Widget> tertiary;
+
+  /// Creates a copy with updated values.
+  TContextualButtonsSlotData copyWith({
+    List<Widget>? primary,
+    List<Widget>? secondary,
+    List<Widget>? tertiary,
+  }) {
+    return TContextualButtonsSlotData(
+      primary: primary ?? this.primary,
+      secondary: secondary ?? this.secondary,
+      tertiary: tertiary ?? this.tertiary,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TContextualButtonsSlotData &&
+          runtimeType == other.runtimeType &&
+          _listEquals(primary, other.primary) &&
+          _listEquals(secondary, other.secondary) &&
+          _listEquals(tertiary, other.tertiary);
+
+  @override
+  int get hashCode => Object.hash(
+        primary.length,
+        secondary.length,
+        tertiary.length,
+      );
+
+  static bool _listEquals(List<Widget> a, List<Widget> b) {
+    if (identical(a, b)) return true;
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (!identical(a[i], b[i])) return false;
+    }
+    return true;
+  }
+}
+
+/// Presentation configuration for how content is displayed at a slot.
+class TContextualButtonsSlotPresentation {
+  const TContextualButtonsSlotPresentation({
+    this.alignment = Alignment.center,
+    this.mainAxisSize = MainAxisSize.min,
+    this.builder,
+  });
+
+  /// Alignment for content at this position.
+  final Alignment alignment;
+
+  /// Main axis size for content at this position.
+  final MainAxisSize mainAxisSize;
+
+  /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
+  final Widget Function(List<Widget> children)? builder;
+
+  /// Creates a copy with updated values.
+  TContextualButtonsSlotPresentation copyWith({
+    Alignment? alignment,
+    MainAxisSize? mainAxisSize,
+    Widget Function(List<Widget> children)? builder,
+  }) {
+    return TContextualButtonsSlotPresentation(
+      alignment: alignment ?? this.alignment,
+      mainAxisSize: mainAxisSize ?? this.mainAxisSize,
+      builder: builder ?? this.builder,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TContextualButtonsSlotPresentation &&
+          runtimeType == other.runtimeType &&
+          alignment == other.alignment &&
+          mainAxisSize == other.mainAxisSize &&
+          builder == other.builder;
+
+  @override
+  int get hashCode => Object.hash(
+        alignment,
+        mainAxisSize,
+        builder,
+      );
+}
+
 /// Configuration for a single position slot (top, bottom, left, or right).
+///
+/// Combines [TContextualButtonsSlotData] for content and
+/// [TContextualButtonsSlotPresentation] for layout/styling.
 class TContextualButtonsSlotConfig {
   const TContextualButtonsSlotConfig({
     this.primary = const [],
@@ -13,6 +119,22 @@ class TContextualButtonsSlotConfig {
     this.mainAxisSize = MainAxisSize.min,
     this.builder,
   });
+
+  /// Creates a slot config from separate data and presentation configs.
+  factory TContextualButtonsSlotConfig.fromParts({
+    TContextualButtonsSlotData data = const TContextualButtonsSlotData(),
+    TContextualButtonsSlotPresentation presentation =
+        const TContextualButtonsSlotPresentation(),
+  }) {
+    return TContextualButtonsSlotConfig(
+      primary: data.primary,
+      secondary: data.secondary,
+      tertiary: data.tertiary,
+      alignment: presentation.alignment,
+      mainAxisSize: presentation.mainAxisSize,
+      builder: presentation.builder,
+    );
+  }
 
   /// Primary content widgets for this position.
   final List<Widget> primary;
@@ -31,6 +153,21 @@ class TContextualButtonsSlotConfig {
 
   /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
   final Widget Function(List<Widget> children)? builder;
+
+  /// Extracts the data portion of this config.
+  TContextualButtonsSlotData get data => TContextualButtonsSlotData(
+        primary: primary,
+        secondary: secondary,
+        tertiary: tertiary,
+      );
+
+  /// Extracts the presentation portion of this config.
+  TContextualButtonsSlotPresentation get presentation =>
+      TContextualButtonsSlotPresentation(
+        alignment: alignment,
+        mainAxisSize: mainAxisSize,
+        builder: builder,
+      );
 
   /// Creates a copy with updated values.
   TContextualButtonsSlotConfig copyWith({
@@ -65,9 +202,9 @@ class TContextualButtonsSlotConfig {
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(primary),
-        Object.hashAll(secondary),
-        Object.hashAll(tertiary),
+        primary.length,
+        secondary.length,
+        tertiary.length,
         alignment,
         mainAxisSize,
         builder,

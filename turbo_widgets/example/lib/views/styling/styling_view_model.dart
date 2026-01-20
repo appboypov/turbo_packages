@@ -147,5 +147,10 @@ final TNotifier<bool> _isDarkMode = TNotifier(false);
     _componentParameters.update(value);
   }
 
+  /// Updates the contextual buttons service configuration.
+  void updateContextualButtonsConfig(TContextualButtonsConfig config) {
+    TContextualButtonsService.instance.update(config);
+  }
+
   static StylingViewModel get locate => StylingViewModel();
 }

@@ -1,89 +1,44 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:turbo_widgets/src/abstracts/t_contextual_buttons_service_interface.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 
-/// Service interface for managing contextual buttons state.
+/// Service for managing contextual buttons state.
 ///
-/// Provides reactive state management through [ValueListenable] pattern,
-/// allowing widgets to listen to configuration changes and update accordingly.
-abstract class TContextualButtonsService extends ChangeNotifier
-    implements ValueListenable<TContextualButtonsConfig> {
-  /// Default singleton instance.
-  static final TContextualButtonsService instance = TContextualButtonsServiceNotifier();
-
-  /// Current configuration value.
-  @override
-  TContextualButtonsConfig get value;
-
-  /// Updates the configuration directly.
-  ///
-  /// If [doNotifyListeners] is true, listeners are notified of the change.
-  /// If false, the value is updated silently without notifying listeners.
-  void update(
-    TContextualButtonsConfig config, {
-    bool doNotifyListeners = true,
-  });
-
-  /// Updates the configuration using an updater function.
-  ///
-  /// If [doNotifyListeners] is true, listeners are notified of the change.
-  /// If false, the value is updated silently without notifying listeners.
-  void updateWith(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
-    bool doNotifyListeners = true,
-  });
-
-  /// Updates the configuration with animated transitions.
-  ///
-  /// When [animated] is true and [doNotifyListeners] is true:
-  /// 1. Checks if the new config differs from current
-  /// 2. Hides buttons by adding affected positions to hiddenPositions
-  /// 3. Waits for hide animation to complete
-  /// 4. Updates the configuration
-  /// 5. Shows buttons by removing positions from hiddenPositions
-  ///
-  /// [positionsToAnimate] specifies which positions to animate (defaults to all).
-  Future<void> updateContextualButtons(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
-    bool doNotifyListeners = true,
-    bool animated = true,
-    Set<TContextualPosition>? positionsToAnimate,
-  });
-
-  /// Hides all buttons by adding all positions to hiddenPositions.
-  void hideAllButtons({bool doNotifyListeners = true});
-
-  /// Shows all buttons by clearing hiddenPositions.
-  void showAllButtons({bool doNotifyListeners = true});
-
-  /// Hides a specific position by adding it to hiddenPositions.
-  void hidePosition(
-    TContextualPosition position, {
-    bool doNotifyListeners = true,
-  });
-
-  /// Shows a specific position by removing it from hiddenPositions.
-  void showPosition(
-    TContextualPosition position, {
-    bool doNotifyListeners = true,
-  });
-
-  /// Resets the configuration to empty (no buttons shown).
-  void reset({bool doNotifyListeners = true});
-}
-
-/// Default concrete implementation of [TContextualButtonsService].
+/// Extends [TContextualButtonsServiceInterface] and provides a singleton
+/// instance for global access. Uses [ChangeNotifier] for manual notification
+/// control and implements [ValueListenable] for reactive state management.
 ///
-/// Uses [ChangeNotifier] for manual notification control and implements
-/// [ValueListenable] for reactive state management.
-final class TContextualButtonsServiceNotifier extends ChangeNotifier
-    implements TContextualButtonsService {
-  TContextualButtonsServiceNotifier([TContextualButtonsConfig? initialValue])
+/// The singleton instance can be reset for testing via [resetInstance].
+final class TContextualButtonsService
+    extends TContextualButtonsServiceInterface {
+  TContextualButtonsService([TContextualButtonsConfig? initialValue])
       : _value = initialValue ?? const TContextualButtonsConfig();
 
+  static TContextualButtonsService? _instance;
+
+  /// Singleton instance.
+  ///
+  /// Creates a new instance on first access. Use [resetInstance] to clear
+  /// the singleton for testing or cleanup purposes.
+  static TContextualButtonsService get instance {
+    _instance ??= TContextualButtonsService();
+    return _instance!;
+  }
+
+  /// Resets the singleton instance.
+  ///
+  /// Disposes the current instance and clears the reference, allowing
+  /// a fresh instance to be created on next [instance] access.
+  /// Use for testing or when the singleton needs to be completely reset.
+  static void resetInstance() {
+    _instance?.dispose();
+    _instance = null;
+  }
+
   TContextualButtonsConfig _value;
+  bool _isDisposed = false;
 
   @override
   TContextualButtonsConfig get value => _value;
@@ -93,6 +48,7 @@ final class TContextualButtonsServiceNotifier extends ChangeNotifier
     TContextualButtonsConfig config, {
     bool doNotifyListeners = true,
   }) {
+    if (_isDisposed) return;
     if (_value == config) return;
     _value = config;
     if (doNotifyListeners) {
@@ -116,55 +72,56 @@ final class TContextualButtonsServiceNotifier extends ChangeNotifier
     bool animated = true,
     Set<TContextualPosition>? positionsToAnimate,
   }) async {
-    final nextConfig = updater(_value);
+    if (_isDisposed) return;
 
-    // Check if config actually changed
+    final nextConfig = updater(_value);
     if (_value == nextConfig) return;
 
     if (!animated || !doNotifyListeners) {
-      // Direct update without animation
       update(nextConfig, doNotifyListeners: doNotifyListeners);
       return;
     }
 
-    // Animated update flow: hide → wait → update → show
-    final positionsToAnimateSet = positionsToAnimate ?? TContextualPosition.values.toSet();
-
-    // Step 1: Hide buttons by adding positions to hiddenPositions
-    final hiddenForAnimation = {..._value.hiddenPositions, ...positionsToAnimateSet};
-    update(
-      _value.copyWith(hiddenPositions: hiddenForAnimation),
-      doNotifyListeners: doNotifyListeners,
+    await _animateTransition(
+      nextConfig: nextConfig,
+      positionsToAnimate: positionsToAnimate,
     );
+  }
 
-    // Step 2: Wait for hide animation (half duration for out phase)
+  /// Orchestrates the animated transition between configurations.
+  ///
+  /// Separated from [updateContextualButtons] to maintain single responsibility.
+  /// Flow: hide → wait → update → show (batched notifications)
+  Future<void> _animateTransition({
+    required TContextualButtonsConfig nextConfig,
+    Set<TContextualPosition>? positionsToAnimate,
+  }) async {
+    if (_isDisposed) return;
+
+    final positions = positionsToAnimate ?? TContextualPosition.values.toSet();
+
+    // Step 1: Hide buttons
+    final hiddenForAnimation = {..._value.hiddenPositions, ...positions};
+    _value = _value.copyWith(hiddenPositions: hiddenForAnimation);
+    notifyListeners();
+
+    // Step 2: Wait for hide animation
     await Future.delayed(
-      Duration(
-        milliseconds: _value.animationDuration.inMilliseconds ~/ 2,
-      ),
+      Duration(milliseconds: _value.animationDuration.inMilliseconds ~/ 2),
     );
+    if (_isDisposed) return;
 
-    // Step 3: Update configuration
-    final updatedConfig = nextConfig.copyWith(
-      hiddenPositions: hiddenForAnimation,
-    );
-    update(updatedConfig, doNotifyListeners: doNotifyListeners);
+    // Step 3: Update configuration (silent)
+    _value = nextConfig.copyWith(hiddenPositions: hiddenForAnimation);
 
-    // Step 4: Show buttons by removing positions from hiddenPositions
-    final finalHiddenPositions = {
-      ...updatedConfig.hiddenPositions,
-    }..removeAll(positionsToAnimateSet);
+    // Step 4: Show buttons
+    final finalHiddenPositions = {..._value.hiddenPositions}..removeAll(positions);
+    _value = _value.copyWith(hiddenPositions: finalHiddenPositions);
+    notifyListeners();
 
-    update(
-      updatedConfig.copyWith(hiddenPositions: finalHiddenPositions),
-      doNotifyListeners: doNotifyListeners,
-    );
-
-    // Step 5: Wait for show animation (half duration for in phase)
+    // Step 5: Wait for show animation
     await Future.delayed(
-      Duration(
-        milliseconds: nextConfig.animationDuration.inMilliseconds ~/ 2,
-      ),
+      Duration(milliseconds: nextConfig.animationDuration.inMilliseconds ~/ 2),
     );
   }
 
@@ -221,5 +178,11 @@ final class TContextualButtonsServiceNotifier extends ChangeNotifier
       const TContextualButtonsConfig(),
       doNotifyListeners: doNotifyListeners,
     );
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 }
