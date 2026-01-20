@@ -1,18 +1,22 @@
 import 'package:get_it/get_it.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/users_api.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/register_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/email_service.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/services/user_service.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view_model.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/core_router.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
+import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/overlay_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/theme_service.dart';
 import 'package:turbo_flutter_template/core/ux/launch-urls/services/url_launcher_service.dart';
@@ -58,12 +62,16 @@ class LocatorService with Turbolytics {
     ShakeGestureService.registerLazySingleton();
     ToastService.registerLazySingleton();
     AuthService.registerLazySingleton();
+    UserService.registerLazySingleton();
+    BadgeService.registerLazySingleton();
     NavigationTabService.registerLazySingleton();
   }
 
   void _registerFactories() {
+    UsersApi.registerFactory();
     EmailService.registerFactory();
     UrlLauncherService.registerFactory();
+    VersionComparatorService.registerFactory();
     LoginForm.registerFactory();
     RegisterForm.registerFactory();
     ForgotPasswordForm.registerFactory();
