@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -242,6 +244,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
       // Store the user ID for which we cached the token
       _cachedTokenUserId = user.uid;
       _log.debug('Auth token cached successfully for user ${user.uid}');
+      _logTokenDiagnostics(user, _cachedTokenResult);
     } catch (error, stackTrace) {
       _log.error(
         'Failed to get auth token for user ${user.uid}',
@@ -262,6 +265,34 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
     _cachedTokenResult = null;
     _cachedTokenUserId = null;
     _log.debug('Token cache cleared');
+  }
+
+  void _logTokenDiagnostics(User user, IdTokenResult? tokenResult) {
+    try {
+      final payload = _decodeJwtPayload(tokenResult?.token);
+      _log.debug(
+        'Auth token diagnostics -> uid: ${user.uid}, '
+        'aud: ${payload?['aud']}, iss: ${payload?['iss']}, sub: ${payload?['sub']}',
+      );
+      _log.debug(
+        'Firebase projectIds -> auth: ${FirebaseAuth.instance.app.options.projectId}, '
+        'firestore: ${FirebaseFirestore.instance.app.options.projectId}',
+      );
+    } catch (error, stackTrace) {
+      _log.warning(
+        'Failed to decode auth token for diagnostics. Error: $error\n$stackTrace',
+      );
+    }
+  }
+
+  Map<String, dynamic>? _decodeJwtPayload(String? token) {
+    if (token == null) return null;
+    final parts = token.split('.');
+    if (parts.length != 3) return null;
+    final normalized = base64Url.normalize(parts[1]);
+    final payload = utf8.decode(base64Url.decode(normalized));
+    final decoded = jsonDecode(payload);
+    return decoded is Map<String, dynamic> ? decoded : null;
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\

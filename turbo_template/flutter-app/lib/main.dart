@@ -45,7 +45,6 @@ void main() {
         return true;
       };
 
-
       LocatorService.locate.registerInitialDependencies();
       runApp(const MyAppView());
     },

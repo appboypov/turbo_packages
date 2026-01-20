@@ -342,7 +342,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Copy the correct GoogleService-Info.plist based on flavor\n# Flutter passes flavor via FLUTTER_APP_FLAVOR or uses scheme name\nif [ -n \"$FLUTTER_APP_FLAVOR\" ]; then\n    FLAVOR=\"$FLUTTER_APP_FLAVOR\"\nelif [ -n \"$PRODUCT_FLAVOR\" ]; then\n    FLAVOR=\"$PRODUCT_FLAVOR\"\nelse\n    FLAVOR=\"prod\"\nfi\n\nPLIST_SOURCE=\"${PROJECT_DIR}/flavors/${FLAVOR}/GoogleService-Info.plist\"\nPLIST_DEST=\"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\nif [ -f \"$PLIST_SOURCE\" ]; then\n    cp \"$PLIST_SOURCE\" \"$PLIST_DEST\"\n    echo \"Copied GoogleService-Info.plist for flavor: $FLAVOR\"\nelse\n    echo \"warning: GoogleService-Info.plist not found for flavor: $FLAVOR at $PLIST_SOURCE\"\nfi\n";
+			shellScript = "# Copy the correct GoogleService-Info.plist based on flavor\n# Flutter passes flavor via FLUTTER_APP_FLAVOR or uses scheme name\nif [ -n \"$FLUTTER_APP_FLAVOR\" ]; then\n    FLAVOR=\"$FLUTTER_APP_FLAVOR\"\nelif [ -n \"$PRODUCT_FLAVOR\" ]; then\n    FLAVOR=\"$PRODUCT_FLAVOR\"\nelse\n    echo \"No flavor set; skipping plist copy to avoid overwriting Runner/GoogleService-Info.plist\"\n    exit 0\nfi\n\nPLIST_SOURCE=\"${PROJECT_DIR}/flavors/${FLAVOR}/GoogleService-Info.plist\"\nPLIST_DEST=\"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\nif [ -f \"$PLIST_SOURCE\" ]; then\n    cp \"$PLIST_SOURCE\" \"$PLIST_DEST\"\n    echo \"Copied GoogleService-Info.plist for flavor: $FLAVOR\"\nelse\n    echo \"warning: GoogleService-Info.plist not found for flavor: $FLAVOR at $PLIST_SOURCE\"\nfi\n";
 		};
 		20A81FBF3BD58819F2F23D50 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
