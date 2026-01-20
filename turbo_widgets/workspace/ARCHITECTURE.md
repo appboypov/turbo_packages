@@ -51,7 +51,12 @@ turbo_widgets/
 │   │       │   ├── t_playground_parameter_panel.dart
 │   │       │   ├── t_playground_prompt_generator.dart
 │   │       │   └── t_playground_screen_type_selector.dart
+│   │       ├── navigation/         # Navigation components
+│   │       │   ├── t_bottom_navigation.dart
+│   │       │   ├── t_side_navigation.dart
+│   │       │   └── t_top_navigation.dart
 │   │       ├── t_collapsible_section.dart
+│   │       ├── t_contextual_buttons.dart
 │   │       ├── t_contextual_wrapper.dart
 │   │       ├── t_markdown_file_item.dart
 │   │       ├── t_playground.dart
@@ -82,10 +87,15 @@ turbo_widgets/
 |------|------|---------|------------|
 | **TPlaygroundParameterModel** | `lib/src/models/playground/t_playground_parameter_model.dart` | Centralized immutable model for all playground component parameters | `strings`, `textAreas`, `ints`, `doubles`, `bools`, `dateTimes`, `dateRanges`, `times`, `selects` |
 | **TSelectOption<T>** | `lib/src/models/playground/t_select_option.dart` | Generic wrapper for select/enum options in playground parameters | `value`, `options`, `labelBuilder` |
+| **TButtonConfig** | `lib/src/models/navigation/t_button_config.dart` | Configuration for navigation buttons | `onPressed`, `icon`, `label`, `buttonBuilder` |
+| **TContextualButtonsConfig** | `lib/src/models/contextual_buttons/t_contextual_buttons_config.dart` | Configuration for contextual button positions and variations | `top`, `bottom`, `left`, `right`, `allowFilter`, `activeVariations` |
+| **TContextualButtonsSlotConfig** | `lib/src/models/contextual_buttons/t_contextual_buttons_slot_config.dart` | Slot configuration for primary/secondary/tertiary button variations | `primary`, `secondary`, `tertiary` |
 
 ### Services / Providers / Managers
 
-**None** - This is a presentation-layer widget library. Business logic services would be in separate packages or consuming applications.
+| Name | Path | Purpose | Key Methods |
+|------|------|---------|-------------|
+| **TContextualButtonsService** | `lib/src/services/t_contextual_buttons_service.dart` | Manages contextual button state and configuration | `config` (getter), constructor accepts `TContextualButtonsConfig` |
 
 ### APIs / Repositories / Controllers / Data Sources
 
@@ -113,6 +123,7 @@ turbo_widgets/
 |------|------|---------|--------------|
 | **TPlayground** | `lib/src/widgets/t_playground.dart` | Main component playground for testing and developing widgets | Live preview, parameter controls, AI prompt generation, responsive preview |
 | **TCollapsibleSection** | `lib/src/widgets/t_collapsible_section.dart` | Expandable/collapsible section | Animated content reveal, title/subtitle support |
+| **TContextualButtons** | `lib/src/widgets/t_contextual_buttons.dart` | Overlay buttons wrapper with position and variation support | Service-based configuration, slot-based positioning, variation layers |
 | **TContextualWrapper** | `lib/src/widgets/t_contextual_wrapper.dart` | Advanced layout wrapper for contextual content | Positions content at top/bottom/left/right, multiple variation layers, animated transitions |
 | **TMarkdownFileItem** | `lib/src/widgets/t_markdown_file_item.dart` | Card component displaying markdown file preview | Header, content preview, "Open in App" action |
 | **TShowcaseItem** | `lib/src/widgets/t_showcase_item.dart` | Displays a widget with styled title badge | Showcase components with titles |
@@ -128,6 +139,14 @@ turbo_widgets/
 | **TPlaygroundPromptGenerator** | `lib/src/widgets/playground/t_playground_prompt_generator.dart` | Tabbed interface for AI prompt generation | Create, solidify, and clear canvas prompts |
 | **TPlaygroundScreenTypeSelector** | `lib/src/widgets/playground/t_playground_screen_type_selector.dart` | Toolbar for playground settings | Screen type selection, preview mode, device frame, theme, scale, safe area |
 | **TPlaygroundParameterField** | `lib/src/widgets/playground/t_playground_parameter_field.dart` | Collection of typed input fields | `TPlaygroundStringField`, `TPlaygroundTextAreaField`, `TPlaygroundIntField`, `TPlaygroundDoubleField`, `TPlaygroundBoolField`, `TPlaygroundDateTimeField`, `TPlaygroundDateRangeField`, `TPlaygroundTimeField`, `TPlaygroundSelectField<T>` |
+
+#### Navigation Components
+
+| Name | Path | Purpose | Key Features |
+|------|------|---------|--------------|
+| **TBottomNavigation** | `lib/src/widgets/navigation/t_bottom_navigation.dart` | Horizontal navigation bar for bottom placement | `buttons` (Map<String, TButtonConfig>), `selectedKey`, Flex layout with configurable direction/alignment |
+| **TTopNavigation** | `lib/src/widgets/navigation/t_top_navigation.dart` | Horizontal navigation bar for top placement | Same API as TBottomNavigation |
+| **TSideNavigation** | `lib/src/widgets/navigation/t_side_navigation.dart` | Vertical navigation bar for side placement | Same API, defaults to vertical direction |
 
 ### Enums / Constants / Config
 
@@ -264,8 +283,17 @@ TPlayground
 ├── TPlaygroundPromptGenerator
 └── TPlaygroundScreenTypeSelector
 
+TContextualButtons
+├── TContextualButtonsService
+└── TContextualButtonsConfig
+    └── TContextualButtonsSlotConfig
+
 TContextualWrapper
 └── TShrink (for animations)
+
+TBottomNavigation / TTopNavigation / TSideNavigation
+├── TButtonConfig
+└── ShadButton (from shadcn_ui)
 
 TShowcaseSection
 └── TCollapsibleSection

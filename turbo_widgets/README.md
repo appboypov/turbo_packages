@@ -12,6 +12,9 @@
 - **Animation Utilities**: Widgets like `TAnimatedSize` and `TSlideShrink` for smooth animations
 - **Extensions**: Helpful extensions for numbers, strings, durations, and more
 - **Badge & Chip Widgets**: Ready-to-use badge and chip widgets for UI elements
+- **Contextual Buttons**: `TContextualButtons` for overlay buttons with position and variation support
+- **Navigation Components**: `TBottomNavigation`, `TTopNavigation`, `TSideNavigation` for flexible navigation bars
+- **Component Playground**: `TPlayground` for testing widgets with device frame preview
 
 ## Installation
 
@@ -21,7 +24,7 @@ Add `turbo_widgets` to your `pubspec.yaml` file:
 dependencies:
   flutter:
     sdk: flutter
-  turbo_widgets: ^1.0.0
+  turbo_widgets: ^1.1.0
 ```
 
 Then run:
@@ -73,6 +76,54 @@ TDivider(
 
 // Duration extensions
 Duration(seconds: 5).format() // Format duration
+```
+
+### Contextual Buttons
+
+```dart
+// Create a service with button configuration
+final service = TContextualButtonsService(
+  TContextualButtonsConfig(
+    bottom: TContextualButtonsSlotConfig(
+      primary: [MyBottomBar()],
+    ),
+    left: TContextualButtonsSlotConfig(
+      primary: [MySideNavigation()],
+    ),
+  ),
+);
+
+// Wrap your content
+TContextualButtons(
+  service: service,
+  child: YourMainContent(),
+)
+```
+
+### Navigation Components
+
+```dart
+// Bottom navigation
+TBottomNavigation(
+  buttons: {
+    'home': TButtonConfig(icon: Icons.home, label: 'Home', onPressed: () {}),
+    'search': TButtonConfig(icon: Icons.search, label: 'Search', onPressed: () {}),
+  },
+  selectedKey: 'home',
+)
+
+// Side navigation
+TSideNavigation(
+  buttons: buttonMap,
+  selectedKey: 'home',
+  direction: Axis.vertical,
+)
+
+// Top navigation
+TTopNavigation(
+  buttons: buttonMap,
+  selectedKey: 'home',
+)
 ```
 
 ## Example
