@@ -10,6 +10,8 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/analytics/us
 import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/firebase_auth_exception_handler.dart';
 import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
 import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_null_exception.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_state_exception.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/map_extension.dart';
@@ -17,7 +19,6 @@ import 'package:turbo_flutter_template/core/shared/extensions/string_extension.d
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/called_by_mutex.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
@@ -314,22 +315,73 @@ class AuthService extends SyncService<User?>
     try {
       log.info('Resetting services via LocatorService...');
       await _locatorService.reset();
+      _locatorService.registerInitialDependencies();
       log.info('Services reset and re-registered.');
 
-      log.info('Triggering Phoenix rebirth...');
-      if (context?.mounted == true) {
-        Phoenix.rebirth(context!);
-        log.info('Phoenix rebirth triggered.');
+      // Try Phoenix.rebirth if context is available and Phoenix widget exists in tree
+      bool phoenixRebirthSucceeded = false;
+      if (context != null && context.mounted) {
+        try {
+          // Check if Phoenix widget is available in the widget tree
+          final phoenixWidget = context.findAncestorWidgetOfExactType<Phoenix>();
+          if (phoenixWidget != null) {
+            log.info('Triggering Phoenix rebirth...');
+            Phoenix.rebirth(context);
+            phoenixRebirthSucceeded = true;
+            log.info('Phoenix rebirth triggered.');
+          } else {
+            log.warning('Phoenix widget not found in widget tree.');
+          }
+        } catch (error, stackTrace) {
+          log.error(
+            'Phoenix.rebirth failed, will navigate to shell route instead',
+            error: error,
+            stackTrace: stackTrace,
+          );
+        }
       } else {
-        log.warning('Context was unmounted before Phoenix.rebirth could be called.');
+        log.warning('Context was null or unmounted before Phoenix.rebirth could be called.');
+      }
+
+      // If Phoenix rebirth didn't succeed, navigate to shell route
+      if (!phoenixRebirthSucceeded) {
+        try {
+          // Use BaseRouterService to navigate to shell route
+          // ShellView will determine Auth/Home based on auth state
+          if (GetIt.I.isRegistered<BaseRouterService>()) {
+            final routerService = BaseRouterService.locate;
+            final shellPath = ShellView.path.asRootPath;
+            log.info('Navigating to shell route: $shellPath');
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              try {
+                routerService.coreRouter.go(shellPath);
+                log.info('Navigation to shell route completed.');
+              } catch (error, stackTrace) {
+                log.error(
+                  'Failed to navigate to shell route',
+                  error: error,
+                  stackTrace: stackTrace,
+                );
+              }
+            });
+          } else {
+            log.warning('BaseRouterService not registered, cannot navigate to shell route.');
+          }
+        } catch (error, stackTrace) {
+          log.error(
+            'Error navigating to shell route',
+            error: error,
+            stackTrace: stackTrace,
+          );
+        }
       }
     } catch (error, stackTrace) {
       log.error(
-        'Error during GetIt reset or Phoenix rebirth',
+        'Error during GetIt reset or navigation',
         error: error,
         stackTrace: stackTrace,
       );
-      rethrow;
+      // Don't rethrow - allow logout to complete even if navigation fails
     }
   }
 
@@ -339,9 +391,13 @@ class AuthService extends SyncService<User?>
         try {
           _hasLoggedOut = true;
           await _firebaseAuth.signOut();
+          // Ensure listeners update before services are reset/disposed.
+          _hasAuth.update(false);
+          _claimsUserLevel.update(UserLevel.unknown);
+          _currentUser.add(null);
           await _onLogout(context: context);
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context?.strings;
+          final strings = context == null ? null : Localizations.of<Strings>(context, Strings);
           if (_hasLoggedOut) {
             return TurboResponse.successAsBool(
               title: strings?.logoutSuccessfulTitle,
@@ -359,11 +415,11 @@ class AuthService extends SyncService<User?>
             stackTrace: stackTrace,
           );
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context?.strings;
+          final strings = context == null ? null : Localizations.of<Strings>(context, Strings);
           return TurboResponse.fail(
             error: error,
             title: strings?.logoutFailedTitle,
-            message: strings!.somethingWentWrongPleaseTryAgainLater,
+            message: strings?.somethingWentWrongPleaseTryAgainLater,
           );
         } finally {
           unlock();

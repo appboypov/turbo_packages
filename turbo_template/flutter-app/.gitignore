@@ -80,3 +80,7 @@ app.*.map.json
 .emulator_ports.json
 firebase/seed/auth_export/
 firebase/seed/firestore_export/
+
+# Firebase configuration (contains sensitive API keys)
+lib/firebase_options.dart
+lib/environment/firebase/staging_firebase_options.dart

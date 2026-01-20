@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:turbo_firestore_api/enums/t_operation_type.dart';
 import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
 import 'package:turbo_firestore_api/mixins/t_exception_handler.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -56,7 +57,26 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
           if (userId != null) {
             cachedUserId = userId;
             await onAuth?.call(user!);
-            _subscription ??= (await stream(user!)).listen(
+
+            // Ensure auth token is ready and cached before starting Firestore stream
+            // This ensures Firestore security rules have access to request.auth
+            try {
+              await _ensureAuthTokenReady(user!);
+            } catch (error, stackTrace) {
+              _log.error(
+                'Failed to ensure auth token ready, proceeding anyway',
+                error: error,
+                stackTrace: stackTrace,
+              );
+              // Continue - let the stream attempt and retry mechanism handle failures
+            }
+
+            // Cancel any existing subscription before creating a new one
+            // This ensures we start fresh with the token-ready user
+            await _subscription?.cancel();
+            _subscription = null;
+
+            _subscription = (await stream(user!)).listen(
               (value) async {
                 await onData(value, user);
               },
@@ -73,6 +93,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
                     : TFirestoreException.fromFirestoreException(
                         error,
                         stackTrace,
+                        operationType: TOperationType.stream,
                       );
 
                 // Call onError handler
@@ -84,6 +105,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
             );
           } else {
             cachedUserId = null;
+            _clearTokenCache();
             await _subscription?.cancel();
             _subscription = null;
             await onData(null, null);
@@ -103,6 +125,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
           : TFirestoreException.fromFirestoreException(
               error,
               stack,
+              operationType: TOperationType.stream,
             );
 
       // Call onError handler
@@ -118,6 +141,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
     _log.warning('Disposing TurboAuthSyncService!');
     await _resetStream();
     _resetRetryTimer();
+    _clearTokenCache();
     _nrOfRetry = 0;
   }
 
@@ -127,6 +151,12 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
 
   /// The ID of the currently authenticated user.
   String? cachedUserId;
+
+  /// Cached token result with claims for the current user.
+  IdTokenResult? _cachedTokenResult;
+
+  /// User ID for which the token was cached (to invalidate on user change).
+  String? _cachedTokenUserId;
 
   /// Subscription to the data stream.
   StreamSubscription<StreamValue?>? _subscription;
@@ -149,7 +179,91 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
   late final _log = TLog(location: runtimeType.toString());
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+
+  /// Returns the cached token result with claims.
+  ///
+  /// Returns `null` if no token has been cached yet.
+  Future<IdTokenResult?> getTokenResult() async {
+    return _cachedTokenResult;
+  }
+
+  /// Returns all custom claims from the cached token.
+  ///
+  /// Returns `null` if no token has been cached yet or if there are no claims.
+  Map<String, dynamic>? getCustomClaims() {
+    return _cachedTokenResult?.claims;
+  }
+
+  /// Returns a specific custom claim by key.
+  ///
+  /// Parameters:
+  /// - [key] - The claim key to retrieve
+  /// - [defaultValue] - The default value to return if the claim doesn't exist
+  ///
+  /// Returns the claim value if found, otherwise returns [defaultValue].
+  T? getCustomClaim<T>(String key, {T? defaultValue}) {
+    final claims = getCustomClaims();
+    if (claims == null) return defaultValue;
+    final value = claims[key];
+    if (value is T) return value;
+    return defaultValue;
+  }
+
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  /// Ensures the auth token is ready and cached for the given user.
+  ///
+  /// This method fetches and caches the token only once per user. If the token
+  /// is already cached for this user, it returns immediately without making
+  /// another network request.
+  ///
+  /// After refreshing the token, this method performs a simple Firestore read
+  /// operation to force Firestore to synchronize its internal auth state with
+  /// the refreshed token. This is necessary because Firestore has its own
+  /// internal auth state that may not automatically sync after getIdToken().
+  ///
+  /// Parameters:
+  /// - [user] - The Firebase user for which to ensure the token is ready
+  ///
+  /// Throws an exception if token retrieval fails.
+  Future<void> _ensureAuthTokenReady(User user) async {
+    // If token is already cached for this user, return early
+    if (_cachedTokenUserId == user.uid && _cachedTokenResult != null) {
+      _log.debug('Auth token already cached for user ${user.uid}');
+      return;
+    }
+
+    try {
+      _log.debug('Fetching auth token for user ${user.uid}');
+      // Refresh the token to ensure it's up to date
+      await user.getIdToken(true);
+      // Get the token result with claims
+      _cachedTokenResult = await user.getIdTokenResult();
+      // Store the user ID for which we cached the token
+      _cachedTokenUserId = user.uid;
+      _log.debug('Auth token cached successfully for user ${user.uid}');
+    } catch (error, stackTrace) {
+      _log.error(
+        'Failed to get auth token for user ${user.uid}',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      // Clear cache on error to force retry on next attempt
+      _clearTokenCache();
+      rethrow;
+    }
+  }
+
+  /// Clears the cached token and token result.
+  ///
+  /// This should be called when the user signs out to ensure a fresh token
+  /// is fetched when a new user signs in.
+  void _clearTokenCache() {
+    _cachedTokenResult = null;
+    _cachedTokenUserId = null;
+    _log.debug('Token cache cleared');
+  }
+
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\

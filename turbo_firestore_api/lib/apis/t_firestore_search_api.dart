@@ -191,12 +191,13 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
         stackTrace: stackTrace,
       );
 
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
         query: 'search(searchTerm: $searchTerm, searchField: $searchField)',
+        operationType: TOperationType.read,
       );
 
       return TurboResponse.fail(error: exception);
@@ -361,12 +362,13 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
         stackTrace: stackTrace,
       );
 
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
         query: 'search(searchTerm: $searchTerm, searchField: $searchField)',
+        operationType: TOperationType.read,
       );
 
       return TurboResponse.fail(error: exception);

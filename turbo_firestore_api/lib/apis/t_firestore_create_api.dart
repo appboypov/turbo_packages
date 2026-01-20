@@ -90,8 +90,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse =
-          writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -143,26 +142,24 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
                 id: id,
                 collectionPathOverride: collectionPathOverride,
               )
-            : _firebaseFirestore
-                .collection(collectionPathOverride ?? _collectionPath())
-                .doc();
+            : _firebaseFirestore.collection(collectionPathOverride ?? _collectionPath()).doc();
         _log.debug(
           message: 'Creating JSON..',
           sensitiveData: null,
         );
         final json = writeable.toJson();
-        final writeableAsJson = (merge || mergeFields != null) &&
-                (await documentReference.get(_getOptions)).exists
-            ? updateTimeStampType.add(
-                json,
-                updatedAtFieldName: _updatedAtFieldName,
-                createdAtFieldName: _createdAtFieldName,
-              )
-            : createTimeStampType.add(
-                json,
-                createdAtFieldName: _createdAtFieldName,
-                updatedAtFieldName: _updatedAtFieldName,
-              );
+        final writeableAsJson =
+            (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
+                ? updateTimeStampType.add(
+                    json,
+                    updatedAtFieldName: _updatedAtFieldName,
+                    createdAtFieldName: _createdAtFieldName,
+                  )
+                : createTimeStampType.add(
+                    json,
+                    createdAtFieldName: _createdAtFieldName,
+                    updatedAtFieldName: _updatedAtFieldName,
+                  );
         final setOptions = SetOptions(
           merge: mergeFields == null ? merge : null,
           mergeFields: mergeFields,
@@ -202,21 +199,33 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         return TurboResponse.success(result: documentReference);
       }
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+      final documentData = _extractDocumentData(writeable);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.create,
+        query: 'createDoc(id: $id, merge: $merge)',
+        documentData: documentData,
+      );
+
       if (transaction != null) {
         // Wrap and rethrow for transactions
-        throw TFirestoreException.fromFirestoreException(
-          error,
-          stackTrace,
-          path: collectionPathOverride ?? _collectionPath(),
-          query: 'createDoc(id: $id, merge: $merge)',
-        );
+        throw exception;
       }
 
       _log.error(
         message: 'Unable to create document',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.create,
+          fullPath: fullPath,
+          documentData: documentData,
           isBatch: writeBatch != null,
           createTimeStampType: createTimeStampType,
           updateTimeStampType: updateTimeStampType,
@@ -226,14 +235,6 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'createDoc(id: $id, merge: $merge)',
       );
 
       return TurboResponse.fail(error: exception);
@@ -290,8 +291,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// See also:
   /// - [createDoc] for single document operations
   /// - [TWriteBatchWithReference] for batch result structure
-  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
-      createDocInBatch({
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>> createDocInBatch({
     required TWriteable writeable,
     String? id,
     WriteBatch? writeBatch,
@@ -308,8 +308,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
       'in order to make this method work.',
     );
     try {
-      final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>?
-          invalidResponse = writeable.validate();
+      final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>? invalidResponse =
+          writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -336,23 +336,21 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
               id: id,
               collectionPathOverride: collectionPathOverride,
             )
-          : _firebaseFirestore
-              .collection(collectionPathOverride ?? _collectionPath())
-              .doc();
+          : _firebaseFirestore.collection(collectionPathOverride ?? _collectionPath()).doc();
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
-      final writeableAsJson = (merge || mergeFields != null) &&
-              (await documentReference.get(_getOptions)).exists
-          ? updateTimeStampType.add(
-              json,
-              updatedAtFieldName: _updatedAtFieldName,
-              createdAtFieldName: _createdAtFieldName,
-            )
-          : createTimeStampType.add(
-              json,
-              createdAtFieldName: _createdAtFieldName,
-              updatedAtFieldName: _updatedAtFieldName,
-            );
+      final writeableAsJson =
+          (merge || mergeFields != null) && (await documentReference.get(_getOptions)).exists
+              ? updateTimeStampType.add(
+                  json,
+                  updatedAtFieldName: _updatedAtFieldName,
+                  createdAtFieldName: _createdAtFieldName,
+                )
+              : createTimeStampType.add(
+                  json,
+                  createdAtFieldName: _createdAtFieldName,
+                  updatedAtFieldName: _updatedAtFieldName,
+                );
       _log.debug(
         message: 'Setting data with writeBatch.set..',
         sensitiveData: TSensitiveData(
@@ -370,8 +368,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         ),
       );
       _log.info(
-        message:
-            'Adding create to batch done! Returning WriteBatchWithReference..',
+        message: 'Adding create to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(
@@ -381,11 +378,28 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         ),
       );
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+      final documentData = _extractDocumentData(writeable);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.create,
+        query: 'createDocInBatch(id: $id, merge: $merge)',
+        documentData: documentData,
+      );
+
       _log.error(
         message: 'Unable to create document with batch',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.create,
+          fullPath: fullPath,
+          documentData: documentData,
           isBatch: writeBatch != null,
           createTimeStampType: createTimeStampType,
           updateTimeStampType: updateTimeStampType,
@@ -394,14 +408,6 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'createDocInBatch(id: $id, merge: $merge)',
       );
 
       return TurboResponse.fail(error: exception);

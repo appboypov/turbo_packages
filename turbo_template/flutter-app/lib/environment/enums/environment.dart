@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:turbo_flutter_template/environment/config/t_app_config.dart';
 import 'package:turbo_flutter_template/environment/firebase/staging_firebase_options.dart';
-import 'package:turbo_flutter_template/firebase_options.dart';
+import 'package:turbo_flutter_template/environment/firebase/firebase_options.dart';
 
 /// Manages environment configuration and settings for the application.
 ///

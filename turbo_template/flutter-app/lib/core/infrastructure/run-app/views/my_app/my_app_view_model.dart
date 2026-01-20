@@ -147,7 +147,10 @@ class MyAppViewModel extends TViewModel with Turbolytics {
       log.info(
         'Environment changed from $lastEnvironment to $currentEnvironment. Signing out user.',
       );
+      // Update before logout; logout triggers GetIt.reset and disposes services.
+      await localStorageService.updateLastEnvironment(environment: currentEnvironment);
       await _authService().logout(context: context);
+      return;
     }
 
     await localStorageService.updateLastEnvironment(environment: currentEnvironment);

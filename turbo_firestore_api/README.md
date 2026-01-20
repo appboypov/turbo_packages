@@ -1235,18 +1235,21 @@ class CreateUserButton extends StatelessWidget {
 
 ### Enhanced Exception Handling
 
-The package uses `TurboFirestoreException.fromFirestoreException` to convert Firestore errors into structured, informative exceptions:
+The package uses `TurboFirestoreException.fromFirestoreException` to convert Firestore errors into structured, informative exceptions with comprehensive context for debugging:
 
 ```dart
 try {
   // Firestore operation
 } catch (error, stackTrace) {
-  // Convert generic error to structured exception
-  final exception = TurboFirestoreException.fromFirestoreException(
+  // Convert generic error to structured exception with full context
+  final exception = TFirestoreException.fromFirestoreException(
     error,
     stackTrace,
     path: 'users',
+    id: 'user-123',
     query: 'listAll()',
+    operationType: TOperationType.read,
+    documentData: {'name': 'John', 'age': 30}, // Available for create/update operations
   );
   
   // Return formatted error response
@@ -1255,10 +1258,40 @@ try {
 ```
 
 This system provides:
-1. **Contextual Information**: Includes collection path and query details
-2. **Stack Trace Preservation**: Maintains original error context
-3. **Consistent Format**: Standardizes error responses across operations
-4. **Rich Error Data**: Includes error code, message, and origin
+1. **Operation Type**: Categorizes the operation (`read`, `write`, `create`, `update`, `delete`, `stream`) for better error diagnosis
+2. **Contextual Information**: Includes collection path, document ID, and query details
+3. **Full Path**: Automatically constructs complete document paths (e.g., `users/user-123`)
+4. **Document Data**: Includes JSON payload for create/update operations (when available before the operation)
+5. **Stack Trace Preservation**: Maintains original error context
+6. **Consistent Format**: Standardizes error responses across all operations
+7. **Rich Error Data**: Includes error code, message, operation type, and full path
+
+#### Operation Type Categorization
+
+All Firestore operations are automatically categorized using `TOperationType`:
+
+- **`read`**: Document or collection retrieval operations (`getById()`, `listAll()`, `listByQuery()`)
+- **`create`**: Document creation operations (`createDoc()`, `createDocInBatch()`)
+- **`update`**: Document modification operations (`updateDoc()`, `updateDocInBatch()`)
+- **`delete`**: Document deletion operations (`deleteDoc()`, `deleteDocInBatch()`)
+- **`stream`**: Real-time stream operations (`streamAll()`, `streamByDocId()`, `streamDocByIdWithConverter()`)
+
+#### Error Message Format
+
+Exception messages include all available context:
+
+```
+TurboFirestorePermissionDeniedException: The caller does not have permission to execute the specified operation. (code: permission-denied)
+Operation: stream
+Collection: users
+Document ID: user-123
+Path: users/user-123
+Document Data: {"name":"John","age":30}
+Original exception: [cloud_firestore/permission-denied] ...
+Stack trace: ...
+```
+
+**Note**: Document data is only included for create and update operations where the data is available before the operation executes. For read, delete, and stream operations, document data is not captured to avoid unnecessary overhead and potential errors.
 
 Key features of TurboResponse error handling:
 1. **No Try-Catch Needed**: All Firestore exceptions are automatically caught and wrapped

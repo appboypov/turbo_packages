@@ -45,9 +45,10 @@ export 'apis/t_firestore_api.dart';
 /// Constants
 export 'constants/t_auth_errors.dart';
 export 'constants/t_error_codes.dart';
-export 'enums/t_parse_type.dart';
 
 /// Enums for configuring API behavior
+export 'enums/t_operation_type.dart';
+export 'enums/t_parse_type.dart';
 export 'enums/t_search_term_type.dart';
 export 'enums/t_timestamp_type.dart';
 
@@ -64,9 +65,9 @@ export 'extensions/t_map_extension.dart';
 export 'mixins/t_exception_handler.dart';
 
 /// Data models and utilities
-export 'models/t_sensitive_data.dart';
 export 'models/t_api_vars.dart';
 export 'models/t_auth_vars.dart';
+export 'models/t_sensitive_data.dart';
 export 'models/t_write_batch_with_reference.dart';
 
 /// Services for state management

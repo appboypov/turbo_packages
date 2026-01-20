@@ -145,32 +145,33 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
         );
       }
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.delete,
+        query: 'deleteDoc(id: $id)',
+      );
+
       if (transaction != null) {
         // Wrap and rethrow for transactions
-        throw TFirestoreException.fromFirestoreException(
-          error,
-          stackTrace,
-          path: collectionPathOverride ?? _collectionPath(),
-          query: 'deleteDoc(id: $id)',
-        );
+        throw exception;
       }
 
       _log.error(
         message: 'Unable to delete document',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.delete,
+          fullPath: fullPath,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'deleteDoc(id: $id)',
       );
 
       return TurboResponse.fail(
@@ -220,8 +221,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [deleteDoc] single document deletion
   /// [updateDocInBatch] batch updates
-  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
-      deleteDocInBatch({
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>> deleteDocInBatch({
     required String id,
     WriteBatch? writeBatch,
     String? collectionPathOverride,
@@ -250,8 +250,7 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
       );
       nullSafeWriteBatch.delete(documentReference);
       _log.info(
-        message:
-            'Adding delete to batch done! Returning WriteBatchWithReference..',
+        message: 'Adding delete to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(
@@ -261,22 +260,28 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
         ),
       );
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.delete,
+        query: 'deleteDocInBatch(id: $id)',
+      );
+
       _log.error(
         message: 'Unable to delete document with batch',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.delete,
+          fullPath: fullPath,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'deleteDocInBatch(id: $id)',
       );
 
       return TurboResponse.fail(error: exception);

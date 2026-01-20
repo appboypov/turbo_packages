@@ -84,8 +84,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse =
-          writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -171,34 +170,38 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         return TurboResponse.success(result: documentReference);
       }
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+      final documentData = _extractDocumentData(writeable);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.update,
+        query: 'updateDoc(id: $id)',
+        documentData: documentData,
+      );
+
       if (transaction != null) {
         // Wrap and rethrow for transactions
-        throw TFirestoreException.fromFirestoreException(
-          error,
-          stackTrace,
-          path: collectionPathOverride ?? _collectionPath(),
-          query: 'updateDoc(id: $id)',
-        );
+        throw exception;
       }
 
       _log.error(
         message: 'Unable to update document',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.update,
+          fullPath: fullPath,
+          documentData: documentData,
           isBatch: writeBatch != null,
           updateTimeStampType: timestampType,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'updateDoc(id: $id)',
       );
 
       return TurboResponse.fail(error: exception);
@@ -249,8 +252,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [updateDoc] single document updates
   /// [createDocInBatch] batch creation
-  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
-      updateDocInBatch({
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>> updateDocInBatch({
     required TWriteable writeable,
     required String id,
     WriteBatch? writeBatch,
@@ -263,8 +265,8 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>?
-        invalidResponse = writeable.validate();
+    final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>? invalidResponse =
+        writeable.validate();
     if (invalidResponse != null && invalidResponse.isFail) {
       _log.warning(
         message: 'TWriteable was invalid!',
@@ -305,8 +307,7 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         writeableAsJson,
       );
       _log.info(
-        message:
-            'Adding update to batch done! Returning WriteBatchWithReference..',
+        message: 'Adding update to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(
@@ -316,22 +317,31 @@ extension TFirestoreUpdateApi<T> on TFirestoreApi<T> {
         ),
       );
     } catch (error, stackTrace) {
+      final path = collectionPathOverride ?? _collectionPath();
+      final fullPath = _buildFullPath(path, id);
+      final documentData = _extractDocumentData(writeable);
+
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        id: id,
+        operationType: TOperationType.update,
+        query: 'updateDocInBatch(id: $id)',
+        documentData: documentData,
+      );
+
       _log.error(
         message: 'Unable to update document with batch',
         sensitiveData: TSensitiveData(
-          path: collectionPathOverride ?? _collectionPath(),
+          path: path,
           id: id,
+          operationType: TOperationType.update,
+          fullPath: fullPath,
+          documentData: documentData,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: collectionPathOverride ?? _collectionPath(),
-        query: 'updateDocInBatch(id: $id)',
       );
 
       return TurboResponse.fail(error: exception);
