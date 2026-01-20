@@ -136,7 +136,11 @@ class AuthService extends SyncService<User?>
       final refreshedUser = _firebaseAuth.currentUser;
       return _getEmailVerificationStatus(refreshedUser);
     } catch (error, stackTrace) {
-      log.error('Failed to reload user for email verification check', error: error, stackTrace: stackTrace);
+      log.error(
+        'Failed to reload user for email verification check',
+        error: error,
+        stackTrace: stackTrace,
+      );
       return _getEmailVerificationStatus(currentUser);
     }
   }
@@ -306,15 +310,15 @@ class AuthService extends SyncService<User?>
     }
   }
 
-  Future<void> _onLogout({required BuildContext context}) async {
+  Future<void> _onLogout({required BuildContext? context}) async {
     try {
       log.info('Resetting services via LocatorService...');
       await _locatorService.reset();
       log.info('Services reset and re-registered.');
 
       log.info('Triggering Phoenix rebirth...');
-      if (context.mounted) {
-        Phoenix.rebirth(context);
+      if (context?.mounted == true) {
+        Phoenix.rebirth(context!);
         log.info('Phoenix rebirth triggered.');
       } else {
         log.warning('Context was unmounted before Phoenix.rebirth could be called.');
@@ -329,7 +333,7 @@ class AuthService extends SyncService<User?>
     }
   }
 
-  Future<TurboResponse> logout({required BuildContext context}) async {
+  Future<TurboResponse> logout({required BuildContext? context}) async {
     return _mutex.lockAndRun(
       run: (unlock) async {
         try {
@@ -337,11 +341,11 @@ class AuthService extends SyncService<User?>
           await _firebaseAuth.signOut();
           await _onLogout(context: context);
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context.strings;
+          final strings = context?.strings;
           if (_hasLoggedOut) {
             return TurboResponse.successAsBool(
-              title: strings.logoutSuccessfulTitle,
-              message: strings.logoutSuccessfulMessage,
+              title: strings?.logoutSuccessfulTitle,
+              message: strings?.logoutSuccessfulMessage,
             );
           } else {
             throw const UnexpectedStateException(
@@ -355,12 +359,11 @@ class AuthService extends SyncService<User?>
             stackTrace: stackTrace,
           );
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context.strings;
+          final strings = context?.strings;
           return TurboResponse.fail(
             error: error,
-            title: strings.logoutFailedTitle,
-            message:
-                'An unknown error occurred.${_hasLoggedOut ? ' But we were still able to log you out.' : 'We were not able to log you out.'}',
+            title: strings?.logoutFailedTitle,
+            message: strings!.somethingWentWrongPleaseTryAgainLater,
           );
         } finally {
           unlock();

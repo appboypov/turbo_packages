@@ -9,6 +9,7 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/services/use
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view_model.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/core_router.dart';
+import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
@@ -77,6 +78,7 @@ class LocatorService with Turbolytics {
     ForgotPasswordForm.registerFactory();
     AuthViewModel.registerFactory();
     ShellViewModel.registerFactory();
+    MyAppViewModel.registerFactory();
     HomeViewModel.registerFactory();
   }
 

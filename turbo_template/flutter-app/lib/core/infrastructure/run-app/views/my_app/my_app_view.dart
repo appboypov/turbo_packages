@@ -134,15 +134,6 @@ class MyAppView extends StatelessWidget {
         ),
       );
     },
-    viewModelBuilder: () => MyAppViewModel(
-      packageInfoService: () => PackageInfoService(),
-      baseRouterService: () => BaseRouterService.locate,
-      busyService: () => TBusyService.instance(),
-      connectionService: () => ConnectionService.locate,
-      languageService: () => LanguageService.locate,
-      themeService: () => ThemeService.locate,
-      locatorService: LocatorService.locate,
-      localStorageService: () => LocalStorageService.locate,
-    ),
+    viewModelBuilder: () => MyAppViewModel.locate,
   );
 }

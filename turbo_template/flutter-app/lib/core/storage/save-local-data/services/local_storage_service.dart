@@ -147,6 +147,12 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     id: null,
   );
 
+  String? get lastEnvironment => _boxGet<String>(
+    boxKey: BoxKey.lastEnvironment,
+    id: null,
+    userId: null,
+  );
+
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
   String get _userId => _authService.userId ?? TValues.noAuthId;
@@ -269,5 +275,14 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
       value: version,
     );
     unawaited(_badgeService.manageHasUnreadChangelog());
+  }
+
+  Future<void> updateLastEnvironment({required String environment}) async {
+    await _boxInsert(
+      boxKey: BoxKey.lastEnvironment,
+      id: null,
+      userId: null,
+      value: environment,
+    );
   }
 }

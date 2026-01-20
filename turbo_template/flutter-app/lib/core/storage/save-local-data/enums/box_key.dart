@@ -7,7 +7,8 @@ enum BoxKey {
   lastChangelogVersionRead,
   taskSortType,
   didHappen,
-  didSee;
+  didSee,
+  lastEnvironment;
 
   String genId({required Object? id, String? userId}) => '$userId-${id?.toString()}-$this';
 }

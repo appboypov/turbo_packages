@@ -2,11 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/analytics_implementation.dart';
 import 'package:turbo_flutter_template/core/analytics/collect-analytics/models/crash_reports_implementation.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/analytics/user_analytics.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
@@ -34,17 +36,35 @@ class MyAppViewModel extends TViewModel with Turbolytics {
     required LocatorService locatorService,
     required LazyLocatorDef<LocalStorageService> localStorageService,
     required LazyLocatorDef<LanguageService> languageService,
+    required LazyLocatorDef<AuthService> authService,
     required LazyLocatorDef<ThemeService> themeService,
   }) : _baseRouterService = baseRouterService,
-        _busyService = busyService,
-        _connectionService = connectionService,
-        _packageInfoService = packageInfoService,
-        _locatorService = locatorService,
-        _localStorageService = localStorageService,
-        _languageService = languageService,
-        _themeService = themeService;
+       _busyService = busyService,
+       _authService = authService,
+       _connectionService = connectionService,
+       _packageInfoService = packageInfoService,
+       _locatorService = locatorService,
+       _localStorageService = localStorageService,
+       _languageService = languageService,
+       _themeService = themeService;
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
+
+  static MyAppViewModel get locate => GetIt.I.get();
+  static void registerFactory() => GetIt.I.registerFactory(
+    () => MyAppViewModel(
+      packageInfoService: () => PackageInfoService(),
+      baseRouterService: () => BaseRouterService.locate,
+      busyService: () => TBusyService.instance(),
+      connectionService: () => ConnectionService.locate,
+      languageService: () => LanguageService.locate,
+      themeService: () => ThemeService.locate,
+      locatorService: LocatorService.locate,
+      localStorageService: () => LocalStorageService.locate,
+      authService: () => AuthService.locate,
+    ),
+  );
+
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
   final LazyLocatorDef<BaseRouterService> _baseRouterService;
@@ -55,6 +75,7 @@ class MyAppViewModel extends TViewModel with Turbolytics {
   final LazyLocatorDef<LocalStorageService> _localStorageService;
   final LazyLocatorDef<LanguageService> _languageService;
   final LazyLocatorDef<ThemeService> _themeService;
+  final LazyLocatorDef<AuthService> _authService;
   late final _shakeGestureService = ShakeGestureService.locate;
 
   BaseRouterService get baseRouterService => _baseRouterService();
@@ -76,14 +97,12 @@ class MyAppViewModel extends TViewModel with Turbolytics {
     await EmulatorConfig.tryConfigureEmulators();
 
     await _trySetCurrentVersion();
-    final locatorService = _locatorService;
-    locatorService.registerInitialDependencies();
     await _setupStrings();
     await _setupTurbolytics();
     if (kIsWeb) {
       setPathUrlStrategy();
     }
-    locatorService.registerSingletons();
+    _locatorService.registerSingletons();
     Animate.restartOnHotReload = true;
     Provider.debugCheckInvalidValueType = null;
     await _initEssentials();
@@ -102,7 +121,7 @@ class MyAppViewModel extends TViewModel with Turbolytics {
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   LazyLocatorDef<ToastService> get lazyToastService =>
-          () => ToastService.locate;
+      () => ToastService.locate;
   GoRouter get coreRouter => baseRouterService.coreRouter;
   ValueListenable<TBusyModel> get busyListenable => busyService.isBusyListenable;
   ValueListenable<TSupportedLanguage> get language => _languageService().language;
@@ -113,8 +132,25 @@ class MyAppViewModel extends TViewModel with Turbolytics {
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   Future<void> _initEssentials() async {
+    await _authService().isReady;
+    await _handleEnvironmentChange();
     await _localStorageService().isReady;
     await _languageService().isReady;
+  }
+
+  Future<void> _handleEnvironmentChange() async {
+    final localStorageService = _localStorageService();
+    final currentEnvironment = Environment.current.name;
+    final lastEnvironment = localStorageService.lastEnvironment;
+
+    if (lastEnvironment != null && lastEnvironment != currentEnvironment) {
+      log.info(
+        'Environment changed from $lastEnvironment to $currentEnvironment. Signing out user.',
+      );
+      await _authService().logout(context: context);
+    }
+
+    await localStorageService.updateLastEnvironment(environment: currentEnvironment);
   }
 
   Future<void> _trySetCurrentVersion() async {
@@ -148,7 +184,11 @@ class MyAppViewModel extends TViewModel with Turbolytics {
         },
       );
     } catch (error, stackTrace) {
-      log.error('$error caught while setting up Turbolytics!', error: error, stackTrace: stackTrace);
+      log.error(
+        '$error caught while setting up Turbolytics!',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 
