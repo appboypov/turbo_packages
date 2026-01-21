@@ -1,6 +1,6 @@
-import 'package:turbo_flutter_template/environment/config/t_app_config.dart';
-import 'package:turbo_flutter_template/environment/enums/environment.dart';
-import 'package:turbo_flutter_template/environment/enums/supported_platform.dart';
+import 'package:turbo_flutter_template/core/environment/config/t_app_config.dart';
+import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/core/environment/enums/supported_platform.dart';
 
 /// The current platform the application is running on.
 ///

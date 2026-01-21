@@ -1,4 +1,4 @@
-import 'package:turbo_flutter_template/core/auth/authenticate-users/abstracts/analytics.dart';
+import 'package:turbo_flutter_template/core/auth/abstracts/analytics.dart';
 import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
 import 'package:turbolytics/turbolytics.dart';
 

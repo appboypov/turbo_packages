@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/base_navigation.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/abstracts/base_navigation.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 
 class HomeRouter extends BaseNavigation {

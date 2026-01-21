@@ -1,4 +1,4 @@
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 
 abstract class ViewArguments {
   Map<String, dynamic> toJson();

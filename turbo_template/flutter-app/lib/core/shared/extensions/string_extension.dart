@@ -1,7 +1,7 @@
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_values.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
-import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
+import 'package:turbo_flutter_template/core/ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ux/enums/t_supported_language.dart';
 
 extension StringExtension on String {
   String get withPeriod {

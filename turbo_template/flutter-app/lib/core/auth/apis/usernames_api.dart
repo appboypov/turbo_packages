@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/create_username_request.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/username_dto.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/create_username_request.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/username_dto.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_result_exception.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 
 /// Returns the top-level safe area padding.
 double? get gTopSafeArea {

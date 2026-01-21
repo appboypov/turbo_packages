@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
+import 'package:turbo_flutter_template/core/auth/views/auth/auth_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusable.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_responsive_builder.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_scaffold.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_responsive_builder.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 class ShellView extends StatelessWidget {

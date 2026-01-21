@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_scaffold.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_sliver_app_bar.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_sliver_body.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
+import 'package:turbo_flutter_template/core/ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_app_bar.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_body.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 

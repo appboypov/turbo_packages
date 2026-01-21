@@ -1,5 +1,5 @@
 import 'package:turbo_flutter_template/generated/l10n.dart';
-import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
+import 'package:turbo_flutter_template/core/l10n/globals/g_context.dart';
 
 /// Returns the current instance of [Strings] for localization.
 ///

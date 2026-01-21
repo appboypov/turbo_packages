@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/base_navigation.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
-import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/abstracts/base_navigation.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
 

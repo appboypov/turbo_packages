@@ -8,24 +8,24 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/view_arguments.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/page_transition_type.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/router_type.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/abstracts/view_arguments.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/page_transition_type.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/router_type.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/widgets/transition_builders.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/transition_builders.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-part 'base_router_service.g.dart';
+part '../navigate-app/services/base_router_service.g.dart';
 
 @JsonSerializable(
   includeIfNull: false,

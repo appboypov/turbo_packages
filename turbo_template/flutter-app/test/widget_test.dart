@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 
 void main() {
   group('Environment', () {

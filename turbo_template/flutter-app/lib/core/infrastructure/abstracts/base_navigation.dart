@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/view_arguments.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/abstracts/view_arguments.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 abstract class BaseNavigation with Turbolytics {

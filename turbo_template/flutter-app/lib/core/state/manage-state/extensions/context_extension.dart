@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/config/t_breakpoint_config.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_device_type.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/models/t_data.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/utils/t_tools.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/config/t_breakpoint_config.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_theme.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/models/t_data.dart';
+import 'package:turbo_flutter_template/core/ui/utils/t_tools.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/generated/l10n.dart' show Strings;
 
 extension ContextExtension on BuildContext {

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/connection/manage-connection/extensions/connectivity_result_extension.dart';
+import 'package:turbo_flutter_template/core/connection/extensions/connectivity_result_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 import 'package:turbolytics/turbolytics.dart';

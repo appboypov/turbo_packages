@@ -1,8 +1,8 @@
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/user_dto.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/user_profile_dto.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/username_dto.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/services/user_service.dart';
-import 'package:turbo_flutter_template/core/settings/dtos/settings_dto.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/user_dto.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/user_profile_dto.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/username_dto.dart';
+import 'package:turbo_flutter_template/core/auth/services/user_service.dart';
+import 'package:turbo_flutter_template/settings/dtos/settings_dto.dart';
 
 enum FirestoreCollection {
   users,

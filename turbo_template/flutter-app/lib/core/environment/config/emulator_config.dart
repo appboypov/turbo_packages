@@ -3,7 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_flutter_template/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 /// Configuration for connecting to Firebase emulators during development.

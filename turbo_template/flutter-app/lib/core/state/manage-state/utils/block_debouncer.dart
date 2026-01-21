@@ -1,4 +1,4 @@
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 import 'debouncer.dart';

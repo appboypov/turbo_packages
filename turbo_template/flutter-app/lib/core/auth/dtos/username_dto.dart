@@ -3,7 +3,7 @@ import 'package:turbo_flutter_template/core/storage/converters/document_referenc
 import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
 import 'package:turbo_serializable/turbo_serializable.dart';
 
-part 'username_dto.g.dart';
+part '../authenticate-users/dtos/username_dto.g.dart';
 
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class UsernameDto extends TWriteableId {

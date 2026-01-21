@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/dtos/user_dto.dart';
+import 'package:turbo_flutter_template/core/auth/dtos/user_dto.dart';
 import 'package:turbo_flutter_template/core/storage/manage-data/abstracts/turbo_api.dart';
 import 'package:turbo_flutter_template/core/storage/manage-data/constants/firestore_collection.dart';
 
