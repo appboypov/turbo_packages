@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +13,16 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/na
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/page_transition_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/router_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
-import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
-import 'package:turbo_notifiers/turbo_notifiers.dart';
+import 'package:turbo_flutter_template/core/ui/show-animations/widgets/transition_builders.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class BaseRouterService with Turbolytics {
-  static const String _testRoute = String.fromEnvironment('route');
-
   BaseRouterService() {
     coreRouter.routerDelegate.addListener(onRouteChanged);
   }
@@ -32,6 +32,8 @@ class BaseRouterService with Turbolytics {
   static BaseRouterService get locate => GetIt.I.get();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(BaseRouterService.new);
 
+  // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+  // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
 
   void onRouteChanged({String? location}) {
@@ -55,6 +57,7 @@ class BaseRouterService with Turbolytics {
     }
   }
 
+  // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   static final _routerType = TNotifier<RouterType>(RouterType.defaultValue);
@@ -73,79 +76,211 @@ class BaseRouterService with Turbolytics {
       _updateRouterType(routerType: RouterType.core);
       return null;
     },
+    observers: [
+      FirebaseAnalyticsObserver(
+        analytics: FirebaseAnalytics.instance,
+      ),
+    ],
     navigatorKey: rootNavigatorKey,
-    initialLocation: _testRoute.isNotEmpty ? _testRoute : ShellView.path.asRootPath,
+    initialLocation: HomeView.path,
     routes: [
+      oopsView,
       shellView,
+    ],
+  );
+
+  static GoRoute get homeRouter => GoRoute(
+    path: HomeView.path.asRootPath,
+    redirect: (context, state) {
+      _updateRouterType(routerType: RouterType.home);
+      return _onAuthAccess(context: context, state: state, navigationTab: NavigationTab.home);
+    },
+    pageBuilder: (context, state) => _buildPage(
+      child: const HomeView(),
+    ),
+    routes: [
+      playgroundView,
     ],
   );
 
   // 🎭 VIEWS --------------------------------------------------------------------------------- \\
 
-  static GoRoute get shellView => GoRoute(
-    path: ShellView.path.asRootPath,
-    redirect: (context, state) {
-      _updateRouterType(routerType: RouterType.core);
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const ShellView()),
-    routes: [
-      authView,
-    ]
-  );
-
-  static GoRoute get authView => GoRoute(
-    path: AuthView.path,
-    pageBuilder: (context, state) => _buildPage(child: const AuthView()),
+  static StatefulShellRoute shellView = StatefulShellRoute.indexedStack(
+    restorationScopeId: 'shell',
+    parentNavigatorKey: rootNavigatorKey,
+    pageBuilder: (context, state, navigationShell) =>
+        _buildPage(child: ShellView(statefulNavigationShell: navigationShell)),
+    branches: [
+      StatefulShellBranch(
+        routes: [homeRouter],
+        restorationScopeId: 'household',
+        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'household'),
+      ),
+      StatefulShellBranch(
+        routes: [shoppingListRouter],
+        restorationScopeId: 'shoppingList',
+        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shoppingList'),
+      ),
+      StatefulShellBranch(
+        routes: [cleaningRouter],
+        restorationScopeId: 'cleaning',
+        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'cleaning'),
+      ),
+      StatefulShellBranch(
+        routes: [paymentsRouter],
+        restorationScopeId: 'payments',
+        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'payments'),
+      ),
+    ],
   );
 
   static GoRoute get playgroundView => GoRoute(
-    path: PlaygroundView.path,
-    redirect: (context, state) => onAuthAccess(
-      context: context,
-      state: state,
-      navigationTab: null,
-    ),
+    path: playgroundView.path,
     pageBuilder: (context, state) => _buildPage(child: const PlaygroundView()),
+    routes: const [],
   );
 
-  /// Home view router - example of an authenticated route.
-  ///
-  /// Uncomment and adapt when implementing bottom navigation:
-  /// ```dart
-  /// static GoRoute get homeRouter => GoRoute(
-  ///   path: HomeView.path.asRootPath,
-  ///   redirect: (context, state) {
-  ///     _updateRouterType(routerType: RouterType.home);
-  ///     return onAuthAccess(context: context, state: state, navigationTab: NavigationTab.home);
-  ///   },
-  ///   pageBuilder: (context, state) => _buildPage(child: const HomeView()),
-  /// );
-  /// ```
+  static GoRoute oopsView = GoRoute(
+    path: OopsView.path.asRootPath,
+    pageBuilder: (context, state) => const MaterialPage(child: OopsView()),
+  );
 
-  /// StatefulShellRoute for bottom navigation - uncomment when needed:
-  ///
-  /// ```dart
-  /// static StatefulShellRoute shellViewWithTabs = StatefulShellRoute.indexedStack(
-  ///   restorationScopeId: 'shell',
-  ///   parentNavigatorKey: rootNavigatorKey,
-  ///   pageBuilder: (context, state, navigationShell) =>
-  ///       _buildPage(child: ShellViewWithTabs(statefulNavigationShell: navigationShell)),
-  ///   branches: [
-  ///     StatefulShellBranch(
-  ///       routes: [homeRouter],
-  ///       restorationScopeId: 'home',
-  ///       navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'home'),
-  ///     ),
-  ///     StatefulShellBranch(
-  ///       routes: [settingsRouter],
-  ///       restorationScopeId: 'settings',
-  ///       navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'settings'),
-  ///     ),
-  ///   ],
-  /// );
-  /// ```
+  static GoRoute createUsernameView = GoRoute(
+    path: CreateUsernameView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(child: const CreateUsernameView()),
+  );
 
+  static GoRoute acceptPrivacyView = GoRoute(
+    path: AcceptPrivacyView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(child: const AcceptPrivacyView()),
+  );
+
+  static GoRoute verifyEmailView = GoRoute(
+    path: VerifyEmailView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) {
+      final origin = state.extra is VerifyEmailOrigin
+          ? state.extra as VerifyEmailOrigin
+          : VerifyEmailOrigin.onboarding;
+      return _buildPage(child: VerifyEmailView(origin: origin));
+    },
+  );
+
+  static GoRoute get notificationSettingsView => GoRoute(
+    path: NotificationSettingsView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(child: const NotificationSettingsView()),
+  );
+
+  static GoRoute get whatsNewView => GoRoute(
+    path: WhatsNewView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(child: const WhatsNewView()),
+  );
+
+  static GoRoute get messageView => GoRoute(
+    path: MessageView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(
+      child: MessageView(
+        origin: MessageOrigin.core,
+        arguments: MessageArguments(messageId: state.arguments()!.householdId!),
+      ),
+    ),
+  );
+
+  static GoRoute get joinHouseholdView => GoRoute(
+    path: JoinHouseholdView.path.asRootPath,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(
+      child: JoinHouseholdView(
+        arguments: JoinHouseholdArguments(prefilledCode: state.prefilledCode),
+        origin: JoinHouseholdOrigin.homeView,
+      ),
+    ),
+  );
+
+  static GoRoute get manageCleaningTaskView => GoRoute(
+    path: ManageCleaningTaskView.path,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(
+      child: ManageCleaningTaskView(
+        arguments: ManageCleaningTaskArguments(id: state.id!),
+        origin: ManageCleaningTaskOrigin.core,
+      ),
+    ),
+  );
+
+  static GoRoute get allPaymentsView => GoRoute(
+    path: AllPaymentsView.path,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(child: const AllPaymentsView()),
+  );
+
+  static GoRoute get managePaymentView => GoRoute(
+    path: ManagePaymentView.path,
+    redirect: (context, state) {
+      if (!_isAuthServiceReady()) {
+        return AuthView.path.asRootPath;
+      }
+      return null;
+    },
+    pageBuilder: (context, state) => _buildPage(
+      child: ManagePaymentView(
+        arguments: ManagePaymentArguments(id: state.id!),
+        origin: ManagePaymentOrigin.core,
+      ),
+    ),
+  );
+
+  // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   ValueListenable<RouterType> get routerType => _routerType;
@@ -154,67 +289,35 @@ class BaseRouterService with Turbolytics {
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
-  /// Safely checks if AuthService is available and user is authenticated.
-  ///
-  /// Returns false if service is not registered (e.g., during app restart)
-  /// to prevent crashes during Phoenix.rebirth scenarios.
-  ///
-  /// Use in route guards to check auth state synchronously.
-  static bool isAuthServiceReady() {
-    try {
-      return GetIt.I.isRegistered<AuthService>() && AuthService.locate.hasAuth.value;
-    } catch (e) {
-      return false;
+  static FutureOr<String?> _onAuthAccess({
+    required BuildContext context,
+    required GoRouterState state,
+    required NavigationTab? navigationTab,
+  }) async {
+    if (navigationTab != null) {
+      final navigationTabService = NavigationTabService.locate;
+      if (!BaseRouterService.locate.didInitialLocation) {
+        BaseRouterService.locate.didInitialLocation = true;
+        return navigationTabService.initialLocation;
+      } else {
+        navigationTabService.onGo(navigationTab: navigationTab);
+      }
     }
+    return null;
   }
 
   /// Safely checks if AuthService is available and user has ready auth.
   ///
   /// Returns false if service is not registered to prevent crashes.
-  ///
-  /// Use in async route guards that need to wait for auth state.
-  static Future<bool> hasReadyAuth() async {
+  static Future<bool> _hasReadyAuth() async {
     try {
       if (!GetIt.I.isRegistered<AuthService>()) {
         return false;
       }
       return await AuthService.locate.hasReadyAuth;
     } catch (e) {
+      // Service not available or in transitional state
       return false;
-    }
-  }
-
-  /// Auth access guard for protected routes.
-  ///
-  /// Redirects to auth view if user is not authenticated.
-  /// Updates navigation tab state when accessing authenticated routes.
-  ///
-  /// Example usage in a route redirect:
-  /// ```dart
-  /// redirect: (context, state) => onAuthAccess(
-  ///   context: context,
-  ///   state: state,
-  ///   navigationTab: NavigationTab.home,
-  /// ),
-  /// ```
-  static FutureOr<String?> onAuthAccess({
-    required BuildContext context,
-    required GoRouterState state,
-    required NavigationTab? navigationTab,
-  }) async {
-    if (await hasReadyAuth()) {
-      if (navigationTab != null) {
-        final navigationTabService = NavigationTabService.locate;
-        if (!BaseRouterService.locate.didInitialLocation) {
-          BaseRouterService.locate.didInitialLocation = true;
-          return navigationTabService.initialLocation;
-        } else {
-          navigationTabService.onGo(navigationTab: navigationTab);
-        }
-      }
-      return null;
-    } else {
-      return AuthView.path.asRootPath;
     }
   }
 
@@ -244,7 +347,17 @@ class BaseRouterService with Turbolytics {
             );
         }
       case PageTransitionType.custom:
-        return MaterialPage(child: child, fullscreenDialog: fullscreenDialog, maintainState: true);
+        return CustomTransitionPage(
+          child: child,
+          barrierColor: null,
+          barrierDismissible: true,
+          maintainState: true,
+          opaque: true,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          fullscreenDialog: fullscreenDialog,
+          transitionDuration: TDurations.animationX0p5,
+          reverseTransitionDuration: Duration.zero,
+        );
       case PageTransitionType.modal:
         return ModalSheetPage(
           child: child,
@@ -259,11 +372,7 @@ class BaseRouterService with Turbolytics {
 
   void _trySendScreenAnalytic({required String route}) {
     if (_route != route) {
-      try {
-        analytics.service.screen(subject: route);
-      } catch (error, stackTrace) {
-        log.error('Failed to send screen analytic', error: error, stackTrace: stackTrace);
-      }
+      analytics.service.screen(subject: route);
       _route = route;
     }
   }
@@ -271,4 +380,6 @@ class BaseRouterService with Turbolytics {
   static void _updateRouterType({required RouterType routerType}) {
     _routerType.update(routerType);
   }
+
+  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 }
