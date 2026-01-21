@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/constants/spacings.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 
 class OpacityDetailsButton extends StatefulWidget {
   const OpacityDetailsButton({

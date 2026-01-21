@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
+import 'package:turbo_flutter_template/core/generated/l10n.dart';
 import 'package:turbo_flutter_template/core/shared/dtos/current_week_dto.dart';
 import 'package:turbo_flutter_template/core/ui/enums/date_format.dart';
-import 'package:turbo_flutter_template/generated/l10n.dart';
 
 abstract class DateTimeUtils {
   static DateTime latestOf(DateTime a, DateTime b) => a.isAfter(b) ? a : b;

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/l10n/globals/g_context.dart';
+import 'package:turbo_flutter_template/core/l10n/globals/g_strings.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/context_def.dart';
-import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/constants/spacings.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/dtos/icon_label_dto.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/dialog_constraints.dart';
@@ -16,10 +18,8 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_icon.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_margin.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/text_input_and_dropdown_sheet.dart';
 import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
 import 'package:turbo_flutter_template/core/ux/utils/haptic_button_utils.dart';
-import 'package:turbo_flutter_template/core/l10n/globals/g_context.dart';
-import 'package:turbo_flutter_template/core/l10n/globals/g_strings.dart';
+import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class DialogService with Turbolytics {

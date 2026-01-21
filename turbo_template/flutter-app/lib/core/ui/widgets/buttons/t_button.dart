@@ -3,11 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_vibrate_moment.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/hover_builder.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_button_raw.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/widgets/t_hoverable.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_vibrate_moment.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_constraints.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_hoverable.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ux/globals/g_vibrate.dart';
 

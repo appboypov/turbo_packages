@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gap.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gradient.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_icon.dart';

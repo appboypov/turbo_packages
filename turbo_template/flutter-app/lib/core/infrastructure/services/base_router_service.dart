@@ -25,7 +25,7 @@ import 'package:turbo_flutter_template/core/ui/widgets/transition_builders.dart'
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-part '../navigate-app/services/base_router_service.g.dart';
+part 'base_router_service.g.dart';
 
 @JsonSerializable(
   includeIfNull: false,

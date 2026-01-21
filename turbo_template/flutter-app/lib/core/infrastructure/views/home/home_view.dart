@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/auth/widgets/logout_button.dart';
+import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
@@ -9,7 +10,6 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_empty_placeholder.dart'
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_app_bar.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_body.dart';
-import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 class HomeView extends StatelessWidget {

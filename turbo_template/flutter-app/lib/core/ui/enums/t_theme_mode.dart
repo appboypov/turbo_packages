@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/generated/fonts.gen.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/num_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/generated/fonts.gen.dart';
 
 enum TThemeMode {
   dark,

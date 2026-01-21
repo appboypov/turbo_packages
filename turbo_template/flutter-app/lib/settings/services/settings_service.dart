@@ -3,10 +3,10 @@ import 'package:get_it/get_it.dart';
 import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api/services/t_document_service.dart';
 import 'package:turbo_firestore_api/typedefs/create_doc_def.dart';
-import 'package:turbo_flutter_template/settings/apis/settings_api.dart';
-import 'package:turbo_flutter_template/settings/dtos/settings_dto.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
+import 'package:turbo_flutter_template/settings/apis/settings_api.dart';
+import 'package:turbo_flutter_template/settings/dtos/settings_dto.dart';
 import 'package:turbo_response/turbo_response.dart';
 
 class SettingsService extends TDocumentService<SettingsDto, SettingsApi> {

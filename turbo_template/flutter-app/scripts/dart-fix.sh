@@ -4,7 +4,7 @@
 pwd || cd ../lib || exit
 
 # Run flutter pub get
-flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
+flutter clean && flutter pub get && flutter gen-l10n && flutter pub run build_runner build --delete-conflicting-outputs
 
 # Find and format files excluding specific patterns
 find . -name "*.dart" \
@@ -36,7 +36,7 @@ find . -name "*.dart" \
 echo "Formatting completed for lib!"
 
 # Change directory to test
-cd ../test || exit
+cd test || exit
 
 # Find and format files excluding specific patterns
 find . -name "*.dart" \

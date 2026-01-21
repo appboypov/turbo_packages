@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/generated/l10n.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/seals/t_image_seal.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_add_button.dart';
@@ -6,7 +7,6 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_column.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gap.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_image.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_margin.dart';
-import 'package:turbo_flutter_template/generated/l10n.dart';
 
 /// A reusable widget for displaying an empty or "no data" state.
 class TEmptyPlaceholder extends StatelessWidget {

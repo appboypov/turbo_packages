@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:turbo_flutter_template/core/generated/assets.gen.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_animated_enabled.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gap.dart';
-import 'package:turbo_flutter_template/generated/assets.gen.dart';
 
 class TBigChip extends StatelessWidget {
   const TBigChip({

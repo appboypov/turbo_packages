@@ -1,7 +1,7 @@
+import 'package:turbo_flutter_template/core/generated/l10n.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/int_extension.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/do_not_change_order.dart';
-import 'package:turbo_flutter_template/generated/l10n.dart';
 
 @DoNotChangeOrder()
 enum DateFormat {

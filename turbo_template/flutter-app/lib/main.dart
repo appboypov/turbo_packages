@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/my_app/my_app_view.dart';
 import 'package:turbo_flutter_template/core/environment/config/emulator_config.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/my_app/my_app_view.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 void main() {

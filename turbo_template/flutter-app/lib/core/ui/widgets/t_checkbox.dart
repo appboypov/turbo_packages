@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:turbo_flutter_template/core/generated/assets.gen.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_selected_state.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gradient.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/generated/assets.gen.dart';
 
 class TCheckBox extends StatelessWidget {
   const TCheckBox({

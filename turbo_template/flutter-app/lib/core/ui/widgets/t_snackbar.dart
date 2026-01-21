@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/text_style_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/buttons/t_button.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_margin.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/text_style_extension.dart';
 
 class TSnackbar extends StatelessWidget {
   const TSnackbar({

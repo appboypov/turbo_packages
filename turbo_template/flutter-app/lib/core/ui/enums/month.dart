@@ -1,4 +1,5 @@
-import 'package:turbo_flutter_template/generated/l10n.dart';
+
+import 'package:turbo_flutter_template/core/generated/l10n.dart';
 
 enum Month {
   january,

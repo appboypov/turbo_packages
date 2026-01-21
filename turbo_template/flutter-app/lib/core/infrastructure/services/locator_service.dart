@@ -14,13 +14,11 @@ import 'package:turbo_flutter_template/core/infrastructure/routers/core_router.d
 import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view_model.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/my_app/my_app_view_model.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
-import 'package:turbo_flutter_template/settings/apis/settings_api.dart';
-import 'package:turbo_flutter_template/settings/services/settings_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/my_app/my_app_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
@@ -28,13 +26,15 @@ import 'package:turbo_flutter_template/core/ui/services/badge_service.dart';
 import 'package:turbo_flutter_template/core/ui/services/overlay_service.dart';
 import 'package:turbo_flutter_template/core/ui/services/random_service.dart';
 import 'package:turbo_flutter_template/core/ui/services/theme_service.dart';
-import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dart';
-import 'package:turbo_flutter_template/core/ux/services/language_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/dialog_service.dart';
+import 'package:turbo_flutter_template/core/ux/services/language_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/shake_gesture_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/sheet_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/toast_service.dart';
+import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/vibrate_service.dart';
+import 'package:turbo_flutter_template/settings/apis/settings_api.dart';
+import 'package:turbo_flutter_template/settings/services/settings_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class LocatorService with Turbolytics {

@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/services/user_service.dart';
+import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/throttler.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
-import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 

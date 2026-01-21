@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/animation_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_animated_size.dart';
-import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
 
 class HorizontalFadeShrink extends StatelessWidget {
   const HorizontalFadeShrink({

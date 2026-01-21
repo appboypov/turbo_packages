@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/generated/l10n.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/generated/l10n.dart';
 
 enum WeekDay {
   monday,

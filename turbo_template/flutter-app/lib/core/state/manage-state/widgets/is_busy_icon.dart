@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/fade_in.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/fade_in.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 class IsBusyIcon extends StatelessWidget {

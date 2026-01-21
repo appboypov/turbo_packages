@@ -4,7 +4,7 @@ import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
 import 'package:turbo_flutter_template/core/storage/converters/timestamp_converter.dart';
 import 'package:turbo_serializable/turbo_serializable.dart';
 
-part '../../core/settings/dtos/settings_dto.g.dart';
+part 'settings_dto.g.dart';
 
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class SettingsDto extends TWriteableId {

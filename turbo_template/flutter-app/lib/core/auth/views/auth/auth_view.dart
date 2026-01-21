@@ -3,14 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/auth/enums/auth_view_mode.dart';
 import 'package:turbo_flutter_template/core/auth/widgets/accept_privacy_text.dart';
+import 'package:turbo_flutter_template/core/generated/assets.gen.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_animated_gap.dart';
 import 'package:turbo_flutter_template/core/ui/dtos/icon_label_dto.dart';
 import 'package:turbo_flutter_template/core/ui/enums/icon_collection.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_animated_gap.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_card.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_constraints.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_focus_order.dart';
@@ -20,9 +21,8 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_margin.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scroll_view.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
 import 'package:turbo_flutter_template/core/ux/utils/haptic_button_utils.dart';
-import 'package:turbo_flutter_template/generated/assets.gen.dart';
+import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 import 'auth_view_model.dart';
@@ -45,8 +45,8 @@ class AuthView extends StatelessWidget {
                     child: Image.asset(
                       width: _startupLogoWidth,
                       switch (context.themeMode) {
-                        TThemeMode.dark => const $AssetsPngsGen().logoDarkMode.path,
-                        TThemeMode.light => const $AssetsPngsGen().logoLightMode.path,
+                        TThemeMode.dark => Assets.pngs.logoDarkMode.path,
+                        TThemeMode.light => Assets.pngs.logoLightMode.path,
                       },
                     ),
                   )
