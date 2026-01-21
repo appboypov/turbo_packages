@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:turbo_plx_cli/src/abstracts/plx_client_interface.dart';
+import 'package:turbo_plx_cli/src/constants/turbo_plx_cli_defaults.dart';
 import 'package:turbo_plx_cli/src/dtos/watch_event_dto.dart';
 import 'package:turbo_plx_cli/src/enums/watch_event_type.dart';
 
 class PlxClient implements PlxClientInterface {
   PlxClient({
-    this.plxExecutable = 'plx',
-    this.requestTimeout = const Duration(seconds: 30),
+    this.plxExecutable = TurboPlxCliDefaults.plxExecutable,
+    this.requestTimeout = TurboPlxCliDefaults.requestTimeout,
   });
 
   final String plxExecutable;
@@ -60,9 +61,7 @@ class PlxClient implements PlxClientInterface {
         .transform(const LineSplitter())
         .listen(_handleStdoutLine);
 
-    _stderrSubscription = _process!.stderr
-        .transform(utf8.decoder)
-        .listen(_handleStderrData);
+    _stderrSubscription = _process!.stderr.transform(utf8.decoder).listen(_handleStderrData);
 
     unawaited(_process!.exitCode.then(_handleProcessExit));
 

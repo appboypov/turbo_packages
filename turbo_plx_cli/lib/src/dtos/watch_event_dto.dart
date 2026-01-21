@@ -45,4 +45,30 @@ class WatchEventDto {
       files: files ?? this.files,
     );
   }
+
+  @override
+  String toString() {
+    return 'WatchEventDto{event: $event, path: $path, content: $content, id: $id, lastModified: $lastModified, files: $files}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WatchEventDto &&
+          runtimeType == other.runtimeType &&
+          event == other.event &&
+          path == other.path &&
+          content == other.content &&
+          id == other.id &&
+          lastModified == other.lastModified &&
+          files == other.files;
+
+  @override
+  int get hashCode =>
+      event.hashCode ^
+      path.hashCode ^
+      content.hashCode ^
+      id.hashCode ^
+      lastModified.hashCode ^
+      files.hashCode;
 }

@@ -1667,6 +1667,9 @@ class StringsNl extends Strings {
   }
 
   @override
+  String get playground => 'Speeltuin';
+
+  @override
   String get pleaseReadAndAcceptOurPrivacyPolicy =>
       'Lees en accepteer ons privacybeleid';
 

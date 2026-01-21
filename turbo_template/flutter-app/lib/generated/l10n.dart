@@ -3097,6 +3097,12 @@ abstract class Strings {
   /// **'Please login to your {appName} account'**
   String pleaseLoginToYourAppnameAccount(Object appName);
 
+  /// No description provided for @playground.
+  ///
+  /// In en, this message translates to:
+  /// **'Playground'**
+  String get playground;
+
   /// No description provided for @pleaseReadAndAcceptOurPrivacyPolicy.
   ///
   /// In en, this message translates to:

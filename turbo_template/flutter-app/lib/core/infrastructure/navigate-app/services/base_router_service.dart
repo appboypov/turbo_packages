@@ -12,8 +12,10 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/na
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/page_transition_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/router_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
+import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -73,7 +75,11 @@ class BaseRouterService with Turbolytics {
     },
     navigatorKey: rootNavigatorKey,
     initialLocation: _testRoute.isNotEmpty ? _testRoute : ShellView.path.asRootPath,
-    routes: [shellView, authView],
+    routes: [
+      shellView,
+      authView,
+      if (!Environment.isProd) playgroundView,
+    ],
   );
 
   // 🎭 VIEWS --------------------------------------------------------------------------------- \\
@@ -90,6 +96,16 @@ class BaseRouterService with Turbolytics {
   static GoRoute get authView => GoRoute(
     path: AuthView.path.asRootPath,
     pageBuilder: (context, state) => _buildPage(child: const AuthView()),
+  );
+
+  static GoRoute get playgroundView => GoRoute(
+    path: PlaygroundView.path.asRootPath,
+    redirect: (context, state) => onAuthAccess(
+      context: context,
+      state: state,
+      navigationTab: null,
+    ),
+    pageBuilder: (context, state) => _buildPage(child: const PlaygroundView()),
   );
 
   /// Home view router - example of an authenticated route.

@@ -1655,6 +1655,9 @@ class StringsEn extends Strings {
   }
 
   @override
+  String get playground => 'Playground';
+
+  @override
   String get pleaseReadAndAcceptOurPrivacyPolicy =>
       'Please read and accept our privacy policy';
 

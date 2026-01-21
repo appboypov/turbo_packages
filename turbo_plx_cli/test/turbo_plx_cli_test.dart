@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:test/test.dart';
 import 'package:turbo_plx_cli/turbo_plx_cli.dart';
 
@@ -260,33 +258,6 @@ void main() {
         await client.dispose();
       });
 
-      test(
-          'GIVEN pending request WHEN timeout occurs THEN future throws TimeoutException',
-          () async {
-        final client = PlxClient(
-          plxExecutable: 'sleep',
-          requestTimeout: const Duration(milliseconds: 100),
-        );
-
-        try {
-          await client.connect('/tmp');
-
-          const request = WatchEventDto(
-            event: WatchEventType.get,
-            path: 'test.md',
-          );
-
-          await expectLater(
-            client.sendRequest(request),
-            throwsA(isA<TimeoutException>()),
-          );
-        } finally {
-          await client.disconnect();
-          await client.dispose();
-        }
-      },
-      skip: 'Requires process that stays alive without reading stdin',
-      );
     });
 
     group('Events Stream', () {

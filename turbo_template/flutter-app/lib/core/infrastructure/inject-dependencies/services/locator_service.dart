@@ -17,6 +17,7 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
 import 'package:turbo_flutter_template/core/settings/services/settings_service.dart';
@@ -95,6 +96,7 @@ class LocatorService with Turbolytics {
     ShellViewModel.registerFactory();
     MyAppViewModel.registerFactory();
     HomeViewModel.registerFactory();
+    PlaygroundViewModel.registerFactory();
     OopsViewModel.registerFactory();
   }
 

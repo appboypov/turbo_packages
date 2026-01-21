@@ -20,7 +20,7 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their YAML builder, or
   /// set it externally, if applicable. If not provided, [toYaml()] will throw.
-  String Function(Map<String, dynamic> json)? get yamlBuilder;
+  String Function(Map<String, dynamic> json)? yamlBuilder;
 
   /// Converts this object to a Markdown string.
   ///
@@ -35,7 +35,7 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their Markdown builder, or
   /// set it externally, if applicable. If not provided, [toMarkdown()] will throw.
-  String Function(Map<String, dynamic> json)? get markdownBuilder;
+  String Function(Map<String, dynamic> json)? markdownBuilder;
 
   /// Converts this object to an XML string.
   ///
@@ -50,5 +50,5 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their XML builder, or
   /// set it externally, if applicable. If not provided, [toXml()] will throw.
-  String Function(Map<String, dynamic> json)? get xmlBuilder;
+  String Function(Map<String, dynamic> json)? xmlBuilder;
 }

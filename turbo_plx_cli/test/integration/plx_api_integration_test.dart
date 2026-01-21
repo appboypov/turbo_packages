@@ -1,6 +1,7 @@
 @TestOn('vm')
 library;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:test/test.dart';
@@ -12,6 +13,7 @@ void main() {
   late PlxClient plxClient;
   late PlxApi plxApi;
   late String plxExecutable;
+  late String silentMockExecutable;
 
   setUpAll(() async {
     final pewPewPlxPath = Platform.environment['PEW_PEW_PLX_PATH'] ??
@@ -30,6 +32,22 @@ void main() {
     }
 
     plxExecutable = '$pewPewPlxPath/plx_test';
+
+    // Build silent mock CLI for timeout tests
+    final testDir = Directory.current.path;
+    final mockCliPath = '$testDir/test/integration/helpers/silent_mock_cli.dart';
+    final mockBuildResult = await Process.run(
+      'dart',
+      ['compile', 'exe', mockCliPath, '-o', '$testDir/silent_mock_cli_test'],
+    );
+
+    if (mockBuildResult.exitCode != 0) {
+      throw Exception(
+        'Failed to build silent mock CLI: ${mockBuildResult.stderr}',
+      );
+    }
+
+    silentMockExecutable = '$testDir/silent_mock_cli_test';
   });
 
   tearDownAll(() async {
@@ -38,6 +56,12 @@ void main() {
     final executable = File('$pewPewPlxPath/plx_test');
     if (executable.existsSync()) {
       executable.deleteSync();
+    }
+
+    final testDir = Directory.current.path;
+    final mockExecutable = File('$testDir/silent_mock_cli_test');
+    if (mockExecutable.existsSync()) {
+      mockExecutable.deleteSync();
     }
   });
 
@@ -235,6 +259,35 @@ watch:
         );
       },
       timeout: const Timeout(Duration(seconds: 10)),
+    );
+  });
+
+  group('PlxClient.timeout', () {
+    test(
+      'GIVEN request to unresponsive CLI WHEN timeout expires THEN throws TimeoutException',
+      () async {
+        final timeoutClient = PlxClient(
+          plxExecutable: silentMockExecutable,
+          requestTimeout: const Duration(milliseconds: 200),
+        );
+
+        try {
+          await timeoutClient.connect('/tmp');
+
+          await expectLater(
+            timeoutClient.sendRequest(
+              const WatchEventDto(
+                event: WatchEventType.get,
+                path: 'test.md',
+              ),
+            ),
+            throwsA(isA<TimeoutException>()),
+          );
+        } finally {
+          await timeoutClient.disconnect();
+          await timeoutClient.dispose();
+        }
+      },
     );
   });
 }

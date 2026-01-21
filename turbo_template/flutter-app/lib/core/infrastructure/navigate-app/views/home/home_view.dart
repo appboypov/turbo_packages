@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/auth/widgets/logout_button.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
+import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
@@ -34,6 +36,11 @@ class HomeView extends StatelessWidget {
               title: context.strings.home,
               emoji: Emoji.house,
               actions: [
+                if (!Environment.isProd)
+                  ShadIconButton.ghost(
+                    icon: const Icon(Icons.science_rounded),
+                    onPressed: () => model.onPlaygroundPressed(context: context),
+                  ),
                 LogoutButton(onPressed: model.onLogoutPressed),
               ],
               onBackPressed: null,
