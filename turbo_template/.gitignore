@@ -183,6 +183,7 @@ firebase_app_id_file.json
 roomy-firebase/public/**/*
 **/firebase_options.dart
 **/staging_firebase_options.dart
+firebase/exports/
 
 # Fastlane
 **/fastlane/report.xml
