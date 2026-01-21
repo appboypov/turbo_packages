@@ -76,17 +76,17 @@ class TSizes {
 
   Offset get globalBottomLeftPosition =>
       context.renderBox?.localToGlobal(context.renderBox!.size.bottomLeft(Offset.zero)) ??
-          Offset.zero;
+      Offset.zero;
   Offset get globalBottomRightPosition =>
       context.renderBox?.localToGlobal(context.renderBox!.size.bottomRight(Offset.zero)) ??
-          Offset.zero;
+      Offset.zero;
   Offset get globalCenterPosition =>
       context.renderBox?.localToGlobal(context.renderBox!.size.center(Offset.zero)) ?? Offset.zero;
   Offset get globalTopLeftPosition =>
       context.renderBox?.localToGlobal(context.renderBox!.size.topLeft(Offset.zero)) ?? Offset.zero;
   Offset get globalTopRightPosition =>
       context.renderBox?.localToGlobal(context.renderBox!.size.topRight(Offset.zero)) ??
-          Offset.zero;
+      Offset.zero;
 
   bool get hasKeyboard => context.media.viewInsets.bottom > 0;
 

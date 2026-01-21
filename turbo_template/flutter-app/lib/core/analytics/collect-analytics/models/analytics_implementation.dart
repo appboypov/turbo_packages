@@ -38,4 +38,3 @@ class AnalyticsImplementation implements TAnalyticsInterface {
     await _analytics.setUserProperty(name: name, value: value);
   }
 }
-

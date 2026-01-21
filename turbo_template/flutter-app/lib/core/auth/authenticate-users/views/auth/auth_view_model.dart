@@ -14,6 +14,7 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/services/aut
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/email_service.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/min_duration_completer.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
@@ -26,8 +27,8 @@ import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/environment/globals/g_env.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_strings.dart';
-import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
+import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -479,15 +480,15 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
         final seconds = _remainingSeconds % 60;
         final message = minutes > 0
             ? gStrings.resetPasswordCooldownMessage(
-          minutes.toString(),
-          minutes == 1 ? gStrings.minute : gStrings.minutes,
-          seconds.toString(),
-          seconds == 1 ? gStrings.second : gStrings.seconds,
-        )
+                minutes.toString(),
+                minutes == 1 ? gStrings.minute : gStrings.minutes,
+                seconds.toString(),
+                seconds == 1 ? gStrings.second : gStrings.seconds,
+              )
             : gStrings.resetPasswordCooldownMessageSeconds(
-          seconds.toString(),
-          seconds == 1 ? gStrings.second : gStrings.seconds,
-        );
+                seconds.toString(),
+                seconds == 1 ? gStrings.second : gStrings.seconds,
+              );
 
         await _dialogService.showOkDialog(
           context: context,

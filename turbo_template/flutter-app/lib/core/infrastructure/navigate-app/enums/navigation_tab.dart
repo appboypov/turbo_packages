@@ -23,7 +23,6 @@ enum NavigationTab {
 
   static const defaultValue = NavigationTab.home;
 
-
   String label({required Strings strings}) {
     switch (this) {
       case NavigationTab.home:

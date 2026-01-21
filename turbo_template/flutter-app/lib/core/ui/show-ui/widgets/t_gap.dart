@@ -20,7 +20,8 @@ class TGap extends Gap {
   const TGap.inlineText({super.key, double multiplier = 1}) : super(TSizes.textGap * multiplier);
   const TGap.label({super.key, double multiplier = 1}) : super(TSizes.itemGap * multiplier);
   const TGap.listItem({super.key, double multiplier = 1}) : super(TSizes.listItemGap * multiplier);
-  const TGap.scaffoldTitle({super.key, double multiplier = 1}) : super(TSizes.titleGap * multiplier);
+  const TGap.scaffoldTitle({super.key, double multiplier = 1})
+    : super(TSizes.titleGap * multiplier);
   const TGap.section({super.key, double multiplier = 1}) : super(TSizes.sectionGap * multiplier);
   factory TGap.bottomSafeArea(BuildContext context, {double multiplier = 1}) =>
       TGap(context.sizes.bottomSafeAreaWithMinimum * multiplier);

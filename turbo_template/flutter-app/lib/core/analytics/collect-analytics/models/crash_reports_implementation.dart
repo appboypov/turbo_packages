@@ -50,7 +50,6 @@ class CrashReportsImplementation implements CrashReportsInterface {
     bool? printDetails,
     bool fatal = false,
   }) async {
-
     // Firebase Crashlytics is not supported on web
     if (kIsWeb) return;
 

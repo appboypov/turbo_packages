@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/abstracts/view_arguments.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/page_transition_type.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/router_type.dart';
@@ -16,11 +16,16 @@ import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
+import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/show-animations/widgets/transition_builders.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
+
+part 'base_router_service.g.dart';
 
 class BaseRouterService with Turbolytics {
   BaseRouterService() {
@@ -116,21 +121,6 @@ class BaseRouterService with Turbolytics {
         restorationScopeId: 'household',
         navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'household'),
       ),
-      StatefulShellBranch(
-        routes: [shoppingListRouter],
-        restorationScopeId: 'shoppingList',
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shoppingList'),
-      ),
-      StatefulShellBranch(
-        routes: [cleaningRouter],
-        restorationScopeId: 'cleaning',
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'cleaning'),
-      ),
-      StatefulShellBranch(
-        routes: [paymentsRouter],
-        restorationScopeId: 'payments',
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'payments'),
-      ),
     ],
   );
 
@@ -143,141 +133,6 @@ class BaseRouterService with Turbolytics {
   static GoRoute oopsView = GoRoute(
     path: OopsView.path.asRootPath,
     pageBuilder: (context, state) => const MaterialPage(child: OopsView()),
-  );
-
-  static GoRoute createUsernameView = GoRoute(
-    path: CreateUsernameView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const CreateUsernameView()),
-  );
-
-  static GoRoute acceptPrivacyView = GoRoute(
-    path: AcceptPrivacyView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const AcceptPrivacyView()),
-  );
-
-  static GoRoute verifyEmailView = GoRoute(
-    path: VerifyEmailView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) {
-      final origin = state.extra is VerifyEmailOrigin
-          ? state.extra as VerifyEmailOrigin
-          : VerifyEmailOrigin.onboarding;
-      return _buildPage(child: VerifyEmailView(origin: origin));
-    },
-  );
-
-  static GoRoute get notificationSettingsView => GoRoute(
-    path: NotificationSettingsView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const NotificationSettingsView()),
-  );
-
-  static GoRoute get whatsNewView => GoRoute(
-    path: WhatsNewView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const WhatsNewView()),
-  );
-
-  static GoRoute get messageView => GoRoute(
-    path: MessageView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(
-      child: MessageView(
-        origin: MessageOrigin.core,
-        arguments: MessageArguments(messageId: state.arguments()!.householdId!),
-      ),
-    ),
-  );
-
-  static GoRoute get joinHouseholdView => GoRoute(
-    path: JoinHouseholdView.path.asRootPath,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(
-      child: JoinHouseholdView(
-        arguments: JoinHouseholdArguments(prefilledCode: state.prefilledCode),
-        origin: JoinHouseholdOrigin.homeView,
-      ),
-    ),
-  );
-
-  static GoRoute get manageCleaningTaskView => GoRoute(
-    path: ManageCleaningTaskView.path,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(
-      child: ManageCleaningTaskView(
-        arguments: ManageCleaningTaskArguments(id: state.id!),
-        origin: ManageCleaningTaskOrigin.core,
-      ),
-    ),
-  );
-
-  static GoRoute get allPaymentsView => GoRoute(
-    path: AllPaymentsView.path,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(child: const AllPaymentsView()),
-  );
-
-  static GoRoute get managePaymentView => GoRoute(
-    path: ManagePaymentView.path,
-    redirect: (context, state) {
-      if (!_isAuthServiceReady()) {
-        return AuthView.path.asRootPath;
-      }
-      return null;
-    },
-    pageBuilder: (context, state) => _buildPage(
-      child: ManagePaymentView(
-        arguments: ManagePaymentArguments(id: state.id!),
-        origin: ManagePaymentOrigin.core,
-      ),
-    ),
   );
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
@@ -304,21 +159,6 @@ class BaseRouterService with Turbolytics {
       }
     }
     return null;
-  }
-
-  /// Safely checks if AuthService is available and user has ready auth.
-  ///
-  /// Returns false if service is not registered to prevent crashes.
-  static Future<bool> _hasReadyAuth() async {
-    try {
-      if (!GetIt.I.isRegistered<AuthService>()) {
-        return false;
-      }
-      return await AuthService.locate.hasReadyAuth;
-    } catch (e) {
-      // Service not available or in transitional state
-      return false;
-    }
   }
 
   static Page<dynamic> _buildPage({
@@ -382,4 +222,34 @@ class BaseRouterService with Turbolytics {
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
+}
+
+@JsonSerializable(
+  includeIfNull: false,
+  explicitToJson: true,
+)
+class ExtraArguments extends ViewArguments {
+  ExtraArguments({
+    this.messageId,
+    this.id,
+  });
+
+  final String? messageId;
+  final String? id;
+
+  static const fromJsonFactory = _$ExtraArgumentsFromJson;
+  factory ExtraArguments.fromJson(Map<String, dynamic> json) => _$ExtraArgumentsFromJson(json);
+  static const toJsonFactory = _$ExtraArgumentsToJson;
+  @override
+  Map<String, dynamic> toJson() => _$ExtraArgumentsToJson(this);
+}
+
+extension GoRouterStateExtension on GoRouterState {
+  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+  ExtraArguments? arguments() => extra?.asType<ExtraArguments>();
+  String? get id => _id(TKeys.id) ?? arguments()?.id;
+
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  String? _id(String key) => pathParameters[key] ?? uri.queryParameters[key];
 }

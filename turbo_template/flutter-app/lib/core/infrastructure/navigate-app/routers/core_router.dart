@@ -10,7 +10,7 @@ class CoreRouter extends BaseNavigation {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static CoreRouter Function() get lazyLocate =>
-          () => GetIt.I.get<CoreRouter>();
+      () => GetIt.I.get<CoreRouter>();
   static CoreRouter get locate => GetIt.I.get();
   static void registerFactory() => GetIt.I.registerFactory(CoreRouter.new);
 
@@ -36,5 +36,4 @@ class CoreRouter extends BaseNavigation {
       go(location: OopsView.path.asRootPath);
     });
   }
-
 }

@@ -5,4 +5,3 @@ extension ConnectivityResultExtension on List<ConnectivityResult> {
       !contains(ConnectivityResult.none) &&
       (contains(ConnectivityResult.mobile) || contains(ConnectivityResult.wifi));
 }
-

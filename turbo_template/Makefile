@@ -60,3 +60,11 @@ functions-build: ## Build Cloud Functions
 
 functions-watch: ## Watch and rebuild Cloud Functions
 	cd firebase/functions && npm run build:watch
+
+build: ## Build Flutter assets
+	@echo "🔧 Building Flutter assets..."
+	cd flutter-app && flutter pub run build_runner build --delete-conflicting-outputs
+
+fix: ## Fix Flutter assets build issues
+	@echo "🔧 Fixing Flutter assets build issues..."
+	cd flutter-app && sh scripts/dart-fix.sh

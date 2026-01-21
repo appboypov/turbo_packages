@@ -42,13 +42,13 @@ class TData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is TData &&
-              runtimeType == other.runtimeType &&
-              currentWidth == other.currentWidth &&
-              currentHeight == other.currentHeight &&
-              orientation == other.orientation &&
-              deviceType == other.deviceType &&
-              media == other.media;
+      other is TData &&
+          runtimeType == other.runtimeType &&
+          currentWidth == other.currentWidth &&
+          currentHeight == other.currentHeight &&
+          orientation == other.orientation &&
+          deviceType == other.deviceType &&
+          media == other.media;
 
   @override
   int get hashCode =>

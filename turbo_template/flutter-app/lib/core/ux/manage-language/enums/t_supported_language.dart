@@ -38,4 +38,3 @@ extension SupportedLanguagesExtension on String? {
     orElse: () => TSupportedLanguage.defaultValue,
   );
 }
-

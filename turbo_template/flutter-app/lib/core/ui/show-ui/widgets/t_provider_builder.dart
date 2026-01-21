@@ -27,16 +27,16 @@ class TProviderBuilder extends StatelessWidget {
   final TThemeMode tThemeMode;
   final TSupportedLanguage tSupportedLanguage;
   final Widget Function(
-      TDeviceType deviceType,
-      TThemeMode themeMode,
-      TTools tools,
-      TData data,
-      TTexts texts,
-      TColors colors,
-      TSizes sizes,
-      TDecorations decorations,
-      BuildContext context,
-      )
+    TDeviceType deviceType,
+    TThemeMode themeMode,
+    TTools tools,
+    TData data,
+    TTexts texts,
+    TColors colors,
+    TSizes sizes,
+    TDecorations decorations,
+    BuildContext context,
+  )
   builder;
 
   @override

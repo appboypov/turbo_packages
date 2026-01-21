@@ -88,4 +88,3 @@ mixin FirebaseAuthExceptionHandler {
     };
   }
 }
-

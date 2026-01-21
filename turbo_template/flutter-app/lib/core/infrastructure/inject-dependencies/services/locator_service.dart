@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/user_profiles_api.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/users_api.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/usernames_api.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/apis/users_api.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/forgot_password_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/login_form.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/forms/register_form.dart';
@@ -11,14 +11,14 @@ import 'package:turbo_flutter_template/core/auth/authenticate-users/services/use
 import 'package:turbo_flutter_template/core/auth/authenticate-users/views/auth/auth_view_model.dart';
 import 'package:turbo_flutter_template/core/connection/manage-connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/core_router.dart';
-import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view_model.dart';
-import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/views/playground/playground_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/run-app/views/my_app/my_app_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/run-app/views/shell/shell_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
 import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
 import 'package:turbo_flutter_template/core/settings/services/settings_service.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view_model.dart';

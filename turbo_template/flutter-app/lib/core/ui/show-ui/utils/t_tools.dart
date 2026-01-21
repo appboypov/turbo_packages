@@ -1,4 +1,3 @@
-
 import 'package:turbo_flutter_template/core/ui/show-ui/extensions/t_scale_extension.dart';
 
 class TTools {
@@ -15,47 +14,47 @@ class TTools {
   final double heightInDesign;
 
   double scaledPerWidth(
-      double value, {
-        double bottomLimit = 0.50,
-        double upperLimit = 1,
-        double speed = 1.0,
-      }) => value
+    double value, {
+    double bottomLimit = 0.50,
+    double upperLimit = 1,
+    double speed = 1.0,
+  }) => value
       .scaledPerWidth(currentWidth: currentWidth, widthInDesign: widthInDesign, speed: speed)
       .clamp(value * bottomLimit, value * upperLimit);
 
   double scaledPerHeight(
-      double value, {
-        double bottomLimit = 0.50,
-        double upperLimit = 1.00,
-        double speed = 1.0,
-      }) => value
+    double value, {
+    double bottomLimit = 0.50,
+    double upperLimit = 1.00,
+    double speed = 1.0,
+  }) => value
       .scaledPerHeight(currentHeight: currentHeight, heightInDesign: heightInDesign, speed: speed)
       .clamp(value * bottomLimit, value * upperLimit);
 
   double scaled(
-      double value, {
-        double bottomLimit = 0.50,
-        double upperLimit = 1.00,
-        double speed = 1.00,
-      }) => value
+    double value, {
+    double bottomLimit = 0.50,
+    double upperLimit = 1.00,
+    double speed = 1.00,
+  }) => value
       .scaledPerWidthAndHeight(
-    currentHeight: currentHeight,
-    currentWidth: currentWidth,
-    widthInDesign: widthInDesign,
-    heightInDesign: heightInDesign,
-    speed: speed,
-  )
+        currentHeight: currentHeight,
+        currentWidth: currentWidth,
+        widthInDesign: widthInDesign,
+        heightInDesign: heightInDesign,
+        speed: speed,
+      )
       .clamp(value * bottomLimit, value * upperLimit);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is TTools &&
-              runtimeType == other.runtimeType &&
-              currentWidth == other.currentWidth &&
-              currentHeight == other.currentHeight &&
-              widthInDesign == other.widthInDesign &&
-              heightInDesign == other.heightInDesign;
+      other is TTools &&
+          runtimeType == other.runtimeType &&
+          currentWidth == other.currentWidth &&
+          currentHeight == other.currentHeight &&
+          widthInDesign == other.widthInDesign &&
+          heightInDesign == other.heightInDesign;
 
   @override
   int get hashCode =>

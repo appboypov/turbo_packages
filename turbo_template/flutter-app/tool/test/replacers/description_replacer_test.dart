@@ -130,10 +130,8 @@ environment:
 
     group('index.html replacement', () {
       test('replaces meta description in index.html', () {
-        const input =
-            '<meta name="description" content="A new Flutter project.">';
-        const expected =
-            '<meta name="description" content="My awesome app.">';
+        const input = '<meta name="description" content="A new Flutter project.">';
+        const expected = '<meta name="description" content="My awesome app.">';
 
         final result = input.replaceAll(
           DescriptionReplacer.oldValue,

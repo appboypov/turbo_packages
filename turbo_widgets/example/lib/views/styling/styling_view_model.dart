@@ -1,7 +1,7 @@
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 
-class StylingViewModel extends TViewModel<Object?> {
+class StylingViewModel extends TBaseViewModel<Object?> {
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(true);
   final TNotifier<bool> _isContextualButtonsShowcaseExpanded = TNotifier(true);
   final TNotifier<bool> _isNavigationShowcaseExpanded = TNotifier(true);

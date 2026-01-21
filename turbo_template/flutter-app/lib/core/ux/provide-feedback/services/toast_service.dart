@@ -11,7 +11,7 @@ class ToastService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static ToastService Function() get lazyLocate =>
-          () => GetIt.I.get();
+      () => GetIt.I.get();
   static ToastService get locate => GetIt.I.get();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(ToastService.new);
 

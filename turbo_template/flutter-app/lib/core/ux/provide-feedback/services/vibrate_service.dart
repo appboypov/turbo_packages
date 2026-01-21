@@ -34,4 +34,3 @@ class VibrateService with Turbolytics {
     }
   }
 }
-

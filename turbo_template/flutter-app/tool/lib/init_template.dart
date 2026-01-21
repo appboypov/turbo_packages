@@ -72,35 +72,47 @@ class TemplateInitializer {
     final results = <ReplacerResult>[];
 
     // Run all replacers
-    results.add(await _runReplacer(
-      'Package Name',
-      () => PackageNameReplacer.replace(projectRoot, config.packageName),
-    ),);
+    results.add(
+      await _runReplacer(
+        'Package Name',
+        () => PackageNameReplacer.replace(projectRoot, config.packageName),
+      ),
+    );
 
-    results.add(await _runReplacer(
-      'Bundle ID',
-      () => BundleIdReplacer.replace(projectRoot, config.bundleIdSuffix),
-    ),);
+    results.add(
+      await _runReplacer(
+        'Bundle ID',
+        () => BundleIdReplacer.replace(projectRoot, config.bundleIdSuffix),
+      ),
+    );
 
-    results.add(await _runReplacer(
-      'Organization',
-      () => OrganizationReplacer.replace(projectRoot, config.organization),
-    ),);
+    results.add(
+      await _runReplacer(
+        'Organization',
+        () => OrganizationReplacer.replace(projectRoot, config.organization),
+      ),
+    );
 
-    results.add(await _runReplacer(
-      'Display Name',
-      () => DisplayNameReplacer.replace(projectRoot, config.displayName),
-    ),);
+    results.add(
+      await _runReplacer(
+        'Display Name',
+        () => DisplayNameReplacer.replace(projectRoot, config.displayName),
+      ),
+    );
 
-    results.add(await _runReplacer(
-      'Description',
-      () => DescriptionReplacer.replace(projectRoot, config.description),
-    ),);
+    results.add(
+      await _runReplacer(
+        'Description',
+        () => DescriptionReplacer.replace(projectRoot, config.description),
+      ),
+    );
 
-    results.add(await _runReplacer(
-      'App Name',
-      () => AppNameReplacer.replace(projectRoot, config.appName),
-    ),);
+    results.add(
+      await _runReplacer(
+        'App Name',
+        () => AppNameReplacer.replace(projectRoot, config.appName),
+      ),
+    );
 
     return InitResult.success(results);
   }
@@ -194,8 +206,7 @@ class InitResult {
     return InitResult._(success: false, error: error);
   }
 
-  int get totalFilesModified =>
-      results.fold(0, (sum, r) => sum + r.filesModified);
+  int get totalFilesModified => results.fold(0, (sum, r) => sum + r.filesModified);
 }
 
 /// Result of a dry run.
@@ -210,9 +221,10 @@ class DryRunResult {
     required this.files,
   });
 
-  int get totalFiles =>
-      files.values.fold(0, (sum, list) => sum + list.length);
+  int get totalFiles => files.values.fold(0, (sum, list) => sum + list.length);
 
   int get totalLines => files.values.fold(
-      0, (sum, list) => sum + list.fold(0, (s, f) => s + f.lineCount),);
+        0,
+        (sum, list) => sum + list.fold(0, (s, f) => s + f.lineCount),
+      );
 }

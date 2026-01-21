@@ -17,9 +17,9 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
 
   static UserService get locate => GetIt.I.get();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(
-        UserService.new,
-        dispose: (param) async => await param.dispose(),
-      );
+    UserService.new,
+    dispose: (param) async => await param.dispose(),
+  );
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -70,5 +70,4 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
       remoteUpdateRequestBuilder: (doc) => UpdateUserDtoRequest(lastChangelogVersionRead: version),
     );
   }
-
 }

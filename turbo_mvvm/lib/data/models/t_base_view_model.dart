@@ -6,7 +6,7 @@ import 'package:turbo_mvvm/data/constants/turbo_mvvm_defaults.dart';
 part '../../widgets/t_view_model_builder.dart';
 
 /// Base view model class.
-abstract class TViewModel<A> extends ChangeNotifier {
+abstract class TBaseViewModel<A> extends ChangeNotifier {
   /// Holds arguments of type [A] provided by the [TViewModelBuilder._argumentBuilder].
   late final A arguments;
 
@@ -19,22 +19,22 @@ abstract class TViewModel<A> extends ChangeNotifier {
   /// Provides non-leaking access to the [context].
   late DisposableBuildContext? disposableBuildContext;
 
-  /// Sets whether the [TViewModel] has been initialised.
+  /// Sets whether the [TBaseViewModel] has been initialised.
   void setInitialised(bool value) => _isInitialised.value = value;
 
-  /// Underlying notifier that sets whether the [TViewModel] has been initialised.
+  /// Underlying notifier that sets whether the [TBaseViewModel] has been initialised.
   final ValueNotifier<bool> _isInitialised = ValueNotifier(false);
 
-  /// Listenable that listens to whether the [TViewModel] has been initialised.
+  /// Listenable that listens to whether the [TBaseViewModel] has been initialised.
   ValueListenable<bool> get isInitialised => _isInitialised;
 
-  /// Used to perform any initialising logic for the [TViewModel].
+  /// Used to perform any initialising logic for the [TBaseViewModel].
   @mustCallSuper
   void initialise() {
     _isInitialised.value = true;
   }
 
-  /// Used to perform any disposing logic for the [TViewModel].
+  /// Used to perform any disposing logic for the [TBaseViewModel].
   ///
   /// This method is called in the [TViewModelBuilderState.initState] method.
   @override

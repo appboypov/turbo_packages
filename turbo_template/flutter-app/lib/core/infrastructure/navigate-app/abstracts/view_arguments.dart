@@ -1,16 +1,15 @@
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/models/extra_arguments.dart';
+import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 
 abstract class ViewArguments {
-  Map<String, dynamic> toMap();
+  Map<String, dynamic> toJson();
 }
 
 extension ViewArgumentsListExtension on List<ViewArguments> {
   ExtraArguments get toExtraArguments {
     final extraArguments = <String, dynamic>{};
     for (final viewArguments in this) {
-      extraArguments.addAll(viewArguments.toMap());
+      extraArguments.addAll(viewArguments.toJson());
     }
-    return ExtraArguments.fromMap(extraArguments);
+    return ExtraArguments.fromJson(extraArguments);
   }
 }
-

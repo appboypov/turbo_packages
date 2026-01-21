@@ -41,20 +41,20 @@ class AuthView extends StatelessWidget {
           backgroundColor: context.colors.background,
           showBackgroundPattern: true,
           child:
-          Center(
-            child: Image.asset(
-              width: _startupLogoWidth,
-              switch (context.themeMode) {
-                TThemeMode.dark =>  const $AssetsPngsGen().logoDarkMode.path,
-                TThemeMode.light => const $AssetsPngsGen().logoLightMode.path,
-              },
-            ),
-          )
-              .animate(onComplete: model.onComplete)
-              .shimmer(
-            color: Colors.white.withValues(alpha: 0.5),
-            duration: TDurations.animationX4,
-          ),
+              Center(
+                    child: Image.asset(
+                      width: _startupLogoWidth,
+                      switch (context.themeMode) {
+                        TThemeMode.dark => const $AssetsPngsGen().logoDarkMode.path,
+                        TThemeMode.light => const $AssetsPngsGen().logoLightMode.path,
+                      },
+                    ),
+                  )
+                  .animate(onComplete: model.onComplete)
+                  .shimmer(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    duration: TDurations.animationX4,
+                  ),
         );
       return TScaffold(
         backgroundColor: context.colors.background,
@@ -78,10 +78,10 @@ class AuthView extends StatelessWidget {
                             title: authViewMode.isForgotPassword
                                 ? context.strings.forgotPassword
                                 : switch (authViewMode) {
-                              AuthViewMode.login => context.strings.welcome,
-                              AuthViewMode.register => context.strings.welcome,
-                              AuthViewMode.forgotPassword => context.strings.welcomeBack,
-                            },
+                                    AuthViewMode.login => context.strings.welcome,
+                                    AuthViewMode.register => context.strings.welcome,
+                                    AuthViewMode.forgotPassword => context.strings.welcomeBack,
+                                  },
                             description: switch (authViewMode) {
                               AuthViewMode.login => context.strings.pleaseLogInToContinue,
                               AuthViewMode.register => context.strings.pleaseRegisterToContinue,
@@ -158,28 +158,28 @@ class AuthView extends StatelessWidget {
                                                 duration: TDurations.animation,
                                                 child: authViewMode.isLogin
                                                     ? ExcludeFocus(
-                                                  excluding: true,
-                                                  child: ShadButton.ghost(
-                                                    onPressed: model.onForgotPasswordPressed,
-                                                    height: 16,
-                                                    decoration: ShadDecoration(
-                                                      border: ShadBorder(
-                                                        radius: BorderRadius.circular(4),
-                                                      ),
-                                                    ),
-                                                    padding: const EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 8,
-                                                    ),
-                                                    child: Text(
-                                                      context.strings.forgotPassword,
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: context.colors.icon,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
+                                                        excluding: true,
+                                                        child: ShadButton.ghost(
+                                                          onPressed: model.onForgotPasswordPressed,
+                                                          height: 16,
+                                                          decoration: ShadDecoration(
+                                                            border: ShadBorder(
+                                                              radius: BorderRadius.circular(4),
+                                                            ),
+                                                          ),
+                                                          padding: const EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 8,
+                                                          ),
+                                                          child: Text(
+                                                            context.strings.forgotPassword,
+                                                            style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: context.colors.icon,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
                                                     : const SizedBox.shrink(),
                                               ),
                                             ),
@@ -232,41 +232,41 @@ class AuthView extends StatelessWidget {
                                           valueListenable: model.showAgreeToPrivacyCheckBox,
                                           builder:
                                               (
-                                              context,
-                                              showAgreeToPrivacyCheckBox,
-                                              child,
+                                                context,
+                                                showAgreeToPrivacyCheckBox,
+                                                child,
                                               ) => VerticalShrink(
-                                            alignment: Alignment.bottomCenter,
-                                            show: showAgreeToPrivacyCheckBox,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: TSizes.elementGap,
-                                              ),
-                                              child: TFormField<bool>(
-                                                formFieldConfig: model.agreePrivacyField,
-                                                builder: (context, config, child) => Semantics(
-                                                  identifier: 'agree_privacy_checkbox',
-                                                  label: context.strings.privacyPolicy,
-                                                  button: true,
-                                                  child: ShadCheckbox(
-                                                    value: config.cValue ?? false,
-                                                    onChanged: (value) =>
-                                                        config.silentUpdateValue(value),
-                                                    label: AcceptPrivacyText(
-                                                      onPrivacyPolicyTap: () =>
-                                                          model.onPrivacyPolicyPressed(
-                                                            context: context,
-                                                          ),
-                                                      onTermsOfServiceTap: () =>
-                                                          model.onTermsOfServicePressed(
-                                                            context: context,
-                                                          ),
+                                                alignment: Alignment.bottomCenter,
+                                                show: showAgreeToPrivacyCheckBox,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                    top: TSizes.elementGap,
+                                                  ),
+                                                  child: TFormField<bool>(
+                                                    formFieldConfig: model.agreePrivacyField,
+                                                    builder: (context, config, child) => Semantics(
+                                                      identifier: 'agree_privacy_checkbox',
+                                                      label: context.strings.privacyPolicy,
+                                                      button: true,
+                                                      child: ShadCheckbox(
+                                                        value: config.cValue ?? false,
+                                                        onChanged: (value) =>
+                                                            config.silentUpdateValue(value),
+                                                        label: AcceptPrivacyText(
+                                                          onPrivacyPolicyTap: () =>
+                                                              model.onPrivacyPolicyPressed(
+                                                                context: context,
+                                                              ),
+                                                          onTermsOfServiceTap: () =>
+                                                              model.onTermsOfServicePressed(
+                                                                context: context,
+                                                              ),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
                                         ),
                                       ],
                                     ),
@@ -297,7 +297,7 @@ class AuthView extends StatelessWidget {
                                                     child: ShadButton(
                                                       child: Text(context.strings.send),
                                                       onPressed: withMediumHaptic(
-                                                            () => model.onForgotPasswordSendPressed(
+                                                        () => model.onForgotPasswordSendPressed(
                                                           context: context,
                                                         ),
                                                       ),
@@ -328,7 +328,7 @@ class AuthView extends StatelessWidget {
                                                   width: double.infinity,
                                                   child: Text(context.strings.login),
                                                   onPressed: withMediumHaptic(
-                                                        () => model.onLoginPressed(
+                                                    () => model.onLoginPressed(
                                                       authViewMode: authViewMode,
                                                       context: context,
                                                     ),
@@ -337,7 +337,7 @@ class AuthView extends StatelessWidget {
                                                 ),
                                               ).butWhen(
                                                 authViewMode.isForgotPassword,
-                                                    (cValue) => ShadButton.ghost(
+                                                (cValue) => ShadButton.ghost(
                                                   width: double.infinity,
                                                   child: Text(context.strings.back),
                                                   onPressed: () => model.onLoginPressed(
@@ -365,31 +365,31 @@ class AuthView extends StatelessWidget {
                                         child: ExcludeFocus(
                                           excluding: authViewMode.isForgotPassword,
                                           child:
-                                          Semantics(
-                                            identifier: 'register_button',
-                                            label: context.strings.registerButtonLabel,
-                                            button: true,
-                                            child: ShadButton.ghost(
-                                              width: double.infinity,
-                                              child: Text(context.strings.register),
-                                              focusNode: model.registerButtonFocusNode,
-                                              onPressed: () => model.onRegisterPressed(
-                                                authViewMode: authViewMode,
-                                                context: context,
-                                              ),
-                                            ),
-                                          ).butWhen(
-                                            authViewMode.isRegister,
+                                              Semantics(
+                                                identifier: 'register_button',
+                                                label: context.strings.registerButtonLabel,
+                                                button: true,
+                                                child: ShadButton.ghost(
+                                                  width: double.infinity,
+                                                  child: Text(context.strings.register),
+                                                  focusNode: model.registerButtonFocusNode,
+                                                  onPressed: () => model.onRegisterPressed(
+                                                    authViewMode: authViewMode,
+                                                    context: context,
+                                                  ),
+                                                ),
+                                              ).butWhen(
+                                                authViewMode.isRegister,
                                                 (cValue) => ShadButton(
-                                              width: double.infinity,
-                                              child: Text(context.strings.register),
-                                              focusNode: model.registerButtonFocusNode,
-                                              onPressed: () => model.onRegisterPressed(
-                                                authViewMode: authViewMode,
-                                                context: context,
+                                                  width: double.infinity,
+                                                  child: Text(context.strings.register),
+                                                  focusNode: model.registerButtonFocusNode,
+                                                  onPressed: () => model.onRegisterPressed(
+                                                    authViewMode: authViewMode,
+                                                    context: context,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),

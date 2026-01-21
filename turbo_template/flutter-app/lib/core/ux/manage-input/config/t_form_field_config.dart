@@ -40,57 +40,57 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     ShadSliderController? sliderController,
     List<String> currentSuggestions = const [],
   }) : super(
-    TFormFieldState<T>(
-      valueValidator: valueValidator,
-      initialValues: initialValues,
-      items: items,
-      values: null,
-      inputFormatters: inputFormatters,
-      autoCompleteValues: autoCompleteValues,
-      initialValue: initialValue,
-      value: initialValue,
-      valuesValidator: valuesValidator,
-      isEnabled: isEnabled,
-      isReadOnly: isReadOnly,
-      isVisible: isVisible,
-      obscureText: obscureText,
-      fieldType: fieldType,
-      id: id,
-      incrementAmount: incrementAmount,
-      maxValue: maxValue,
-      minValue: minValue,
-      labelBuilder: labelBuilder,
-      errorText: null,
-      shouldValidate: false,
-      textEditingController:
-      textEditingController ??
-          ((fieldType.hasTextEditingController)
-              ? ShadTextEditingController(text: initialValue?.toString())
-              : null),
-      sliderController:
-      sliderController ??
-          (fieldType.hasSliderController
-              ? ShadSliderController(initialValue: initialValue?.asType() ?? 0)
-              : null),
-      timePickerController:
-      timePickerController ??
-          (fieldType.hasTimePickerController
-              ? ShadTimePickerController(
-            hour: initialValue?.asType<ShadTimeOfDay>().hour ?? 0,
-            minute: initialValue?.asType<ShadTimeOfDay>().minute ?? 0,
-            period: initialValue?.asType<ShadTimeOfDay>().period,
-            second: initialValue?.asType<ShadTimeOfDay>().second ?? 0,
-          )
-              : null),
-      selectController:
-      selectController ??
-          (fieldType.hasSelectController
-              ? ShadSelectController<T>(initialValue: initialValues?.toSet())
-              : null),
-      focusNode: focusNode ?? FocusNode(),
-      currentSuggestions: currentSuggestions,
-    ),
-  );
+         TFormFieldState<T>(
+           valueValidator: valueValidator,
+           initialValues: initialValues,
+           items: items,
+           values: null,
+           inputFormatters: inputFormatters,
+           autoCompleteValues: autoCompleteValues,
+           initialValue: initialValue,
+           value: initialValue,
+           valuesValidator: valuesValidator,
+           isEnabled: isEnabled,
+           isReadOnly: isReadOnly,
+           isVisible: isVisible,
+           obscureText: obscureText,
+           fieldType: fieldType,
+           id: id,
+           incrementAmount: incrementAmount,
+           maxValue: maxValue,
+           minValue: minValue,
+           labelBuilder: labelBuilder,
+           errorText: null,
+           shouldValidate: false,
+           textEditingController:
+               textEditingController ??
+               ((fieldType.hasTextEditingController)
+                   ? ShadTextEditingController(text: initialValue?.toString())
+                   : null),
+           sliderController:
+               sliderController ??
+               (fieldType.hasSliderController
+                   ? ShadSliderController(initialValue: initialValue?.asType() ?? 0)
+                   : null),
+           timePickerController:
+               timePickerController ??
+               (fieldType.hasTimePickerController
+                   ? ShadTimePickerController(
+                       hour: initialValue?.asType<ShadTimeOfDay>().hour ?? 0,
+                       minute: initialValue?.asType<ShadTimeOfDay>().minute ?? 0,
+                       period: initialValue?.asType<ShadTimeOfDay>().period,
+                       second: initialValue?.asType<ShadTimeOfDay>().second ?? 0,
+                     )
+                   : null),
+           selectController:
+               selectController ??
+               (fieldType.hasSelectController
+                   ? ShadSelectController<T>(initialValue: initialValues?.toSet())
+                   : null),
+           focusNode: focusNode ?? FocusNode(),
+           currentSuggestions: currentSuggestions,
+         ),
+       );
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
@@ -290,7 +290,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     updateCurrent((cValue) {
       final currentSuggestions =
           autoCompleteValues?.where((element) => element.naked.contains(value.naked)).toList() ??
-              [];
+          [];
       return cValue.copyWith(currentSuggestions: currentSuggestions);
     });
   }

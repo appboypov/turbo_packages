@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_busy.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_service.dart';
-import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 mixin LogoutManagement on TViewModel {

@@ -88,8 +88,8 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
   TThemeMode get themeMode =>
       _boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false
-          ? TThemeMode.light
-          : TThemeMode.dark;
+      ? TThemeMode.light
+      : TThemeMode.dark;
 
   TSupportedLanguage get language {
     final storedLanguage = _boxGet<String>(
@@ -128,14 +128,14 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   NavigationTab get navigationTab =>
       NavigationTab.values.indexOrNull(
         _boxGet<int>(
-          id: null,
-          userId: _userId,
-          boxKey: BoxKey.bottomNavigationIndex,
-          defaultValue: 0,
-        ) ??
+              id: null,
+              userId: _userId,
+              boxKey: BoxKey.bottomNavigationIndex,
+              defaultValue: 0,
+            ) ??
             0,
       ) ??
-          NavigationTab.defaultValue;
+      NavigationTab.defaultValue;
 
   /// Checks if a language preference has been stored
   ///

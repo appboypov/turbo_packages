@@ -49,11 +49,11 @@ class TProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(TProvider oldWidget) =>
       tools != oldWidget.tools ||
-          data != oldWidget.data ||
-          themeMode != oldWidget.themeMode ||
-          colors != oldWidget.colors ||
-          sizes != oldWidget.sizes ||
-          decorations != oldWidget.decorations ||
-          texts != oldWidget.texts ||
-          breakpointConfig != oldWidget.breakpointConfig;
+      data != oldWidget.data ||
+      themeMode != oldWidget.themeMode ||
+      colors != oldWidget.colors ||
+      sizes != oldWidget.sizes ||
+      decorations != oldWidget.decorations ||
+      texts != oldWidget.texts ||
+      breakpointConfig != oldWidget.breakpointConfig;
 }

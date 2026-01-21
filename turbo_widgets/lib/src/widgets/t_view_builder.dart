@@ -18,7 +18,7 @@ import 'package:turbo_widgets/src/widgets/t_contextual_buttons.dart';
 ///   },
 /// )
 /// ```
-class TViewBuilder<T extends TViewModel> extends StatelessWidget {
+class TViewBuilder<T extends TBaseViewModel> extends StatelessWidget {
   const TViewBuilder({
     required Widget Function(
       BuildContext context,
@@ -27,7 +27,7 @@ class TViewBuilder<T extends TViewModel> extends StatelessWidget {
       Widget? child,
     ) builder,
     required T Function() viewModelBuilder,
-    this.service,
+    this.contextualButtonsService,
     this.child,
     Object? Function()? argumentBuilder,
     this.isReactive = TurboMvvmDefaults.isReactive,
@@ -40,7 +40,7 @@ class TViewBuilder<T extends TViewModel> extends StatelessWidget {
 
   /// Optional service instance for contextual buttons. If not provided,
   /// uses the singleton [TContextualButtonsService.instance].
-  final TContextualButtonsServiceInterface? service;
+  final TContextualButtonsServiceInterface? contextualButtonsService;
 
   /// Child widget that will not rebuild when notifyListeners is called.
   final Widget? child;
@@ -72,7 +72,7 @@ class TViewBuilder<T extends TViewModel> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TContextualButtons(
-      service: service,
+      service: contextualButtonsService,
       child: TViewModelBuilder<T>(
         child: child,
         builder: _builder,

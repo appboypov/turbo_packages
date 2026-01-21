@@ -24,7 +24,8 @@ class TPadding extends EdgeInsets {
 
   const TPadding.bottom([double value = TSizes.appPadding]) : super.only(bottom: value);
 
-  const TPadding.horizontal([double value = TSizes.appPadding]) : super.symmetric(horizontal: value);
+  const TPadding.horizontal([double value = TSizes.appPadding])
+    : super.symmetric(horizontal: value);
 
   const TPadding.vertical({double value = TSizes.appPadding}) : super.symmetric(vertical: value);
 }

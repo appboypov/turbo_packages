@@ -31,19 +31,23 @@ enum FirestoreCollection {
     }
   }
 
-  Map<String, dynamic> Function(T value)? toJson<T>() => switch (this) {
-        FirestoreCollection.users => UserDto.toJsonFactory,
-        FirestoreCollection.userProfiles => UserProfileDto.toJsonFactory,
-        FirestoreCollection.usernames => UsernameDto.toJsonFactory,
-        FirestoreCollection.settings => SettingsDto.toJsonFactory,
-      } as Map<String, dynamic> Function(T value)?;
+  Map<String, dynamic> Function(T value)? toJson<T>() =>
+      switch (this) {
+            FirestoreCollection.users => UserDto.toJsonFactory,
+            FirestoreCollection.userProfiles => UserProfileDto.toJsonFactory,
+            FirestoreCollection.usernames => UsernameDto.toJsonFactory,
+            FirestoreCollection.settings => SettingsDto.toJsonFactory,
+          }
+          as Map<String, dynamic> Function(T value)?;
 
-  T Function(Map<String, dynamic> json)? fromJson<T>() => switch (this) {
-        FirestoreCollection.users => UserDto.fromJsonFactory,
-        FirestoreCollection.userProfiles => UserProfileDto.fromJsonFactory,
-        FirestoreCollection.usernames => UsernameDto.fromJsonFactory,
-        FirestoreCollection.settings => SettingsDto.fromJsonFactory,
-      } as T Function(Map<String, dynamic> json)?;
+  T Function(Map<String, dynamic> json)? fromJson<T>() =>
+      switch (this) {
+            FirestoreCollection.users => UserDto.fromJsonFactory,
+            FirestoreCollection.userProfiles => UserProfileDto.fromJsonFactory,
+            FirestoreCollection.usernames => UsernameDto.fromJsonFactory,
+            FirestoreCollection.settings => SettingsDto.fromJsonFactory,
+          }
+          as T Function(Map<String, dynamic> json)?;
 
   String get collectionName {
     switch (this) {

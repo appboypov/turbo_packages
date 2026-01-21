@@ -4,4 +4,3 @@ enum RouterType {
 
   static const defaultValue = RouterType.core;
 }
-

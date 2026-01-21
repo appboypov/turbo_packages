@@ -11,7 +11,7 @@ import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 /// control and implements [ValueListenable] for reactive state management.
 ///
 /// The singleton instance can be reset for testing via [resetInstance].
-final class TContextualButtonsService
+class TContextualButtonsService
     extends TContextualButtonsServiceInterface {
   TContextualButtonsService([TContextualButtonsConfig? initialValue])
       : _value = initialValue ?? const TContextualButtonsConfig();

@@ -142,8 +142,8 @@ extension ColorExtension on Color {
   /// Useful for determining text color that will be readable on this background.
   Color get onColorBlackWhite =>
       material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light
-          ? Colors.black
-          : Colors.white;
+      ? Colors.black
+      : Colors.white;
 
   /// Returns a high-contrast foreground color suitable for text and UI elements
   /// based on this background color.
@@ -656,7 +656,7 @@ extension ColorListExtension on List<Color> {
   /// ```
   List<Color> asLightModeColorsWithContext(Color backgroundColor, {double contrastLevel = 0.5}) {
     return map(
-          (color) => color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+      (color) => color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
     ).toList();
   }
 
@@ -913,8 +913,8 @@ extension GradientExtension on Gradient {
         colors: linearGradient.colors
             .map(
               (color) =>
-              color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
-        )
+                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+            )
             .toList(),
         stops: linearGradient.stops,
         begin: linearGradient.begin,
@@ -928,8 +928,8 @@ extension GradientExtension on Gradient {
         colors: radialGradient.colors
             .map(
               (color) =>
-              color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
-        )
+                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+            )
             .toList(),
         stops: radialGradient.stops,
         center: radialGradient.center,
@@ -945,8 +945,8 @@ extension GradientExtension on Gradient {
         colors: sweepGradient.colors
             .map(
               (color) =>
-              color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
-        )
+                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+            )
             .toList(),
         stops: sweepGradient.stops,
         center: sweepGradient.center,

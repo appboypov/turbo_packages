@@ -138,7 +138,7 @@ class StylingView extends StatelessWidget {
                     return TCollapsibleSection(
                       title: 'TViewBuilder',
                       subtitle:
-                          'Convenience wrapper combining TContextualButtons and TViewModelBuilder',
+                          'Convenience wrapper combining TContextualButtons and TBaseViewModelBuilder',
                       isExpanded: isExpanded,
                       onToggle: model.toggleViewBuilderShowcase,
                       child: Column(
@@ -322,7 +322,7 @@ class _TNavigationShowcase extends StatelessWidget {
   }
 }
 
-class _ExampleViewModel extends TViewModel<Object?> {
+class _ExampleViewModel extends TBaseViewModel<Object?> {
   int _counter = 0;
 
   int get counter => _counter;
@@ -362,7 +362,7 @@ class _TViewBuilderShowcase extends StatelessWidget {
           child: ShadCard(
             padding: EdgeInsets.zero,
             child: TViewBuilder<_ExampleViewModel>(
-              service: useCustomService
+              contextualButtonsService: useCustomService
                   ? TContextualButtonsService(
                       TContextualButtonsConfig(
                         bottom: const TContextualButtonsSlotConfig(

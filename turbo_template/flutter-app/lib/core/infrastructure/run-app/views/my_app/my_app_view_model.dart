@@ -13,6 +13,7 @@ import 'package:turbo_flutter_template/core/connection/manage-connection/service
 import 'package:turbo_flutter_template/core/infrastructure/inject-dependencies/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/show-version/services/package_info_service.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';

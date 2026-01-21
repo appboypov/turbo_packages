@@ -112,8 +112,8 @@ class TMargin extends StatelessWidget {
     this.bottom = 0,
     this.multiplier = 1.0,
   }) : left = horizontal ?? left,
-        right = horizontal ?? right,
-        super(key: key);
+       right = horizontal ?? right,
+       super(key: key);
 
   const TMargin.vertical({
     Key? key,
@@ -132,10 +132,10 @@ class TMargin extends StatelessWidget {
     double horizontal = TSizes.appPadding,
     this.multiplier = 1.0,
   }) : bottom = vertical,
-        left = horizontal,
-        right = horizontal,
-        top = vertical,
-        super(key: key);
+       left = horizontal,
+       right = horizontal,
+       top = vertical,
+       super(key: key);
 
   final Widget child;
 

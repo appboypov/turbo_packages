@@ -26,7 +26,8 @@ class DialogService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static DialogService get locate => GetIt.I.get();
-  static DialogService Function() get lazyLocate => () => GetIt.I.get();
+  static DialogService Function() get lazyLocate =>
+      () => GetIt.I.get();
   static void registerFactory() => GetIt.I.registerFactory(DialogService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
@@ -111,63 +112,63 @@ class DialogService with Turbolytics {
       builder: builder != null
           ? (context) => DialogConstraints(child: builder(context))
           : (context) => DialogConstraints(
-        child: ShadDialog(
-          title: title == null ? null : Text(title),
-          child: content?.call(context),
-          constraints: constraints,
-          padding: padding,
-          gap: gap,
-          scrollable: scrollable,
-          scrollPadding: scrollPadding,
-          backgroundColor: backgroundColor,
-          border: border,
-          radius: radius,
-          shadows: shadows,
-          removeBorderRadiusWhenTiny: removeBorderRadiusWhenTiny,
-          description: message == null ? null : Text(message, style: context.texts.muted),
-          crossAxisAlignment: crossAxisAlignment,
-          actionsAxis: actionsAxis,
-          actionsMainAxisAlignment: actionsMainAxisAlignment,
-          actionsMainAxisSize: actionsMainAxisSize,
-          actionsVerticalDirection: actionsVerticalDirection,
-          expandActionsWhenTiny: expandActionsWhenTiny,
-          titleStyle: titleStyle,
-          descriptionStyle: descriptionStyle,
-          titleTextAlign: titleTextAlign,
-          descriptionTextAlign: descriptionTextAlign,
-          alignment: alignment,
-          mainAxisAlignment: mainAxisAlignment,
-          closeIcon: TButton(
-            child: TMargin(
-              top: 16,
-              right: 16,
-              left: 16,
-              child: Icon(Icons.close_rounded, size: 20, color: context.colors.icon),
+              child: ShadDialog(
+                title: title == null ? null : Text(title),
+                child: content?.call(context),
+                constraints: constraints,
+                padding: padding,
+                gap: gap,
+                scrollable: scrollable,
+                scrollPadding: scrollPadding,
+                backgroundColor: backgroundColor,
+                border: border,
+                radius: radius,
+                shadows: shadows,
+                removeBorderRadiusWhenTiny: removeBorderRadiusWhenTiny,
+                description: message == null ? null : Text(message, style: context.texts.muted),
+                crossAxisAlignment: crossAxisAlignment,
+                actionsAxis: actionsAxis,
+                actionsMainAxisAlignment: actionsMainAxisAlignment,
+                actionsMainAxisSize: actionsMainAxisSize,
+                actionsVerticalDirection: actionsVerticalDirection,
+                expandActionsWhenTiny: expandActionsWhenTiny,
+                titleStyle: titleStyle,
+                descriptionStyle: descriptionStyle,
+                titleTextAlign: titleTextAlign,
+                descriptionTextAlign: descriptionTextAlign,
+                alignment: alignment,
+                mainAxisAlignment: mainAxisAlignment,
+                closeIcon: TButton(
+                  child: TMargin(
+                    top: 16,
+                    right: 16,
+                    left: 16,
+                    child: Icon(Icons.close_rounded, size: 20, color: context.colors.icon),
+                  ),
+                  onPressed: onClosePressed ?? () => pContext.pop(),
+                ),
+                closeIconPosition: closeIconPosition,
+                actions: [
+                  if (actions != null) ...actions,
+                  if (onCancelPressed != null)
+                    Expanded(
+                      child: ShadButton.outline(
+                        onPressed: withLightHaptic(() => onCancelPressed()),
+                        child: Text(cancelText ?? context.strings.cancel),
+                      ),
+                    ),
+                  if (onOkButtonPressed != null)
+                    Expanded(
+                      child: ShadButton(
+                        onPressed: withMediumHaptic(() {
+                          onOkButtonPressed();
+                        }),
+                        child: Text(okButtonText ?? context.strings.ok),
+                      ),
+                    ),
+                ],
+              ),
             ),
-            onPressed: onClosePressed ?? () => pContext.pop(),
-          ),
-          closeIconPosition: closeIconPosition,
-          actions: [
-            if (actions != null) ...actions,
-            if (onCancelPressed != null)
-              Expanded(
-                child: ShadButton.outline(
-                  onPressed: withLightHaptic(() => onCancelPressed()),
-                  child: Text(cancelText ?? context.strings.cancel),
-                ),
-              ),
-            if (onOkButtonPressed != null)
-              Expanded(
-                child: ShadButton(
-                  onPressed: withMediumHaptic(() {
-                    onOkButtonPressed();
-                  }),
-                  child: Text(okButtonText ?? context.strings.ok),
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -261,9 +262,9 @@ class DialogService with Turbolytics {
       onClosePressed: onClosePressed == null
           ? null
           : () {
-        context.tryPop();
-        onClosePressed(context);
-      },
+              context.tryPop();
+              onClosePressed(context);
+            },
       content: (context) => TFormField<String>(
         formFieldConfig: formFieldConfig,
         iconLabelDto: iconLabelDto,
@@ -308,9 +309,9 @@ class DialogService with Turbolytics {
       onClosePressed: onClosePressed == null
           ? null
           : () {
-        context.tryPop();
-        onClosePressed(context);
-      },
+              context.tryPop();
+              onClosePressed(context);
+            },
       content: (context) => TFormField<String>(
         formFieldConfig: formFieldConfig,
         iconLabelDto: iconLabelDto,
@@ -358,9 +359,9 @@ class DialogService with Turbolytics {
       onClosePressed: onClosePressed == null
           ? null
           : () {
-        context.tryPop();
-        onClosePressed(context);
-      },
+              context.tryPop();
+              onClosePressed(context);
+            },
       title: title,
       content: (context) => TextInputAndDropdownSheet<T>(
         leadingIcon: leadingIcon,

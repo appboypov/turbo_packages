@@ -1,33 +1,27 @@
-import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
-import 'package:turbolytics/turbolytics.dart';
+import 'package:flutter/foundation.dart';
+import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
+import 'package:turbo_mvvm/data/models/t_base_view_model.dart';
 
-class PlaygroundViewModel extends TViewModel with Turbolytics {
-  PlaygroundViewModel();
-
+abstract class TViewModel<ARGUMENTS> extends TBaseViewModel<ARGUMENTS> {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
-
-  static PlaygroundViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(PlaygroundViewModel.new);
-
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+
+  @protected
+  final contextualButtonsService = ContextualButtonsService.lazyLocate;
+
+  @protected
+  final authService = AuthService.lazyLocate;
+
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
-
-  @override
-  Future<void> initialise() async {
-    super.initialise();
-  }
-
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-  }
-
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
   // 🎩 STATE --------------------------------------------------------------------------------- \\
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
-  // 🏗 HELPERS ------------------------------------------------------------------------------- \\
+
+  ValueListenable<bool> get hasAuth => authService().hasAuth;
+
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 }

@@ -7,4 +7,3 @@ extension CompleterExtension<T> on Completer<T> {
     }
   }
 }
-

@@ -1,6 +1,5 @@
 part of '../widgets/t_provider.dart';
 
-
 class TTexts {
   const TTexts({required this.colors, required this.sizes, required this.theme});
 

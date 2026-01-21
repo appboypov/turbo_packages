@@ -126,16 +126,20 @@ void main(List<String> arguments) async {
       };
 
       for (final entry in dryRunResult.files.entries) {
-        final totalLines =
-            entry.value.fold(0, (sum, f) => sum + f.lineCount);
-        stdout.writeln('${entry.key} (${replacements[entry.key]}): ${entry.value.length} files, $totalLines lines');
+        final totalLines = entry.value.fold(0, (sum, f) => sum + f.lineCount);
+        stdout.writeln(
+          '${entry.key} (${replacements[entry.key]}): ${entry.value.length} files, $totalLines lines',
+        );
         for (final fileInfo in entry.value) {
           final lineNums = fileInfo.lines.map((l) => l.lineNumber).join(', ');
-          stdout.writeln('  - ${p.relative(fileInfo.filePath, from: projectRoot.path)} [L$lineNums]');
+          stdout
+              .writeln('  - ${p.relative(fileInfo.filePath, from: projectRoot.path)} [L$lineNums]');
         }
       }
 
-      stdout.writeln('\nTotal: ${dryRunResult.totalFiles} files, ${dryRunResult.totalLines} lines would be modified');
+      stdout.writeln(
+        '\nTotal: ${dryRunResult.totalFiles} files, ${dryRunResult.totalLines} lines would be modified',
+      );
     } else {
       stdout.writeln('Initializing template...\n');
 
@@ -162,9 +166,7 @@ void main(List<String> arguments) async {
       stdout.writeln('Results:');
       for (final result in initResult.results) {
         final status = result.hasError ? '✗' : '✓';
-        final detail = result.hasError
-            ? result.error
-            : '${result.filesModified} files modified';
+        final detail = result.hasError ? result.error : '${result.filesModified} files modified';
         stdout.writeln('  $status ${result.name}: $detail');
       }
 
@@ -205,7 +207,9 @@ void _printConfiguration({
   stdout.writeln('  Display name:  $displayName (derived)');
   stdout.writeln('  App name:      $appName (derived)');
   stdout.writeln('  Organization:  $org ${_source(cliOrg, fileConfig?['organization'])}');
-  stdout.writeln('  Description:   $description ${_source(cliDescription, fileConfig?['description'])}');
+  stdout.writeln(
+    '  Description:   $description ${_source(cliDescription, fileConfig?['description'])}',
+  );
   stdout.writeln('');
 }
 

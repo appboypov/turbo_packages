@@ -86,4 +86,3 @@ class EmailService with Turbolytics, FirebaseAuthExceptionHandler {
     }
   }
 }
-

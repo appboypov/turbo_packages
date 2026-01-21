@@ -1,32 +1,36 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/auth/authenticate-users/mixins/logout_management.dart';
 import 'package:turbo_flutter_template/core/infrastructure/navigate-app/routers/home_router.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/abstract/slidable_management.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
-import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, LogoutManagement {
   HomeViewModel({
     required BadgeService badgeService,
-  }) : _badgeService = badgeService;
+    required LazyLocatorDef<HomeRouter> homeRouter,
+  }) : _badgeService = badgeService,
+       _homeRouter = homeRouter;
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static HomeViewModel get locate => GetIt.I.get();
   static void registerFactory() => GetIt.I.registerFactory(
-        () => HomeViewModel(
-          badgeService: BadgeService.locate,
-        ),
-      );
+    () => HomeViewModel(
+      badgeService: BadgeService.locate,
+      homeRouter: () => HomeRouter.locate,
+    ),
+  );
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
   final BadgeService _badgeService;
+  final LazyLocatorDef<HomeRouter> _homeRouter;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -34,7 +38,6 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
   Future<void> initialise() async {
     super.initialise();
   }
-
 
   @override
   Future<void> dispose() async {
@@ -52,7 +55,5 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
   // 🏗 HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  void onPlaygroundPressed({required BuildContext context}) {
-    HomeRouter.locate.goPlaygroundView();
-  }
+  void onPlaygroundPressed() => _homeRouter().goPlaygroundView();
 }

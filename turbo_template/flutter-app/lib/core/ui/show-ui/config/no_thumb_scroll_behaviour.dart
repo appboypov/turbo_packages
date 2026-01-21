@@ -10,4 +10,3 @@ class NoThumbScrollBehavior extends ScrollBehavior {
     PointerDeviceKind.trackpad,
   };
 }
-

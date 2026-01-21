@@ -20,4 +20,3 @@ class OverlayService with Turbolytics {
     log.debug('showConfetti called');
   }
 }
-

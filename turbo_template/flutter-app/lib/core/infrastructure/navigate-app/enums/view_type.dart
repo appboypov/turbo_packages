@@ -4,4 +4,3 @@ enum ViewType {
 
   static const defaultValue = ViewType.auth;
 }
-

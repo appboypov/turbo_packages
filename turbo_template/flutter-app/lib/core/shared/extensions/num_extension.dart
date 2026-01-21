@@ -45,5 +45,4 @@ extension NumExtension on num {
     }
     return valueAsString.length - decimalIndex - 1;
   }
-
 }

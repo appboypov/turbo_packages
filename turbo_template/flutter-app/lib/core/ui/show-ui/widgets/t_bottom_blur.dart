@@ -18,18 +18,18 @@ class TBottomBlur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SoftEdgeBlur(
-        edges: [
-          EdgeBlur(
-            type: EdgeType.bottomEdge,
-            size: size,
-            sigma: sigma,
-            tintColor: color ?? context.colors.background,
-            controlPoints: [
-              ControlPoint(position: 0, type: ControlPointType.visible),
-              ControlPoint(position: 1, type: ControlPointType.transparent),
-            ],
-          ),
+    edges: [
+      EdgeBlur(
+        type: EdgeType.bottomEdge,
+        size: size,
+        sigma: sigma,
+        tintColor: color ?? context.colors.background,
+        controlPoints: [
+          ControlPoint(position: 0, type: ControlPointType.visible),
+          ControlPoint(position: 1, type: ControlPointType.transparent),
         ],
-        child: child,
-      );
+      ),
+    ],
+    child: child,
+  );
 }

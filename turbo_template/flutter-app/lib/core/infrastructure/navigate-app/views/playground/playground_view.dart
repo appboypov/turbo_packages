@@ -16,37 +16,36 @@ class PlaygroundView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<PlaygroundViewModel>(
-        builder: (context, model, isInitialised, child) {
-          if (!isInitialised) return TWidgets.nothing;
+    builder: (context, model, isInitialised, child) {
+      if (!isInitialised) return TWidgets.nothing;
 
-          return TScaffold(
-            child: TSliverBody(
-              isEmpty: false,
-              appBar: TSliverAppBar(
-                title: context.strings.playground,
-                emoji: Emoji.testTube,
-                onBackPressed: ({required BuildContext context}) =>
-                    Navigator.of(context).pop(),
-              ),
-              children: [
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverToBoxAdapter(
-                    child: TPlayground<TPlaygroundParameterModel>(
-                      parametersBuilder: TPlaygroundParameterModel.new,
-                      initialIsDarkMode: context.themeMode.isDark,
-                      childBuilder: (context, params) {
-                        return const Center(
-                          child: Text('Add your widget here'),
-                        );
-                      },
-                    ),
-                  ),
+      return TScaffold(
+        child: TSliverBody(
+          isEmpty: false,
+          appBar: TSliverAppBar(
+            title: context.strings.playground,
+            emoji: Emoji.testTube,
+            onBackPressed: ({required BuildContext context}) => Navigator.of(context).pop(),
+          ),
+          children: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: TPlayground<TPlaygroundParameterModel>(
+                  parametersBuilder: TPlaygroundParameterModel.new,
+                  initialIsDarkMode: context.themeMode.isDark,
+                  childBuilder: (context, params) {
+                    return const Center(
+                      child: Text('Add your widget here'),
+                    );
+                  },
                 ),
-              ],
+              ),
             ),
-          );
-        },
-        viewModelBuilder: () => PlaygroundViewModel.locate,
+          ],
+        ),
       );
+    },
+    viewModelBuilder: () => PlaygroundViewModel.locate,
+  );
 }

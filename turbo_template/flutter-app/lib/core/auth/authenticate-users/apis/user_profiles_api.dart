@@ -53,11 +53,13 @@ class UserProfilesApi extends TurboApi<UserProfileDto> with Turbolytics {
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  Future<TurboResponse<DocumentReference>> createProfile({required String userId, required String username}) async =>
-      createDoc(
-        writeable: CreateProfileRequest(
-          profileDto: UserProfileDto.defaultValue(userId: userId, username: username),
-        ),
-        id: userId,
-      );
+  Future<TurboResponse<DocumentReference>> createProfile({
+    required String userId,
+    required String username,
+  }) async => createDoc(
+    writeable: CreateProfileRequest(
+      profileDto: UserProfileDto.defaultValue(userId: userId, username: username),
+    ),
+    id: userId,
+  );
 }
