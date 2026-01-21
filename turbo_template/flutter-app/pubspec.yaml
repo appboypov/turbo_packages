@@ -144,6 +144,6 @@ flutter:
           weight: 900
 
 flutter_gen:
-  output: lib/generated/
+  output: lib/core/generated/
   integrations:
     flutter_svg: true
