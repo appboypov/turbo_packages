@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_vibrate_moment.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/hover_builder.dart';
@@ -37,6 +38,8 @@ class TButton extends StatefulWidget {
     this.minHeight,
     this.hoverPadding = EdgeInsets.zero,
     this.vibrateMoment = TVibrateMoment.onDown,
+    this.tooltip,
+    this.label,
   });
 
   const TButton.scale({
@@ -64,6 +67,8 @@ class TButton extends StatefulWidget {
     this.minHeight,
     this.hoverPadding = EdgeInsets.zero,
     this.vibrateMoment = TVibrateMoment.onDown,
+    this.tooltip,
+    this.label,
   });
 
   const TButton.opacity({
@@ -91,6 +96,8 @@ class TButton extends StatefulWidget {
     this.minHeight,
     this.hoverPadding = EdgeInsets.zero,
     this.vibrateMoment = TVibrateMoment.onDown,
+    this.tooltip,
+    this.label,
   });
 
   final Widget? child;
@@ -116,6 +123,8 @@ class TButton extends StatefulWidget {
   final EdgeInsets hoverPadding;
   final HoverWidgetBuilder? hoverBuilder;
   final TVibrateMoment vibrateMoment;
+  final String? tooltip;
+  final String? label;
 
   @override
   State<TButton> createState() => _TButtonState();
@@ -205,105 +214,127 @@ class _TButtonState extends State<TButton> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => IgnorePointer(
-    ignoring: !widget.isEnabled,
-    child: Listener(
-      onPointerDown: (_) => _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
-      onPointerUp: (_) => _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
-      onPointerCancel: _handlePointerCancel,
-      child: TConstraints(
-        minHeight: widget.height ?? widget.minHeight ?? 0,
-        minWidth: widget.width ?? widget.minWidth ?? 0,
-        maxWidth: widget.width ?? double.infinity,
-        maxHeight: widget.height ?? double.infinity,
-        child: GestureDetector(
-          child: FocusableActionDetector(
-            mouseCursor: SystemMouseCursors.click,
-            enabled: widget.isEnabled,
-            actions: {
-              ActivateIntent: CallbackAction(
-                onInvoke: (e) {
-                  widget.onPressed?.call();
-                  return null;
-                },
-              ),
-              DirectionalFocusIntent: CallbackAction(
-                onInvoke: (e) {
-                  final direction = (e as DirectionalFocusIntent).direction;
-                  final focus = focusNode;
-                  switch (direction) {
-                    case TraversalDirection.up:
-                      focus.focusInDirection(TraversalDirection.up);
-                      break;
-                    case TraversalDirection.down:
-                      focus.focusInDirection(TraversalDirection.down);
-                      break;
-                    case TraversalDirection.left:
-                      focus.focusInDirection(TraversalDirection.left);
-                      break;
-                    case TraversalDirection.right:
-                      focus.focusInDirection(TraversalDirection.right);
-                      break;
-                  }
-                  return null;
-                },
-              ),
-            },
-            child: MeasureSize(
-              onChange: (size) {
-                if (_childSize != size) {
-                  _childSize = size;
-                }
+  Widget build(BuildContext context) {
+    final rButton = IgnorePointer(
+      ignoring: !widget.isEnabled,
+      child: Listener(
+        onPointerDown: (_) => _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
+        onPointerUp: (_) => _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
+        onPointerCancel: _handlePointerCancel,
+        child: TConstraints(
+          minHeight: widget.height ?? widget.minHeight ?? 0,
+          minWidth: widget.width ?? widget.minWidth ?? 0,
+          maxWidth: widget.width ?? double.infinity,
+          maxHeight: widget.height ?? double.infinity,
+          child: GestureDetector(
+            child: FocusableActionDetector(
+              mouseCursor: SystemMouseCursors.click,
+              enabled: widget.isEnabled,
+              actions: {
+                ActivateIntent: CallbackAction(
+                  onInvoke: (e) {
+                    widget.onPressed?.call();
+                    return null;
+                  },
+                ),
+                DirectionalFocusIntent: CallbackAction(
+                  onInvoke: (e) {
+                    final direction = (e as DirectionalFocusIntent).direction;
+                    final focus = focusNode;
+                    switch (direction) {
+                      case TraversalDirection.up:
+                        focus.focusInDirection(TraversalDirection.up);
+                        break;
+                      case TraversalDirection.down:
+                        focus.focusInDirection(TraversalDirection.down);
+                        break;
+                      case TraversalDirection.left:
+                        focus.focusInDirection(TraversalDirection.left);
+                        break;
+                      case TraversalDirection.right:
+                        focus.focusInDirection(TraversalDirection.right);
+                        break;
+                    }
+                    return null;
+                  },
+                ),
               },
-              child: AnimatedBuilder(
-                animation: _scaleController,
-                builder: (context, child) {
-                  double effectiveScale = _scaleAnimation.value;
-                  if (_childSize != null) {
-                    // Calculate the minimum scale such that the reduction is no more than 4 pixels.
-                    final minScaleWidth = _childSize!.width > 0
-                        ? (_childSize!.width - 4) / _childSize!.width
-                        : 1.0;
-                    final minScaleHeight = _childSize!.height > 0
-                        ? (_childSize!.height - 4) / _childSize!.height
-                        : 1.0;
-                    final minAllowedScale = math.max(minScaleWidth, minScaleHeight);
-                    effectiveScale = math.max(_scaleAnimation.value, minAllowedScale);
+              child: MeasureSize(
+                onChange: (size) {
+                  if (_childSize != size) {
+                    _childSize = size;
                   }
-                  return Transform.scale(
-                    scale: effectiveScale,
-                    child: Opacity(opacity: _opacityAnimation.value, child: child),
-                  );
                 },
-                child: THoverable(
-                  child: widget.child,
-                  duration: widget.duration,
-                  isActive: widget.isEnabled && widget.showHover,
-                  color: widget.hoverColor,
-                  curve: widget.curve,
-                  borderWidth: widget.hoverBorderWidth,
-                  borderColor: widget.hoverBorderColor,
-                  borderRadius: widget.hoverBorderRadius,
-                  opacity: widget.hoverOpacity,
-                  padding: widget.hoverPadding,
-                  hoverBuilder: widget.hoverBuilder,
+                child: AnimatedBuilder(
+                  animation: _scaleController,
+                  builder: (context, child) {
+                    double effectiveScale = _scaleAnimation.value;
+                    if (_childSize != null) {
+                      // Calculate the minimum scale such that the reduction is no more than 4 pixels.
+                      final minScaleWidth = _childSize!.width > 0
+                          ? (_childSize!.width - 4) / _childSize!.width
+                          : 1.0;
+                      final minScaleHeight = _childSize!.height > 0
+                          ? (_childSize!.height - 4) / _childSize!.height
+                          : 1.0;
+                      final minAllowedScale = math.max(minScaleWidth, minScaleHeight);
+                      effectiveScale = math.max(_scaleAnimation.value, minAllowedScale);
+                    }
+                    return Transform.scale(
+                      scale: effectiveScale,
+                      child: Opacity(opacity: _opacityAnimation.value, child: child),
+                    );
+                  },
+                  child: THoverable(
+                    child: widget.child,
+                    duration: widget.duration,
+                    isActive: widget.isEnabled && widget.showHover,
+                    color: widget.hoverColor,
+                    curve: widget.curve,
+                    borderWidth: widget.hoverBorderWidth,
+                    borderColor: widget.hoverBorderColor,
+                    borderRadius: widget.hoverBorderRadius,
+                    opacity: widget.hoverOpacity,
+                    padding: widget.hoverPadding,
+                    hoverBuilder: widget.hoverBuilder,
+                  ),
                 ),
               ),
             ),
+            onTapDown: (_) {
+              if (widget.vibrateMoment == TVibrateMoment.onDown) {
+                gVibrateSelection();
+              }
+            },
+            onTapUp: (_) {
+              if (widget.vibrateMoment == TVibrateMoment.onUp) {
+                gVibrateSelection();
+              }
+              widget.onPressed?.call();
+            },
           ),
-          onTapDown: (_) {
-            if (widget.vibrateMoment == TVibrateMoment.onDown) {
-              gVibrateSelection();
-            }
-          },
-          onTapUp: (_) {
-            if (widget.vibrateMoment == TVibrateMoment.onUp) {
-              gVibrateSelection();
-            }
-            widget.onPressed?.call();
-          },
         ),
       ),
-    ),
-  );
+    );
+    final tooltip = widget.tooltip;
+    final pLabel = widget.label;
+    final pButton = pLabel != null
+        ? Row(
+            spacing: 8,
+            children: [
+              Text(
+                pLabel,
+                style: context.texts.button,
+              ),
+              rButton,
+            ],
+          )
+        : rButton;
+    return tooltip == null
+        ? pButton
+        : Tooltip(
+            message: tooltip,
+            child: pButton,
+          );
+  }
 }

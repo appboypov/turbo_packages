@@ -9,4 +9,14 @@ enum TDeviceType {
   bool get isNotMobile => !isMobile;
 
   static const Set<TDeviceType> all = {...TDeviceType.values};
+
+  bool get showButtonLabel {
+    switch (this) {
+      case TDeviceType.mobile:
+        return false;
+      case TDeviceType.tablet:
+      case TDeviceType.desktop:
+        return true;
+    }
+  }
 }
