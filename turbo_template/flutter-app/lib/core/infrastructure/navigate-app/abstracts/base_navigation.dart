@@ -72,4 +72,7 @@ abstract class BaseNavigation with Turbolytics {
     log.info('Can pop: $canPop');
     return canPop;
   }
+
+  String makeRootRoutes(List<String> routes) => '$root/${routes.join('/')}';
+  String makeRoutes(List<String> routes) => '$location';
 }

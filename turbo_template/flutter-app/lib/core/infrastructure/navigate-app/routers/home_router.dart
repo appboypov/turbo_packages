@@ -34,11 +34,21 @@ class HomeRouter extends BaseNavigation {
         goBranch(statefulNavigationShell: statefulNavigationShell);
       }
     } else {
-      go(location: root, extra: const []);
+      go(
+        location: root,
+        extra: const [],
+      );
     }
   }
 
   void goPlaygroundView() {
-    go(location: PlaygroundView.path.asRootPath, extra: const []);
+    push(
+      location: makeRootRoutes(
+        [
+          PlaygroundView.path,
+        ],
+      ),
+      extra: const [],
+    );
   }
 }

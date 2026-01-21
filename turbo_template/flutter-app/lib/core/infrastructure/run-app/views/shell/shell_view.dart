@@ -17,7 +17,7 @@ class ShellView extends StatelessWidget {
     required this.statefulNavigationShell,
   });
 
-  static const String path = 'welcome';
+  static const String path = 'welcome-to';
 
   final StatefulNavigationShell statefulNavigationShell;
 

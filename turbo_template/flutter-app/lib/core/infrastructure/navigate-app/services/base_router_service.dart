@@ -27,6 +27,36 @@ import 'package:turbolytics/turbolytics.dart';
 
 part 'base_router_service.g.dart';
 
+@JsonSerializable(
+  includeIfNull: false,
+  explicitToJson: true,
+)
+class ExtraArguments extends ViewArguments {
+  ExtraArguments({
+    this.messageId,
+    this.id,
+  });
+
+  final String? messageId;
+  final String? id;
+
+  static const fromJsonFactory = _$ExtraArgumentsFromJson;
+  factory ExtraArguments.fromJson(Map<String, dynamic> json) => _$ExtraArgumentsFromJson(json);
+  static const toJsonFactory = _$ExtraArgumentsToJson;
+  @override
+  Map<String, dynamic> toJson() => _$ExtraArgumentsToJson(this);
+}
+
+extension GoRouterStateExtension on GoRouterState {
+  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+  ExtraArguments? arguments() => extra?.asType<ExtraArguments>();
+  String? get id => _id(TKeys.id) ?? arguments()?.id;
+
+  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  String? _id(String key) => pathParameters[key] ?? uri.queryParameters[key];
+}
+
 class BaseRouterService with Turbolytics {
   BaseRouterService() {
     coreRouter.routerDelegate.addListener(onRouteChanged);
@@ -87,7 +117,7 @@ class BaseRouterService with Turbolytics {
       ),
     ],
     navigatorKey: rootNavigatorKey,
-    initialLocation: HomeView.path,
+    initialLocation: HomeView.path.asRootPath,
     routes: [
       oopsView,
       shellView,
@@ -117,7 +147,9 @@ class BaseRouterService with Turbolytics {
         _buildPage(child: ShellView(statefulNavigationShell: navigationShell)),
     branches: [
       StatefulShellBranch(
-        routes: [homeRouter],
+        routes: [
+          homeRouter,
+        ],
         restorationScopeId: 'household',
         navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'household'),
       ),
@@ -125,7 +157,7 @@ class BaseRouterService with Turbolytics {
   );
 
   static GoRoute get playgroundView => GoRoute(
-    path: playgroundView.path,
+    path: PlaygroundView.path,
     pageBuilder: (context, state) => _buildPage(child: const PlaygroundView()),
     routes: const [],
   );
@@ -222,34 +254,4 @@ class BaseRouterService with Turbolytics {
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
-}
-
-@JsonSerializable(
-  includeIfNull: false,
-  explicitToJson: true,
-)
-class ExtraArguments extends ViewArguments {
-  ExtraArguments({
-    this.messageId,
-    this.id,
-  });
-
-  final String? messageId;
-  final String? id;
-
-  static const fromJsonFactory = _$ExtraArgumentsFromJson;
-  factory ExtraArguments.fromJson(Map<String, dynamic> json) => _$ExtraArgumentsFromJson(json);
-  static const toJsonFactory = _$ExtraArgumentsToJson;
-  @override
-  Map<String, dynamic> toJson() => _$ExtraArgumentsToJson(this);
-}
-
-extension GoRouterStateExtension on GoRouterState {
-  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
-  ExtraArguments? arguments() => extra?.asType<ExtraArguments>();
-  String? get id => _id(TKeys.id) ?? arguments()?.id;
-
-  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
-
-  String? _id(String key) => pathParameters[key] ?? uri.queryParameters[key];
 }

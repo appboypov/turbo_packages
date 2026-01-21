@@ -22,6 +22,7 @@ import 'package:turbo_flutter_template/core/infrastructure/services/version_comp
 import 'package:turbo_flutter_template/core/settings/apis/settings_api.dart';
 import 'package:turbo_flutter_template/core/settings/services/settings_service.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view_model.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
 import 'package:turbo_flutter_template/core/ui/show-ui/services/overlay_service.dart';
@@ -63,6 +64,7 @@ class LocatorService with Turbolytics {
   }
 
   void _registerLazySingletons() {
+    ContextualButtonsService.registerLazySingleton();
     LocalStorageService.registerLazySingleton();
     ThemeService.registerLazySingleton();
     LanguageService.registerLazySingleton();

@@ -31,9 +31,9 @@ class CoreRouter extends BaseNavigation {
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  void goOopsView() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      go(location: OopsView.path.asRootPath);
-    });
-  }
+  void goOopsView() => WidgetsBinding.instance.addPostFrameCallback((_) {
+    go(
+      location: OopsView.path.asRootPath,
+    );
+  });
 }
