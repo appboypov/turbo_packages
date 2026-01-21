@@ -77,8 +77,6 @@ class BaseRouterService with Turbolytics {
     initialLocation: _testRoute.isNotEmpty ? _testRoute : ShellView.path.asRootPath,
     routes: [
       shellView,
-      authView,
-      if (!Environment.isProd) playgroundView,
     ],
   );
 
@@ -91,15 +89,18 @@ class BaseRouterService with Turbolytics {
       return null;
     },
     pageBuilder: (context, state) => _buildPage(child: const ShellView()),
+    routes: [
+      authView,
+    ]
   );
 
   static GoRoute get authView => GoRoute(
-    path: AuthView.path.asRootPath,
+    path: AuthView.path,
     pageBuilder: (context, state) => _buildPage(child: const AuthView()),
   );
 
   static GoRoute get playgroundView => GoRoute(
-    path: PlaygroundView.path.asRootPath,
+    path: PlaygroundView.path,
     redirect: (context, state) => onAuthAccess(
       context: context,
       state: state,

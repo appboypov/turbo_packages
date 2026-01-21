@@ -14,7 +14,9 @@ abstract final class TurboWidgetsDefaults {
   static const Duration throttle = Duration(milliseconds: 100);
   static const Duration debounce = Duration(milliseconds: 300);
 
-  static const String instructions = '''## Role
+  static const String instructions = '''We are working on a new widget in the Component Playground.
+
+## Role
 Flutter Widget Developer
 
 ## Expertise
@@ -125,9 +127,23 @@ Your Goal:
     - Deliberately uses padding/margin and alignments of elements to ensure proper spacing and layout
     - Follows accessibility best practices such as proper contrast ratios, font sizes, and semantic structure
     - Max lines, overflow types, clipping and properties alike are well thought through to avoid UI breakages
-</components_rules_and_knowledge>''';
+</components_rules_and_knowledge>
 
-  static const String solidifyInstructions = '''Context:
+Task:
+Create the following widget in the Playground:
+{{USER_REQUEST}}
+
+Requirements:
+- Create {{VARIATIONS}} variant(s) of this widget.
+- Ensure it follows the rules above.
+- MANDATORY: Configure TPlaygroundParameterModel with entries in the typed maps (strings, bools, ints, doubles, selects) for EVERY widget prop.
+- MANDATORY: Use childBuilder to render the widget - NEVER use child directly.
+- Add the widget(s) to the TPlayground's childBuilder, replacing the placeholder content.
+''';
+
+  static const String solidifyInstructions = '''Solidify the widget from the Component Playground.
+
+Context:
 We are working in the Component Playground.
 A widget has been created and tested in the playground and is ready to be added to the project.
 
@@ -180,9 +196,14 @@ Your Goal:
 - Max lines, overflow types, clipping and properties alike are well thought through to avoid UI breakages
 </components_rules_and_knowledge>
 
-ALWAYS apply these widget rules and knowledge when creating or modifying widgets.''';
+ALWAYS apply these widget rules and knowledge when creating or modifying widgets.
 
-  static const String clearCanvasInstructions = '''Context:
+Task:
+Add the widget from the playground to the project following conventions, add it to your components/styling page catalog, and clear the canvas.''';
+
+  static const String clearCanvasInstructions = '''Clear the Component Playground canvas.
+
+Context:
 We are working in the Component Playground.
 The playground currently contains widgets that need to be cleared to prepare for new widget creation.
 
@@ -190,5 +211,8 @@ Your Goal:
 - Remove all widgets currently passed to the TPlayground's childBuilder or child parameter
 - Set childBuilder/child to null or remove them entirely to restore the default placeholder
 - The default placeholder shows "Component Testing Area" with a description
-- This clears the canvas for starting fresh with a new widget creation''';
+- This clears the canvas for starting fresh with a new widget creation
+
+Task:
+Clear the playground canvas and restore the placeholder content.''';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_widgets/src/enums/turbo_widgets_playground_tab.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 /// A self-contained playground widget for prototyping and testing components.
@@ -38,7 +39,7 @@ class TPlayground<T extends TPlaygroundParameterModel> extends StatefulWidget {
     this.initialInstructions = TurboWidgetsDefaults.instructions,
     this.initialUserRequest = '',
     this.initialVariations = '1',
-    this.initialActiveTab = 'request',
+    this.initialActiveTab = TurboWidgetsPlaygroundTab.request,
     this.initialIsParameterPanelExpanded = true,
     this.clearCanvasInstructions = TurboWidgetsDefaults.clearCanvasInstructions,
     this.solidifyInstructions = TurboWidgetsDefaults.solidifyInstructions,
@@ -77,8 +78,8 @@ class TPlayground<T extends TPlaygroundParameterModel> extends StatefulWidget {
   /// Initial variations count. Defaults to '1'.
   final String initialVariations;
 
-  /// Initial active tab. Defaults to 'request'.
-  final String initialActiveTab;
+  /// Initial active tab. Defaults to request.
+  final TurboWidgetsPlaygroundTab initialActiveTab;
 
   /// Initial parameter panel expanded state. Defaults to true.
   final bool initialIsParameterPanelExpanded;
@@ -93,8 +94,7 @@ class TPlayground<T extends TPlaygroundParameterModel> extends StatefulWidget {
   State<TPlayground<T>> createState() => _TPlaygroundState<T>();
 }
 
-class _TPlaygroundState<T extends TPlaygroundParameterModel>
-    extends State<TPlayground<T>> {
+class _TPlaygroundState<T extends TPlaygroundParameterModel> extends State<TPlayground<T>> {
   late T _parameters;
   late bool _isGeneratorOpen;
   late TurboWidgetsScreenTypes _screenType;
@@ -103,7 +103,7 @@ class _TPlaygroundState<T extends TPlaygroundParameterModel>
   late double _previewScale;
   late bool _isDarkMode;
   late bool _isSafeAreaEnabled;
-  late String _activeTab;
+  late TurboWidgetsPlaygroundTab _activeTab;
   late String _userRequest;
   late String _variations;
   late String _instructions;
@@ -174,7 +174,7 @@ class _TPlaygroundState<T extends TPlaygroundParameterModel>
     });
   }
 
-  void _setActiveTab(String value) {
+  void _setActiveTab(TurboWidgetsPlaygroundTab value) {
     setState(() {
       _activeTab = value;
     });
@@ -199,36 +199,16 @@ class _TPlaygroundState<T extends TPlaygroundParameterModel>
   }
 
   String _buildPrompt() {
-    if (_activeTab == 'solidify') {
-      return '''Solidify the widget from the Component Playground.
-
-${widget.solidifyInstructions}
-
-Task:
-Add the widget from the playground to the project following conventions, add it to your components/styling page catalog, and clear the canvas.''';
-    } else if (_activeTab == 'clear') {
-      return '''Clear the Component Playground canvas.
-
-${widget.clearCanvasInstructions}
-
-Task:
-Clear the playground canvas and restore the placeholder content.''';
-    } else {
-      return '''We are working on a new widget in the Component Playground.
-
-$_instructions
-
-Task:
-Create the following widget in the Playground:
-$_userRequest
-
-Requirements:
-- Create $_variations variant(s) of this widget.
-- Ensure it follows the rules above.
-- MANDATORY: Configure TPlaygroundParameterModel with entries in the typed maps (strings, bools, ints, doubles, selects) for EVERY widget prop.
-- MANDATORY: Use childBuilder to render the widget - NEVER use child directly.
-- Add the widget(s) to the TPlayground's childBuilder, replacing the placeholder content.
-''';
+    switch (_activeTab) {
+      case TurboWidgetsPlaygroundTab.solidify:
+        return widget.solidifyInstructions;
+      case TurboWidgetsPlaygroundTab.clear:
+        return widget.clearCanvasInstructions;
+      case TurboWidgetsPlaygroundTab.request:
+      case TurboWidgetsPlaygroundTab.instructions:
+        return _instructions
+            .replaceAll('{{USER_REQUEST}}', _userRequest)
+            .replaceAll('{{VARIATIONS}}', _variations);
     }
   }
 
