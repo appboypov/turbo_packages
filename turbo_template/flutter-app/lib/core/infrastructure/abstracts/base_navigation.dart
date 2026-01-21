@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/abstracts/view_arguments.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -20,7 +21,7 @@ abstract class BaseNavigation with Turbolytics {
   final BaseRouterService _baseRouterService;
   final NavigationTabService _navigationTabService;
 
-  String get root => router.root.path;
+  String get root => router.root;
   NavigationTab? get navigationTab => router.navigationTab;
   NavigationTab get currentNavigationTab => _navigationTabService.navigationTab.value;
 
@@ -107,5 +108,5 @@ abstract class BaseNavigation with Turbolytics {
   }
 
   String _mapRoutes(List<TRoute> routes) => routes.isNotEmpty ? '$root/${_asPaths(routes)}' : root;
-  String _asPaths(List<TRoute> routes) => routes.map((e) => e.path).join('/');
+  String _asPaths(List<TRoute> routes) => routes.map((e) => e.rawPath).join('/');
 }

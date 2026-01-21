@@ -1,25 +1,33 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/extensions/view_extension.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
 
 enum TRoute {
-  core,
   shell,
   home,
   playground,
   oops;
 
-  String get path {
+  bool get isRootPath => switch (this) {
+    TRoute.shell => false,
+    TRoute.home => true,
+    TRoute.oops => true,
+    TRoute.playground => false,
+  };
+
+  String get routerPath => isRootPath ? rawPath.asRootPath : rawPath;
+
+  String get rawPath {
     switch (this) {
-      case TRoute.core:
-        return '/';
       case TRoute.shell:
         return 'welcome-to-your';
       case TRoute.home:
@@ -31,59 +39,11 @@ enum TRoute {
     }
   }
 
-  RouteBase get route {
-    switch (this) {
-      case TRoute.core:
-        throw ArgumentError('TRoute.core does not have a single route.');
-      case TRoute.shell:
-        return StatefulShellRoute.indexedStack(
-          restorationScopeId: TRoute.shell.path,
-          parentNavigatorKey: BaseRouterService.rootNavigatorKey,
-          pageBuilder: (context, state, navigationShell) =>
-              TRoute.shell.pageBuilder(navigationShell: navigationShell)(context, state),
-          branches: [
-            StatefulShellBranch(
-              routes: TRoute.shell.routes,
-              restorationScopeId: TRoute.shell.path,
-              navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.shell.path),
-            ),
-          ],
-        );
-      case TRoute.home:
-        return GoRoute(
-          path: path,
-          redirect: (context, state) => _onAuthAccess(
-            context: context,
-            state: state,
-            navigationTab: TRouter.of(this).navigationTab,
-          ),
-          pageBuilder: pageBuilder(),
-          routes: routes,
-        );
-      case TRoute.playground:
-        return GoRoute(
-          path: path,
-          pageBuilder: pageBuilder(),
-          routes: routes,
-        );
-      case TRoute.oops:
-        return GoRoute(
-          path: path,
-          pageBuilder: pageBuilder(),
-        );
-    }
-  }
-
   List<RouteBase> get routes {
     switch (this) {
-      case TRoute.core:
-        return [
-          oops.route,
-          shell.route,
-        ];
       case TRoute.shell:
         return [
-          shell.route,
+          home.route,
         ];
       case TRoute.home:
         return [
@@ -96,10 +56,51 @@ enum TRoute {
     }
   }
 
+  RouteBase get route {
+    switch (this) {
+      case TRoute.shell:
+        return StatefulShellRoute.indexedStack(
+          restorationScopeId: TRoute.shell.routerPath,
+          parentNavigatorKey: BaseRouterService.rootNavigatorKey,
+          pageBuilder: (context, state, navigationShell) =>
+              TRoute.shell.pageBuilder(navigationShell: navigationShell)(context, state),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                home.route,
+              ],
+              restorationScopeId: TRoute.home.routerPath,
+              navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.home.routerPath),
+            ),
+          ],
+        );
+      case TRoute.home:
+        return GoRoute(
+          path: routerPath,
+          redirect: (context, state) => _onAuthAccess(
+            context: context,
+            state: state,
+            navigationTab: TRouter.home.navigationTab,
+          ),
+          pageBuilder: pageBuilder(),
+          routes: routes,
+        );
+      case TRoute.playground:
+        return GoRoute(
+          path: routerPath,
+          pageBuilder: pageBuilder(),
+          routes: routes,
+        );
+      case TRoute.oops:
+        return GoRoute(
+          path: routerPath,
+          pageBuilder: pageBuilder(),
+        );
+    }
+  }
+
   GoRouterPageBuilder pageBuilder({StatefulNavigationShell? navigationShell}) {
     switch (this) {
-      case TRoute.core:
-        throw ArgumentError('TRoute.core does not have a single page.');
       case TRoute.shell:
         return (context, state) => ShellView(
           statefulNavigationShell: navigationShell!,

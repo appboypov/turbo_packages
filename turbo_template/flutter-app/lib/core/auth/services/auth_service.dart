@@ -11,10 +11,6 @@ import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
 import 'package:turbo_flutter_template/core/auth/mixins/firebase_auth_exception_handler.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/generated/l10n.dart';
-import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
-import 'package:turbo_flutter_template/core/infrastructure/routers/core_router.dart';
-import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_null_exception.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_state_exception.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/map_extension.dart';
@@ -22,7 +18,7 @@ import 'package:turbo_flutter_template/core/shared/extensions/string_extension.d
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/called_by_mutex.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
@@ -33,11 +29,7 @@ class AuthService extends SyncService<User?>
     with Turbolytics<UserAnalytics>, FirebaseAuthExceptionHandler {
   AuthService({
     required FirebaseAuth firebaseAuth,
-    required LazyLocatorDef<LocatorService> locatorService,
-    required LazyLocatorDef<CoreRouter> coreRouter,
-  }) : _firebaseAuth = firebaseAuth,
-       _locatorService = locatorService,
-       _coreRouter = coreRouter;
+  }) : _firebaseAuth = firebaseAuth;
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
@@ -48,8 +40,6 @@ class AuthService extends SyncService<User?>
     () {
       return AuthService(
         firebaseAuth: FirebaseAuth.instance,
-        locatorService: () => LocatorService.locate,
-        coreRouter: CoreRouter.lazyLocate,
       );
     },
     dispose: (param) async {
@@ -60,8 +50,6 @@ class AuthService extends SyncService<User?>
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
   final FirebaseAuth _firebaseAuth;
-  final LazyLocatorDef<LocatorService> _locatorService;
-  final LazyLocatorDef<CoreRouter> _coreRouter;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
@@ -71,44 +59,44 @@ class AuthService extends SyncService<User?>
   Stream<User?> Function() get stream => _firebaseAuth.userChanges;
 
   @override
-  void Function(User? value) get onData =>
-      (user) => _mutex.lockAndRun(
-        run: (unlock) async {
-          try {
-            log.debug('New user data received, user: ${user?.uid}');
-            _lastUser = _currentUser.valueOrNull;
-            _currentUser.add(user);
-            if (user != null) {
-              analytics.setUserId(userId: user.uid);
-              _hasAuth.update(true);
-              _tryManageUserLevel(user);
+  void Function(User? value) get onData => (user) {
+    _hasAuth.update(user != null);
+    _mutex.lockAndRun(
+      run: (unlock) async {
+        try {
+          log.debug('New user data received, user: ${user?.uid}');
+          _lastUser = _currentUser.valueOrNull;
+          _currentUser.add(user);
+          if (user != null) {
+            analytics.setUserId(userId: user.uid);
+            _tryManageUserLevel(user);
+            _hasLoggedOut = false;
+            return;
+          } else {
+            _claimsUserLevel.update(UserLevel.unknown);
+            if (_hasLoggedOut) {
               _hasLoggedOut = false;
               return;
-            } else {
-              _hasAuth.update(false);
-              _claimsUserLevel.update(UserLevel.unknown);
-              if (_hasLoggedOut) {
-                _hasLoggedOut = false;
-                return;
-              }
-              if (_lastUser != null) {
-                throw UnexpectedStateException(
-                  reason: 'User was unexpectedly logged out. _hasLoggedOut: $_hasLoggedOut',
-                );
-              }
             }
-          } catch (error, stackTrace) {
-            log.error(
-              'Exception caught while processing received data in the auth service.',
-              error: error,
-              stackTrace: stackTrace,
-            );
-          } finally {
-            _isReady.completeIfNotComplete(true);
-            unlock();
+            if (_lastUser != null) {
+              throw UnexpectedStateException(
+                reason: 'User was unexpectedly logged out. _hasLoggedOut: $_hasLoggedOut',
+              );
+            }
           }
-        },
-      );
+        } catch (error, stackTrace) {
+          log.error(
+            'Exception caught while processing received data in the auth service.',
+            error: error,
+            stackTrace: stackTrace,
+          );
+        } finally {
+          _isReady.completeIfNotComplete(true);
+          unlock();
+        }
+      },
+    );
+  };
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
@@ -117,7 +105,7 @@ class AuthService extends SyncService<User?>
   final _claimsUserLevel = TNotifier<UserLevel>(UserLevel.unknown);
   final _currentUser = BehaviorSubject<User?>();
   final _didManageUserLevel = Completer();
-  final _hasAuth = TNotifier<bool>(false);
+  final _hasAuth = TNotifier<bool>(false, forceUpdate: true);
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
@@ -338,27 +326,12 @@ class AuthService extends SyncService<User?>
     }
   }
 
-  Future<void> _onLogout({required BuildContext? context}) async {
+  Future<void> _onLogout({required BuildContext context}) async {
     try {
-      log.info('Resetting services via LocatorService...');
-      await _locatorService().reset();
-      _locatorService().registerInitialDependencies();
-      log.info('Services reset and re-registered.');
 
-      // Try Phoenix.rebirth if context is available and Phoenix widget exists in tree
-      bool phoenixRebirthSucceeded = false;
-      if (context != null && context.mounted) {
+      if (context.mounted) {
         try {
-          // Check if Phoenix widget is available in the widget tree
-          final phoenixWidget = context.findAncestorWidgetOfExactType<Phoenix>();
-          if (phoenixWidget != null) {
-            log.info('Triggering Phoenix rebirth...');
-            Phoenix.rebirth(context);
-            phoenixRebirthSucceeded = true;
-            log.info('Phoenix rebirth triggered.');
-          } else {
-            log.warning('Phoenix widget not found in widget tree.');
-          }
+          Phoenix.rebirth(context);
         } catch (error, stackTrace) {
           log.error(
             'Phoenix.rebirth failed, will navigate to shell route instead',
@@ -368,36 +341,6 @@ class AuthService extends SyncService<User?>
         }
       } else {
         log.warning('Context was null or unmounted before Phoenix.rebirth could be called.');
-      }
-
-      // If Phoenix rebirth didn't succeed, navigate to shell route
-      if (!phoenixRebirthSucceeded) {
-        try {
-          // Use BaseRouterService to navigate to shell route
-          // ShellView will determine Auth/Home based on auth state
-          if (GetIt.I.isRegistered<BaseRouterService>()) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              try {
-                _coreRouter().goShellView();
-                log.info('Navigation to shell route completed.');
-              } catch (error, stackTrace) {
-                log.error(
-                  'Failed to navigate to shell route',
-                  error: error,
-                  stackTrace: stackTrace,
-                );
-              }
-            });
-          } else {
-            log.warning('BaseRouterService not registered, cannot navigate to shell route.');
-          }
-        } catch (error, stackTrace) {
-          log.error(
-            'Error navigating to shell route',
-            error: error,
-            stackTrace: stackTrace,
-          );
-        }
       }
     } catch (error, stackTrace) {
       log.error(
@@ -409,23 +352,22 @@ class AuthService extends SyncService<User?>
     }
   }
 
-  Future<TurboResponse> logout({required BuildContext? context}) async {
+  Future<TurboResponse> logout({required BuildContext context}) async {
     return _mutex.lockAndRun(
       run: (unlock) async {
         try {
           _hasLoggedOut = true;
           await _firebaseAuth.signOut();
           // Ensure listeners update before services are reset/disposed.
-          _hasAuth.update(false);
           _claimsUserLevel.update(UserLevel.unknown);
           _currentUser.add(null);
           await _onLogout(context: context);
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context == null ? null : Localizations.of<Strings>(context, Strings);
+          final strings = context.strings;
           if (_hasLoggedOut) {
             return TurboResponse.successAsBool(
-              title: strings?.logoutSuccessfulTitle,
-              message: strings?.logoutSuccessfulMessage,
+              title: strings.logoutSuccessfulTitle,
+              message: strings.logoutSuccessfulMessage,
             );
           } else {
             throw const UnexpectedStateException(
@@ -439,11 +381,11 @@ class AuthService extends SyncService<User?>
             stackTrace: stackTrace,
           );
           _hasLoggedOut = _firebaseAuth.currentUser == null;
-          final strings = context == null ? null : Localizations.of<Strings>(context, Strings);
+          final strings = context.strings;
           return TurboResponse.fail(
             error: error,
-            title: strings?.logoutFailedTitle,
-            message: strings?.somethingWentWrongPleaseTryAgainLater,
+            title: strings.logoutFailedTitle,
+            message: strings.somethingWentWrongPleaseTryAgainLater,
           );
         } finally {
           unlock();

@@ -38,7 +38,7 @@ class NavigationTabService with Turbolytics {
     onGo(navigationTab: initialTab);
     switch (initialTab) {
       case NavigationTab.home:
-        return TRoute.home.path;
+        return TRoute.home.routerPath;
     }
   }
 

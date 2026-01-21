@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/infrastructure/abstracts/base_navigation.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
@@ -30,8 +31,8 @@ class CoreRouter extends BaseNavigation {
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  void goShellView() => go(
-    route: TRoute.shell,
+  void goHomeView() => go(
+    route: TRoute.home,
   );
 
   void goOopsView() => WidgetsBinding.instance.addPostFrameCallback((_) {

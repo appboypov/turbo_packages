@@ -5,50 +5,14 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_flutter_template/core/infrastructure/abstracts/view_arguments.dart';
-import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
+import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 part 'base_router_service.g.dart';
-
-enum TRouter {
-  core,
-  home;
-
-  NavigationTab? get navigationTab {
-    switch (this) {
-      case TRouter.home:
-        return NavigationTab.home;
-      case TRouter.core:
-        return null;
-    }
-  }
-
-  TRoute get root => switch (this) {
-    TRouter.home => TRoute.home,
-    TRouter.core => TRoute.core,
-  };
-
-  static TRouter of(TRoute route) {
-    switch (route) {
-      case TRoute.core:
-      case TRoute.shell:
-      case TRoute.oops:
-        return TRouter.core;
-      case TRoute.home:
-      case TRoute.playground:
-        return TRouter.home;
-    }
-  }
-
-  List<RouteBase> get routes => root.routes;
-  RouteBase get route => root.route;
-  String get path => root.path;
-  GoRouterPageBuilder get pageBuilder => root.pageBuilder();
-  String get initialLocation => root.path;
-}
 
 class BaseRouterService with Turbolytics {
   BaseRouterService() {
@@ -98,16 +62,13 @@ class BaseRouterService with Turbolytics {
   // 🛣️ ROUTERS ------------------------------------------------------------------------------- \\
 
   final coreRouter = GoRouter(
-    redirect: (context, state) {
-      return null;
-    },
     observers: [
       FirebaseAnalyticsObserver(
         analytics: FirebaseAnalytics.instance,
       ),
     ],
     navigatorKey: rootNavigatorKey,
-    initialLocation: TRouter.core.initialLocation,
+    initialLocation: TRoute.home.routerPath,
     routes: TRouter.core.routes,
   );
 

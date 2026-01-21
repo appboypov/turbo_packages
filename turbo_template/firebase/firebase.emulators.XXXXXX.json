@@ -28,7 +28,7 @@
   },
   "emulators": {
     "auth": {
-      "port": 9210,
+      "port": 9200,
       "options": {
         "projectId": "demo-project",
         "allowDuplicateEmails": true,
@@ -36,21 +36,21 @@
       }
     },
     "firestore": {
-      "port": 9211
+      "port": 9201
     },
     "functions": {
-      "port": 9212
+      "port": 9202
     },
     "storage": {
-      "port": 9213
+      "port": 9203
     },
     "ui": {
       "enabled": true,
-      "port": 9215
+      "port": 9205
     },
     "singleProjectMode": true,
     "hub": {
-      "port": 9214
+      "port": 9204
     }
   }
 }

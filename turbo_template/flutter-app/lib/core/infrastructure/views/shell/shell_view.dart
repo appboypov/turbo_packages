@@ -32,20 +32,24 @@ class ShellView extends StatelessWidget {
           );
         }
         return Unfocusable(
-          child: Scaffold(
-            body: ShadSonner(
-              child: ValueListenableBuilder(
-                valueListenable: model.hasAuth,
-                builder: (context, value, child) =>
-                    value ? statefulNavigationShell : const AuthView(),
-                child: statefulNavigationShell,
+          child: ValueListenableBuilder(
+            valueListenable: model.hasAuth,
+            builder: (context, value, child) => Scaffold(
+              key: ValueKey(value),
+              body: ShadSonner(
+                child: ValueListenableBuilder(
+                  valueListenable: model.hasAuth,
+                  builder: (context, value, child) =>
+                      value ? statefulNavigationShell : const AuthView(),
+                  child: statefulNavigationShell,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: TSizes.appPadding * 1.5,
+                  vertical: TSizes.appPadding * 0.75,
+                ),
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: TSizes.appPadding * 1.5,
-                vertical: TSizes.appPadding * 0.75,
-              ),
+              backgroundColor: Colors.transparent,
             ),
-            backgroundColor: Colors.transparent,
           ),
         );
       },

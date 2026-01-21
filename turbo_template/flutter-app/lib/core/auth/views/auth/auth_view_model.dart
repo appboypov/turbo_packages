@@ -43,13 +43,13 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
+  DialogService get _dialogService => DialogService.locate;
+  final _authService = AuthService.locate;
+  final _emailService = EmailService.locate;
+  final _firebaseAuth = FirebaseAuth.instance;
+  final _localStorageService = LocalStorageService.locate;
   final _toastService = ToastService.locate;
   final _urlLauncherService = UrlLauncherService.locate;
-  final _emailService = EmailService.locate;
-  final _authService = AuthService.locate;
-  final _localStorageService = LocalStorageService.locate;
-  final _firebaseAuth = FirebaseAuth.instance;
-  DialogService get _dialogService => DialogService.locate;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -80,23 +80,23 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  final Completer _canInit = Completer();
   DateTime? _forgotPasswordAt;
-  final FocusNode sendForgotPasswordFocusNode = FocusNode();
-  final FocusNode loginButtonFocusNode = FocusNode();
-  final FocusNode registerButtonFocusNode = FocusNode();
-  final _authViewMode = TNotifier<AuthViewMode>(AuthViewMode.defaultValue);
-  final _showAgreeToPrivacyCheckBox = TNotifier<bool>(false);
-  final _loginForm = LoginForm.locate;
-  final _registerForm = RegisterForm.locate;
-  final _forgotPasswordForm = ForgotPasswordForm.locate;
   Timer? _resetPasswordTimer;
   bool _isResetPasswordCooldownActive = false;
+  final Completer _canInit = Completer();
+  final FocusNode loginButtonFocusNode = FocusNode();
+  final FocusNode registerButtonFocusNode = FocusNode();
+  final FocusNode sendForgotPasswordFocusNode = FocusNode();
+  final _authViewMode = TNotifier<AuthViewMode>(AuthViewMode.defaultValue);
+  final _forgotPasswordForm = ForgotPasswordForm.locate;
+  final _loginForm = LoginForm.locate;
+  final _registerForm = RegisterForm.locate;
+  final _showAgreeToPrivacyCheckBox = TNotifier<bool>(false);
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
-  final _mutex = Mutex();
   final _animationDurationCompleter = MinDurationCompleter(TDurations.animation);
+  final _mutex = Mutex();
   static const _kResetPasswordCooldown = Duration(minutes: 1);
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\

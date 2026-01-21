@@ -116,6 +116,7 @@ class LocatorService with Turbolytics {
     try {
       log.info('Resetting GetIt service locator...');
       await GetIt.I.reset();
+      registerInitialDependencies();
 
       log.info('Service reset completed successfully.');
     } catch (error, stackTrace) {

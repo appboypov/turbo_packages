@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:turbo_flutter_template/core/environment/config/emulator_config.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
@@ -46,7 +47,7 @@ void main() {
       };
 
       LocatorService.locate.registerInitialDependencies();
-      runApp(const MyAppView());
+      runApp(Phoenix(child: const MyAppView()));
     },
     (error, stack) {
       TLog(

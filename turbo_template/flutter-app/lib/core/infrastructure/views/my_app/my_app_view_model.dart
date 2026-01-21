@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -150,7 +151,7 @@ class MyAppViewModel extends TViewModel with Turbolytics {
       );
       // Update before logout; logout triggers GetIt.reset and disposes services.
       await localStorageService.updateLastEnvironment(environment: currentEnvironment);
-      await _authService().logout(context: context);
+      await FirebaseAuth.instance.signOut();
       return;
     }
 

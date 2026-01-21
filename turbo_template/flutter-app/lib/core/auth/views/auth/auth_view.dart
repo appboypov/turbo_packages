@@ -30,7 +30,6 @@ import 'auth_view_model.dart';
 class AuthView extends StatelessWidget {
   const AuthView({super.key});
 
-  static const String path = '';
   static const double _startupLogoWidth = 119;
 
   @override

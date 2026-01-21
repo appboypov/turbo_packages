@@ -61,7 +61,7 @@ class ToastService with Turbolytics {
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   void showToast({
-    required String title,
+    required String? title,
     String? subtitle,
     required BuildContext? context,
     VoidCallback? onPressed,
@@ -71,6 +71,10 @@ class ToastService with Turbolytics {
     Duration animationDuration = TDurations.animation,
     Curve animationCurve = Curves.decelerate,
   }) {
+    if (title == null || title.isEmpty) {
+      log.warning('ToastService: Title is null or empty, cannot show toast.');
+      return;
+    }
     final pContext = context ?? gContext;
     if (pContext == null) {
       log.warning('ToastService: Context is null, cannot show toast.');
