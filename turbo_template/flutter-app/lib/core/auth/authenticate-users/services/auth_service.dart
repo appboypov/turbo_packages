@@ -219,6 +219,16 @@ class AuthService extends SyncService<User?>
           _didManageUserLevel.completeIfNotComplete();
           return;
         }
+        // Handle no-current-user as expected state (user signed out)
+        if (error is FirebaseAuthException && error.code == 'no-current-user') {
+          log.warning(
+            'User signed out while fetching ID token. Setting user level to unknown.',
+          );
+          _claimsUserLevel.update(UserLevel.unknown);
+          analytics.setUserLevel(userLevel: _claimsUserLevel.value);
+          _didManageUserLevel.completeIfNotComplete();
+          return;
+        }
         log.error(
           '$error caught while trying to get claims user level.',
           error: error,
