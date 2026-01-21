@@ -34,6 +34,7 @@ class PlaygroundView extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: TPlayground<TPlaygroundParameterModel>(
                       parametersBuilder: TPlaygroundParameterModel.new,
+                      initialIsDarkMode: context.themeMode.isDark,
                       childBuilder: (context, params) {
                         return const Center(
                           child: Text('Add your widget here'),

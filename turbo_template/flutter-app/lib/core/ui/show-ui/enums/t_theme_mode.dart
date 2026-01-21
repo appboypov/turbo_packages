@@ -10,6 +10,9 @@ enum TThemeMode {
   dark,
   light;
 
+  bool get isDark => this == TThemeMode.dark;
+  bool get isLight => this == TThemeMode.light;
+
   ShadThemeData get themeData {
     final foregroundColor = (TThemeMode themeMode) => switch (themeMode) {
       TThemeMode.dark => TColors.backgroundDark.onColor,

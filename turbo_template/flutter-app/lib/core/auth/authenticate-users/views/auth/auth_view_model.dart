@@ -25,6 +25,7 @@ import 'package:turbo_flutter_template/core/ux/provide-feedback/services/toast_s
 import 'package:turbo_flutter_template/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/environment/globals/g_env.dart';
 import 'package:turbo_flutter_template/l10n/globals/g_context.dart';
+import 'package:turbo_flutter_template/l10n/globals/g_strings.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_response/turbo_response.dart';
@@ -304,14 +305,14 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
                   success: (response) {
                     _toastService.showToast(
                       context: gContext ?? context,
-                      title: context.strings.loggedInTitle,
-                      subtitle: context.strings.welcomeBackTitle,
+                      title: gStrings.loggedInTitle,
+                      subtitle: gStrings.welcomeBackTitle,
                     );
                   },
                   fail: (response) {
                     _toastService.showToast(
-                      context: context,
-                      title: context.strings.failedToLogInTitle,
+                      context: gContext ?? context,
+                      title: gStrings.failedToLogInTitle,
                       subtitle: response.message,
                     );
                   },
@@ -390,16 +391,16 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
                 await authResponse.when(
                   success: (response) async {
                     _toastService.showToast(
-                      context: context,
-                      title: context.strings.accountCreatedTitle,
+                      context: gContext ?? context,
+                      title: gStrings.accountCreatedTitle,
                     );
                     final userId = authResponse.result.uid;
                     await _tryCreateUserDocAndNextView(userId: userId, email: email);
                   },
                   fail: (response) {
                     _toastService.showToast(
-                      context: context,
-                      title: context.strings.accountCreationFailedTitle,
+                      context: gContext ?? context,
+                      title: gStrings.accountCreationFailedTitle,
                       subtitle: response.message,
                     );
                   },
@@ -477,20 +478,20 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
         final minutes = _remainingSeconds ~/ 60;
         final seconds = _remainingSeconds % 60;
         final message = minutes > 0
-            ? context.strings.resetPasswordCooldownMessage(
+            ? gStrings.resetPasswordCooldownMessage(
           minutes.toString(),
-          minutes == 1 ? context.strings.minute : context.strings.minutes,
+          minutes == 1 ? gStrings.minute : gStrings.minutes,
           seconds.toString(),
-          seconds == 1 ? context.strings.second : context.strings.seconds,
+          seconds == 1 ? gStrings.second : gStrings.seconds,
         )
-            : context.strings.resetPasswordCooldownMessageSeconds(
+            : gStrings.resetPasswordCooldownMessageSeconds(
           seconds.toString(),
-          seconds == 1 ? context.strings.second : context.strings.seconds,
+          seconds == 1 ? gStrings.second : gStrings.seconds,
         );
 
         await _dialogService.showOkDialog(
           context: context,
-          title: context.strings.pleaseWait,
+          title: gStrings.pleaseWait,
           message: message,
         );
         return;
@@ -509,8 +510,8 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
 
         await _dialogService.showOkDialog(
           context: context,
-          title: context.strings.resetPassword,
-          message: context.strings.ifRegisteredWeSend(_forgotPasswordForm.email.cValue!),
+          title: gStrings.resetPassword,
+          message: gStrings.ifRegisteredWeSend(_forgotPasswordForm.email.cValue!),
         );
         if (context.mounted) {
           _updateAuthViewMode(AuthViewMode.login);
