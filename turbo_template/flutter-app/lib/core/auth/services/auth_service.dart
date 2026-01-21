@@ -11,9 +11,10 @@ import 'package:turbo_flutter_template/core/auth/enums/user_level.dart';
 import 'package:turbo_flutter_template/core/auth/mixins/firebase_auth_exception_handler.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/generated/l10n.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
+import 'package:turbo_flutter_template/core/infrastructure/routers/core_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_null_exception.dart';
 import 'package:turbo_flutter_template/core/shared/exceptions/unexpected_state_exception.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/map_extension.dart';
@@ -21,6 +22,7 @@ import 'package:turbo_flutter_template/core/shared/extensions/string_extension.d
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/sync_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/annotations/called_by_mutex.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/completer_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/mutex.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
@@ -29,13 +31,27 @@ import 'package:turbolytics/turbolytics.dart';
 
 class AuthService extends SyncService<User?>
     with Turbolytics<UserAnalytics>, FirebaseAuthExceptionHandler {
+  AuthService({
+    required FirebaseAuth firebaseAuth,
+    required LazyLocatorDef<LocatorService> locatorService,
+    required LazyLocatorDef<CoreRouter> coreRouter,
+  }) : _firebaseAuth = firebaseAuth,
+       _locatorService = locatorService,
+       _coreRouter = coreRouter;
+
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static AuthService get locate => GetIt.I.get();
   static AuthService Function() get lazyLocate =>
       () => GetIt.I.get<AuthService>();
   static void registerLazySingleton() => GetIt.I.registerLazySingleton(
-    AuthService.new,
+    () {
+      return AuthService(
+        firebaseAuth: FirebaseAuth.instance,
+        locatorService: () => LocatorService.locate,
+        coreRouter: CoreRouter.lazyLocate,
+      );
+    },
     dispose: (param) async {
       await param.dispose();
     },
@@ -43,8 +59,9 @@ class AuthService extends SyncService<User?>
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
-  final _firebaseAuth = FirebaseAuth.instance;
-  LocatorService get _locatorService => LocatorService.locate;
+  final FirebaseAuth _firebaseAuth;
+  final LazyLocatorDef<LocatorService> _locatorService;
+  final LazyLocatorDef<CoreRouter> _coreRouter;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
@@ -324,8 +341,8 @@ class AuthService extends SyncService<User?>
   Future<void> _onLogout({required BuildContext? context}) async {
     try {
       log.info('Resetting services via LocatorService...');
-      await _locatorService.reset();
-      _locatorService.registerInitialDependencies();
+      await _locatorService().reset();
+      _locatorService().registerInitialDependencies();
       log.info('Services reset and re-registered.');
 
       // Try Phoenix.rebirth if context is available and Phoenix widget exists in tree
@@ -359,12 +376,9 @@ class AuthService extends SyncService<User?>
           // Use BaseRouterService to navigate to shell route
           // ShellView will determine Auth/Home based on auth state
           if (GetIt.I.isRegistered<BaseRouterService>()) {
-            final routerService = BaseRouterService.locate;
-            final shellPath = ShellView.path.asRootPath;
-            log.info('Navigating to shell route: $shellPath');
             WidgetsBinding.instance.addPostFrameCallback((_) {
               try {
-                routerService.coreRouter.go(shellPath);
+                _coreRouter().goShellView();
                 log.info('Navigation to shell route completed.');
               } catch (error, stackTrace) {
                 log.error(

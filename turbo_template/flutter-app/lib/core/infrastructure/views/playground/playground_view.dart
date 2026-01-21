@@ -12,8 +12,6 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 class PlaygroundView extends StatelessWidget {
   const PlaygroundView({super.key});
 
-  static const String path = 'playground';
-
   @override
   Widget build(BuildContext context) => TViewModelBuilder<PlaygroundViewModel>(
     builder: (context, model, isInitialised, child) {

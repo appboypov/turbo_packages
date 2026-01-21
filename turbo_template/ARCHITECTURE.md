@@ -98,7 +98,7 @@ turbo_template/
 | `SettingsDto` | `lib/core/settings/dtos/settings_dto.dart` | App settings data |
 | `CurrentWeekDto` | `lib/core/shared/dtos/current_week_dto.dart` | Week calculation utility |
 | `IconLabelDto` | `lib/core/ui/show-ui/dtos/icon_label_dto.dart` | Icon with label display |
-| `ExtraArguments` | `lib/core/infrastructure/navigate-app/models/extra_arguments.dart` | Navigation extra data |
+| `RouteArguments` | `lib/core/infrastructure/navigate-app/models/extra_arguments.dart` | Navigation extra data |
 | `Crud` | `lib/core/state/manage-state/models/crud.dart` | CRUD operation model |
 | `TColors` | `lib/core/ui/show-ui/models/t_colors.dart` | Theme color accessor |
 | `TData` | `lib/core/ui/show-ui/models/t_data.dart` | UI data container |

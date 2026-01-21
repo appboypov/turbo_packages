@@ -4,16 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/abstracts/view_arguments.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 abstract class BaseNavigation with Turbolytics {
-  final _baseRouterService = BaseRouterService.locate;
-  final _navigationTabService = NavigationTabService.locate;
+  BaseNavigation({
+    required this.router,
+  }) : _baseRouterService = BaseRouterService.locate,
+       _navigationTabService = NavigationTabService.locate;
 
-  String get root;
-  NavigationTab? get navigationTab;
+  final TRouter router;
+
+  final BaseRouterService _baseRouterService;
+  final NavigationTabService _navigationTabService;
+
+  String get root => router.root.path;
+  NavigationTab? get navigationTab => router.navigationTab;
   NavigationTab get currentNavigationTab => _navigationTabService.navigationTab.value;
 
   void goBranch({required StatefulNavigationShell statefulNavigationShell}) {
@@ -37,33 +45,58 @@ abstract class BaseNavigation with Turbolytics {
     );
   }
 
-  void go({required String location, List<ViewArguments>? extra, BuildContext? context}) {
-    log.debug('Going to route: $location');
+  void go({
+    TRoute? route,
+    List<TRoute>? routes,
+    List<ViewArguments>? extra,
+    BuildContext? context,
+  }) {
+    final path = _mapRoutes(
+      [
+        if (routes != null) ...routes,
+        if (route != null) route,
+      ],
+    );
+    log.debug('Going to route: $path');
     context == null
-        ? _baseRouterService.context.go(location, extra: extra?.toExtraArguments)
-        : context.go(location, extra: extra?.toExtraArguments);
+        ? _baseRouterService.context.go(path, extra: extra?.toRouteArguments)
+        : context.go(path, extra: extra?.toRouteArguments);
   }
 
   Future<T?> push<T>({
-    required String location,
+    TRoute? route,
+    List<TRoute>? routes,
     List<ViewArguments>? extra,
     BuildContext? context,
   }) {
-    log.info('Pushing route: $location');
+    final path = _mapRoutes(
+      [
+        if (routes != null) ...routes,
+        if (route != null) route,
+      ],
+    );
+    log.info('Pushing route: $path');
     return context == null
-        ? _baseRouterService.context.push<T>(location, extra: extra?.toExtraArguments)
-        : context.push<T?>(location, extra: extra?.toExtraArguments);
+        ? _baseRouterService.context.push<T>(path, extra: extra?.toRouteArguments)
+        : context.push<T?>(path, extra: extra?.toRouteArguments);
   }
 
   void pushReplacement({
-    required String location,
+    TRoute? route,
+    List<TRoute>? routes,
     List<ViewArguments>? extra,
     BuildContext? context,
   }) {
-    log.info('Pushing route: $location');
+    final path = _mapRoutes(
+      [
+        if (routes != null) ...routes,
+        if (route != null) route,
+      ],
+    );
+    log.info('Pushing route: $path');
     return context == null
-        ? _baseRouterService.context.pushReplacement(location, extra: extra?.toExtraArguments)
-        : context.pushReplacement(location, extra: extra?.toExtraArguments);
+        ? _baseRouterService.context.pushReplacement(path, extra: extra?.toRouteArguments)
+        : context.pushReplacement(path, extra: extra?.toRouteArguments);
   }
 
   bool canPop({BuildContext? context}) {
@@ -73,6 +106,6 @@ abstract class BaseNavigation with Turbolytics {
     return canPop;
   }
 
-  String makeRootRoutes(List<String> routes) => '$root/${routes.join('/')}';
-  String makeRoutes(List<String> routes) => '$location';
+  String _mapRoutes(List<TRoute> routes) => routes.isNotEmpty ? '$root/${_asPaths(routes)}' : root;
+  String _asPaths(List<TRoute> routes) => routes.map((e) => e.path).join('/');
 }

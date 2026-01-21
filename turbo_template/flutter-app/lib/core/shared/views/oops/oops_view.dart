@@ -10,8 +10,6 @@ import 'oops_view_model.dart';
 class OopsView extends StatelessWidget {
   const OopsView({super.key});
 
-  static const String path = 'oops';
-
   @override
   Widget build(BuildContext context) {
     return TViewModelBuilder<OopsViewModel>(

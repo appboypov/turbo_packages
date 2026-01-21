@@ -15,8 +15,6 @@ import 'package:turbo_mvvm/turbo_mvvm.dart';
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
-  static const String path = 'household';
-
   @override
   Widget build(BuildContext context) => TViewModelBuilder<HomeViewModel>(
     builder: (context, model, isInitialised, child) {

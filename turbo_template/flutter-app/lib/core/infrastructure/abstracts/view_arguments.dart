@@ -5,11 +5,11 @@ abstract class ViewArguments {
 }
 
 extension ViewArgumentsListExtension on List<ViewArguments> {
-  ExtraArguments get toExtraArguments {
+  RouteArguments get toRouteArguments {
     final extraArguments = <String, dynamic>{};
     for (final viewArguments in this) {
       extraArguments.addAll(viewArguments.toJson());
     }
-    return ExtraArguments.fromJson(extraArguments);
+    return RouteArguments.fromJson(extraArguments);
   }
 }
