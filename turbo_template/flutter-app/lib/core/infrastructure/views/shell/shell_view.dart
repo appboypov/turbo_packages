@@ -24,15 +24,9 @@ class ShellView extends StatelessWidget {
   Widget build(BuildContext context) => TResponsiveBuilder(
     builder: (context, child, constraints, tools, data) {
       final contextualButtonsService = ContextualButtonsService.locate;
-      final deviceOverrides = data.deviceType.isMobile
-          ? const <TContextualPosition, TContextualPosition>{}
-          : const {
-              TContextualPosition.top: TContextualPosition.left,
-            };
       contextualButtonsService.setPresentation(
         deviceType: data.deviceType,
         positionOverrides: {
-          ...deviceOverrides,
           ...contextualPositionOverrides,
         },
       );

@@ -1,4 +1,4 @@
-# Bootstrap and Sync Turbo Template Progress
+# Integrate turbo_forms into Monorepo Progress
 
 ## Workflow Instructions
 
@@ -6,147 +6,113 @@
 
 ### After Compact Checklist
 - [ ] Read this file fully
+- [ ] Read `workspace/changes/integrate-turbo-forms/request.md` for decisions
 - [ ] Check current status in Status Overview
-- [ ] Run `splx get task` to get next task
 - [ ] Resume from where left off
 
 ---
 
 ## Context
 
-**Goal**: Make turbo_template ready for copy with TViewBuilder, configuration management, and bidirectional sync scripts.
-
-**Linear Issue**: TURBO-19
+**Goal**: Create fresh `turbo_forms` package (v1.0.1) in monorepo by extracting form infrastructure from turbo_template.
 
 **Source Files**:
-- `workspace/changes/bootstrap-sync-turbo-template/proposal.md`
-- `workspace/changes/bootstrap-sync-turbo-template/request.md`
-- `workspace/changes/bootstrap-sync-turbo-template/specs/turbo-template-sync/spec.md`
+- `workspace/changes/integrate-turbo-forms/request.md` (decisions, final intent)
 
 **Key Decisions**:
-1. TViewBuilder migration: Shell only (not all views)
-2. Config values: All identifiers, URLs, Firebase IDs (with current defaults)
-3. Script language: Dart CLI + Makefile targets
-4. Change detection: Git commit hash comparison
-5. Downstream sync: Leave project-only files untouched
-6. Upstream sync: Revert to template defaults, respect sync_upwards whitelist
-7. Script location: `turbo_template/scripts/` at template root
+1. Version: 1.0.1 (pub.dev has 1.0.0, must increment)
+2. shadcn_ui: Direct dependency (turbo_forms depends on it)
+3. Scope: Core classes only (TFormFieldConfig, TFormFieldState, TFieldType, TFormField, TFormFieldBuilder, TFormConfig, typedefs)
+4. Extensions: `t` prefixed methods (tTryAsDouble, tTryAsInt, tHasDecimals, tNaked, tAsType)
+5. Defaults: TurboFormsDefaults abstract class with static consts
+6. Widgets: TFormField + TErrorLabel (no IconLabelDto, required errorTextStyle)
+7. VerticalShrink: Copy to turbo_forms (turbo_template keeps its own)
 
 ---
 
 ## Status Overview
 
 ```
-1. 001-migrate-shell           🔴 NOT STARTED (refactor)
-2. 002-create-config           🔴 NOT STARTED (infrastructure)
-3. 003-init-script             🔴 NOT STARTED (infrastructure) [blocked: 002]
-4. 004-downstream-sync         🔴 NOT STARTED (infrastructure) [blocked: 002,003]
-5. 005-upstream-sync           🔴 NOT STARTED (infrastructure) [blocked: 002,003,004]
-6. 006-validate-envs           🔴 NOT STARTED (chore) [blocked: 001]
-7. 007-review                  🔴 NOT STARTED (chore) [blocked: all]
+Phase 1: Create Package Structure     🔴 NOT STARTED
+Phase 2: Create New Files             🔴 NOT STARTED
+Phase 3: Copy/Adapt Files             🔴 NOT STARTED
+Phase 4: Update Root Workspace        🔴 NOT STARTED
+Phase 5: Update turbo_template        🔴 NOT STARTED
+Phase 6: Verification                 🔴 NOT STARTED
 ```
 
-**Progress**: 0/7 tasks complete (0%)
+**Progress**: 0/6 phases complete (0%)
 
 ---
 
 ## Detailed Status
 
-### Task 001: Migrate ShellView to TViewBuilder
+### Phase 1: Create Package Structure
 **Status**: 🔴 NOT STARTED
-**Type**: refactor | **Skill**: junior
 
 **Work**:
-- [ ] Replace ViewModelBuilder with TViewBuilder in shell_view.dart
-- [ ] Update imports
-- [ ] Verify behavior unchanged
-
-**Key File**: `turbo_template/flutter-app/lib/core/infrastructure/run-app/views/shell/shell_view.dart`
+- [ ] Create `turbo_forms/` folder at monorepo root
+- [ ] Create `lib/src/` subdirectories (abstracts, config, constants, enums, extensions, typedefs, widgets)
+- [ ] Create pubspec.yaml (v1.0.1, resolution: workspace)
+- [ ] Create analysis_options.yaml
+- [ ] Create LICENSE, CHANGELOG.md, README.md
 
 ---
 
-### Task 002: Create turbo_template_config.yaml
+### Phase 2: Create New Files
 **Status**: 🔴 NOT STARTED
-**Type**: infrastructure | **Skill**: medior
 
 **Work**:
-- [ ] Document all hardcoded values in template
-- [ ] Create config file at template root
-- [ ] Include sync metadata (template_path, last_commit_sync, sync_upwards)
-- [ ] Remove flutter-app/template.yaml (consolidate)
-
-**Key File**: `turbo_template/turbo_template_config.yaml` (new)
+- [ ] Create `TurboFormsDefaults` (constants/turbo_forms_defaults.dart)
+- [ ] Create `TurboFormFieldExtensions` (extensions/turbo_form_field_extensions.dart)
 
 ---
 
-### Task 003: Create init_project.dart
+### Phase 3: Copy/Adapt Files from turbo_template
 **Status**: 🔴 NOT STARTED
-**Type**: infrastructure | **Skill**: medior
-**Blocked by**: 002
 
 **Work**:
-- [ ] Create Dart script for find-replace across template
-- [ ] Handle binary files (skip)
-- [ ] Add dry-run mode
-- [ ] Add Makefile target
-
-**Key Files**:
-- `turbo_template/scripts/init_project.dart` (new)
-- `turbo_template/scripts/pubspec.yaml` (new)
+- [ ] Copy TFieldType enum
+- [ ] Copy ValuesValidatorDef typedef
+- [ ] Copy/adapt TFormFieldConfig + part files (use `t` prefix extensions)
+- [ ] Copy TFormConfig abstract class
+- [ ] Copy TFormFieldBuilderDef typedef
+- [ ] Copy TFormFieldBuilder widget
+- [ ] Copy VerticalShrink (only this class from shrinks.dart)
+- [ ] Create TErrorLabel (required errorTextStyle parameter)
+- [ ] Create TFormField (Widget? label, required errorTextStyle, no IconLabelDto)
+- [ ] Create turbo_forms.dart barrel export
 
 ---
 
-### Task 004: Create sync_from_template.dart
+### Phase 4: Update Root Workspace
 **Status**: 🔴 NOT STARTED
-**Type**: infrastructure | **Skill**: senior
-**Blocked by**: 002, 003
 
 **Work**:
-- [ ] Git diff to find changed files
-- [ ] Copy with value replacement
-- [ ] Update last_commit_sync
-- [ ] Add Makefile target
-
-**Key File**: `turbo_template/scripts/sync_from_template.dart` (new)
+- [ ] Add `turbo_forms` to workspace list in root pubspec.yaml
+- [ ] Run `dart pub get` at root
 
 ---
 
-### Task 005: Create sync_to_template.dart
+### Phase 5: Update turbo_template
 **Status**: 🔴 NOT STARTED
-**Type**: infrastructure | **Skill**: senior
-**Blocked by**: 002, 003, 004
 
 **Work**:
-- [ ] Filter to sync_upwards whitelist
-- [ ] Revert values to template defaults
-- [ ] Update last_commit_sync in both configs
-- [ ] Add Makefile target
-
-**Key File**: `turbo_template/scripts/sync_to_template.dart` (new)
+- [ ] Add turbo_forms dependency to flutter-app/pubspec.yaml
+- [ ] Run `dart pub get` in turbo_template
+- [ ] Transform turbo_template TFormField to wrapper (IconLabelDto → Widget, theme styles)
+- [ ] Update imports in all form files to use turbo_forms
+- [ ] Delete original files from turbo_template
 
 ---
 
-### Task 006: Validate All Environments
+### Phase 6: Verification
 **Status**: 🔴 NOT STARTED
-**Type**: chore | **Skill**: medior
-**Blocked by**: 001
 
 **Work**:
-- [ ] flutter analyze passes
-- [ ] Build succeeds for all environments
-- [ ] Shell view switching works
-
----
-
-### Task 007: Review All Changes
-**Status**: 🔴 NOT STARTED
-**Type**: chore | **Skill**: senior
-**Blocked by**: 001-006
-
-**Work**:
-- [ ] End-to-end test of all scripts
-- [ ] Verify Makefile targets
-- [ ] Final quality check
+- [ ] `dart analyze` passes
+- [ ] Build turbo_template app
+- [ ] Test form functionality (login form renders, validation errors animate, submission works)
 
 ---
 
@@ -155,45 +121,51 @@
 <!-- APPEND ONLY - Never modify or delete existing entries -->
 
 ### ══════════════════════════════════════════
-### Checkpoint: Session 1 — 2026-01-20
+### Checkpoint: Session 1 — 2026-01-22
 ### ══════════════════════════════════════════
 
 **What was done**:
-- Created change proposal `bootstrap-sync-turbo-template`
-- Clarified all requirements via iterative questions
-- Created 7 task files in workspace/tasks/
-- Created spec delta for turbo-template-sync capability
-- Validated change with `splx validate change --id bootstrap-sync-turbo-template --strict`
+- Created request.md with all clarified decisions
+- Created implementation plan with 6 phases
+- Entered plan mode and designed full architecture
 
 **Decisions made**:
-- All decisions documented in request.md and Context section above
+- All 8 decisions documented in request.md
 
 **Blockers/Issues**:
 - None
 
 **Next steps**:
-- Get user approval on proposal
-- Run `splx get task` to start first task (001-migrate-shell)
+- Execute Phase 1: Create package structure
 
 ---
 
 ## Quick Reference
 
-**Progress**: 0/7 tasks complete (0%)
+**Progress**: 0/6 phases complete (0%)
 
-**Commands**:
+**Key Files to Create**:
+```
+turbo_forms/
+├── lib/
+│   ├── turbo_forms.dart
+│   └── src/
+│       ├── abstracts/t_form_config.dart
+│       ├── config/t_form_field_config.dart (+ parts)
+│       ├── constants/turbo_forms_defaults.dart
+│       ├── enums/t_field_type.dart
+│       ├── extensions/turbo_form_field_extensions.dart
+│       ├── typedefs/
+│       └── widgets/
+├── pubspec.yaml
+└── analysis_options.yaml
+```
+
+**Validation Commands**:
 ```bash
-# Get next task
-splx get task
-
-# Complete current task
-splx complete task --id <task-id>
-
-# Validate change
-splx validate change --id bootstrap-sync-turbo-template --strict
-
-# View proposal
-splx get change --id bootstrap-sync-turbo-template
+dart pub get
+dart analyze
+melos run analyze
 ```
 
 ---
@@ -202,6 +174,6 @@ splx get change --id bootstrap-sync-turbo-template
 
 After compact, to continue:
 1. Read this file completely
-2. Run `splx get task` to see next available task
-3. First unblocked tasks: 001 (shell migration) and 002 (config creation)
-4. Start with 001 as it's simpler (junior skill level)
+2. Read `workspace/changes/integrate-turbo-forms/request.md` for full decisions
+3. Start Phase 1: Create turbo_forms folder structure
+4. Follow phases in order (1 → 2 → 3 → 4 → 5 → 6)

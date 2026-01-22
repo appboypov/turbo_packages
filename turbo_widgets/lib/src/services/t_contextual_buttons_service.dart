@@ -77,8 +77,8 @@ class TContextualButtonsService
     final nextConfig = updater(_value);
     if (_value == nextConfig) return;
 
+    update(nextConfig, doNotifyListeners: doNotifyListeners);
     if (!animated || !doNotifyListeners) {
-      update(nextConfig, doNotifyListeners: doNotifyListeners);
       return;
     }
 
@@ -88,41 +88,15 @@ class TContextualButtonsService
     );
   }
 
-  /// Orchestrates the animated transition between configurations.
+  /// Orchestrates any additional transition behavior between configurations.
   ///
   /// Separated from [updateContextualButtons] to maintain single responsibility.
-  /// Flow: hide → wait → update → show (batched notifications)
   Future<void> _animateTransition({
     required TContextualButtonsConfig nextConfig,
     Set<TContextualPosition>? positionsToAnimate,
   }) async {
     if (_isDisposed) return;
-
-    final positions = positionsToAnimate ?? TContextualPosition.values.toSet();
-
-    // Step 1: Hide buttons
-    final hiddenForAnimation = {..._value.hiddenPositions, ...positions};
-    _value = _value.copyWith(hiddenPositions: hiddenForAnimation);
-    notifyListeners();
-
-    // Step 2: Wait for hide animation
-    await Future.delayed(
-      Duration(milliseconds: _value.animationDuration.inMilliseconds ~/ 2),
-    );
-    if (_isDisposed) return;
-
-    // Step 3: Update configuration (silent)
-    _value = nextConfig.copyWith(hiddenPositions: hiddenForAnimation);
-
-    // Step 4: Show buttons
-    final finalHiddenPositions = {..._value.hiddenPositions}..removeAll(positions);
-    _value = _value.copyWith(hiddenPositions: finalHiddenPositions);
-    notifyListeners();
-
-    // Step 5: Wait for show animation
-    await Future.delayed(
-      Duration(milliseconds: nextConfig.animationDuration.inMilliseconds ~/ 2),
-    );
+    await Future<void>.delayed(Duration.zero);
   }
 
   @override

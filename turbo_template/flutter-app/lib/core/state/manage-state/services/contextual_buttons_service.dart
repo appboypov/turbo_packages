@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/buttons/contextual_nav_button.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
 class ContextualButtonsService extends TContextualButtonsService {
@@ -48,7 +47,6 @@ class ContextualButtonsService extends TContextualButtonsService {
   final Map<String, ContextualButtonsBuilder> _routeButtonBuilders = {};
   final Map<Object, String> _ownerRouteKeys = {};
   final Map<Object, ContextualButtonsBuilder> _shellButtonBuilders = {};
-  final Map<ContextualButtonEntry, Widget> _buttonWidgetCache = {};
   Map<TContextualPosition, TContextualPosition> _positionOverrides = const {};
   TDeviceType? _deviceType;
 
@@ -139,29 +137,48 @@ class ContextualButtonsService extends TContextualButtonsService {
     List<ContextualButtonEntry> entries, {
     required TDeviceType deviceType,
   }) {
-    final widgetsByPosition = <TContextualPosition, Map<TContextualVariation, List<Widget>>>{
-      for (final position in TContextualPosition.values)
-        position: {
-          for (final variation in TContextualVariation.values) variation: <Widget>[],
-        },
-    };
+    final entriesByPosition =
+        <TContextualPosition, Map<TContextualVariation, List<ContextualButtonEntry>>>{
+          for (final position in TContextualPosition.values)
+            position: {
+              for (final variation in TContextualVariation.values) variation: <ContextualButtonEntry>[],
+            },
+        };
 
     for (final entry in entries) {
-      final widget = _buttonWidgetCache.putIfAbsent(
-        entry,
-        () => ContextualNavButton(
-          deviceType: deviceType,
-          config: entry.config,
-        ),
-      );
-      widgetsByPosition[entry.position]![entry.variation]!.add(widget);
+      entriesByPosition[entry.position]![entry.variation]!.add(entry);
+    }
+
+    if (!deviceType.isMobile) {
+      for (final variation in TContextualVariation.values) {
+        entriesByPosition[TContextualPosition.left]![variation]!.addAll(
+          entriesByPosition[TContextualPosition.bottom]![variation]!,
+        );
+        entriesByPosition[TContextualPosition.bottom]![variation]!.clear();
+      }
     }
 
     var config = TContextualButtonsConfig(
-      top: _slotFromWidgets(widgetsByPosition[TContextualPosition.top]!),
-      bottom: _slotFromWidgets(widgetsByPosition[TContextualPosition.bottom]!),
-      left: _slotFromWidgets(widgetsByPosition[TContextualPosition.left]!),
-      right: _slotFromWidgets(widgetsByPosition[TContextualPosition.right]!),
+      top: _slotFromEntries(
+        position: TContextualPosition.top,
+        entriesByVariation: entriesByPosition[TContextualPosition.top]!,
+        deviceType: deviceType,
+      ),
+      bottom: _slotFromEntries(
+        position: TContextualPosition.bottom,
+        entriesByVariation: entriesByPosition[TContextualPosition.bottom]!,
+        deviceType: deviceType,
+      ),
+      left: _slotFromEntries(
+        position: TContextualPosition.left,
+        entriesByVariation: entriesByPosition[TContextualPosition.left]!,
+        deviceType: deviceType,
+      ),
+      right: _slotFromEntries(
+        position: TContextualPosition.right,
+        entriesByVariation: entriesByPosition[TContextualPosition.right]!,
+        deviceType: deviceType,
+      ),
       positionOverrides: _positionOverrides,
     );
 
@@ -173,55 +190,96 @@ class ContextualButtonsService extends TContextualButtonsService {
           TContextualPosition.right,
         },
       );
-    } else {
-      config = _remapBottomToLeft(config);
     }
 
     return config;
   }
 
-  TContextualButtonsSlotConfig _slotFromWidgets(
-    Map<TContextualVariation, List<Widget>> widgetsByVariation,
-  ) {
+  TContextualButtonsSlotConfig _slotFromEntries({
+    required TContextualPosition position,
+    required Map<TContextualVariation, List<ContextualButtonEntry>> entriesByVariation,
+    required TDeviceType deviceType,
+  }) {
     return TContextualButtonsSlotConfig(
-      primary: widgetsByVariation[TContextualVariation.primary] ?? const [],
-      secondary: widgetsByVariation[TContextualVariation.secondary] ?? const [],
-      tertiary: widgetsByVariation[TContextualVariation.tertiary] ?? const [],
-    );
-  }
-
-  TContextualButtonsConfig _remapBottomToLeft(TContextualButtonsConfig config) {
-    final bottom = config.bottom;
-    final left = config.left;
-
-    final combined = <List<Widget>>[
-      if (bottom.primary.isNotEmpty) bottom.primary,
-      if (bottom.secondary.isNotEmpty) bottom.secondary,
-      if (bottom.tertiary.isNotEmpty) bottom.tertiary,
-      if (left.primary.isNotEmpty) left.primary,
-      if (left.secondary.isNotEmpty) left.secondary,
-      if (left.tertiary.isNotEmpty) left.tertiary,
-    ];
-
-    final newLeftPrimary = combined.isNotEmpty ? combined[0] : const <Widget>[];
-    final newLeftSecondary = combined.length > 1 ? combined[1] : const <Widget>[];
-    final newLeftTertiary = combined.length > 2
-        ? combined.sublist(2).expand((items) => items).toList()
-        : const <Widget>[];
-
-    return config.copyWith(
-      left: left.copyWith(
-        primary: newLeftPrimary,
-        secondary: newLeftSecondary,
-        tertiary: newLeftTertiary,
+      primary: _widgetsForVariation(
+        position: position,
+        variation: TContextualVariation.primary,
+        entries: entriesByVariation[TContextualVariation.primary] ?? const [],
+        deviceType: deviceType,
       ),
-      bottom: bottom.copyWith(
-        primary: const [],
-        secondary: const [],
-        tertiary: const [],
+      secondary: _widgetsForVariation(
+        position: position,
+        variation: TContextualVariation.secondary,
+        entries: entriesByVariation[TContextualVariation.secondary] ?? const [],
+        deviceType: deviceType,
+      ),
+      tertiary: _widgetsForVariation(
+        position: position,
+        variation: TContextualVariation.tertiary,
+        entries: entriesByVariation[TContextualVariation.tertiary] ?? const [],
+        deviceType: deviceType,
       ),
     );
   }
+
+  List<Widget> _widgetsForVariation({
+    required TContextualPosition position,
+    required TContextualVariation variation,
+    required List<ContextualButtonEntry> entries,
+    required TDeviceType deviceType,
+  }) {
+    if (entries.isEmpty) {
+      return const [];
+    }
+
+    final entryKeys = entries
+        .asMap()
+        .entries
+        .map((entry) => _entryKey(entry.value, entry.key))
+        .toList();
+    final widgetKey = ValueKey('${position.name}-${variation.name}-${entryKeys.join("-")}');
+    final actions = entries.map((entry) => entry.config).toList();
+    final buttonMap = <String, TButtonConfig>{
+      for (var i = 0; i < entries.length; i++) _entryKey(entries[i], i): entries[i].config,
+    };
+    final selectedIndex = entries.indexWhere((entry) => entry.config.isActive);
+    final selectedKey = selectedIndex >= 0
+        ? _entryKey(entries[selectedIndex], selectedIndex)
+        : null;
+
+    switch (position) {
+      case TContextualPosition.top:
+        return [
+          TContextualAppBar(
+            key: widgetKey,
+            actions: actions,
+            showLabels: deviceType.showButtonLabel,
+          ),
+        ];
+      case TContextualPosition.bottom:
+        return [
+          TContextualBottomNavigation(
+            key: widgetKey,
+            buttons: buttonMap,
+            selectedKey: selectedKey,
+            showLabels: deviceType.showButtonLabel,
+          ),
+        ];
+      case TContextualPosition.left:
+      case TContextualPosition.right:
+        return [
+          TContextualSideNavigation(
+            key: widgetKey,
+            buttons: buttonMap,
+            selectedKey: selectedKey,
+            showLabels: deviceType.showButtonLabel,
+          ),
+        ];
+    }
+  }
+
+  String _entryKey(ContextualButtonEntry entry, int index) =>
+      entry.id ?? '${entry.position.name}-${entry.variation.name}-$index';
 
   bool _mapEquals(
     Map<TContextualPosition, TContextualPosition> a,
@@ -274,32 +332,11 @@ class ContextualButtonsService extends TContextualButtonsService {
 
   Future<void> _animateToConfig(TContextualButtonsConfig target) async {
     if (_isDisposed) return;
-    final positions = TContextualPosition.values.toSet();
-
-    final hiddenForAnimation = {...value.hiddenPositions, ...positions};
-    update(value.copyWith(hiddenPositions: hiddenForAnimation));
-
-    await Future.delayed(
-      Duration(milliseconds: value.animationDuration.inMilliseconds ~/ 2),
-    );
-    if (_isDisposed) return;
-
     if (_pendingConfig != null) {
       target = _pendingConfig!;
       _pendingConfig = null;
     }
-
-    final updatedHidden = {...target.hiddenPositions, ...positions};
-    update(
-      target.copyWith(hiddenPositions: updatedHidden),
-      doNotifyListeners: false,
-    );
-
-    final finalHidden = {...updatedHidden}..removeAll(positions);
-    update(target.copyWith(hiddenPositions: finalHidden));
-
-    await Future.delayed(
-      Duration(milliseconds: target.animationDuration.inMilliseconds ~/ 2),
-    );
+    update(target);
+    await Future<void>.delayed(Duration.zero);
   }
 }

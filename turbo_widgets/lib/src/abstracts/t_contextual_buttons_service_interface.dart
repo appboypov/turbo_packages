@@ -33,12 +33,8 @@ abstract class TContextualButtonsServiceInterface extends ChangeNotifier
 
   /// Updates the configuration with animated transitions.
   ///
-  /// When [animated] is true and [doNotifyListeners] is true:
-  /// 1. Checks if the new config differs from current
-  /// 2. Hides buttons by adding affected positions to hiddenPositions
-  /// 3. Waits for hide animation to complete
-  /// 4. Updates the configuration
-  /// 5. Shows buttons by removing positions from hiddenPositions
+  /// When [animated] is true, the implementation may coordinate any
+  /// extra transition behavior in addition to the widget-level animations.
   ///
   /// [positionsToAnimate] specifies which positions to animate (defaults to all).
   Future<void> updateContextualButtons(

@@ -200,11 +200,13 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
     return true;
   }
 
+  Object _widgetIdentityKey(Widget widget) => widget.key ?? widget;
+
   bool _listEquals(List<Widget> a, List<Widget> b) {
     if (identical(a, b)) return true;
     if (a.length != b.length) return false;
     for (var i = 0; i < a.length; i++) {
-      if (!identical(a[i], b[i])) return false;
+      if (_widgetIdentityKey(a[i]) != _widgetIdentityKey(b[i])) return false;
     }
     return true;
   }

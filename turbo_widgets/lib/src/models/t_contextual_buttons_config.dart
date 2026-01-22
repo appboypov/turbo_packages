@@ -4,12 +4,14 @@ import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 import 'package:turbo_widgets/src/typedefs/contextual_button_builders.dart';
 
-/// Compares two widget lists by identity (not equality).
-bool _widgetListIdentical(List<Widget> a, List<Widget> b) {
+Object _widgetIdentityKey(Widget widget) => widget.key ?? widget;
+
+/// Compares two widget lists by key identity when available.
+bool _widgetListEquivalent(List<Widget> a, List<Widget> b) {
   if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (var i = 0; i < a.length; i++) {
-    if (!identical(a[i], b[i])) return false;
+    if (_widgetIdentityKey(a[i]) != _widgetIdentityKey(b[i])) return false;
   }
   return true;
 }
@@ -49,15 +51,15 @@ class TContextualButtonsSlotData {
       identical(this, other) ||
       other is TContextualButtonsSlotData &&
           runtimeType == other.runtimeType &&
-          _widgetListIdentical(primary, other.primary) &&
-          _widgetListIdentical(secondary, other.secondary) &&
-          _widgetListIdentical(tertiary, other.tertiary);
+          _widgetListEquivalent(primary, other.primary) &&
+          _widgetListEquivalent(secondary, other.secondary) &&
+          _widgetListEquivalent(tertiary, other.tertiary);
 
   @override
   int get hashCode => Object.hash(
-        primary.length,
-        secondary.length,
-        tertiary.length,
+        Object.hashAll(primary.map(_widgetIdentityKey)),
+        Object.hashAll(secondary.map(_widgetIdentityKey)),
+        Object.hashAll(tertiary.map(_widgetIdentityKey)),
       );
 }
 
@@ -177,18 +179,18 @@ class TContextualButtonsSlotConfig {
       identical(this, other) ||
       other is TContextualButtonsSlotConfig &&
           runtimeType == other.runtimeType &&
-          _widgetListIdentical(primary, other.primary) &&
-          _widgetListIdentical(secondary, other.secondary) &&
-          _widgetListIdentical(tertiary, other.tertiary) &&
+          _widgetListEquivalent(primary, other.primary) &&
+          _widgetListEquivalent(secondary, other.secondary) &&
+          _widgetListEquivalent(tertiary, other.tertiary) &&
           alignment == other.alignment &&
           mainAxisSize == other.mainAxisSize &&
           builder == other.builder;
 
   @override
   int get hashCode => Object.hash(
-        primary.length,
-        secondary.length,
-        tertiary.length,
+        Object.hashAll(primary.map(_widgetIdentityKey)),
+        Object.hashAll(secondary.map(_widgetIdentityKey)),
+        Object.hashAll(tertiary.map(_widgetIdentityKey)),
         alignment,
         mainAxisSize,
         builder,
