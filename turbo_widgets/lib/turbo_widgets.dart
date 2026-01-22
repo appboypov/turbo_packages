@@ -6,6 +6,7 @@ export 'package:device_frame_plus/device_frame_plus.dart'
 export 'src/abstracts/t_contextual_buttons_service_interface.dart';
 export 'src/constants/turbo_widgets_defaults.dart';
 export 'src/constants/turbo_widgets_devices.dart';
+export 'src/enums/t_category_section_layout.dart';
 export 'src/enums/t_contextual_allow_filter.dart';
 export 'src/enums/t_contextual_position.dart';
 export 'src/enums/t_contextual_variation.dart';
@@ -35,6 +36,9 @@ export 'src/widgets/navigation/t_contextual_app_bar.dart';
 export 'src/widgets/navigation/t_contextual_bottom_navigation.dart';
 export 'src/widgets/navigation/t_contextual_nav_button.dart';
 export 'src/widgets/navigation/t_contextual_side_navigation.dart';
+export 'src/widgets/category/t_category_card.dart';
+export 'src/widgets/category/t_category_header.dart';
+export 'src/widgets/category/t_category_section.dart';
 export 'src/widgets/t_collapsible_section.dart';
 export 'src/widgets/t_contextual_buttons.dart';
 export 'src/widgets/t_markdown_file_item.dart';

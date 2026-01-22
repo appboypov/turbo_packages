@@ -4,6 +4,43 @@ import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbo_widgets_example/views/styling/styling_view_model.dart';
 
+const List<String> _categoryTitles = [
+  'Design',
+  'Engineering',
+  'Marketing',
+  'Operations',
+  'People',
+  'Finance',
+  'Legal',
+  'Product',
+];
+
+const List<String> _categoryImageUrls = [
+  'https://images.unsplash.com/photo-1487014679447-9f8336841d58',
+  'https://images.unsplash.com/photo-1521737604893-d14cc237f11d',
+  'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40',
+  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+];
+
+final List<ImageProvider> _categoryImages = _categoryImageUrls
+    .map((url) => NetworkImage(url))
+    .toList();
+
+const List<IconData> _categoryIcons = [
+  LucideIcons.palette,
+  LucideIcons.code,
+  LucideIcons.megaphone,
+  LucideIcons.settings,
+  LucideIcons.users,
+  LucideIcons.badgeDollarSign,
+  LucideIcons.scale,
+  LucideIcons.layoutDashboard,
+];
+
+const String _categoryHeaderTitle = 'Browse categories';
+const String _categoryHeaderDescription =
+    'Explore curated categories with cards and sections that scale from small lists to rich grids.';
+
 class StylingView extends StatelessWidget {
   const StylingView({super.key});
 
@@ -37,6 +74,20 @@ class StylingView extends StatelessWidget {
                           );
                         },
                       ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+                ValueListenableBuilder<bool>(
+                  valueListenable: model.isCategoryWidgetsShowcaseExpanded,
+                  builder: (context, isExpanded, _) {
+                    return TCollapsibleSection(
+                      title: 'Category Widgets',
+                      subtitle:
+                          'TCategoryHeader, TCategorySection, TCategoryCard',
+                      isExpanded: isExpanded,
+                      onToggle: model.toggleCategoryWidgetsShowcase,
+                      child: const _TCategoryWidgetsShowcase(),
                     );
                   },
                 ),
@@ -150,6 +201,67 @@ class StylingView extends StatelessWidget {
         },
         viewModelBuilder: () => StylingViewModel.locate,
       );
+}
+
+class _TCategoryWidgetsShowcase extends StatelessWidget {
+  const _TCategoryWidgetsShowcase();
+
+  ImageProvider? _backgroundForIndex(int index) {
+    if (index.isEven) {
+      return _categoryImages[index % _categoryImages.length];
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TCategoryHeader(
+          title: _categoryHeaderTitle,
+          description: _categoryHeaderDescription,
+          backgroundImage: _categoryImages.first,
+        ),
+        const SizedBox(height: 16),
+        TCategorySection(
+          title: 'Featured categories',
+          caption: 'Horizontal list with show-all expansion',
+          itemCount: _categoryTitles.length,
+          maxItems: 6,
+          maxLines: 2,
+          itemBuilder: (context, index) {
+            return SizedBox(
+              width: 200,
+              child: TCategoryCard(
+                title: _categoryTitles[index],
+                icon: _categoryIcons[index % _categoryIcons.length],
+                backgroundImage: _backgroundForIndex(index),
+                onPressed: () {},
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        TCategorySection(
+          title: 'All categories',
+          caption: 'Grid layout for larger lists',
+          layout: TCategorySectionLayout.grid,
+          gridCrossAxisCount: 2,
+          gridChildAspectRatio: 1.6,
+          itemCount: _categoryTitles.length,
+          itemBuilder: (context, index) {
+            return TCategoryCard(
+              title: _categoryTitles[index],
+              icon: _categoryIcons[index % _categoryIcons.length],
+              backgroundImage: _backgroundForIndex(index),
+              onPressed: () {},
+            );
+          },
+        ),
+      ],
+    );
+  }
 }
 
 class _TContextualButtonsShowcase extends StatelessWidget {
