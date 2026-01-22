@@ -2,206 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-// =============================================================================
-// ANIMATION TYPE ENUM
-// =============================================================================
-
-/// Animation type for TProportionalGrid layout transitions.
-enum TProportionalGridAnimation {
-  /// Cards smoothly slide and resize to new positions.
-  slide,
-
-  /// Cards fade out, layout recalculates, then fade in.
-  fade,
-
-  /// Cards scale down, layout recalculates, then scale up.
-  scale,
-
-  /// Instant layout change with no animation.
-  none,
-}
-
-// =============================================================================
-// LAYOUT RESULT MODEL
-// =============================================================================
-
-/// Computed layout result for a single item in the proportional grid.
-class ProportionalLayoutResult {
-  const ProportionalLayoutResult({
-    required this.index,
-    required this.position,
-    required this.size,
-  });
-
-  final int index;
-  final Offset position;
-  final Size size;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ProportionalLayoutResult &&
-          index == other.index &&
-          position == other.position &&
-          size == other.size;
-
-  @override
-  int get hashCode => Object.hash(index, position, size);
-}
-
-// =============================================================================
-// ITEM MODEL
-// =============================================================================
-
-/// An item in the proportional grid with a size weight and child widget.
-class TProportionalItem {
-  const TProportionalItem({
-    required this.size,
-    required this.child,
-  });
-
-  /// The relative size/weight of this item. Larger values get more area.
-  /// Example: If items have sizes [4, 2, 2, 2], the first gets 40% of area.
-  final double size;
-
-  /// The widget to display in this cell.
-  final Widget child;
-}
-
-// =============================================================================
-// LAYOUT CALCULATOR - SQUARIFIED TREEMAP
-// =============================================================================
-
-/// Calculates proportional layouts using a squarified treemap algorithm.
-/// Guarantees 100% fill of available space with area proportional to size values.
-class ProportionalLayoutCalculator {
-  const ProportionalLayoutCalculator._();
-
-  static const double _minDimension = 40.0;
-
-  /// Calculate layout positions and sizes for all items.
-  static List<ProportionalLayoutResult> calculate({
-    required List<double> sizes,
-    required Size availableSize,
-    required double spacing,
-  }) {
-    if (sizes.isEmpty) return [];
-
-    if (sizes.length == 1) {
-      return [
-        ProportionalLayoutResult(
-          index: 0,
-          position: Offset.zero,
-          size: availableSize,
-        ),
-      ];
-    }
-
-    final totalSize = sizes.fold<double>(0, (sum, s) => sum + s);
-    if (totalSize <= 0) return [];
-
-    final totalArea = availableSize.width * availableSize.height;
-
-    // Calculate target areas for each item
-    final targetAreas = sizes.map((s) => (s / totalSize) * totalArea).toList();
-
-    // Run squarified algorithm
-    return _squarify(
-      indices: List.generate(sizes.length, (i) => i),
-      areas: targetAreas,
-      rect: Rect.fromLTWH(0, 0, availableSize.width, availableSize.height),
-      spacing: spacing,
-    );
-  }
-
-  static List<ProportionalLayoutResult> _squarify({
-    required List<int> indices,
-    required List<double> areas,
-    required Rect rect,
-    required double spacing,
-  }) {
-    if (indices.isEmpty) return [];
-
-    // Base case: single item fills the entire rect
-    if (indices.length == 1) {
-      return [
-        ProportionalLayoutResult(
-          index: indices[0],
-          position: Offset(rect.left, rect.top),
-          size: Size(
-            rect.width.clamp(_minDimension, double.infinity),
-            rect.height.clamp(_minDimension, double.infinity),
-          ),
-        ),
-      ];
-    }
-
-    // Find best partition point (closest to 50/50 split by area)
-    final totalArea = areas.fold<double>(0, (sum, a) => sum + a);
-    double runningSum = 0;
-    int splitIndex = 1;
-    double bestDiff = double.infinity;
-
-    for (int i = 0; i < indices.length - 1; i++) {
-      runningSum += areas[i];
-      final diff = (runningSum - totalArea / 2).abs();
-      if (diff < bestDiff) {
-        bestDiff = diff;
-        splitIndex = i + 1;
-      }
-    }
-
-    final group1Indices = indices.sublist(0, splitIndex);
-    final group1Areas = areas.sublist(0, splitIndex);
-    final group2Indices = indices.sublist(splitIndex);
-    final group2Areas = areas.sublist(splitIndex);
-
-    final group1TotalArea = group1Areas.fold<double>(0, (sum, a) => sum + a);
-    final ratio = totalArea > 0 ? group1TotalArea / totalArea : 0.5;
-
-    Rect rect1, rect2;
-
-    if (rect.width >= rect.height) {
-      // Vertical split (side by side)
-      // Subtract spacing from available width, then distribute proportionally
-      final availableWidth = rect.width - spacing;
-      final width1 = (availableWidth * ratio).clamp(_minDimension, availableWidth);
-      final width2 = (availableWidth - width1).clamp(_minDimension, availableWidth);
-
-      rect1 = Rect.fromLTWH(rect.left, rect.top, width1, rect.height);
-      rect2 = Rect.fromLTWH(rect.left + width1 + spacing, rect.top, width2, rect.height);
-    } else {
-      // Horizontal split (stacked)
-      // Subtract spacing from available height, then distribute proportionally
-      final availableHeight = rect.height - spacing;
-      final height1 = (availableHeight * ratio).clamp(_minDimension, availableHeight);
-      final height2 = (availableHeight - height1).clamp(_minDimension, availableHeight);
-
-      rect1 = Rect.fromLTWH(rect.left, rect.top, rect.width, height1);
-      rect2 = Rect.fromLTWH(rect.left, rect.top + height1 + spacing, rect.width, height2);
-    }
-
-    return [
-      ..._squarify(
-        indices: group1Indices,
-        areas: group1Areas,
-        rect: rect1,
-        spacing: spacing,
-      ),
-      ..._squarify(
-        indices: group2Indices,
-        areas: group2Areas,
-        rect: rect2,
-        spacing: spacing,
-      ),
-    ];
-  }
-}
-
-// =============================================================================
-// STATIC FLOW DELEGATE (for fade/scale/none animations)
-// =============================================================================
+import 'package:turbo_flutter_template/core/ui/enums/t_proportional_grid_animation.dart';
+import 'package:turbo_flutter_template/core/ui/models/proportional_layout_result.dart';
+import 'package:turbo_flutter_template/core/ui/models/t_proportional_item.dart';
+import 'package:turbo_flutter_template/core/ui/utils/proportional_layout_calculator.dart';
 
 /// High-performance delegate that positions items based on pre-computed layout.
 /// Used for fade, scale, and none animation types.
@@ -252,10 +56,6 @@ class _StaticFlowDelegate extends FlowDelegate {
     return !listEquals(layout, oldDelegate.layout);
   }
 }
-
-// =============================================================================
-// SLIDE FLOW DELEGATE (for slide animation)
-// =============================================================================
 
 /// Delegate that interpolates between layouts during animation.
 /// Used for slide animation type.
@@ -322,10 +122,6 @@ class _SlideFlowDelegate extends FlowDelegate {
         !listEquals(currentLayout, oldDelegate.currentLayout);
   }
 }
-
-// =============================================================================
-// MAIN WIDGET
-// =============================================================================
 
 /// A proportional grid that fills 100% of available space.
 ///

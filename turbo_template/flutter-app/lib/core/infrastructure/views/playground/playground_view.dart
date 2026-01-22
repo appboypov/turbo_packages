@@ -4,7 +4,9 @@ import 'package:turbo_flutter_template/core/infrastructure/views/playground/play
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/enums/emoji.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_bento_grid.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_proportional_grid_animation.dart';
+import 'package:turbo_flutter_template/core/ui/models/t_proportional_item.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_proportional_grid.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_app_bar.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_body.dart';
