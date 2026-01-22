@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
+import 'package:turbo_forms/src/config/t_form_field_config.dart';
 
 abstract class TFormConfig {
   @protected

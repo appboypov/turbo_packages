@@ -41,6 +41,7 @@ dependencies:
   turbo_mvvm:
   turbo_serializable:
   turbo_firestore_api:
+  turbo_forms:
   url_launcher: ^6.3.2
   flutter_slidable: ^4.0.3
   url_strategy: ^0.3.0

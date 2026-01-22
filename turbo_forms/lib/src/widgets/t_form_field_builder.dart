@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
-import 'package:turbo_flutter_template/core/ux/typedefs/t_form_field_builder_def.dart';
+import 'package:turbo_forms/src/config/t_form_field_config.dart';
+import 'package:turbo_forms/src/typedefs/t_form_field_builder_def.dart';
 
 class TFormFieldBuilder<T> extends StatelessWidget {
   const TFormFieldBuilder({

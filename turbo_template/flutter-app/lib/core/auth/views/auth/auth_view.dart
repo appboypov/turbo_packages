@@ -7,8 +7,8 @@ import 'package:turbo_flutter_template/core/generated/assets.gen.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
-import 'package:turbo_flutter_template/core/ui/dtos/icon_label_dto.dart';
 import 'package:turbo_flutter_template/core/ui/enums/icon_collection.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_icon_label.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/shrinks.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_animated_gap.dart';
@@ -22,7 +22,7 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scroll_view.dart';
 import 'package:turbo_flutter_template/core/ux/utils/haptic_button_utils.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
+import 'package:turbo_forms/turbo_forms.dart' hide VerticalShrink;
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 import 'auth_view_model.dart';
@@ -96,10 +96,14 @@ class AuthView extends StatelessWidget {
                                     excluding: false,
                                     child: TFormField<String>(
                                       formFieldConfig: model.emailField,
-                                      iconLabelDto: IconLabelDto(
+                                      errorTextStyle: context.texts.smallDestructive,
+                                      label: TIconLabel.forFormField(
                                         icon: IconCollection.email,
-                                        label: context.strings.email,
+                                        context: context,
+                                        text: context.strings.email,
                                       ),
+                                      disabledOpacity: TSizes.opacityDisabled,
+                                      animationDuration: TDurations.animation,
                                       builder: (context, config, child) => Semantics(
                                         identifier: 'email_field',
                                         label: context.strings.emailInputFieldLabel,
@@ -130,10 +134,14 @@ class AuthView extends StatelessWidget {
                                         excluding: authViewMode.isForgotPassword,
                                         child: TFormField<String>(
                                           formFieldConfig: model.passwordField,
-                                          iconLabelDto: IconLabelDto(
+                                          errorTextStyle: context.texts.smallDestructive,
+                                          label: TIconLabel.forFormField(
                                             icon: IconCollection.password,
-                                            label: context.strings.password,
+                                            context: context,
+                                            text: context.strings.password,
                                           ),
+                                          disabledOpacity: TSizes.opacityDisabled,
+                                          animationDuration: TDurations.animation,
                                           builder: (context, config, child) => Semantics(
                                             identifier: 'password_field',
                                             label: context.strings.passwordInputFieldLabel,
@@ -202,10 +210,14 @@ class AuthView extends StatelessWidget {
                                             excluding: !authViewMode.isRegister,
                                             child: TFormField(
                                               formFieldConfig: model.confirmPasswordField,
-                                              iconLabelDto: IconLabelDto(
+                                              errorTextStyle: context.texts.smallDestructive,
+                                              label: TIconLabel.forFormField(
                                                 icon: IconCollection.confirmPassword,
-                                                label: context.strings.confirmYourPassword,
+                                                context: context,
+                                                text: context.strings.confirmYourPassword,
                                               ),
+                                              disabledOpacity: TSizes.opacityDisabled,
+                                              animationDuration: TDurations.animation,
                                               builder: (context, config, child) => Semantics(
                                                 identifier: 'confirm_password_field',
                                                 label: context.strings.confirmYourPassword,
@@ -243,6 +255,9 @@ class AuthView extends StatelessWidget {
                                                   ),
                                                   child: TFormField<bool>(
                                                     formFieldConfig: model.agreePrivacyField,
+                                                    errorTextStyle: context.texts.smallDestructive,
+                                                    disabledOpacity: TSizes.opacityDisabled,
+                                                    animationDuration: TDurations.animation,
                                                     builder: (context, config, child) => Semantics(
                                                       identifier: 'agree_privacy_checkbox',
                                                       label: context.strings.privacyPolicy,

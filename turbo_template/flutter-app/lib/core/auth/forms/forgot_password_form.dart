@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:turbo_flutter_template/core/ux/abstracts/t_form_config.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
 import 'package:turbo_flutter_template/core/ux/constants/k_value_validators.dart';
-import 'package:turbo_flutter_template/core/ux/enums/t_field_type.dart';
+import 'package:turbo_forms/turbo_forms.dart';
 
 enum _ForgotPasswordFormField { email }
 

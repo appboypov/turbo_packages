@@ -30,15 +30,18 @@ class TCollectionHeader extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: Stack(
-        fit: StackFit.expand,
         children: [
           if (backgroundImage != null)
-            Image(
-              image: backgroundImage!,
-              fit: BoxFit.cover,
+            Positioned.fill(
+              child: Image(
+                image: backgroundImage!,
+                fit: BoxFit.cover,
+              ),
             ),
-          DecoratedBox(
-            decoration: BoxDecoration(gradient: gradient),
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(gradient: gradient),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16),

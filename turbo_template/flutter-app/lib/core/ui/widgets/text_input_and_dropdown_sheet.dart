@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/context_def.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 import 'package:turbo_flutter_template/core/ui/dtos/icon_label_dto.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gap.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_icon.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_form_field.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/t_icon_label.dart';
+import 'package:turbo_forms/turbo_forms.dart';
 
 class TextInputAndDropdownSheet<T> extends StatelessWidget {
   const TextInputAndDropdownSheet({
@@ -39,7 +42,14 @@ class TextInputAndDropdownSheet<T> extends StatelessWidget {
     children: [
       TFormField(
         formFieldConfig: dropdownConfig,
-        iconLabelDto: iconLabelDto,
+        errorTextStyle: context.texts.smallDestructive,
+        label: TIconLabel.forFormField(
+          icon: iconLabelDto.icon,
+          context: context,
+          text: iconLabelDto.label,
+        ),
+        disabledOpacity: TSizes.opacityDisabled,
+        animationDuration: TDurations.animation,
         builder: (context, config, child) {
           final itemCount = config.items?.length ?? 0;
           // Calculate height: ~40px per item + padding, max 5 items
@@ -69,7 +79,14 @@ class TextInputAndDropdownSheet<T> extends StatelessWidget {
       const TGap.app(multiplier: 0.5),
       TFormField(
         formFieldConfig: textInputConfig,
-        iconLabelDto: iconLabelDto,
+        errorTextStyle: context.texts.smallDestructive,
+        label: TIconLabel.forFormField(
+          icon: iconLabelDto.icon,
+          context: context,
+          text: iconLabelDto.label,
+        ),
+        disabledOpacity: TSizes.opacityDisabled,
+        animationDuration: TDurations.animation,
         builder: (context, config, child) => ShadInput(
           leading: TIconSmall(leadingIcon),
           placeholder: Text(textFieldHint),

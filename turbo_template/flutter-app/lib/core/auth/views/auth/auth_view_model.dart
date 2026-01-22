@@ -25,7 +25,7 @@ import 'package:turbo_flutter_template/core/state/manage-state/extensions/contex
 import 'package:turbo_flutter_template/core/state/manage-state/utils/min_duration_completer.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
+import 'package:turbo_forms/turbo_forms.dart';
 import 'package:turbo_flutter_template/core/ux/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dart';

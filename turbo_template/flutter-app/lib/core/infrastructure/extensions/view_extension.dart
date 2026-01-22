@@ -10,7 +10,7 @@ import 'package:turbo_flutter_template/core/ui/widgets/transition_builders.dart'
 extension ViewExtensionExtension on StatelessWidget {
   Page<dynamic> asPage({
     bool fullscreenDialog = false,
-    PageTransitionType transitionType = PageTransitionType.platform,
+    PageTransitionType transitionType = PageTransitionType.custom,
   }) {
     switch (transitionType) {
       case PageTransitionType.platform:

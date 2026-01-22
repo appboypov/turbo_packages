@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
-import 'package:turbo_flutter_template/core/ui/dtos/icon_label_dto.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_gap.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_icon_label.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/core/ux/config/t_form_field_config.dart';
-import 'package:turbo_flutter_template/core/ux/typedefs/t_form_field_builder_def.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_error_label.dart';
-import 'package:turbo_flutter_template/core/ux/widgets/t_form_field_builder.dart';
+import 'package:turbo_forms/src/config/t_form_field_config.dart';
+import 'package:turbo_forms/src/constants/turbo_forms_defaults.dart';
+import 'package:turbo_forms/src/typedefs/t_form_field_builder_def.dart';
+import 'package:turbo_forms/src/widgets/t_error_label.dart';
+import 'package:turbo_forms/src/widgets/t_form_field_builder.dart';
 
 class TFormField<T> extends StatelessWidget {
   const TFormField({
     super.key,
     required this.builder,
     required this.formFieldConfig,
+    required this.errorTextStyle,
     this.child,
     this.errorPadding,
-    this.iconLabelDto,
+    this.label,
     this.description,
+    this.descriptionStyle,
     this.labelTrailing,
     this.horizontalPadding,
+    this.disabledOpacity = TurboFormsDefaults.defaultDisabledOpacity,
+    this.animationDuration = TurboFormsDefaults.animationDuration,
   });
 
-  final IconLabelDto? iconLabelDto;
+  final Widget? label;
   final String? description;
+  final TextStyle? descriptionStyle;
   final Widget? labelTrailing;
   final TFormFieldBuilderDef<T> builder;
   final TFormFieldConfig<T> formFieldConfig;
   final Widget? child;
   final EdgeInsets? errorPadding;
   final double? horizontalPadding;
+  final TextStyle errorTextStyle;
+  final double disabledOpacity;
+  final Duration animationDuration;
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
@@ -39,14 +41,18 @@ class TFormField<T> extends StatelessWidget {
     builder: (context, listenableChild) {
       return StatelessTFormField(
         horizontalPadding: horizontalPadding,
-        label: iconLabelDto,
+        label: label,
         description: description,
+        descriptionStyle: descriptionStyle,
         labelTrailing: labelTrailing,
         errorPadding: errorPadding,
         errorText: formFieldConfig.errorText,
         shouldValidate: formFieldConfig.shouldValidate,
         isEnabled: formFieldConfig.isEnabled,
         isReadOnly: formFieldConfig.isReadOnly,
+        errorTextStyle: errorTextStyle,
+        disabledOpacity: disabledOpacity,
+        animationDuration: animationDuration,
         formFieldContent: TFormFieldBuilder(
           fieldConfig: formFieldConfig,
           builder: builder,
@@ -62,6 +68,7 @@ class StatelessTFormField extends StatelessWidget {
     super.key,
     this.label,
     this.description,
+    this.descriptionStyle,
     this.labelTrailing,
     this.errorPadding,
     this.errorText,
@@ -69,11 +76,15 @@ class StatelessTFormField extends StatelessWidget {
     required this.isEnabled,
     required this.isReadOnly,
     required this.formFieldContent,
+    required this.errorTextStyle,
     this.horizontalPadding,
+    this.disabledOpacity = TurboFormsDefaults.defaultDisabledOpacity,
+    this.animationDuration = TurboFormsDefaults.animationDuration,
   });
 
-  final IconLabelDto? label;
+  final Widget? label;
   final String? description;
+  final TextStyle? descriptionStyle;
   final Widget? labelTrailing;
   final EdgeInsets? errorPadding;
   final String? errorText;
@@ -82,15 +93,17 @@ class StatelessTFormField extends StatelessWidget {
   final bool isReadOnly;
   final Widget formFieldContent;
   final double? horizontalPadding;
+  final TextStyle errorTextStyle;
+  final double disabledOpacity;
+  final Duration animationDuration;
 
   @override
   Widget build(BuildContext context) {
-    final formFieldSubLabelStyle = context.texts.muted;
     final subLabel = description;
 
     return AnimatedOpacity(
-      duration: TDurations.animation,
-      opacity: isEnabled ? 1 : TSizes.opacityDisabled,
+      duration: animationDuration,
+      opacity: isEnabled ? 1 : disabledOpacity,
       child: IgnorePointer(
         ignoring: !isEnabled || isReadOnly,
         child: Column(
@@ -100,35 +113,30 @@ class StatelessTFormField extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (horizontalPadding != null) TGap(horizontalPadding!),
+                  if (horizontalPadding != null) SizedBox(width: horizontalPadding),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (label != null)
-                          TIconLabel.forFormField(
-                            icon: label!.icon,
-                            context: context,
-                            text: label!.label,
-                          ),
+                        if (label != null) label!,
                         if (subLabel == null)
-                          const Gap(4)
+                          const SizedBox(height: 4)
                         else ...[
-                          if (label != null) const Gap(4),
-                          Text(subLabel, style: formFieldSubLabelStyle),
+                          if (label != null) const SizedBox(height: 4),
+                          Text(subLabel, style: descriptionStyle),
                         ],
                       ],
                     ),
                   ),
                   if (labelTrailing != null) ...[
-                    if (label != null || subLabel != null) const Gap(8),
+                    if (label != null || subLabel != null) const SizedBox(width: 8),
                     labelTrailing!,
-                    const Gap(8),
+                    const SizedBox(width: 8),
                   ],
-                  if (horizontalPadding != null) TGap(horizontalPadding!),
+                  if (horizontalPadding != null) SizedBox(width: horizontalPadding),
                 ],
               ),
-              const Gap(6),
+              const SizedBox(height: 6),
             ],
             MouseRegion(
               cursor: SystemMouseCursors.text,
@@ -137,6 +145,7 @@ class StatelessTFormField extends StatelessWidget {
             TErrorLabel(
               errorText: errorText,
               shouldValidate: shouldValidate,
+              errorTextStyle: errorTextStyle,
               padding: errorPadding,
             ),
           ],

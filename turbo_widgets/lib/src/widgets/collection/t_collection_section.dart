@@ -228,12 +228,13 @@ class _TCollectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      separatorBuilder: (_, __) => SizedBox(height: spacing),
-      itemBuilder: (context, index) => items[index],
+    return Column(
+      children: [
+        for (int index = 0; index < items.length; index++) ...[
+          if (index > 0) SizedBox(height: spacing),
+          items[index],
+        ],
+      ],
     );
   }
 }

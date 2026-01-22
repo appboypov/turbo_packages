@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/num_extension.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
-import 'package:turbo_flutter_template/core/ux/enums/t_field_type.dart';
-import 'package:turbo_flutter_template/core/ux/typedefs/values_validator_def.dart';
+import 'package:turbo_forms/src/enums/t_field_type.dart';
+import 'package:turbo_forms/src/extensions/turbo_form_field_extensions.dart';
+import 'package:turbo_forms/src/typedefs/values_validator_def.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -70,16 +68,16 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
            sliderController:
                sliderController ??
                (fieldType.hasSliderController
-                   ? ShadSliderController(initialValue: initialValue?.asType() ?? 0)
+                   ? ShadSliderController(initialValue: initialValue?.tAsType() ?? 0)
                    : null),
            timePickerController:
                timePickerController ??
                (fieldType.hasTimePickerController
                    ? ShadTimePickerController(
-                       hour: initialValue?.asType<ShadTimeOfDay>().hour ?? 0,
-                       minute: initialValue?.asType<ShadTimeOfDay>().minute ?? 0,
-                       period: initialValue?.asType<ShadTimeOfDay>().period,
-                       second: initialValue?.asType<ShadTimeOfDay>().second ?? 0,
+                       hour: initialValue?.tAsType<ShadTimeOfDay>().hour ?? 0,
+                       minute: initialValue?.tAsType<ShadTimeOfDay>().minute ?? 0,
+                       period: initialValue?.tAsType<ShadTimeOfDay>().period,
+                       second: initialValue?.tAsType<ShadTimeOfDay>().second ?? 0,
                      )
                    : null),
            selectController:
@@ -92,10 +90,6 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
          ),
        );
 
-  // 📍 LOCATOR ------------------------------------------------------------------------------- \\
-  // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
-  // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
-
   @override
   void dispose() {
     log.info('Disposing $fieldType with id: ${value.id}..');
@@ -105,12 +99,6 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     super.dispose();
     log.info('Disposed $fieldType with id: ${value.id}!');
   }
-
-  // 👂 LISTENERS ----------------------------------------------------------------------------- \\
-  // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
-  // 🎩 STATE --------------------------------------------------------------------------------- \\
-  // 🛠 UTIL ---------------------------------------------------------------------------------- \\
-  // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   List<String> get currentSuggestions => value.currentSuggestions;
 
@@ -205,7 +193,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
   double? get valueAsDouble {
     final localValue = cValue;
     if (localValue is String?) {
-      return localValue?.tryAsDouble;
+      return localValue?.tTryAsDouble;
     }
     return null;
   }
@@ -213,12 +201,10 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
   int? get valueAsInt {
     final localValue = cValue;
     if (localValue is String?) {
-      return localValue?.tryAsInt;
+      return localValue?.tTryAsInt;
     }
     return null;
   }
-
-  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
   void _updateTextEditingController(String rTextValue) {
     final trimmed = rTextValue.trim();
@@ -226,7 +212,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     final isNumber = tryParse != null;
     final String pValue;
     if (isNumber) {
-      final bool hasDecimals = tryParse.hasDecimals;
+      final bool hasDecimals = tryParse.tHasDecimals;
       pValue = hasDecimals ? trimmed : tryParse.toInt().toString();
     } else {
       pValue = trimmed;
@@ -262,8 +248,6 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     update(value.copyWith(shouldValidate: false, errorText: null));
   }
 
-  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
-
   void updateValues(List<T>? newValues) {
     update(value.copyWith(values: newValues));
     _tryValidate();
@@ -289,7 +273,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     }
     updateCurrent((cValue) {
       final currentSuggestions =
-          autoCompleteValues?.where((element) => element.naked.contains(value.naked)).toList() ??
+          autoCompleteValues?.where((element) => element.tNaked.contains(value.tNaked)).toList() ??
           [];
       return cValue.copyWith(currentSuggestions: currentSuggestions);
     });
