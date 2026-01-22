@@ -42,4 +42,9 @@ class HomeRouter extends BaseNavigation {
     route: TRoute.settings,
     extra: const [],
   );
+
+  void goStylingView() => go(
+    route: TRoute.styling,
+    extra: const [],
+  );
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:turbo_widgets/src/abstracts/t_contextual_buttons_service_interface.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
@@ -11,8 +12,7 @@ import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 /// control and implements [ValueListenable] for reactive state management.
 ///
 /// The singleton instance can be reset for testing via [resetInstance].
-class TContextualButtonsService
-    extends TContextualButtonsServiceInterface {
+class TContextualButtonsService extends TContextualButtonsServiceInterface {
   TContextualButtonsService([TContextualButtonsConfig? initialValue])
       : _value = initialValue ?? const TContextualButtonsConfig();
 
@@ -39,6 +39,7 @@ class TContextualButtonsService
 
   TContextualButtonsConfig _value;
   bool _isDisposed = false;
+  bool _pendingNotify = false;
 
   @override
   TContextualButtonsConfig get value => _value;
@@ -52,7 +53,7 @@ class TContextualButtonsService
     if (_value == config) return;
     _value = config;
     if (doNotifyListeners) {
-      notifyListeners();
+      _notifyListenersSafely();
     }
   }
 
@@ -157,6 +158,25 @@ class TContextualButtonsService
   @override
   void dispose() {
     _isDisposed = true;
+    _pendingNotify = false;
     super.dispose();
+  }
+
+  void _notifyListenersSafely() {
+    if (_isDisposed) return;
+    final phase = SchedulerBinding.instance.schedulerPhase;
+    final isBuilding =
+        phase == SchedulerPhase.persistentCallbacks || phase == SchedulerPhase.midFrameMicrotasks;
+    if (!isBuilding) {
+      notifyListeners();
+      return;
+    }
+    if (_pendingNotify) return;
+    _pendingNotify = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (_isDisposed) return;
+      _pendingNotify = false;
+      notifyListeners();
+    });
   }
 }

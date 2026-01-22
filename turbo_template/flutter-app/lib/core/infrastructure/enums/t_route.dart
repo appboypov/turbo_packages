@@ -9,12 +9,14 @@ import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/settings/settings_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/styling/styling_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
 
 enum TRoute {
   shell,
   home,
+  styling,
   playground,
   settings,
   oops;
@@ -23,6 +25,7 @@ enum TRoute {
     TRoute.shell => false,
     TRoute.home => true,
     TRoute.oops => true,
+    TRoute.styling => false,
     TRoute.playground => false,
     TRoute.settings => false,
   };
@@ -35,6 +38,8 @@ enum TRoute {
         return 'welcome-to-your';
       case TRoute.home:
         return 'home';
+      case TRoute.styling:
+        return 'styling';
       case TRoute.playground:
         return 'playground';
       case TRoute.settings:
@@ -54,7 +59,10 @@ enum TRoute {
         return [
           playground.route,
           settings.route,
+          styling.route,
         ];
+      case TRoute.styling:
+        return [];
       case TRoute.playground:
         return [];
       case TRoute.settings:
@@ -99,6 +107,12 @@ enum TRoute {
           pageBuilder: pageBuilder(),
           routes: routes,
         );
+      case TRoute.styling:
+        return GoRoute(
+          path: routerPath,
+          pageBuilder: pageBuilder(),
+          routes: routes,
+        );
       case TRoute.settings:
         return GoRoute(
           path: routerPath,
@@ -123,6 +137,8 @@ enum TRoute {
         return (context, state) => const HomeView().asPage();
       case TRoute.playground:
         return (context, state) => const PlaygroundView().asPage();
+      case TRoute.styling:
+        return (context, state) => const StylingView().asPage();
       case TRoute.settings:
         return (context, state) => const SettingsView().asPage();
       case TRoute.oops:
