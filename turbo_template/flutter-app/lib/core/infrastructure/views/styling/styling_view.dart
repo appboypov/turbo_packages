@@ -44,6 +44,66 @@ const String _categoryHeaderTitle = 'Browse categories';
 const String _categoryHeaderDescription =
     'Explore curated categories with cards and sections that scale from small lists to rich grids.';
 
+const String _collectionHeaderTitle = 'Browse collection items';
+const String _collectionHeaderDescription =
+    'Explore items within a collection using bento, list, or grid layouts.';
+
+const List<String> _collectionTitles = [
+  'Design system audit',
+  'Launch checklist',
+  'Marketing brief',
+  'Engineering roadmap',
+  'Research summary',
+  'Hiring pipeline',
+  'Sales enablement',
+  'Product spec',
+];
+
+const List<String> _collectionSubtitles = [
+  'Updated 2 days ago',
+  'Updated 5 hours ago',
+  'Updated 1 week ago',
+  'Updated yesterday',
+  'Updated 3 days ago',
+  'Updated today',
+  'Updated 4 days ago',
+  'Updated 2 weeks ago',
+];
+
+const List<String> _collectionMeta = [
+  '12 items',
+  '8 items',
+  '24 items',
+  '16 items',
+  '5 items',
+  '14 items',
+  '9 items',
+  '11 items',
+];
+
+const List<double> _collectionSizes = [
+  4,
+  2,
+  2,
+  3,
+  1,
+  2,
+  3,
+  1,
+];
+
+const List<String> _collectionSortOptions = [
+  'Recently updated',
+  'Alphabetical',
+  'Most items',
+];
+
+const List<String> _collectionFilterOptions = [
+  'All',
+  'Favorites',
+  'Archived',
+];
+
 class StylingView extends StatelessWidget {
   const StylingView({super.key});
 
@@ -111,6 +171,8 @@ class StylingView extends StatelessWidget {
                         onPressed: () {},
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    const _TCollectionWidgetsShowcase(),
                   ],
                 ),
               ),
@@ -119,4 +181,102 @@ class StylingView extends StatelessWidget {
         },
         viewModelBuilder: () => StylingViewModel.locate,
       );
+}
+
+class _TCollectionWidgetsShowcase extends StatefulWidget {
+  const _TCollectionWidgetsShowcase();
+
+  @override
+  State<_TCollectionWidgetsShowcase> createState() =>
+      _TCollectionWidgetsShowcaseState();
+}
+
+class _TCollectionWidgetsShowcaseState
+    extends State<_TCollectionWidgetsShowcase> {
+  String _searchQuery = '';
+  String _sortValue = _collectionSortOptions.first;
+  String _filterValue = _collectionFilterOptions.first;
+  TCollectionSectionLayout _layout = TCollectionSectionLayout.bento;
+
+  ImageProvider? _backgroundForIndex(int index) {
+    if (index.isEven) {
+      return _categoryImages[index % _categoryImages.length];
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TCollectionHeader(
+          title: _collectionHeaderTitle,
+          description: _collectionHeaderDescription,
+          backgroundImage: _categoryImages.last,
+        ),
+        const SizedBox(height: 16),
+        TCollectionToolbar(
+          searchQuery: _searchQuery,
+          onSearchChanged: (value) => setState(() => _searchQuery = value),
+          sortLabel: 'Sort',
+          sortOptions: _collectionSortOptions,
+          sortValue: _sortValue,
+          onSortSelected: (value) => setState(() => _sortValue = value),
+          filterLabel: 'Filter',
+          filterOptions: _collectionFilterOptions,
+          filterValue: _filterValue,
+          onFilterSelected: (value) => setState(() => _filterValue = value),
+          layout: _layout,
+          onLayoutChanged: (value) => setState(() => _layout = value),
+        ),
+        const SizedBox(height: 16),
+        TCollectionSection(
+          title: 'Collection items',
+          caption: 'Layout adapts to bento, list, or grid display',
+          layout: _layout,
+          itemCount: _collectionTitles.length,
+          itemSizeBuilder: (index) => _collectionSizes[index],
+          bentoHeight: 360,
+          gridCrossAxisCount: 2,
+          gridChildAspectRatio: 1.6,
+          itemBuilder: (context, index) {
+            final title = _collectionTitles[index];
+            final subtitle = _collectionSubtitles[index];
+            final meta = _collectionMeta[index];
+            final thumbnail = _backgroundForIndex(index);
+
+            if (_layout == TCollectionSectionLayout.list) {
+              return TCollectionListItem(
+                title: title,
+                subtitle: subtitle,
+                meta: meta,
+                leading: thumbnail == null
+                    ? null
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image(
+                          image: thumbnail,
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                trailing: const Icon(Icons.chevron_right_rounded, size: 20),
+                onPressed: () {},
+              );
+            }
+
+            return TCollectionCard(
+              title: title,
+              subtitle: subtitle,
+              meta: meta,
+              thumbnail: thumbnail,
+              onPressed: () {},
+            );
+          },
+        ),
+      ],
+    );
+  }
 }
