@@ -42,6 +42,7 @@ abstract class BaseNavigation with Turbolytics {
       branchIndex,
       initialLocation: switch (cNavigationTab) {
         NavigationTab.home => initialLocation.isHome,
+        NavigationTab.styling => false,
       },
     );
   }

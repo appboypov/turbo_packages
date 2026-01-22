@@ -93,6 +93,19 @@ class StylingView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 ValueListenableBuilder<bool>(
+                  valueListenable: model.isFeatureCardsShowcaseExpanded,
+                  builder: (context, isExpanded, _) {
+                    return TCollapsibleSection(
+                      title: 'Feature Cards',
+                      subtitle: 'Compact cards for feature highlights',
+                      isExpanded: isExpanded,
+                      onToggle: model.toggleFeatureCardsShowcase,
+                      child: const _TFeatureCardShowcase(),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+                ValueListenableBuilder<bool>(
                   valueListenable: model.isContextualButtonsShowcaseExpanded,
                   builder: (context, isExpanded, _) {
                     return TCollapsibleSection(
@@ -105,17 +118,17 @@ class StylingView extends StatelessWidget {
                         children: [
                           _TContextualButtonsShowcase(
                             title: 'Basic - All Positions',
-                            config: TContextualButtonsConfig(
-                              top: const TContextualButtonsSlotConfig(
+                            config: const TContextualButtonsConfig(
+                              top: TContextualButtonsSlotConfig(
                                 primary: [_ShowcaseBar(label: 'Top')],
                               ),
-                              bottom: const TContextualButtonsSlotConfig(
+                              bottom: TContextualButtonsSlotConfig(
                                 primary: [_ShowcaseBar(label: 'Bottom')],
                               ),
-                              left: const TContextualButtonsSlotConfig(
+                              left: TContextualButtonsSlotConfig(
                                 primary: [_ShowcaseBar(label: 'Left')],
                               ),
-                              right: const TContextualButtonsSlotConfig(
+                              right: TContextualButtonsSlotConfig(
                                 primary: [_ShowcaseBar(label: 'Right')],
                               ),
                             ),
@@ -123,9 +136,9 @@ class StylingView extends StatelessWidget {
                           const SizedBox(height: 16),
                           _TContextualButtonsShowcase(
                             title: 'Position Filter - Bottom Only',
-                            config: TContextualButtonsConfig(
+                            config: const TContextualButtonsConfig(
                               allowFilter: TContextualAllowFilter.bottom,
-                              top: const TContextualButtonsSlotConfig(
+                              top: TContextualButtonsSlotConfig(
                                 primary: [
                                   _ShowcaseBar(label: 'Filtered to Bottom')
                                 ],
@@ -135,12 +148,12 @@ class StylingView extends StatelessWidget {
                           const SizedBox(height: 16),
                           _TContextualButtonsShowcase(
                             title: 'Multiple Variations',
-                            config: TContextualButtonsConfig(
-                              activeVariations: const {
+                            config: const TContextualButtonsConfig(
+                              activeVariations: {
                                 TContextualVariation.primary,
                                 TContextualVariation.secondary,
                               },
-                              bottom: const TContextualButtonsSlotConfig(
+                              bottom: TContextualButtonsSlotConfig(
                                 primary: [_ShowcaseBar(label: 'Primary')],
                                 secondary: [_ShowcaseBar(label: 'Secondary')],
                               ),
@@ -161,9 +174,9 @@ class StylingView extends StatelessWidget {
                           'TBottomNavigation, TTopNavigation, TSideNavigation with TContextualButtons',
                       isExpanded: isExpanded,
                       onToggle: model.toggleNavigationShowcase,
-                      child: Column(
+                      child: const Column(
                         children: [
-                          Text('Todo')
+                          Text('Todo'),
                         ],
                       ),
                     );
@@ -179,13 +192,13 @@ class StylingView extends StatelessWidget {
                           'Convenience wrapper combining TContextualButtons and TBaseViewModelBuilder',
                       isExpanded: isExpanded,
                       onToggle: model.toggleViewBuilderShowcase,
-                      child: Column(
+                      child: const Column(
                         children: [
                           _TViewBuilderShowcase(
                             title: 'With Custom Service',
                             useCustomService: true,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           _TViewBuilderShowcase(
                             title: 'With Default Singleton',
                             useCustomService: false,
@@ -308,6 +321,73 @@ class _TContextualButtonsShowcase extends StatelessWidget {
   }
 }
 
+class _FeatureCardData {
+  const _FeatureCardData({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.accent,
+  });
+
+  final String title;
+  final String description;
+  final IconData icon;
+  final String accent;
+}
+
+const List<_FeatureCardData> _featureCardData = [
+  _FeatureCardData(
+    title: 'AI Assistant',
+    description: 'Automate tasks and summarize key insights in seconds.',
+    icon: LucideIcons.bot,
+    accent: 'primary',
+  ),
+  _FeatureCardData(
+    title: 'Cloud Storage',
+    description: 'Secure file storage with instant sharing controls.',
+    icon: LucideIcons.cloud,
+    accent: 'secondary',
+  ),
+  _FeatureCardData(
+    title: 'Security Suite',
+    description: 'Real-time monitoring with smart alerts and reports.',
+    icon: LucideIcons.shieldCheck,
+    accent: 'foreground',
+  ),
+  _FeatureCardData(
+    title: 'Analytics',
+    description: 'Track performance trends across teams and projects.',
+    icon: LucideIcons.layoutDashboard,
+    accent: 'muted',
+  ),
+];
+
+class _TFeatureCardShowcase extends StatelessWidget {
+  const _TFeatureCardShowcase();
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      children: _featureCardData
+          .map(
+            (item) => SizedBox(
+              width: 220,
+              height: 190,
+              child: TFeatureCard(
+                title: item.title,
+                description: item.description,
+                icon: item.icon,
+                accent: item.accent,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
 class _ShowcaseBar extends StatelessWidget {
   const _ShowcaseBar({required this.label});
 
@@ -375,8 +455,8 @@ class _TViewBuilderShowcase extends StatelessWidget {
             child: TViewBuilder<_ExampleViewModel>(
               contextualButtonsService: useCustomService
                   ? TContextualButtonsService(
-                      TContextualButtonsConfig(
-                        bottom: const TContextualButtonsSlotConfig(
+                      const TContextualButtonsConfig(
+                        bottom: TContextualButtonsSlotConfig(
                           primary: [_ShowcaseBar(label: 'Custom Service')],
                         ),
                       ),

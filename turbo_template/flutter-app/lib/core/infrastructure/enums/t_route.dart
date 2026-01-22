@@ -25,7 +25,7 @@ enum TRoute {
     TRoute.shell => false,
     TRoute.home => true,
     TRoute.oops => true,
-    TRoute.styling => false,
+    TRoute.styling => true,
     TRoute.playground => false,
     TRoute.settings => false,
   };
@@ -54,12 +54,12 @@ enum TRoute {
       case TRoute.shell:
         return [
           home.route,
+          styling.route,
         ];
       case TRoute.home:
         return [
           playground.route,
           settings.route,
-          styling.route,
         ];
       case TRoute.styling:
         return [];
@@ -88,6 +88,13 @@ enum TRoute {
               restorationScopeId: TRoute.home.routerPath,
               navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.home.routerPath),
             ),
+            StatefulShellBranch(
+              routes: [
+                styling.route,
+              ],
+              restorationScopeId: TRoute.styling.routerPath,
+              navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.styling.routerPath),
+            ),
           ],
         );
       case TRoute.home:
@@ -110,6 +117,11 @@ enum TRoute {
       case TRoute.styling:
         return GoRoute(
           path: routerPath,
+          redirect: (context, state) => _onAuthAccess(
+            context: context,
+            state: state,
+            navigationTab: TRouter.styling.navigationTab,
+          ),
           pageBuilder: pageBuilder(),
           routes: routes,
         );

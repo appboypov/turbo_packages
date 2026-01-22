@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -39,6 +37,8 @@ class NavigationTabService with Turbolytics {
     switch (initialTab) {
       case NavigationTab.home:
         return TRoute.home.routerPath;
+      case NavigationTab.styling:
+        return TRoute.styling.routerPath;
     }
   }
 

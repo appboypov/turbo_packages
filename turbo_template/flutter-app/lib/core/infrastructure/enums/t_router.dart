@@ -4,12 +4,15 @@ import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 
 enum TRouter {
   core,
-  home;
+  home,
+  styling;
 
   NavigationTab? get navigationTab {
     switch (this) {
       case TRouter.home:
         return NavigationTab.home;
+      case TRouter.styling:
+        return NavigationTab.styling;
       case TRouter.core:
         return null;
     }
@@ -17,6 +20,7 @@ enum TRouter {
 
   String get root => switch (this) {
     TRouter.home => TRoute.home.routerPath,
+    TRouter.styling => TRoute.styling.routerPath,
     TRouter.core => '',
   };
 
@@ -26,5 +30,6 @@ enum TRouter {
       TRoute.oops.route,
     ],
     TRouter.home => TRoute.home.routes,
+    TRouter.styling => TRoute.styling.routes,
   };
 }

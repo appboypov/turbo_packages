@@ -1,7 +1,6 @@
 library turbo_widgets;
 
-export 'package:device_frame_plus/device_frame_plus.dart'
-    show DeviceInfo, Devices;
+export 'package:device_frame_plus/device_frame_plus.dart' show DeviceInfo, Devices;
 
 export 'src/abstracts/t_contextual_buttons_service_interface.dart';
 export 'src/constants/turbo_widgets_defaults.dart';
@@ -39,6 +38,7 @@ export 'src/widgets/navigation/t_contextual_side_navigation.dart';
 export 'src/widgets/category/t_category_card.dart';
 export 'src/widgets/category/t_category_header.dart';
 export 'src/widgets/category/t_category_section.dart';
+export 'src/widgets/cards/t_feature_card.dart';
 export 'src/widgets/t_collapsible_section.dart';
 export 'src/widgets/t_contextual_buttons.dart';
 export 'src/widgets/t_markdown_file_item.dart';

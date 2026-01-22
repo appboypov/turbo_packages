@@ -69,55 +69,51 @@ class StylingView extends StatelessWidget {
                 onBackPressed: ({required BuildContext context}) =>
                     Navigator.of(context).pop(),
               ),
-              children: [
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TCategoryHeader(
-                          title: _categoryHeaderTitle,
-                          description: _categoryHeaderDescription,
-                          backgroundImage: _categoryImages.first,
-                        ),
-                        const SizedBox(height: 16),
-                        TCategorySection(
-                          title: 'Featured categories',
-                          caption: 'Horizontal list with show-all expansion',
-                          itemCount: _categoryTitles.length,
-                          maxItems: 6,
-                          maxLines: 2,
-                          itemBuilder: (context, index) => SizedBox(
-                            width: 200,
-                            child: TCategoryCard(
-                              title: _categoryTitles[index],
-                              icon: _categoryIcons[index % _categoryIcons.length],
-                              backgroundImage: _backgroundForIndex(index),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        TCategorySection(
-                          title: 'All categories',
-                          caption: 'Grid layout for larger lists',
-                          layout: TCategorySectionLayout.grid,
-                          gridCrossAxisCount: 2,
-                          gridChildAspectRatio: 1.6,
-                          itemCount: _categoryTitles.length,
-                          itemBuilder: (context, index) => TCategoryCard(
-                            title: _categoryTitles[index],
-                            icon: _categoryIcons[index % _categoryIcons.length],
-                            backgroundImage: _backgroundForIndex(index),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TCategoryHeader(
+                      title: _categoryHeaderTitle,
+                      description: _categoryHeaderDescription,
+                      backgroundImage: _categoryImages.first,
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    TCategorySection(
+                      title: 'Featured categories',
+                      caption: 'Horizontal list with show-all expansion',
+                      itemCount: _categoryTitles.length,
+                      maxItems: 6,
+                      maxLines: 2,
+                      itemBuilder: (context, index) => SizedBox(
+                        width: 200,
+                        child: TCategoryCard(
+                          title: _categoryTitles[index],
+                          icon: _categoryIcons[index % _categoryIcons.length],
+                          backgroundImage: _backgroundForIndex(index),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TCategorySection(
+                      title: 'All categories',
+                      caption: 'Grid layout for larger lists',
+                      layout: TCategorySectionLayout.grid,
+                      gridCrossAxisCount: 2,
+                      gridChildAspectRatio: 1.6,
+                      itemCount: _categoryTitles.length,
+                      itemBuilder: (context, index) => TCategoryCard(
+                        title: _categoryTitles[index],
+                        icon: _categoryIcons[index % _categoryIcons.length],
+                        backgroundImage: _backgroundForIndex(index),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         },

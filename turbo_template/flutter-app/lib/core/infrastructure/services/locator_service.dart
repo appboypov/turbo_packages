@@ -12,6 +12,7 @@ import 'package:turbo_flutter_template/core/auth/views/auth/auth_view_model.dart
 import 'package:turbo_flutter_template/core/connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/routers/core_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.dart';
+import 'package:turbo_flutter_template/core/infrastructure/routers/styling_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/version_comparator_service.dart';
@@ -62,6 +63,7 @@ class LocatorService with Turbolytics {
   void _registerRouters() {
     BaseRouterService.registerLazySingleton();
     HomeRouter.registerFactory();
+    StylingRouter.registerFactory();
     CoreRouter.registerFactory();
   }
 

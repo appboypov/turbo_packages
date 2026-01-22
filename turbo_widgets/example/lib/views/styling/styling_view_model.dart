@@ -5,6 +5,7 @@ class StylingViewModel extends TBaseViewModel<Object?> {
   final TNotifier<bool> _isPlaygroundExpanded = TNotifier(true);
   final TNotifier<bool> _isContextualButtonsShowcaseExpanded = TNotifier(true);
   final TNotifier<bool> _isCategoryWidgetsShowcaseExpanded = TNotifier(true);
+  final TNotifier<bool> _isFeatureCardsShowcaseExpanded = TNotifier(true);
   final TNotifier<bool> _isNavigationShowcaseExpanded = TNotifier(true);
   final TNotifier<bool> _isViewBuilderShowcaseExpanded = TNotifier(true);
 
@@ -13,6 +14,8 @@ class StylingViewModel extends TBaseViewModel<Object?> {
       _isContextualButtonsShowcaseExpanded;
   TNotifier<bool> get isCategoryWidgetsShowcaseExpanded =>
       _isCategoryWidgetsShowcaseExpanded;
+  TNotifier<bool> get isFeatureCardsShowcaseExpanded =>
+      _isFeatureCardsShowcaseExpanded;
   TNotifier<bool> get isNavigationShowcaseExpanded =>
       _isNavigationShowcaseExpanded;
   TNotifier<bool> get isViewBuilderShowcaseExpanded =>
@@ -23,6 +26,7 @@ class StylingViewModel extends TBaseViewModel<Object?> {
     _isPlaygroundExpanded.dispose();
     _isContextualButtonsShowcaseExpanded.dispose();
     _isCategoryWidgetsShowcaseExpanded.dispose();
+    _isFeatureCardsShowcaseExpanded.dispose();
     _isNavigationShowcaseExpanded.dispose();
     _isViewBuilderShowcaseExpanded.dispose();
     super.dispose();
@@ -38,6 +42,10 @@ class StylingViewModel extends TBaseViewModel<Object?> {
 
   void toggleCategoryWidgetsShowcase() {
     _isCategoryWidgetsShowcaseExpanded.updateCurrent((current) => !current);
+  }
+
+  void toggleFeatureCardsShowcase() {
+    _isFeatureCardsShowcaseExpanded.updateCurrent((current) => !current);
   }
 
   void toggleNavigationShowcase() {
