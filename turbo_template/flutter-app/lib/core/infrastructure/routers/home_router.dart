@@ -2,13 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/abstracts/base_navigation.dart';
-import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
-import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
-import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 
 class HomeRouter extends BaseNavigation {
   HomeRouter({required super.router});
@@ -40,6 +35,11 @@ class HomeRouter extends BaseNavigation {
 
   void goPlaygroundView() => push(
     route: TRoute.playground,
+    extra: const [],
+  );
+
+  void goSettingsView() => push(
+    route: TRoute.settings,
     extra: const [],
   );
 }

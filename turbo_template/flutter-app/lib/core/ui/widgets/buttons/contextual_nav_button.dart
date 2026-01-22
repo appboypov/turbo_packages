@@ -22,6 +22,7 @@ class ContextualNavButton extends StatelessWidget {
       tooltip: config.tooltip,
       child: ShadIconButton.outline(
         icon: Icon(config.icon),
+        onPressed: config.onPressed,
       ),
     ),
   );

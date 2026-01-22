@@ -14,45 +14,63 @@ class ShellView extends StatelessWidget {
   const ShellView({
     super.key,
     required this.statefulNavigationShell,
+    this.contextualPositionOverrides = const {},
   });
 
   final StatefulNavigationShell statefulNavigationShell;
+  final Map<TContextualPosition, TContextualPosition> contextualPositionOverrides;
 
   @override
   Widget build(BuildContext context) => TResponsiveBuilder(
-    builder: (context, child, constraints, tools, data) => TViewBuilder<ShellViewModel>(
-      argumentBuilder: () => statefulNavigationShell,
-      contextualButtonsService: ContextualButtonsService.locate,
-      builder: (context, model, isInitialised, child) {
-        if (!isInitialised) {
-          return const TScaffold(
-            child: TWidgets.nothing,
-            showBackgroundPattern: true,
-          );
-        }
-        return Unfocusable(
-          child: ValueListenableBuilder(
-            valueListenable: model.hasAuth,
-            builder: (context, value, child) => Scaffold(
-              key: ValueKey(value),
-              body: ShadSonner(
-                child: ValueListenableBuilder(
-                  valueListenable: model.hasAuth,
-                  builder: (context, value, child) =>
-                      value ? statefulNavigationShell : const AuthView(),
-                  child: statefulNavigationShell,
+    builder: (context, child, constraints, tools, data) {
+      final contextualButtonsService = ContextualButtonsService.locate;
+      final deviceOverrides = data.deviceType.isMobile
+          ? const <TContextualPosition, TContextualPosition>{}
+          : const {
+              TContextualPosition.top: TContextualPosition.left,
+            };
+      contextualButtonsService.setPresentation(
+        deviceType: data.deviceType,
+        positionOverrides: {
+          ...deviceOverrides,
+          ...contextualPositionOverrides,
+        },
+      );
+
+      return TViewBuilder<ShellViewModel>(
+        argumentBuilder: () => statefulNavigationShell,
+        contextualButtonsService: contextualButtonsService,
+        builder: (context, model, isInitialised, child) {
+          if (!isInitialised) {
+            return const TScaffold(
+              child: TWidgets.nothing,
+              showBackgroundPattern: true,
+            );
+          }
+          return Unfocusable(
+            child: ValueListenableBuilder(
+              valueListenable: model.hasAuth,
+              builder: (context, value, child) => Scaffold(
+                key: ValueKey(value),
+                body: ShadSonner(
+                  child: ValueListenableBuilder(
+                    valueListenable: model.hasAuth,
+                    builder: (context, value, child) =>
+                        value ? statefulNavigationShell : const AuthView(),
+                    child: statefulNavigationShell,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: TSizes.appPadding * 1.5,
+                    vertical: TSizes.appPadding * 0.75,
+                  ),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: TSizes.appPadding * 1.5,
-                  vertical: TSizes.appPadding * 0.75,
-                ),
+                backgroundColor: Colors.transparent,
               ),
-              backgroundColor: Colors.transparent,
             ),
-          ),
-        );
-      },
-      viewModelBuilder: () => ShellViewModel.locate,
-    ),
+          );
+        },
+        viewModelBuilder: () => ShellViewModel.locate,
+      );
+    },
   );
 }

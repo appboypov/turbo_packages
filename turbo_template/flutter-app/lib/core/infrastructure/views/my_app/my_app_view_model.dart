@@ -13,10 +13,12 @@ import 'package:turbo_flutter_template/core/auth/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/connection/services/connection_service.dart';
 import 'package:turbo_flutter_template/core/environment/config/emulator_config.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/locator_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/package_info_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
@@ -118,6 +120,13 @@ class MyAppViewModel extends TViewModel with Turbolytics {
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
+
+  @override
+  TRoute? get contextualButtonsRoute => null;
+
+  @override
+  List<ContextualButtonEntry> get contextualButtons => const [];
+
   // 🎩 STATE --------------------------------------------------------------------------------- \\
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\

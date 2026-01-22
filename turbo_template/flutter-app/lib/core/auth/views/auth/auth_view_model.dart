@@ -15,10 +15,12 @@ import 'package:turbo_flutter_template/core/auth/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/services/email_service.dart';
 import 'package:turbo_flutter_template/core/environment/enums/environment.dart';
 import 'package:turbo_flutter_template/core/environment/globals/g_env.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/l10n/globals/g_context.dart';
 import 'package:turbo_flutter_template/core/l10n/globals/g_strings.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/min_duration_completer.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
@@ -30,7 +32,6 @@ import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dar
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 import '../../../state/manage-state/extensions/completer_extension.dart';
@@ -78,6 +79,12 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     _resetPasswordTimer?.cancel();
     await super.dispose();
   }
+
+  @override
+  TRoute? get contextualButtonsRoute => null;
+
+  @override
+  List<ContextualButtonEntry> get contextualButtons => const [];
 
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\

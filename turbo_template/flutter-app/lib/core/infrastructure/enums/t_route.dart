@@ -7,6 +7,7 @@ import 'package:turbo_flutter_template/core/infrastructure/services/base_router_
 import 'package:turbo_flutter_template/core/infrastructure/services/navigation_tab_service.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/settings/settings_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view.dart';
@@ -15,6 +16,7 @@ enum TRoute {
   shell,
   home,
   playground,
+  settings,
   oops;
 
   bool get isRootPath => switch (this) {
@@ -22,6 +24,7 @@ enum TRoute {
     TRoute.home => true,
     TRoute.oops => true,
     TRoute.playground => false,
+    TRoute.settings => false,
   };
 
   String get routerPath => isRootPath ? rawPath.asRootPath : rawPath;
@@ -34,6 +37,8 @@ enum TRoute {
         return 'home';
       case TRoute.playground:
         return 'playground';
+      case TRoute.settings:
+        return 'settings';
       case TRoute.oops:
         return 'oops';
     }
@@ -48,8 +53,11 @@ enum TRoute {
       case TRoute.home:
         return [
           playground.route,
+          settings.route,
         ];
       case TRoute.playground:
+        return [];
+      case TRoute.settings:
         return [];
       case TRoute.oops:
         return [];
@@ -91,6 +99,12 @@ enum TRoute {
           pageBuilder: pageBuilder(),
           routes: routes,
         );
+      case TRoute.settings:
+        return GoRoute(
+          path: routerPath,
+          pageBuilder: pageBuilder(),
+          routes: routes,
+        );
       case TRoute.oops:
         return GoRoute(
           path: routerPath,
@@ -109,6 +123,8 @@ enum TRoute {
         return (context, state) => const HomeView().asPage();
       case TRoute.playground:
         return (context, state) => const PlaygroundView().asPage();
+      case TRoute.settings:
+        return (context, state) => const SettingsView().asPage();
       case TRoute.oops:
         return (context, state) => const OopsView().asPage();
     }

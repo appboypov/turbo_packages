@@ -18,6 +18,7 @@ import 'package:turbo_flutter_template/core/infrastructure/services/version_comp
 import 'package:turbo_flutter_template/core/infrastructure/views/home/home_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/my_app/my_app_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
+import 'package:turbo_flutter_template/core/infrastructure/views/settings/settings_view_model.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view_model.dart';
 import 'package:turbo_flutter_template/core/shared/views/oops/oops_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
@@ -99,6 +100,7 @@ class LocatorService with Turbolytics {
     MyAppViewModel.registerFactory();
     HomeViewModel.registerFactory();
     PlaygroundViewModel.registerFactory();
+    SettingsViewModel.registerFactory();
     OopsViewModel.registerFactory();
   }
 

@@ -9,7 +9,6 @@ import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_router.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/object_extension.dart';
-import 'package:turbo_flutter_template/core/shared/extensions/string_extension.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 part 'base_router_service.g.dart';
@@ -30,16 +29,11 @@ class BaseRouterService with Turbolytics {
 
   void onRouteChanged({String? location}) {
     try {
-      if (location != null) {
-        _trySendScreenAnalytic(route: location);
+      final resolvedRoute = location ?? _resolveCurrentRoute();
+      if (resolvedRoute == null) {
         return;
       }
-      final RouteMatch lastMatch = coreRouter.routerDelegate.currentConfiguration.last;
-      final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
-          ? lastMatch.matches
-          : coreRouter.routerDelegate.currentConfiguration;
-      final route = matchList.uri.toString();
-      _trySendScreenAnalytic(route: route);
+      _trySendScreenAnalytic(route: resolvedRoute);
     } catch (error, stackTrace) {
       log.error(
         'Unexpected ${error.runtimeType} caught while fetching location',
@@ -58,6 +52,7 @@ class BaseRouterService with Turbolytics {
 
   String _currentRoute = '';
   bool didInitialLocation = false;
+  final Set<void Function(String route)> _routeListeners = {};
 
   // 🛣️ ROUTERS ------------------------------------------------------------------------------- \\
 
@@ -84,10 +79,37 @@ class BaseRouterService with Turbolytics {
     if (_currentRoute != route) {
       analytics.service.screen(subject: route);
       _currentRoute = route;
+      _notifyRouteListeners(route);
     }
   }
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
+
+  void addRouteListener(void Function(String route) listener) {
+    _routeListeners.add(listener);
+  }
+
+  void removeRouteListener(void Function(String route) listener) {
+    _routeListeners.remove(listener);
+  }
+
+  String? _resolveCurrentRoute() {
+    final configuration = coreRouter.routerDelegate.currentConfiguration;
+    if (configuration.isEmpty) {
+      return null;
+    }
+    final RouteMatch lastMatch = configuration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : configuration;
+    return matchList.uri.toString();
+  }
+
+  void _notifyRouteListeners(String route) {
+    for (final listener in _routeListeners) {
+      listener(route);
+    }
+  }
 }
 
 @JsonSerializable(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
@@ -15,65 +16,59 @@ class PlaygroundView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<PlaygroundViewModel>(
-    builder: (context, model, isInitialised, child) {
-      if (!isInitialised) return TWidgets.nothing;
+        builder: (context, model, isInitialised, child) {
+          if (!isInitialised) return TWidgets.nothing;
 
-      return TScaffold(
-        child: TSliverBody(
-          isEmpty: false,
-          appBar: TSliverAppBar(
-            title: context.strings.playground,
-            emoji: Emoji.testTube,
-            onBackPressed: ({required BuildContext context}) => Navigator.of(context).pop(),
-          ),
-          children: [
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              sliver: SliverToBoxAdapter(
-                child: TPlayground<TPlaygroundParameterModel>(
-                  parametersBuilder: _buildBentoGridParameters,
-                  initialIsDarkMode: context.themeMode.isDark,
-                  childBuilder: (context, params) {
-                    return _BentoGridPlayground(params: params);
-                  },
-                ),
+          return TScaffold(
+            child: TSliverBody(
+              isEmpty: false,
+              appBar: TSliverAppBar(
+                title: context.strings.playground,
+                emoji: Emoji.testTube,
+                onBackPressed: ({required BuildContext context}) =>
+                    Navigator.of(context).pop(),
               ),
+              children: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverToBoxAdapter(
+                    child: TPlayground<TPlaygroundParameterModel>(
+                      parametersBuilder: _buildProportionalGridParameters,
+                      initialIsDarkMode: context.themeMode.isDark,
+                      childBuilder: (context, params) {
+                        return _ProportionalGridPlayground(params: params);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
+        viewModelBuilder: () => PlaygroundViewModel.locate,
       );
-    },
-    viewModelBuilder: () => PlaygroundViewModel.locate,
-  );
 }
 
-TPlaygroundParameterModel _buildBentoGridParameters() {
+TPlaygroundParameterModel _buildProportionalGridParameters() {
   return const TPlaygroundParameterModel(
     strings: {
       'item1_title': 'Analytics Dashboard',
-      'item1_description': 'Real-time insights and performance metrics for your business.',
+      'item1_description': 'Real-time insights and performance metrics.',
       'item2_title': 'Cloud Storage',
-      'item2_description': 'Secure and scalable file storage solution.',
+      'item2_description': 'Secure and scalable file storage.',
       'item3_title': 'AI Assistant',
-      'item3_description': 'Intelligent automation powered by machine learning.',
+      'item3_description': 'Intelligent automation.',
       'item4_title': 'Security Suite',
-      'item4_description': 'Enterprise-grade protection for your data.',
+      'item4_description': 'Enterprise-grade protection.',
     },
     doubles: {
-      'item1_size': 8.0,
-      'item2_size': 5.0,
-      'item3_size': 6.0,
-      'item4_size': 3.0,
+      'item1_size': 4.0,
+      'item2_size': 2.0,
+      'item3_size': 2.0,
+      'item4_size': 2.0,
       'spacing': 12.0,
     },
-    ints: {
-      'crossAxisCount': 2,
-    },
     selects: {
-      'variant': TSelectOption<String>(
-        value: 'masonry',
-        options: ['masonry', 'magazine', 'brutalist'],
-      ),
       'item1_icon': TSelectOption<String>(
         value: 'analytics',
         options: ['analytics', 'cloud', 'smart_toy', 'security', 'rocket', 'lightbulb'],
@@ -107,111 +102,62 @@ TPlaygroundParameterModel _buildBentoGridParameters() {
         options: ['primary', 'blue', 'green', 'orange', 'purple', 'red'],
       ),
     },
-    bools: {
-      'item1_hasImage': false,
-      'item2_hasImage': false,
-      'item3_hasImage': false,
-      'item4_hasImage': false,
-    },
   );
 }
 
-class _BentoGridPlayground extends StatelessWidget {
-  const _BentoGridPlayground({required this.params});
+class _ProportionalGridPlayground extends StatelessWidget {
+  const _ProportionalGridPlayground({required this.params});
 
   final TPlaygroundParameterModel params;
 
   @override
   Widget build(BuildContext context) {
-    final variant = _parseVariant(params.selects['variant']?.value ?? 'masonry');
     final spacing = params.doubles['spacing'] ?? 12.0;
-    final crossAxisCount = params.ints['crossAxisCount'] ?? 2;
 
-    final items = [
-      _buildItem(
-        context,
-        params,
-        index: 1,
-        titleKey: 'item1_title',
-        descKey: 'item1_description',
-        sizeKey: 'item1_size',
-        iconKey: 'item1_icon',
-        colorKey: 'item1_color',
-        hasImageKey: 'item1_hasImage',
+    return SizedBox(
+      height: 500,
+      child: TProportionalGrid(
+        spacing: spacing,
+        items: [
+          TProportionalItem(
+            size: params.doubles['item1_size'] ?? 4.0,
+            child: _ProportionalCard(
+              title: params.strings['item1_title'] ?? 'Item 1',
+              description: params.strings['item1_description'] ?? '',
+              icon: _parseIcon(params.selects['item1_icon']?.value ?? 'analytics'),
+              accentColor: _parseColor(context, params.selects['item1_color']?.value ?? 'primary'),
+            ),
+          ),
+          TProportionalItem(
+            size: params.doubles['item2_size'] ?? 2.0,
+            child: _ProportionalCard(
+              title: params.strings['item2_title'] ?? 'Item 2',
+              description: params.strings['item2_description'] ?? '',
+              icon: _parseIcon(params.selects['item2_icon']?.value ?? 'cloud'),
+              accentColor: _parseColor(context, params.selects['item2_color']?.value ?? 'blue'),
+            ),
+          ),
+          TProportionalItem(
+            size: params.doubles['item3_size'] ?? 2.0,
+            child: _ProportionalCard(
+              title: params.strings['item3_title'] ?? 'Item 3',
+              description: params.strings['item3_description'] ?? '',
+              icon: _parseIcon(params.selects['item3_icon']?.value ?? 'smart_toy'),
+              accentColor: _parseColor(context, params.selects['item3_color']?.value ?? 'purple'),
+            ),
+          ),
+          TProportionalItem(
+            size: params.doubles['item4_size'] ?? 2.0,
+            child: _ProportionalCard(
+              title: params.strings['item4_title'] ?? 'Item 4',
+              description: params.strings['item4_description'] ?? '',
+              icon: _parseIcon(params.selects['item4_icon']?.value ?? 'security'),
+              accentColor: _parseColor(context, params.selects['item4_color']?.value ?? 'green'),
+            ),
+          ),
+        ],
       ),
-      _buildItem(
-        context,
-        params,
-        index: 2,
-        titleKey: 'item2_title',
-        descKey: 'item2_description',
-        sizeKey: 'item2_size',
-        iconKey: 'item2_icon',
-        colorKey: 'item2_color',
-        hasImageKey: 'item2_hasImage',
-      ),
-      _buildItem(
-        context,
-        params,
-        index: 3,
-        titleKey: 'item3_title',
-        descKey: 'item3_description',
-        sizeKey: 'item3_size',
-        iconKey: 'item3_icon',
-        colorKey: 'item3_color',
-        hasImageKey: 'item3_hasImage',
-      ),
-      _buildItem(
-        context,
-        params,
-        index: 4,
-        titleKey: 'item4_title',
-        descKey: 'item4_description',
-        sizeKey: 'item4_size',
-        iconKey: 'item4_icon',
-        colorKey: 'item4_color',
-        hasImageKey: 'item4_hasImage',
-      ),
-    ];
-
-    return TBentoGrid(
-      items: items,
-      variant: variant,
-      spacing: spacing,
-      crossAxisCount: crossAxisCount,
     );
-  }
-
-  TBentoItem _buildItem(
-    BuildContext context,
-    TPlaygroundParameterModel params, {
-    required int index,
-    required String titleKey,
-    required String descKey,
-    required String sizeKey,
-    required String iconKey,
-    required String colorKey,
-    required String hasImageKey,
-  }) {
-    return TBentoItem(
-      title: params.strings[titleKey] ?? 'Item $index',
-      description: params.strings[descKey] ?? 'Description for item $index',
-      size: params.doubles[sizeKey] ?? 5.0,
-      icon: _parseIcon(params.selects[iconKey]?.value ?? 'analytics'),
-      accentColor: _parseColor(context, params.selects[colorKey]?.value ?? 'primary'),
-      backgroundImageUrl: (params.bools[hasImageKey] ?? false)
-          ? 'https://picsum.photos/seed/$index/400/300'
-          : null,
-    );
-  }
-
-  TBentoGridVariant _parseVariant(String value) {
-    return switch (value) {
-      'masonry' => TBentoGridVariant.masonry,
-      'magazine' => TBentoGridVariant.magazine,
-      'brutalist' => TBentoGridVariant.brutalist,
-      _ => TBentoGridVariant.masonry,
-    };
   }
 
   IconData _parseIcon(String value) {
@@ -237,5 +183,124 @@ class _BentoGridPlayground extends StatelessWidget {
       'red' => const Color(0xFFEF4444),
       _ => colors.primary,
     };
+  }
+}
+
+/// A simple card widget for the proportional grid demo.
+class _ProportionalCard extends StatelessWidget {
+  const _ProportionalCard({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.accentColor,
+  });
+
+  final String title;
+  final String description;
+  final IconData icon;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final colors = context.colors;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colors.border.withValues(alpha: 0.5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Stack(
+          children: [
+            // Accent gradient background
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.topRight,
+                    radius: 1.5,
+                    colors: [
+                      accentColor.withValues(alpha: 0.15),
+                      colors.card,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Icon badge
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: accentColor.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 22,
+                      color: accentColor,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // Title
+                  Text(
+                    title,
+                    style: theme.textTheme.large.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: colors.primaryText,
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  // Description
+                  Expanded(
+                    child: Text(
+                      description,
+                      style: theme.textTheme.muted.copyWith(
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                      maxLines: 10,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  // Size indicator bar
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

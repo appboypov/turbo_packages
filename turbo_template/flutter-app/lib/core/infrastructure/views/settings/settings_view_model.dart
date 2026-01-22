@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
-import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.dart';
+import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class ShellViewModel extends TViewModel with Turbolytics {
-  static ShellViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(() => ShellViewModel());
-
+class SettingsViewModel extends TViewModel with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
+
+  static SettingsViewModel get locate => GetIt.I.get();
+  static void registerFactory() => GetIt.I.registerFactory(SettingsViewModel.new);
+
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
 
   @override
-  TRoute? get contextualButtonsRoute => TRoute.shell;
+  TRoute? get contextualButtonsRoute => TRoute.settings;
 
   @override
   List<ContextualButtonEntry> get contextualButtons => [
     ContextualButtonEntry(
       config: TButtonConfig(
-        label: 'Home',
-        tooltip: 'Go home',
-        icon: Icons.home_rounded,
-        onPressed: onHomePressed,
+        label: 'Back',
+        tooltip: 'Go back',
+        icon: Icons.arrow_back_rounded,
+        onPressed: onBackPressed,
       ),
-      position: TContextualPosition.bottom,
+      position: TContextualPosition.top,
       variation: TContextualVariation.primary,
     ),
   ];
@@ -37,8 +39,15 @@ class ShellViewModel extends TViewModel with Turbolytics {
   // 🎩 STATE --------------------------------------------------------------------------------- \\
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
-  // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+  // 🏗 HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  void onHomePressed() => HomeRouter.locate.goHomeView();
+  void onBackPressed() {
+    final currentContext = context;
+    if (currentContext != null && currentContext.canPop()) {
+      currentContext.pop();
+      return;
+    }
+    BaseRouterService.locate.context.pop();
+  }
 }
