@@ -69,6 +69,10 @@ TPlaygroundParameterModel _buildProportionalGridParameters() {
       'spacing': 12.0,
     },
     selects: {
+      'animation': TSelectOption<String>(
+        value: 'fade',
+        options: ['slide', 'fade', 'scale', 'none'],
+      ),
       'item1_icon': TSelectOption<String>(
         value: 'analytics',
         options: ['analytics', 'cloud', 'smart_toy', 'security', 'rocket', 'lightbulb'],
@@ -113,11 +117,13 @@ class _ProportionalGridPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spacing = params.doubles['spacing'] ?? 12.0;
+    final animation = _parseAnimation(params.selects['animation']?.value ?? 'fade');
 
     return SizedBox(
       height: 500,
       child: TProportionalGrid(
         spacing: spacing,
+        animation: animation,
         items: [
           TProportionalItem(
             size: params.doubles['item1_size'] ?? 4.0,
@@ -158,6 +164,16 @@ class _ProportionalGridPlayground extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  TProportionalGridAnimation _parseAnimation(String value) {
+    return switch (value) {
+      'slide' => TProportionalGridAnimation.slide,
+      'fade' => TProportionalGridAnimation.fade,
+      'scale' => TProportionalGridAnimation.scale,
+      'none' => TProportionalGridAnimation.none,
+      _ => TProportionalGridAnimation.fade,
+    };
   }
 
   IconData _parseIcon(String value) {

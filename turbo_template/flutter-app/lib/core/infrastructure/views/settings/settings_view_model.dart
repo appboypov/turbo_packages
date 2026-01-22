@@ -25,6 +25,7 @@ class SettingsViewModel extends TViewModel with Turbolytics {
   @override
   List<ContextualButtonEntry> get contextualButtons => [
     ContextualButtonEntry(
+      id: 'settings-back',
       config: TButtonConfig(
         label: 'Back',
         tooltip: 'Go back',

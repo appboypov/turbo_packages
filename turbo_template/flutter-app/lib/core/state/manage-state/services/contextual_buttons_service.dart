@@ -48,6 +48,7 @@ class ContextualButtonsService extends TContextualButtonsService {
   final Map<String, ContextualButtonsBuilder> _routeButtonBuilders = {};
   final Map<Object, String> _ownerRouteKeys = {};
   final Map<Object, ContextualButtonsBuilder> _shellButtonBuilders = {};
+  final Map<ContextualButtonEntry, Widget> _buttonWidgetCache = {};
   Map<TContextualPosition, TContextualPosition> _positionOverrides = const {};
   TDeviceType? _deviceType;
 
@@ -146,12 +147,14 @@ class ContextualButtonsService extends TContextualButtonsService {
     };
 
     for (final entry in entries) {
-      widgetsByPosition[entry.position]![entry.variation]!.add(
-        ContextualNavButton(
+      final widget = _buttonWidgetCache.putIfAbsent(
+        entry,
+        () => ContextualNavButton(
           deviceType: deviceType,
           config: entry.config,
         ),
       );
+      widgetsByPosition[entry.position]![entry.variation]!.add(widget);
     }
 
     var config = TContextualButtonsConfig(

@@ -58,6 +58,7 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
   @override
   List<ContextualButtonEntry> get contextualButtons => [
     ContextualButtonEntry(
+      id: 'home-playground',
       config: TButtonConfig(
         label: 'Playground',
         tooltip: 'Open playground',
@@ -68,6 +69,7 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
       variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
+      id: 'home-settings',
       config: TButtonConfig(
         label: 'Settings',
         tooltip: 'Open settings',
@@ -78,6 +80,7 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
       variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
+      id: 'home-logout',
       config: TButtonConfig(
         label: 'Logout',
         tooltip: 'Log out',
@@ -88,6 +91,7 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
       variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
+      id: 'home-dummy',
       config: TButtonConfig(
         label: 'Dummy',
         tooltip: 'No-op',

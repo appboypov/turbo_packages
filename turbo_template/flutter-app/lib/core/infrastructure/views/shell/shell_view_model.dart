@@ -23,6 +23,7 @@ class ShellViewModel extends TViewModel with Turbolytics {
   @override
   List<ContextualButtonEntry> get contextualButtons => [
     ContextualButtonEntry(
+      id: 'shell-home',
       config: TButtonConfig(
         label: 'Home',
         tooltip: 'Go home',
