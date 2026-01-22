@@ -10,12 +10,32 @@ import 'package:turbo_flutter_template/core/state/manage-state/models/contextual
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
+typedef LazyLocatorDef<T> = T Function();
+
 class ShellViewModel extends TViewModel<StatefulNavigationShell> with Turbolytics {
-  static ShellViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(() => ShellViewModel());
+  ShellViewModel({
+    required BaseRouterService baseRouterService,
+    required LazyLocatorDef<HomeRouter> homeRouter,
+    required LazyLocatorDef<StylingRouter> stylingRouter,
+  }) : _baseRouterService = baseRouterService,
+       _homeRouter = homeRouter,
+       _stylingRouter = stylingRouter;
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
+  static ShellViewModel get locate => GetIt.I.get();
+  static void registerFactory() => GetIt.I.registerFactory(
+    () => ShellViewModel(
+      baseRouterService: BaseRouterService.locate,
+      homeRouter: () => HomeRouter.locate,
+      stylingRouter: () => StylingRouter.locate,
+    ),
+  );
+
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+  final BaseRouterService _baseRouterService;
+  final LazyLocatorDef<HomeRouter> _homeRouter;
+  final LazyLocatorDef<StylingRouter> _stylingRouter;
+
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
@@ -67,13 +87,11 @@ class ShellViewModel extends TViewModel<StatefulNavigationShell> with Turbolytic
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  final BaseRouterService _baseRouterService = BaseRouterService.locate;
-
   void onHomePressed() {
-    HomeRouter.locate.goHomeView(statefulNavigationShell: arguments);
+    _homeRouter().goHomeView(statefulNavigationShell: arguments);
   }
 
   void onStylingPressed() {
-    StylingRouter.locate.goStylingView(statefulNavigationShell: arguments);
+    _stylingRouter().goStylingView(statefulNavigationShell: arguments);
   }
 }
