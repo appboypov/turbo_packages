@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_device.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 extension TTargetPlatformExtensionExtension on TargetPlatform {
   TDevice get defaultDevice {

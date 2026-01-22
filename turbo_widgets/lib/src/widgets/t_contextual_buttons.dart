@@ -7,6 +7,7 @@ import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
+import 'package:turbo_widgets/src/typedefs/contextual_button_builders.dart';
 
 /// A widget that displays contextual buttons at configurable positions
 /// (top, bottom, left, right) as overlays on top of the main content.
@@ -57,12 +58,10 @@ class TContextualButtons extends StatelessWidget {
     return ValueListenableBuilder<TContextualButtonsConfig>(
       valueListenable: effectiveService,
       child: child,
-      builder: (context, config, child) {
-        return _TContextualButtonsAnimated(
-          child: child!,
-          config: config,
-        );
-      },
+      builder: (context, config, child) => _TContextualButtonsAnimated(
+        child: child!,
+        config: config,
+      ),
     );
   }
 }
@@ -386,7 +385,8 @@ class _ContentResolver {
   const _ContentResolver._();
 
   static Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> resolve(
-      TContextualButtonsConfig config) {
+    TContextualButtonsConfig config,
+  ) {
     var result = _buildInitialStructure(config);
     result = _applyActiveVariations(result, config);
     result = _applyPositionOverrides(result, config);
@@ -396,7 +396,8 @@ class _ContentResolver {
   }
 
   static Map<TContextualPosition, Map<TContextualVariation, List<Widget>>> _buildInitialStructure(
-      TContextualButtonsConfig config) {
+    TContextualButtonsConfig config,
+  ) {
     return {
       TContextualPosition.top: {
         TContextualVariation.primary: config.top.primary,
@@ -545,7 +546,7 @@ class _TPositionContent extends StatelessWidget {
   final _AnimationPhase phase;
   final AnimationController controller;
   final Curve curve;
-  final Widget Function(List<Widget> children)? builder;
+  final TContextualButtonsBuilder? builder;
 
   Offset _getSlideOffset() {
     switch (position) {
@@ -581,6 +582,7 @@ class _TPositionContent extends StatelessWidget {
             alignment: alignment,
             mainAxisSize: mainAxisSize,
             builder: builder,
+            variation: variation,
           ),
         );
       }
@@ -705,6 +707,7 @@ class _TPositionContent extends StatelessWidget {
 /// Stateless widget that renders a single variation group of widgets.
 class _VariationGroup extends StatelessWidget {
   const _VariationGroup({
+    required this.variation,
     required this.widgets,
     required this.position,
     required this.alignment,
@@ -712,11 +715,12 @@ class _VariationGroup extends StatelessWidget {
     this.builder,
   });
 
+  final TContextualVariation variation;
   final List<Widget> widgets;
   final TContextualPosition position;
   final Alignment alignment;
   final MainAxisSize mainAxisSize;
-  final Widget Function(List<Widget> children)? builder;
+  final TContextualButtonsBuilder? builder;
 
   bool get _isTopOrBottom =>
       position == TContextualPosition.top || position == TContextualPosition.bottom;
@@ -730,7 +734,7 @@ class _VariationGroup extends StatelessWidget {
     }
 
     if (builder != null) {
-      return builder!(widgets);
+      return builder!(context, variation, widgets);
     } else if (widgets.length == 1) {
       return Align(
         alignment: alignment,

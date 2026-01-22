@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_orientation.dart';
+import 'package:turbo_widgets/src/responsive/enums/t_device_type.dart';
+import 'package:turbo_widgets/src/responsive/enums/t_orientation.dart';
 
 class TData {
   const TData({

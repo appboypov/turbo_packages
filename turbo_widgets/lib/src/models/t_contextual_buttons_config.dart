@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
+import 'package:turbo_widgets/src/typedefs/contextual_button_builders.dart';
 
 /// Compares two widget lists by identity (not equality).
 bool _widgetListIdentical(List<Widget> a, List<Widget> b) {
@@ -63,10 +64,13 @@ class TContextualButtonsSlotData {
 /// Presentation configuration for how content is displayed at a slot.
 class TContextualButtonsSlotPresentation {
   const TContextualButtonsSlotPresentation({
+    required this.variation,
     this.alignment = Alignment.center,
     this.mainAxisSize = MainAxisSize.min,
     this.builder,
   });
+
+  final TContextualVariation variation;
 
   /// Alignment for content at this position.
   final Alignment alignment;
@@ -75,15 +79,25 @@ class TContextualButtonsSlotPresentation {
   final MainAxisSize mainAxisSize;
 
   /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
-  final Widget Function(List<Widget> children)? builder;
+  final Widget Function(
+    TContextualVariation variation,
+    List<Widget> children,
+    BuildContext context,
+  )? builder;
 
   /// Creates a copy with updated values.
   TContextualButtonsSlotPresentation copyWith({
+    TContextualVariation? variation,
     Alignment? alignment,
     MainAxisSize? mainAxisSize,
-    Widget Function(List<Widget> children)? builder,
+    Widget Function(
+      TContextualVariation variation,
+      List<Widget> children,
+      BuildContext context,
+    )? builder,
   }) {
     return TContextualButtonsSlotPresentation(
+      variation: variation ?? this.variation,
       alignment: alignment ?? this.alignment,
       mainAxisSize: mainAxisSize ?? this.mainAxisSize,
       builder: builder ?? this.builder,
@@ -121,22 +135,6 @@ class TContextualButtonsSlotConfig {
     this.builder,
   });
 
-  /// Creates a slot config from separate data and presentation configs.
-  factory TContextualButtonsSlotConfig.fromParts({
-    TContextualButtonsSlotData data = const TContextualButtonsSlotData(),
-    TContextualButtonsSlotPresentation presentation =
-        const TContextualButtonsSlotPresentation(),
-  }) {
-    return TContextualButtonsSlotConfig(
-      primary: data.primary,
-      secondary: data.secondary,
-      tertiary: data.tertiary,
-      alignment: presentation.alignment,
-      mainAxisSize: presentation.mainAxisSize,
-      builder: presentation.builder,
-    );
-  }
-
   /// Primary content widgets for this position.
   final List<Widget> primary;
 
@@ -153,22 +151,7 @@ class TContextualButtonsSlotConfig {
   final MainAxisSize mainAxisSize;
 
   /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
-  final Widget Function(List<Widget> children)? builder;
-
-  /// Extracts the data portion of this config.
-  TContextualButtonsSlotData get data => TContextualButtonsSlotData(
-        primary: primary,
-        secondary: secondary,
-        tertiary: tertiary,
-      );
-
-  /// Extracts the presentation portion of this config.
-  TContextualButtonsSlotPresentation get presentation =>
-      TContextualButtonsSlotPresentation(
-        alignment: alignment,
-        mainAxisSize: mainAxisSize,
-        builder: builder,
-      );
+  final TContextualButtonsBuilder? builder;
 
   /// Creates a copy with updated values.
   TContextualButtonsSlotConfig copyWith({
@@ -177,7 +160,7 @@ class TContextualButtonsSlotConfig {
     List<Widget>? tertiary,
     Alignment? alignment,
     MainAxisSize? mainAxisSize,
-    Widget Function(List<Widget> children)? builder,
+    TContextualButtonsBuilder? builder,
   }) {
     return TContextualButtonsSlotConfig(
       primary: primary ?? this.primary,

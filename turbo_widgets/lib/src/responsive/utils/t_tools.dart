@@ -1,4 +1,4 @@
-import 'package:turbo_flutter_template/core/ui/widgets/t_scale_extension.dart';
+import 'package:turbo_widgets/src/responsive/extensions/t_scale_extension.dart';
 
 class TTools {
   TTools({

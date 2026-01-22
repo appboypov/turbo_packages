@@ -7,7 +7,6 @@ import 'package:turbo_flutter_template/core/state/manage-state/services/contextu
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusable.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
-import 'package:turbo_flutter_template/core/ui/widgets/t_responsive_builder.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 

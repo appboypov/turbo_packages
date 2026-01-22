@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_flutter_template/core/generated/l10n.dart';
 import 'package:turbo_flutter_template/core/ui/enums/list_position.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 enum NavigationTab {
   home;

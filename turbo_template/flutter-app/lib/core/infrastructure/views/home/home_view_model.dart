@@ -36,12 +36,13 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
 
   @override
   Future<void> initialise() async {
-    super.initialise();
+    updateContextualButtonsAnimated((current) => current.copyWith());
+    await super.initialise();
   }
 
   @override
   Future<void> dispose() async {
-    super.dispose();
+    await super.dispose();
   }
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\

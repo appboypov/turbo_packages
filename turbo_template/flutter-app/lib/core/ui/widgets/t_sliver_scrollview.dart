@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_animated_divider.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_margin.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_app_bar.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 class TSliverScrollView extends HookWidget {
   const TSliverScrollView({

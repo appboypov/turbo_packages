@@ -112,20 +112,7 @@ class StylingView extends StatelessWidget {
                       onToggle: model.toggleNavigationShowcase,
                       child: Column(
                         children: [
-                          _TNavigationShowcase(
-                            title: 'TBottomNavigation',
-                            navigationType: 'bottom',
-                          ),
-                          const SizedBox(height: 16),
-                          _TNavigationShowcase(
-                            title: 'TTopNavigation',
-                            navigationType: 'top',
-                          ),
-                          const SizedBox(height: 16),
-                          _TNavigationShowcase(
-                            title: 'TSideNavigation',
-                            navigationType: 'side',
-                          ),
+                          Text('Todo')
                         ],
                       ),
                     );
@@ -230,94 +217,6 @@ class _ShowcaseBar extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
       ),
-    );
-  }
-}
-
-class _TNavigationShowcase extends StatelessWidget {
-  _TNavigationShowcase({
-    required this.title,
-    required this.navigationType,
-  }) : _service = TContextualButtonsService(_buildConfig(navigationType));
-
-  final String title;
-  final String navigationType;
-  final TContextualButtonsService _service;
-
-  static Map<String, TButtonConfig> _buildDemoButtons() {
-    return {
-      'home': TButtonConfig(
-        icon: LucideIcons.house,
-        label: 'Home',
-        onPressed: () {},
-      ),
-      'search': TButtonConfig(
-        icon: LucideIcons.search,
-        label: 'Search',
-        onPressed: () {},
-      ),
-      'profile': TButtonConfig(
-        icon: LucideIcons.user,
-        label: 'Profile',
-        onPressed: () {},
-      ),
-    };
-  }
-
-  static TContextualButtonsConfig _buildConfig(String navigationType) {
-    final buttons = _buildDemoButtons();
-    const selectedKey = 'home';
-
-    final navigation = switch (navigationType) {
-      'top' => TTopNavigation(buttons: buttons, selectedKey: selectedKey),
-      'side' => TSideNavigation(buttons: buttons, selectedKey: selectedKey),
-      _ => TBottomNavigation(buttons: buttons, selectedKey: selectedKey),
-    };
-
-    return TContextualButtonsConfig(
-      top: navigationType == 'top'
-          ? TContextualButtonsSlotConfig(primary: [navigation])
-          : const TContextualButtonsSlotConfig(),
-      bottom: navigationType == 'bottom'
-          ? TContextualButtonsSlotConfig(primary: [navigation])
-          : const TContextualButtonsSlotConfig(),
-      left: navigationType == 'side'
-          ? TContextualButtonsSlotConfig(primary: [navigation])
-          : const TContextualButtonsSlotConfig(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: theme.textTheme.small.copyWith(
-            color: theme.colorScheme.mutedForeground,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: ShadCard(
-            padding: EdgeInsets.zero,
-            child: TContextualButtons(
-              service: _service,
-              child: Center(
-                child: Text(
-                  'Main Content',
-                  style: theme.textTheme.muted,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

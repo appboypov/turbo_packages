@@ -11,9 +11,9 @@ mixin SlidableManagement<T> on TViewModel<T> {
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     _slidableControllerBox.dispose();
-    super.dispose();
+    await super.dispose();
   }
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\

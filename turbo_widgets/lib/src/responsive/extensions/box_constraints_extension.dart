@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:turbo_flutter_template/core/ui/config/t_breakpoint_config.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_orientation.dart';
+import 'package:turbo_widgets/src/responsive/config/t_breakpoint_config.dart';
+import 'package:turbo_widgets/src/responsive/enums/t_device_type.dart';
+import 'package:turbo_widgets/src/responsive/enums/t_orientation.dart';
 
 extension BoxConstraintsExtension on BoxConstraints {
   TOrientation get orientation {

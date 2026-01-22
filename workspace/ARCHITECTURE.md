@@ -301,7 +301,7 @@ turbo_template/flutter-app (uses turbo_response)
 | **ColorExtension** | `turbo_template/flutter-app/lib/core/ui/show-ui/extensions/color_extension.dart` | Color manipulation utilities | turbo_template |
 | **Debouncer** | `turbo_template/flutter-app/lib/core/state/manage-state/utils/debouncer.dart` | Debounces function calls | turbo_template |
 | **Mutex** | `turbo_template/flutter-app/lib/core/state/manage-state/utils/mutex.dart` | Mutex implementation | turbo_template |
-| **TTools** | `turbo_template/flutter-app/lib/core/ui/show-ui/utils/t_tools.dart` | Responsive design utilities | turbo_template |
+| **TTools** | `turbo_widgets/lib/src/responsive/utils/t_tools.dart` | Responsive design utilities | turbo_widgets |
 | **CaseConverter** | `turbo_template/flutter-app/tool/lib/utils/case_converter.dart` | Case conversion utilities | turbo_template |
 | **ConfigLoader** | `turbo_template/flutter-app/tool/lib/utils/config_loader.dart` | Configuration loading | turbo_template |
 

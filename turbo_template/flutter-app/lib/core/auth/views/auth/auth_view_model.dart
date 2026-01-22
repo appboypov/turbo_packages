@@ -30,6 +30,7 @@ import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dar
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 import '../../../state/manage-state/extensions/completer_extension.dart';
@@ -65,18 +66,19 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
       _loginForm.email.updateValue('appboy@apewpew.app');
       _loginForm.password.updateValue('123123123');
     }
-    super.initialise();
+    await super.initialise();
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     _authViewMode.removeListener(_onAuthViewModeChanged);
     _showAgreeToPrivacyCheckBox.removeListener(_onShowAgreePrivacyCheckbox);
     loginButtonFocusNode.dispose();
     registerButtonFocusNode.dispose();
     _resetPasswordTimer?.cancel();
-    super.dispose();
+    await super.dispose();
   }
+
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
@@ -589,4 +591,5 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     await TDurations.animation.asFuture;
     _canInit.completeIfNotComplete();
   }
+
 }

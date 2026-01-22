@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/generated/fonts.gen.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/config/t_breakpoint_config.dart';
-import 'package:turbo_flutter_template/core/ui/enums/t_device_type.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme.dart';
 import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
-import 'package:turbo_flutter_template/core/ui/models/t_data.dart';
-import 'package:turbo_flutter_template/core/ui/utils/t_tools.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_gradient.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/text_style_extension.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 
 export 't_provider.dart';
 
