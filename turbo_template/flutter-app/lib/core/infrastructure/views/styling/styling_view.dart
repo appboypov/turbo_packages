@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/styling/styling_view_model.dart';
 import 'package:turbo_flutter_template/core/ui/enums/emoji.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_scaffold.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_app_bar.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_sliver_body.dart';
+import 'package:turbo_forms/turbo_forms.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
@@ -104,6 +106,16 @@ const List<String> _collectionFilterOptions = [
   'Archived',
 ];
 
+const String _entityHeaderTitle = 'Entity details';
+const String _entityHeaderDescription =
+    'Structured fields and markdown notes for a single entity.';
+
+const List<TKeyValueField> _entityMetadata = [
+  TKeyValueField(label: 'ID', value: 'ENT-2048'),
+  TKeyValueField(label: 'Category', value: 'Operations'),
+  TKeyValueField(label: 'Updated', value: '2 hours ago'),
+];
+
 class StylingView extends StatelessWidget {
   const StylingView({super.key});
 
@@ -173,6 +185,10 @@ class StylingView extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     const _TCollectionWidgetsShowcase(),
+                    const SizedBox(height: 32),
+                    _TEntityDetailWidgetsShowcase(
+                      model: model,
+                    ),
                   ],
                 ),
               ),
@@ -277,6 +293,152 @@ class _TCollectionWidgetsShowcaseState
           },
         ),
       ],
+    );
+  }
+}
+
+class _TEntityDetailWidgetsShowcase extends StatelessWidget {
+  const _TEntityDetailWidgetsShowcase({
+    required this.model,
+  });
+
+  final StylingViewModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final form = model.entityDetailForm;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TDetailHeader(
+          title: _entityHeaderTitle,
+          description: _entityHeaderDescription,
+          metadata: _entityMetadata,
+          onSave: model.onHeaderSave,
+        ),
+        const SizedBox(height: 16),
+        TFormSection(
+          title: 'Core fields',
+          caption: 'Form section using turbo_forms',
+          formConfig: form,
+          onSave: model.onSectionSave,
+          formBuilder: (config) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _TFormFieldRow(
+                label: 'Title',
+                field: form.title,
+                builder: (field) => ShadInput(
+                  controller: field.textEditingController,
+                  focusNode: field.focusNode,
+                  onChanged: field.silentUpdateValue,
+                ),
+                theme: theme,
+              ),
+              const SizedBox(height: 12),
+              _TFormFieldRow(
+                label: 'Status',
+                field: form.status,
+                builder: (field) => ShadSelect<String>(
+                  placeholder: const Text('Select'),
+                  focusNode: field.focusNode,
+                  onChanged: field.silentUpdateValue,
+                  controller: field.selectController,
+                  enabled: field.isEnabled && !field.isReadOnly,
+                  itemCount: field.items?.length ?? 0,
+                  optionsBuilder: (context, index) {
+                    final item = field.items![index];
+                    return ShadOption(
+                      value: item,
+                      child: Text(item.toString()),
+                    );
+                  },
+                  selectedOptionBuilder: (context, value) => Text(value.toString()),
+                ),
+                theme: theme,
+              ),
+              const SizedBox(height: 12),
+              _TFormFieldRow(
+                label: 'Owner',
+                field: form.owner,
+                builder: (field) => ShadInput(
+                  controller: field.textEditingController,
+                  focusNode: field.focusNode,
+                  onChanged: field.silentUpdateValue,
+                ),
+                theme: theme,
+              ),
+              const SizedBox(height: 12),
+              _TFormFieldRow(
+                label: 'Summary',
+                field: form.summary,
+                builder: (field) => ShadInput(
+                  controller: field.textEditingController,
+                  focusNode: field.focusNode,
+                  minLines: 3,
+                  maxLines: 6,
+                  onChanged: field.silentUpdateValue,
+                ),
+                theme: theme,
+              ),
+              const SizedBox(height: 12),
+              _TFormFieldRow(
+                label: 'Active',
+                field: form.isActive,
+                builder: (field) => ShadCheckbox(
+                  value: field.cValue ?? false,
+                  onChanged: (value) => field.silentUpdateValue(value),
+                ),
+                theme: theme,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        ValueListenableBuilder<String>(
+          valueListenable: model.markdownContent,
+          builder: (context, value, _) => TMarkdownSection(
+            title: 'Notes',
+            caption: 'Markdown editor with preview',
+            content: value,
+            onChanged: model.onMarkdownChanged,
+            onSave: model.onMarkdownSave,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TFormFieldRow<T> extends StatelessWidget {
+  const _TFormFieldRow({
+    required this.label,
+    required this.field,
+    required this.builder,
+    required this.theme,
+  });
+
+  final String label;
+  final TFormFieldConfig<T> field;
+  final Widget Function(TFormFieldConfig<T> field) builder;
+  final ShadThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return TFormField<T>(
+      formFieldConfig: field,
+      errorTextStyle: theme.textTheme.small.copyWith(
+        color: theme.colorScheme.destructive,
+      ),
+      label: Text(
+        label,
+        style: theme.textTheme.small.copyWith(
+          color: theme.colorScheme.mutedForeground,
+        ),
+      ),
+      builder: (context, config, child) => builder(config),
     );
   }
 }

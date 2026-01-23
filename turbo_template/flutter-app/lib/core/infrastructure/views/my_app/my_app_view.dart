@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 import 'package:turbo_flutter_template/core/generated/l10n.dart';
@@ -63,6 +64,7 @@ class MyAppView extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
+              FlutterQuillLocalizations.delegate,
             ],
             supportedLocales: Strings.supportedLocales,
             builder: (context, child) => TProviderBuilder(
