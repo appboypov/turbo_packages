@@ -1,7 +1,7 @@
 ---
 description: Reminder to use rp-cli
 repoprompt_managed: true
-repoprompt_commands_version: 4
+repoprompt_commands_version: 5
 repoprompt_variant: cli
 ---
 

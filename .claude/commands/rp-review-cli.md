@@ -1,7 +1,7 @@
 ---
 description: Code review workflow using rp-cli git tool and context_builder
 repoprompt_managed: true
-repoprompt_commands_version: 4
+repoprompt_commands_version: 5
 repoprompt_variant: cli
 ---
 
@@ -31,7 +31,7 @@ rp-cli -e '<command>'
 | `context_builder` | `rp-cli -e 'builder "instructions" --response-type plan'` |
 | `chat_send` | `rp-cli -e 'chat "message" --mode plan'` |
 | `apply_edits` | `rp-cli -e 'call apply_edits {"path":"...","search":"...","replace":"..."}'` |
-| `file_actions` | `rp-cli -e 'file create path/new.swift'` |
+| `file_actions` | `rp-cli -e 'call file_actions {"action":"create","path":"..."}'` |
 
 Chain commands with `&&`:
 ```bash
@@ -65,7 +65,9 @@ If the user didn't specify, ask them to confirm:
 - `back:N` – Last N commits
 - `main...HEAD` – Branch comparison
 
-## Step 3: Deep Review
+## Step 3: Deep Review (via `builder` - REQUIRED)
+
+⚠️ **Do NOT skip this step.** You MUST call `builder` with `response_type: "review"` for proper code review context.
 
 Use XML tags to structure the instructions:
 ```bash
@@ -96,6 +98,16 @@ Not yet reviewed: <list files/areas to review now>.</context>
 
 <discovery_agent-guidelines>Focus specifically on <directories/files not yet covered>.</discovery_agent-guidelines>" --response-type review'
 ```
+
+---
+
+## Anti-patterns to Avoid
+
+- 🚫 **CRITICAL:** Skipping `builder` and attempting to review by reading files manually – you'll miss architectural context
+- 🚫 Doing extensive file reading before calling `builder` – git status/log/diff is sufficient for Step 1
+- 🚫 Providing review feedback without first calling `builder` with `response_type: "review"`
+- 🚫 Assuming the git diff alone is sufficient context for a thorough review
+- 🚫 Reading changed files manually instead of letting `builder` build proper review context
 
 ---
 

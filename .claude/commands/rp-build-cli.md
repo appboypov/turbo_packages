@@ -1,7 +1,7 @@
 ---
 description: Build with rp-cli context builder → chat → implement
 repoprompt_managed: true
-repoprompt_commands_version: 4
+repoprompt_commands_version: 5
 repoprompt_variant: cli
 ---
 
@@ -31,7 +31,7 @@ rp-cli -e '<command>'
 | `context_builder` | `rp-cli -e 'builder "instructions" --response-type plan'` |
 | `chat_send` | `rp-cli -e 'chat "message" --mode plan'` |
 | `apply_edits` | `rp-cli -e 'call apply_edits {"path":"...","search":"...","replace":"..."}'` |
-| `file_actions` | `rp-cli -e 'file create path/new.swift'` |
+| `file_actions` | `rp-cli -e 'call file_actions {"action":"create","path":"..."}'` |
 
 Chain commands with `&&`:
 ```bash
@@ -60,7 +60,9 @@ Skipping `builder` results in shallow implementations that miss architectural pa
 
 ---
 
-## Phase 1: Quick Scan
+## Phase 1: Quick Scan (LIMITED - 2-3 tool calls max)
+
+⚠️ **This phase is intentionally brief.** Do NOT do extensive exploration here—that's what `builder` is for.
 
 Start by getting a lay of the land with the file tree:
 ```bash
@@ -74,6 +76,8 @@ rp-cli -e 'structure RootName/likely/relevant/area/'
 ```
 
 Use what you learn to **reformulate the user's prompt** with added clarity—reference specific modules, patterns, or terminology from the codebase.
+
+**STOP exploring after 2-3 searches.** Your goal is orientation, not deep understanding. `builder` will do the heavy lifting.
 
 ---
 
@@ -186,6 +190,9 @@ rp-cli -e 'select add Root/large/file.swift:100-200'
 - 🚫 Removing files from selection unnecessarily – prefer adding over removing
 - 🚫 Using `manage_selection` with `op:"clear"` – this undoes `builder`'s work; only remove specific files when over token budget
 - 🚫 Exceeding ~160k tokens – use slices if needed
+- 🚫 **CRITICAL:** Doing extensive exploration (5+ tool calls) before calling `builder` – the quick scan should be 2-3 calls max
+- 🚫 Reading full file contents during Phase 1 – save that for after `builder` builds context
+- 🚫 Convincing yourself you understand enough to skip `builder` – you don't
 
 ---
 

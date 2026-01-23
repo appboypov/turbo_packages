@@ -1,7 +1,7 @@
 ---
 description: Refactoring assistant using rp-cli to analyze and improve code organization
 repoprompt_managed: true
-repoprompt_commands_version: 4
+repoprompt_commands_version: 5
 repoprompt_variant: cli
 ---
 
@@ -31,7 +31,7 @@ rp-cli -e '<command>'
 | `context_builder` | `rp-cli -e 'builder "instructions" --response-type plan'` |
 | `chat_send` | `rp-cli -e 'chat "message" --mode plan'` |
 | `apply_edits` | `rp-cli -e 'call apply_edits {"path":"...","search":"...","replace":"..."}'` |
-| `file_actions` | `rp-cli -e 'file create path/new.swift'` |
+| `file_actions` | `rp-cli -e 'call file_actions {"action":"create","path":"..."}'` |
 
 Chain commands with `&&`:
 ```bash
@@ -54,7 +54,9 @@ Analyze code for redundancies and complexity, then implement improvements. **Pre
 
 ---
 
-## Step 1: Analyze for Refactoring Opportunities
+## Step 1: Analyze for Refactoring Opportunities (via `builder` - REQUIRED)
+
+⚠️ **Do NOT skip this step.** You MUST call `builder` with `response_type: "review"` to properly analyze the code.
 
 Use XML tags to structure the instructions:
 ```bash
@@ -104,3 +106,15 @@ Preserve existing behavior. Make incremental changes.</context>
 **After implementation:**
 - Summary of changes made
 - Any issues encountered
+
+---
+
+## Anti-patterns to Avoid
+
+- 🚫 **CRITICAL:** This workflow requires TWO \(builderName) calls – one for analysis (Step 1), one for implementation (Step 2). Do not skip either.
+- 🚫 Skipping Step 1's \(builderName) call with `response_type: "review"` and attempting to analyze manually
+- 🚫 Skipping Step 2's \(builderName) call with `response_type: "plan"` and implementing without a plan
+- 🚫 Doing extensive exploration (5+ tool calls) before the first \(builderName) call – let the builder do the heavy lifting
+- 🚫 Proposing refactorings without the analysis phase via \(builderName)
+- 🚫 Implementing refactorings after only the analysis phase – you need the second \(builderName) call for implementation planning
+- 🚫 Assuming you understand the code structure without \(builderName)'s architectural analysis
