@@ -12,7 +12,7 @@ import 'package:turbolytics/turbolytics.dart';
 
 void main() {
   runZonedGuarded(
-    () async {
+        () async {
       WidgetsFlutterBinding.ensureInitialized();
 
       try {
@@ -49,7 +49,7 @@ void main() {
       LocatorService.locate.registerInitialDependencies();
       runApp(Phoenix(child: const MyAppView()));
     },
-    (error, stack) {
+        (error, stack) {
       TLog(
         location: 'Zoned',
       ).error('Unhandled exception caught: ${error.toString()}', error: error, stackTrace: stack);

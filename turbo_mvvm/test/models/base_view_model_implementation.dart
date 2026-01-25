@@ -1,8 +1,8 @@
 import 'package:turbo_mvvm/data/mixins/t_busy_management.dart';
 import 'package:turbo_mvvm/data/mixins/t_error_management.dart';
-import 'package:turbo_mvvm/data/models/t_view_model.dart';
+import 'package:turbo_mvvm/data/models/t_base_view_model.dart';
 
-class BaseViewModelImplementation<T> extends TViewModel<T>
+class BaseViewModelImplementation<T> extends TBaseViewModel<T>
     with TErrorManagement, TBusyManagement {
   BaseViewModelImplementation({
     required bool isMock,
