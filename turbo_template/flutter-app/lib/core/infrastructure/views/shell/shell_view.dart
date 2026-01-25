@@ -23,8 +23,8 @@ class ShellView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TResponsiveBuilder(
     builder: (context, child, constraints, tools, data) {
-      final contextualButtonsService = ContextualButtonsService.locate;
-      contextualButtonsService.setPresentation(
+      final contextualButtonsService = ContextualButtonsService.locate; // #FEEDBACK #TODO | 25 Jan 2026 | never use direct located - retrieve from view model instead
+      contextualButtonsService.setPresentation( // #FEEDBACK #TODO | 25 Jan 2026 | do not run business logic inside build methods - anti pattern
         deviceType: data.deviceType,
         positionOverrides: {
           ...contextualPositionOverrides,
