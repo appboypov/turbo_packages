@@ -7,10 +7,9 @@ import 'package:turbo_flutter_template/core/infrastructure/routers/styling_route
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
-
-typedef LazyLocatorDef<T> = T Function();
 
 class ShellViewModel extends TViewModel<StatefulNavigationShell> with Turbolytics {
   ShellViewModel({
@@ -51,7 +50,7 @@ class ShellViewModel extends TViewModel<StatefulNavigationShell> with Turbolytic
 
     if (!isStyling && !isHome) {
       return const [];
-    }
+    } // #FEEDBACK #TODO | 26 Jan 2026 | this array should not contain logic - its a pure data array
 
     return [
       ContextualButtonEntry(

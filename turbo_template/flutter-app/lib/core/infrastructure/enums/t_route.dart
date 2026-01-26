@@ -100,8 +100,7 @@ enum TRoute {
       case TRoute.home:
         return GoRoute(
           path: routerPath,
-          redirect: (context, state) => _onAuthAccess(
-            context: context,
+          redirect: (context, state) => _onShellRootAccess(
             state: state,
             navigationTab: TRouter.home.navigationTab,
           ),
@@ -117,8 +116,7 @@ enum TRoute {
       case TRoute.styling:
         return GoRoute(
           path: routerPath,
-          redirect: (context, state) => _onAuthAccess(
-            context: context,
+          redirect: (context, state) => _onShellRootAccess(
             state: state,
             navigationTab: TRouter.styling.navigationTab,
           ),
@@ -158,20 +156,23 @@ enum TRoute {
     }
   }
 
-  String? _onAuthAccess({
-    required BuildContext context,
+  String? _onShellRootAccess({
     required GoRouterState state,
     required NavigationTab? navigationTab,
   }) {
     if (navigationTab != null) {
       final navigationTabService = NavigationTabService.locate;
+      navigationTabService.onGo(navigationTab: navigationTab);
       if (!BaseRouterService.locate.didInitialLocation) {
-        BaseRouterService.locate.didInitialLocation = true;
-        return navigationTabService.initialLocation;
-      } else {
-        navigationTabService.onGo(navigationTab: navigationTab);
+        return _onFirstShellInit(navigationTabService);
       }
     }
     return null;
+  }
+
+  String _onFirstShellInit(NavigationTabService navigationTabService) {
+    BaseRouterService.locate.didInitialLocation = true;
+    // Return the initial saved shell location only the first time
+    return navigationTabService.initialLocation;
   }
 }
