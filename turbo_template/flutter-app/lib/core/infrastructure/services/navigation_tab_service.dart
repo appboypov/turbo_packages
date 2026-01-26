@@ -4,9 +4,12 @@ import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class NavigationTabService with Turbolytics {
+class NavigationTabService
+    with Turbolytics
+    implements TNavigationTabServiceInterface<NavigationTab> {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static NavigationTabService get locate => GetIt.I.get();
@@ -29,6 +32,9 @@ class NavigationTabService with Turbolytics {
   final _navigationTab = TNotifier(NavigationTab.defaultValue);
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
+
+  @override
+  ValueListenable<NavigationTab?> get activeTab => _navigationTab;
 
   ValueListenable<NavigationTab> get navigationTab => _navigationTab;
   String get initialLocation {

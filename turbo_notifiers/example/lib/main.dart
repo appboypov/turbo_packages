@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
       );
 }
 
-class HomeViewModel extends TViewModel<Object?> {
+class HomeViewModel extends TBaseViewModel<Object?> {
   final TNotifier<int> _counter = TNotifier(0);
   ValueListenable<int> get counterListenable => _counter;
 

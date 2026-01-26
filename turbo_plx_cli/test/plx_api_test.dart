@@ -62,7 +62,7 @@ void main() {
     group('get', () {
       group('GIVEN path to existing file', () {
         group('WHEN get is called', () {
-          test('THEN returns TurboResponse.success with FileDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto', () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.get,
               path: 'test.md',
@@ -77,11 +77,11 @@ void main() {
             expect(mockClient.lastRequest?.path, 'test.md');
 
             switch (response) {
-              case Success<FileDto>(:final result):
+              case Success<FileEntryDto>(:final result):
                 expect(result.path, 'test.md');
                 expect(result.content, 'File content');
                 expect(result.lastModified, 1705766400000);
-              case Fail<FileDto>():
+              case Fail<FileEntryDto>():
                 fail('Expected success but got fail');
             }
           });
@@ -101,9 +101,9 @@ void main() {
             final response = await api.get('missing.md');
 
             switch (response) {
-              case Success<FileDto>():
+              case Success<FileEntryDto>():
                 fail('Expected fail but got success');
-              case Fail<FileDto>(:final message):
+              case Fail<FileEntryDto>(:final message):
                 expect(message, contains('does not exist'));
             }
           });
@@ -118,9 +118,9 @@ void main() {
             final response = await api.get('test.md');
 
             switch (response) {
-              case Success<FileDto>():
+              case Success<FileEntryDto>():
                 fail('Expected fail but got success');
-              case Fail<FileDto>(:final error):
+              case Fail<FileEntryDto>(:final error):
                 expect(error.toString(), contains('Connection lost'));
             }
           });
@@ -131,7 +131,7 @@ void main() {
     group('list', () {
       group('GIVEN path to folder with files', () {
         group('WHEN list is called', () {
-          test('THEN returns TurboResponse.success with List<FileDto>',
+          test('THEN returns TurboResponse.success with List<FileEntryDto>',
               () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.list,
@@ -157,13 +157,13 @@ void main() {
             expect(mockClient.lastRequest?.path, '.');
 
             switch (response) {
-              case Success<List<FileDto>>(:final result):
+              case Success<List<FileEntryDto>>(:final result):
                 expect(result.length, 2);
                 expect(result[0].path, 'file1.md');
                 expect(result[0].content, 'Content 1');
                 expect(result[1].path, 'file2.md');
                 expect(result[1].content, 'Content 2');
-              case Fail<List<FileDto>>():
+              case Fail<List<FileEntryDto>>():
                 fail('Expected success but got fail');
             }
           });
@@ -183,9 +183,9 @@ void main() {
             final response = await api.list('empty');
 
             switch (response) {
-              case Success<List<FileDto>>(:final result):
+              case Success<List<FileEntryDto>>(:final result):
                 expect(result, isEmpty);
-              case Fail<List<FileDto>>():
+              case Fail<List<FileEntryDto>>():
                 fail('Expected success but got fail');
             }
           });
@@ -205,9 +205,9 @@ void main() {
             final response = await api.list('missing-folder');
 
             switch (response) {
-              case Success<List<FileDto>>():
+              case Success<List<FileEntryDto>>():
                 fail('Expected fail but got success');
-              case Fail<List<FileDto>>(:final message):
+              case Fail<List<FileEntryDto>>(:final message):
                 expect(message, contains('does not exist'));
             }
           });
@@ -227,9 +227,9 @@ void main() {
             final response = await api.list('.');
 
             switch (response) {
-              case Success<List<FileDto>>(:final result):
+              case Success<List<FileEntryDto>>(:final result):
                 expect(result, isEmpty);
-              case Fail<List<FileDto>>():
+              case Fail<List<FileEntryDto>>():
                 fail('Expected success but got fail');
             }
           });
@@ -240,7 +240,7 @@ void main() {
     group('create', () {
       group('GIVEN valid path and content', () {
         group('WHEN create is called', () {
-          test('THEN returns TurboResponse.success with FileDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto', () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.create,
               path: 'new-file.md',
@@ -256,10 +256,10 @@ void main() {
             expect(mockClient.lastRequest?.content, 'New content');
 
             switch (response) {
-              case Success<FileDto>(:final result):
+              case Success<FileEntryDto>(:final result):
                 expect(result.path, 'new-file.md');
                 expect(result.content, 'New content');
-              case Fail<FileDto>():
+              case Fail<FileEntryDto>():
                 fail('Expected success but got fail');
             }
           });
@@ -279,9 +279,9 @@ void main() {
             final response = await api.create('invalid.json', 'content');
 
             switch (response) {
-              case Success<FileDto>():
+              case Success<FileEntryDto>():
                 fail('Expected fail but got success');
-              case Fail<FileDto>(:final message):
+              case Fail<FileEntryDto>(:final message):
                 expect(message, contains('extension'));
             }
           });
@@ -292,7 +292,7 @@ void main() {
     group('update', () {
       group('GIVEN valid path and content', () {
         group('WHEN update is called', () {
-          test('THEN returns TurboResponse.success with FileDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto', () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.modify,
               path: 'existing.md',
@@ -308,10 +308,10 @@ void main() {
             expect(mockClient.lastRequest?.content, 'Updated content');
 
             switch (response) {
-              case Success<FileDto>(:final result):
+              case Success<FileEntryDto>(:final result):
                 expect(result.path, 'existing.md');
                 expect(result.content, 'Updated content');
-              case Fail<FileDto>():
+              case Fail<FileEntryDto>():
                 fail('Expected success but got fail');
             }
           });
@@ -331,9 +331,9 @@ void main() {
             final response = await api.update('missing.md', 'content');
 
             switch (response) {
-              case Success<FileDto>():
+              case Success<FileEntryDto>():
                 fail('Expected fail but got success');
-              case Fail<FileDto>(:final message):
+              case Fail<FileEntryDto>(:final message):
                 expect(message, contains('does not exist'));
             }
           });
@@ -392,8 +392,8 @@ void main() {
     group('stream', () {
       group('GIVEN connected PlxClient', () {
         group('WHEN file changes', () {
-          test('THEN stream emits FileDto', () async {
-            final events = <FileDto>[];
+          test('THEN stream emits FileEntryDto', () async {
+            final events = <FileEntryDto>[];
             final subscription = api.stream().listen(events.add);
 
             mockClient.emitEvent(
@@ -429,7 +429,7 @@ void main() {
       group('GIVEN error events in stream', () {
         group('WHEN stream is listened to', () {
           test('THEN error events are filtered out', () async {
-            final events = <FileDto>[];
+            final events = <FileEntryDto>[];
             final subscription = api.stream().listen(events.add);
 
             mockClient.emitEvent(

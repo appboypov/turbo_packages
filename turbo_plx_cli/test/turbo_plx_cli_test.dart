@@ -2,14 +2,9 @@ import 'package:test/test.dart';
 import 'package:turbo_plx_cli/turbo_plx_cli.dart';
 
 void main() {
-  group('FileDto', () {
-    test('id returns path', () {
-      const dto = FileDto(path: 'test/file.md');
-      expect(dto.id, equals('test/file.md'));
-    });
-
+  group('FileEntryDto', () {
     test('copyWith creates new instance with updated values', () {
-      const dto = FileDto(
+      const dto = FileEntryDto(
         path: 'original.md',
         content: 'original content',
         lastModified: 1000,
@@ -23,14 +18,14 @@ void main() {
     });
 
     test('toJson and fromJson roundtrip', () {
-      const dto = FileDto(
+      const dto = FileEntryDto(
         path: 'test/file.md',
         content: 'File content',
         lastModified: 1705766400000,
       );
 
       final json = dto.toJson();
-      final restored = FileDto.fromJson(json);
+      final restored = FileEntryDto.fromJson(json);
 
       expect(restored.path, equals('test/file.md'));
       expect(restored.content, equals('File content'));

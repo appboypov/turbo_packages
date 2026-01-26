@@ -69,7 +69,6 @@ class LocatorService with Turbolytics {
   }
 
   void _registerLazySingletons() {
-    ContextualButtonsService.registerLazySingleton();
     LocalStorageService.registerLazySingleton();
     ThemeService.registerLazySingleton();
     LanguageService.registerLazySingleton();
@@ -82,6 +81,11 @@ class LocatorService with Turbolytics {
     UserService.registerLazySingleton();
     BadgeService.registerLazySingleton();
     NavigationTabService.registerLazySingleton();
+    GetIt.I.registerLazySingleton(
+      () => ContextualButtonsService(
+        navigationTabService: NavigationTabService.locate,
+      ),
+    );
     SettingsService.registerLazySingleton();
   }
 

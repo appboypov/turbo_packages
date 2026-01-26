@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:turbo_plx_cli/src/abstracts/plx_client_interface.dart';
-import 'package:turbo_plx_cli/src/dtos/file_dto.dart';
+import 'package:turbo_plx_cli/src/dtos/file_entry_dto.dart';
 import 'package:turbo_plx_cli/src/dtos/watch_event_dto.dart';
 import 'package:turbo_plx_cli/src/enums/watch_event_type.dart';
 import 'package:turbo_plx_cli/src/exceptions/plx_exception.dart';
@@ -12,7 +12,7 @@ class PlxApi {
 
   final PlxClientInterface _plxClient;
 
-  Future<TurboResponse<FileDto>> get(String path) async {
+  Future<TurboResponse<FileEntryDto>> get(String path) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(
@@ -30,7 +30,7 @@ class PlxApi {
       }
 
       return TurboResponse.success(
-        result: FileDto(
+        result: FileEntryDto(
           path: response.path,
           content: response.content,
           lastModified: response.lastModified,
@@ -46,7 +46,7 @@ class PlxApi {
     }
   }
 
-  Future<TurboResponse<List<FileDto>>> list(String path) async {
+  Future<TurboResponse<List<FileEntryDto>>> list(String path) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(
@@ -65,7 +65,7 @@ class PlxApi {
 
       final files = response.files
               ?.map(
-                (entry) => FileDto(
+                (entry) => FileEntryDto(
                   path: entry.path,
                   content: entry.content,
                   lastModified: entry.lastModified,
@@ -85,7 +85,7 @@ class PlxApi {
     }
   }
 
-  Future<TurboResponse<FileDto>> create(String path, String content) async {
+  Future<TurboResponse<FileEntryDto>> create(String path, String content) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(
@@ -104,7 +104,7 @@ class PlxApi {
       }
 
       return TurboResponse.success(
-        result: FileDto(
+        result: FileEntryDto(
           path: response.path,
           content: response.content,
           lastModified: response.lastModified,
@@ -120,7 +120,7 @@ class PlxApi {
     }
   }
 
-  Future<TurboResponse<FileDto>> update(String path, String content) async {
+  Future<TurboResponse<FileEntryDto>> update(String path, String content) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(
@@ -139,7 +139,7 @@ class PlxApi {
       }
 
       return TurboResponse.success(
-        result: FileDto(
+        result: FileEntryDto(
           path: response.path,
           content: response.content,
           lastModified: response.lastModified,
@@ -183,11 +183,11 @@ class PlxApi {
     }
   }
 
-  Stream<FileDto> stream() {
+  Stream<FileEntryDto> stream() {
     return _plxClient.events
         .where((event) => event.event != WatchEventType.error)
         .map(
-          (event) => FileDto(
+          (event) => FileEntryDto(
             path: event.path,
             content: event.content,
             lastModified: event.lastModified,

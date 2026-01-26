@@ -2,14 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 import 'package:turbo_flutter_template/core/infrastructure/services/base_router_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 
-class ContextualButtonsService extends TContextualButtonsService {
-  ContextualButtonsService() {
+class ContextualButtonsService extends TContextualButtonsService
+    with WidgetsBindingObserver {
+  ContextualButtonsService({
+    required TNavigationTabServiceInterface<NavigationTab> navigationTabService,
+  }) : _navigationTabService = navigationTabService {
     _baseRouterService.addRouteListener(_handleRouteChanged);
+    WidgetsBinding.instance.addObserver(this);
+    _updateDeviceType();
   }
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -17,12 +23,13 @@ class ContextualButtonsService extends TContextualButtonsService {
   static ContextualButtonsService get locate => GetIt.I.get();
   static ContextualButtonsService Function() get lazyLocate =>
       () => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(
-    () => ContextualButtonsService(),
-  );
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
+
+  final TNavigationTabServiceInterface<NavigationTab> _navigationTabService;
   final BaseRouterService _baseRouterService = BaseRouterService.locate;
+
+  TNavigationTabServiceInterface<NavigationTab> get navigationTabService => _navigationTabService;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -31,8 +38,38 @@ class ContextualButtonsService extends TContextualButtonsService {
   @override
   void dispose() {
     _isDisposed = true;
+    WidgetsBinding.instance.removeObserver(this);
     _baseRouterService.removeRouteListener(_handleRouteChanged);
     super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    _updateDeviceType();
+  }
+
+  void _updateDeviceType() {
+    final view = WidgetsBinding.instance.platformDispatcher.views.firstOrNull;
+    if (view == null) return;
+    final width = view.physicalSize.width / view.devicePixelRatio;
+    final height = view.physicalSize.height / view.devicePixelRatio;
+    final newDeviceType = _deviceTypeFromSize(width, height);
+    if (_deviceType == newDeviceType) return;
+    _deviceType = newDeviceType;
+    _applyRouteButtons(_baseRouterService.currentRoute);
+  }
+
+  TDeviceType _deviceTypeFromSize(double width, double height) {
+    const desktopWidth = 1024.0;
+    const desktopHeight = 1366.0;
+    const tabletWidth = 768.0;
+    if (width >= desktopWidth || height >= desktopHeight) {
+      return TDeviceType.desktop;
+    }
+    if (width >= tabletWidth) {
+      return TDeviceType.tablet;
+    }
+    return TDeviceType.mobile;
   }
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
@@ -55,19 +92,11 @@ class ContextualButtonsService extends TContextualButtonsService {
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
-  void setPresentation({
-    required TDeviceType deviceType,
-    Map<TContextualPosition, TContextualPosition> positionOverrides = const {},
-  }) {
-    final overridesChanged = !_mapEquals(_positionOverrides, positionOverrides);
-    final deviceChanged = _deviceType != deviceType;
-
-    if (!overridesChanged && !deviceChanged) {
-      return;
-    }
-
-    _deviceType = deviceType;
-    _positionOverrides = positionOverrides;
+  void setPositionOverrides(
+    Map<TContextualPosition, TContextualPosition> overrides,
+  ) {
+    if (_mapEquals(_positionOverrides, overrides)) return;
+    _positionOverrides = overrides;
     _applyRouteButtons(_baseRouterService.currentRoute);
   }
 

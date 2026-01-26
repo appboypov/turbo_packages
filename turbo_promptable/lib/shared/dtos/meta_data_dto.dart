@@ -9,7 +9,6 @@ class MetaDataDto {
 
   final String? name;
   final String? description;
-  // #FEEDBACK #TODO | 21 Jan 2026 | add common frontmatter for skills, agents, etc
 
   static const fromJsonFactory = _$MetaDataDtoFromJson;
   factory MetaDataDto.fromJson(Map<String, dynamic> json) => _$MetaDataDtoFromJson(json);

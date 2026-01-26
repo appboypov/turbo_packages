@@ -108,11 +108,11 @@ watch:
         final response = await plxApi.get('test.md');
 
         switch (response) {
-          case Success<FileDto>(:final result):
+          case Success<FileEntryDto>(:final result):
             expect(result.path, equals('test.md'));
             expect(result.content, equals('# Test Content'));
             expect(result.lastModified, isNotNull);
-          case Fail<FileDto>():
+          case Fail<FileEntryDto>():
             fail('Expected success but got fail');
         }
       },
@@ -124,9 +124,9 @@ watch:
         final response = await plxApi.get('non_existent.md');
 
         switch (response) {
-          case Success<FileDto>():
+          case Success<FileEntryDto>():
             fail('Expected fail but got success');
-          case Fail<FileDto>():
+          case Fail<FileEntryDto>():
             expect(true, isTrue);
         }
       },
@@ -145,14 +145,14 @@ watch:
         final response = await plxApi.list('.');
 
         switch (response) {
-          case Success<List<FileDto>>(:final result):
+          case Success<List<FileEntryDto>>(:final result):
             expect(result.length, equals(3));
             final paths = result.map((f) => f.path).toList();
             expect(
               paths,
               containsAll(['file1.md', 'file2.md', 'subdir/file3.md']),
             );
-          case Fail<List<FileDto>>():
+          case Fail<List<FileEntryDto>>():
             fail('Expected success but got fail');
         }
       },
@@ -167,9 +167,9 @@ watch:
         final response = await plxApi.list('empty');
 
         switch (response) {
-          case Success<List<FileDto>>(:final result):
+          case Success<List<FileEntryDto>>(:final result):
             expect(result, isEmpty);
-          case Fail<List<FileDto>>():
+          case Fail<List<FileEntryDto>>():
             fail('Expected success but got fail');
         }
       },
@@ -183,12 +183,12 @@ watch:
         final response = await plxApi.create('new_file.md', '# New Content');
 
         switch (response) {
-          case Success<FileDto>(:final result):
+          case Success<FileEntryDto>(:final result):
             expect(result.path, equals('new_file.md'));
             final file = File('${tempDir.path}/new_file.md');
             expect(file.existsSync(), isTrue);
             expect(file.readAsStringSync(), equals('# New Content'));
-          case Fail<FileDto>():
+          case Fail<FileEntryDto>():
             fail('Expected success but got fail');
         }
       },
@@ -204,10 +204,10 @@ watch:
         final response = await plxApi.update('existing.md', 'new content');
 
         switch (response) {
-          case Success<FileDto>():
+          case Success<FileEntryDto>():
             final file = File('${tempDir.path}/existing.md');
             expect(file.readAsStringSync(), equals('new content'));
-          case Fail<FileDto>():
+          case Fail<FileEntryDto>():
             fail('Expected success but got fail');
         }
       },
@@ -241,7 +241,7 @@ watch:
         final file = File('${tempDir.path}/stream_test.md');
         await file.writeAsString('initial content');
 
-        final events = <FileDto>[];
+        final events = <FileEntryDto>[];
         final subscription = plxApi.stream().listen(events.add);
 
         await Future<void>.delayed(const Duration(milliseconds: 500));

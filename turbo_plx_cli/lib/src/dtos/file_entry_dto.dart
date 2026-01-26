@@ -6,7 +6,7 @@ part 'file_entry_dto.g.dart';
 class FileEntryDto {
   final String path;
   final String? content;
-  final int lastModified;
+  final int? lastModified;
 
   const FileEntryDto({
     required this.path,

@@ -37,10 +37,24 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends Tur
   final WorkflowDto workflow;
 
   static const fromJsonFactory = _$ActivityDtoFromJson;
-  factory ActivityDto.fromJson(Map<String, dynamic> json) => _$ActivityDtoFromJson(json);
+  factory ActivityDto.fromJson(
+    Map<String, dynamic> json,
+    INPUT Function(Object? json) fromJsonINPUT,
+    OUTPUT Function(Object? json) fromJsonOUTPUT,
+  ) =>
+      _$ActivityDtoFromJson(
+        json,
+        fromJsonINPUT,
+        fromJsonOUTPUT,
+      );
   static const toJsonFactory = _$ActivityDtoToJson;
+
   @override
-  Map<String, dynamic> toJson() => _$ActivityDtoToJson(this);
+  Map<String, dynamic> toJson() => _$ActivityDtoToJson(
+        this,
+        (value) => value.toJson(),
+        (value) => value.toJson(),
+      );
 
   static INPUT? _fromJsonINPUT<INPUT>(
     Object? json,
@@ -65,5 +79,4 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends Tur
     Object? Function(OUTPUT value) toJson,
   ) =>
       output == null ? null : toJson(output);
-
 }
