@@ -15,7 +15,6 @@ part 'role_dto.g.dart';
 class RoleDto extends TurboPromptable {
   /// Creates a [RoleDto] with the given properties.
   RoleDto({
-    super.metaData,
     required this.expertise,
     this.persona,
   });
@@ -24,21 +23,21 @@ class RoleDto extends TurboPromptable {
   final ExpertiseDto expertise;
 
   static const fromJsonFactory = _$RoleDtoFromJson;
-  factory RoleDto.fromJson(Map<String, dynamic> json) =>
-      _$RoleDtoFromJson(json);
+  factory RoleDto.fromJson(Map<String, dynamic> json) => _$RoleDtoFromJson(json);
   static const toJsonFactory = _$RoleDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$RoleDtoToJson(this);
+  Map<String, dynamic> toJson() => _$RoleDtoToJson(this);
+
+  @override
+  String toString() => 'RoleDto{persona: $persona, expertise: $expertise}';
 
   RoleDto copyWith({
     MetaDataDto? metaData,
     PersonaDto? persona,
     ExpertiseDto? expertise,
-  }) {
-    return RoleDto(
-      metaData: metaData ?? this.metaData,
-      persona: persona ?? this.persona,
-      expertise: expertise ?? this.expertise,
-    );
-  }
+  }) =>
+      RoleDto(
+        persona: persona ?? this.persona,
+        expertise: expertise ?? this.expertise,
+      );
 }

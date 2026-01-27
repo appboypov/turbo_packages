@@ -135,11 +135,10 @@ class StylingView extends StatelessWidget {
 
           return TScaffold(
             child: TSliverBody(
-              appBar: TSliverAppBar(
+              appBar: const TSliverAppBar(
                 title: 'Styling',
                 emoji: Emoji.paintbrush,
-                onBackPressed: ({required BuildContext context}) =>
-                    Navigator.of(context).pop(),
+                onBackPressed: null,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

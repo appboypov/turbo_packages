@@ -13,26 +13,26 @@ part 'sub_agent_dto.g.dart';
 class SubAgentDto extends TurboPromptable {
   /// Creates an [SubAgentDto] with the given properties.
   SubAgentDto({
-    super.metaData,
     required this.role,
   });
 
   final RoleDto role;
 
   static const fromJsonFactory = _$SubAgentDtoFromJson;
-  factory SubAgentDto.fromJson(Map<String, dynamic> json) =>
-      _$SubAgentDtoFromJson(json);
+  factory SubAgentDto.fromJson(Map<String, dynamic> json) => _$SubAgentDtoFromJson(json);
   static const toJsonFactory = _$SubAgentDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$SubAgentDtoToJson(this);
+  Map<String, dynamic> toJson() => _$SubAgentDtoToJson(this);
+
+  @override
+  String toString() => 'SubAgentDto{role: $role}';
 
   SubAgentDto copyWith({
     MetaDataDto? metaData,
     RoleDto? role,
-  }) {
-    return SubAgentDto(
-      metaData: metaData ?? this.metaData,
-      role: role ?? this.role,
-    );
-  }
+  }) =>
+      SubAgentDto(
+        role: role ?? this.role,
+      );
+
 }

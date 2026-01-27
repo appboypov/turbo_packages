@@ -29,18 +29,16 @@ class TSliverBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: TSliverScrollView(
-        appBarFooter: appBarFooter,
-        controller: controller,
-        slivers: slivers,
-        children: children,
-        appBar: appBar,
-        child: child,
-        isEmpty: isEmpty,
-        emptyPlaceholder: emptyPlaceholder,
-        onScrolled: onScrolled,
-      ),
+    return TSliverScrollView(
+      appBarFooter: appBarFooter,
+      controller: controller,
+      slivers: slivers,
+      children: children,
+      appBar: appBar,
+      child: child,
+      isEmpty: isEmpty,
+      emptyPlaceholder: emptyPlaceholder,
+      onScrolled: onScrolled,
     );
   }
 }

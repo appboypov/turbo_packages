@@ -20,7 +20,6 @@ part 'activity_dto.g.dart';
 class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends TurboPromptable {
   /// Creates an [ActivityDto] with the given properties.
   ActivityDto({
-    super.metaData,
     required this.output,
     required this.workflow,
     this.input,
@@ -48,7 +47,6 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends Tur
         fromJsonOUTPUT,
       );
   static const toJsonFactory = _$ActivityDtoToJson;
-
   @override
   Map<String, dynamic> toJson() => _$ActivityDtoToJson(
         this,

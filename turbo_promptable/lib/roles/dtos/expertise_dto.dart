@@ -12,7 +12,6 @@ part 'expertise_dto.g.dart';
 class ExpertiseDto extends TurboPromptable {
   /// Creates a [ExpertiseDto] with the given properties.
   ExpertiseDto({
-    super.metaData,
     required this.field,
     required this.specialization,
     required this.experience,
@@ -23,23 +22,24 @@ class ExpertiseDto extends TurboPromptable {
   final String experience;
 
   static const fromJsonFactory = _$ExpertiseDtoFromJson;
-  factory ExpertiseDto.fromJson(Map<String, dynamic> json) =>
-      _$ExpertiseDtoFromJson(json);
+  factory ExpertiseDto.fromJson(Map<String, dynamic> json) => _$ExpertiseDtoFromJson(json);
   static const toJsonFactory = _$ExpertiseDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$ExpertiseDtoToJson(this);
+  Map<String, dynamic> toJson() => _$ExpertiseDtoToJson(this);
+
+  @override
+  String toString() =>
+      'ExpertiseDto{field: $field, specialization: $specialization, experience: $experience}';
 
   ExpertiseDto copyWith({
     MetaDataDto? metaData,
     String? field,
     String? specialization,
     String? experience,
-  }) {
-    return ExpertiseDto(
-      metaData: metaData ?? this.metaData,
-      field: field ?? this.field,
-      specialization: specialization ?? this.specialization,
-      experience: experience ?? this.experience,
-    );
-  }
+  }) =>
+      ExpertiseDto(
+        field: field ?? this.field,
+        specialization: specialization ?? this.specialization,
+        experience: experience ?? this.experience,
+      );
 }

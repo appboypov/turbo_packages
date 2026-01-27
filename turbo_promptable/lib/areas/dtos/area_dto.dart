@@ -14,7 +14,6 @@ part 'area_dto.g.dart';
 class AreaDto extends TurboPromptable {
   /// Creates an [AreaDto] with the given properties.
   AreaDto({
-    super.metaData,
     this.roles,
   });
 
@@ -22,19 +21,19 @@ class AreaDto extends TurboPromptable {
   final List<RoleDto>? roles;
 
   static const fromJsonFactory = _$AreaDtoFromJson;
-  factory AreaDto.fromJson(Map<String, dynamic> json) =>
-      _$AreaDtoFromJson(json);
+  factory AreaDto.fromJson(Map<String, dynamic> json) => _$AreaDtoFromJson(json);
   static const toJsonFactory = _$AreaDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$AreaDtoToJson(this);
+  Map<String, dynamic> toJson() => _$AreaDtoToJson(this);
+
+  @override
+  String toString() => 'AreaDto{roles: $roles}';
 
   AreaDto copyWith({
     MetaDataDto? metaData,
     List<RoleDto>? roles,
-  }) {
-    return AreaDto(
-      metaData: metaData ?? this.metaData,
-      roles: roles ?? this.roles,
-    );
-  }
+  }) =>
+      AreaDto(
+        roles: roles ?? this.roles,
+      );
 }

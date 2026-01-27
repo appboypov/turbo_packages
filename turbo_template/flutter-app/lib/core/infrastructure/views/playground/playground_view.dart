@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/playground/playground_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
@@ -24,8 +25,11 @@ class PlaygroundView extends StatelessWidget {
               appBar: TSliverAppBar(
                 title: context.strings.playground,
                 emoji: Emoji.testTube,
-                onBackPressed: ({required BuildContext context}) =>
-                    Navigator.of(context).pop(),
+                onBackPressed: ({required BuildContext context}) {
+                  if (context.canPop()) {
+                    context.pop();
+                  }
+                },
               ),
               children: [
                 SliverPadding(
