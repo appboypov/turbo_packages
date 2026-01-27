@@ -10,21 +10,18 @@ part 'api_dto.g.dart';
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class ApiDto extends TurboPromptable {
   /// Creates an [ApiDto] with the given properties.
-  ApiDto({
-    super.metaData,
-  });
+  ApiDto();
 
   static const fromJsonFactory = _$ApiDtoFromJson;
   factory ApiDto.fromJson(Map<String, dynamic> json) => _$ApiDtoFromJson(json);
   static const toJsonFactory = _$ApiDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$ApiDtoToJson(this);
+  Map<String, dynamic> toJson() => _$ApiDtoToJson(this);
 
-  ApiDto copyWith({
-    MetaDataDto? metaData,
-  }) {
-    return ApiDto(
-      metaData: metaData ?? this.metaData,
-    );
+  ApiDto copyWith() {
+    return ApiDto();
   }
+
+  @override
+  String toString() => 'ApiDto()';
 }

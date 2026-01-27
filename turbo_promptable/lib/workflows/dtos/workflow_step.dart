@@ -17,7 +17,6 @@ part 'workflow_step.g.dart';
 class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [WorkflowStep] with the given properties.
   WorkflowStep({
-    super.metaData,
     required this.workflowStepType,
     this.guardRails,
     this.input,
@@ -61,11 +60,14 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
       _$WorkflowStepToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
-  Map<String, dynamic>? toJsonMap() {
-    // For generic types, toJsonMap() cannot be implemented without type converters.
+  Map<String, dynamic> toJson() {
+    // For generic types, toJson() cannot be implemented without type converters.
     // Use toJsonWithConverters() instead with appropriate converters.
     throw UnimplementedError(
-      'WorkflowStep.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
+      'WorkflowStep.toJson() requires type converters. Use toJsonWithConverters() instead.',
     );
   }
+
+  @override
+  String toString() => 'WorkflowStep{workflowStepType: $workflowStepType, guardRails: $guardRails, input: $input, output: $output}';
 }

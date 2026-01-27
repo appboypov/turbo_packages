@@ -30,7 +30,6 @@ class AreaDto extends TurboPromptable {
   String toString() => 'AreaDto{roles: $roles}';
 
   AreaDto copyWith({
-    MetaDataDto? metaData,
     List<RoleDto>? roles,
   }) =>
       AreaDto(

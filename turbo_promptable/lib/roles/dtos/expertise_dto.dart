@@ -32,7 +32,6 @@ class ExpertiseDto extends TurboPromptable {
       'ExpertiseDto{field: $field, specialization: $specialization, experience: $experience}';
 
   ExpertiseDto copyWith({
-    MetaDataDto? metaData,
     String? field,
     String? specialization,
     String? experience,

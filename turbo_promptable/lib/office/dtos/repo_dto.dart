@@ -13,7 +13,6 @@ part 'repo_dto.g.dart';
 class RepoDto extends TurboPromptable {
   /// Creates a [RepoDto] with the given properties.
   RepoDto({
-    super.metaData,
     this.url,
     this.projectKey,
     this.projectManagementUrl,
@@ -34,10 +33,9 @@ class RepoDto extends TurboPromptable {
       _$RepoDtoFromJson(json);
   static const toJsonFactory = _$RepoDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$RepoDtoToJson(this);
+  Map<String, dynamic> toJson() => _$RepoDtoToJson(this);
 
   RepoDto copyWith({
-    MetaDataDto? metaData,
     String? url,
     String? projectKey,
     String? projectManagementUrl,
@@ -46,7 +44,6 @@ class RepoDto extends TurboPromptable {
     String? instructions,
   }) {
     return RepoDto(
-      metaData: metaData ?? this.metaData,
       url: url ?? this.url,
       projectKey: projectKey ?? this.projectKey,
       projectManagementUrl: projectManagementUrl ?? this.projectManagementUrl,
@@ -55,4 +52,7 @@ class RepoDto extends TurboPromptable {
       instructions: instructions ?? this.instructions,
     );
   }
+
+  @override
+  String toString() => 'RepoDto{url: $url, projectKey: $projectKey, projectManagementUrl: $projectManagementUrl, readMe: $readMe, architecture: $architecture, instructions: $instructions}';
 }

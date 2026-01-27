@@ -24,4 +24,7 @@ class EndGoalDto extends TurboPromptable {
   static const toJsonFactory = _$EndGoalDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$EndGoalDtoToJson(this);
+
+  @override
+  String toString() => 'EndGoalDto{acceptanceCriteria: $acceptanceCriteria, constraints: $constraints}';
 }

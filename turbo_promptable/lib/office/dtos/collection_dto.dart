@@ -77,7 +77,6 @@ class CollectionDto extends TurboPromptable {
   String toString() => 'CollectionDto{items: $items}';
 
   CollectionDto copyWith({
-    MetaDataDto? metaData,
     List<String>? items,
   }) =>
       CollectionDto(

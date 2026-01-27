@@ -1,4 +1,4 @@
-﻿import 'package:json_annotation/json_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
 import '../../shared/dtos/meta_data_dto.dart';
@@ -18,4 +18,7 @@ class InstructionDto extends TurboPromptable {
   static const toJsonFactory = _$InstructionDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$InstructionDtoToJson(this);
+
+  @override
+  String toString() => 'InstructionDto()';
 }

@@ -28,7 +28,6 @@ class SubAgentDto extends TurboPromptable {
   String toString() => 'SubAgentDto{role: $role}';
 
   SubAgentDto copyWith({
-    MetaDataDto? metaData,
     RoleDto? role,
   }) =>
       SubAgentDto(

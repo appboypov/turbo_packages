@@ -12,22 +12,19 @@ part 'reference_dto.g.dart';
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class ReferenceDto extends TurboPromptable {
   /// Creates a [ReferenceDto] with the given properties.
-  ReferenceDto({
-    super.metaData,
-  });
+  ReferenceDto();
 
   static const fromJsonFactory = _$ReferenceDtoFromJson;
   factory ReferenceDto.fromJson(Map<String, dynamic> json) =>
       _$ReferenceDtoFromJson(json);
   static const toJsonFactory = _$ReferenceDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$ReferenceDtoToJson(this);
+  Map<String, dynamic> toJson() => _$ReferenceDtoToJson(this);
 
-  ReferenceDto copyWith({
-    MetaDataDto? metaData,
-  }) {
-    return ReferenceDto(
-      metaData: metaData ?? this.metaData,
-    );
+  ReferenceDto copyWith() {
+    return ReferenceDto();
   }
+
+  @override
+  String toString() => 'ReferenceDto()';
 }

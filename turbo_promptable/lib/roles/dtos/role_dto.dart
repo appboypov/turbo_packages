@@ -32,7 +32,6 @@ class RoleDto extends TurboPromptable {
   String toString() => 'RoleDto{persona: $persona, expertise: $expertise}';
 
   RoleDto copyWith({
-    MetaDataDto? metaData,
     PersonaDto? persona,
     ExpertiseDto? expertise,
   }) =>

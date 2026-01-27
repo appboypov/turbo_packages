@@ -14,7 +14,6 @@ part 'template_dto.g.dart';
 class TemplateDto extends TurboPromptable {
   /// Creates a [TemplateDto] with the given properties.
   TemplateDto({
-    super.metaData,
     this.variables,
   });
 
@@ -28,15 +27,16 @@ class TemplateDto extends TurboPromptable {
       _$TemplateDtoFromJson(json);
   static const toJsonFactory = _$TemplateDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$TemplateDtoToJson(this);
+  Map<String, dynamic> toJson() => _$TemplateDtoToJson(this);
 
   TemplateDto copyWith({
-    MetaDataDto? metaData,
     Map<String, String>? variables,
   }) {
     return TemplateDto(
-      metaData: metaData ?? this.metaData,
       variables: variables ?? this.variables,
     );
   }
+
+  @override
+  String toString() => 'TemplateDto{variables: $variables}';
 }

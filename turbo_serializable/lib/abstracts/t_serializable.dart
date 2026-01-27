@@ -1,4 +1,7 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
+import 'package:turbo_serializable/markdown/factories/t_md_factory.dart';
 
 /// Abstract base class providing serialization to multiple data formats.
 ///
@@ -13,29 +16,29 @@ abstract class TSerializable extends TWriteable {
   /// Throws an [UnimplementedError] if [yamlBuilder] is not provided.
   String toYaml() {
     if (yamlBuilder == null) throw UnimplementedError();
-    return yamlBuilder!(toJson());
+    return yamlBuilder!(this);
   }
 
   /// Returns a function that builds a YAML string from a JSON map.
   ///
   /// Subclasses should override this getter to supply their YAML builder, or
   /// set it externally, if applicable. If not provided, [toYaml()] will throw.
-  String Function(Map<String, dynamic> json)? yamlBuilder;
+  String Function(TWriteable writeable)? yamlBuilder;
 
   /// Converts this object to a Markdown string.
   ///
   /// Uses [markdownBuilder] to serialize the result of [toJson()].
   /// Throws an [UnimplementedError] if [markdownBuilder] is not provided.
-  String toMarkdown() {
-    if (markdownBuilder == null) throw UnimplementedError();
-    return markdownBuilder!(toJson());
-  }
+  String toMarkdown({
+    TMdFactory? mdFactory,
+  }) =>
+      (mdFactory ?? this.mdFactory)?.call() ?? toJson();
 
   /// Returns a function that builds a Markdown string from a JSON map.
   ///
   /// Subclasses should override this getter to supply their Markdown builder, or
   /// set it externally, if applicable. If not provided, [toMarkdown()] will throw.
-  String Function(Map<String, dynamic> json)? markdownBuilder;
+  TMdFactory? mdFactory;
 
   /// Converts this object to an XML string.
   ///

@@ -77,4 +77,7 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends Tur
     Object? Function(OUTPUT value) toJson,
   ) =>
       output == null ? null : toJson(output);
+
+  @override
+  String toString() => 'ActivityDto{input: $input, instructions: $instructions, subAgents: $subAgents, output: $output, workflow: $workflow}';
 }
