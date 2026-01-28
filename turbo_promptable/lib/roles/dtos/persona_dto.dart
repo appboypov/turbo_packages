@@ -13,7 +13,6 @@ part 'persona_dto.g.dart';
 class PersonaDto extends TurboPromptable {
   /// Creates a [PersonaDto] with the given properties.
   PersonaDto({
-    super.metaData,
     this.achievements,
     this.background,
     this.communicationStyle,
@@ -36,10 +35,9 @@ class PersonaDto extends TurboPromptable {
       _$PersonaDtoFromJson(json);
   static const toJsonFactory = _$PersonaDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$PersonaDtoToJson(this);
+  Map<String, dynamic> toJson() => _$PersonaDtoToJson(this);
 
   PersonaDto copyWith({
-    MetaDataDto? metaData,
     List<String>? achievements,
     List<String>? preferences,
     List<String>? resume,
@@ -49,7 +47,6 @@ class PersonaDto extends TurboPromptable {
     String? nickname,
   }) {
     return PersonaDto(
-      metaData: metaData ?? this.metaData,
       achievements: achievements ?? this.achievements,
       preferences: preferences ?? this.preferences,
       resume: resume ?? this.resume,
@@ -59,4 +56,7 @@ class PersonaDto extends TurboPromptable {
       nickname: nickname ?? this.nickname,
     );
   }
+
+  @override
+  String toString() => 'PersonaDto{achievements: $achievements, preferences: $preferences, resume: $resume, values: $values, background: $background, communicationStyle: $communicationStyle, nickname: $nickname}';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/extensions/text_style_extension.dart';
+import 'package:turbo_flutter_template/core/ui/widgets/text_style_extension.dart';
 
 class AcceptPrivacyText extends StatelessWidget {
   const AcceptPrivacyText({

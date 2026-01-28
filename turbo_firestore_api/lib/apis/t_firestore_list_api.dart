@@ -57,8 +57,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
   /// [listByQueryWithConverter] type-safe queries
   /// [listAll] retrieve all documents
   Future<TurboResponse<List<Map<String, dynamic>>>> listByQuery({
-    required CollectionReferenceDef<Map<String, dynamic>>
-        collectionReferenceQuery,
+    required CollectionReferenceDef<Map<String, dynamic>> collectionReferenceQuery,
     required String whereDescription,
   }) async {
     try {
@@ -80,22 +79,25 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        query: whereDescription,
+        operationType: TOperationType.read,
+      );
+
       _log.error(
         message: 'Unable to find documents with custom query',
         sensitiveData: TSensitiveData(
-          path: _collectionPath(),
+          path: path,
           whereDescription: whereDescription,
+          operationType: TOperationType.read,
+          fullPath: path,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
-        query: whereDescription,
       );
 
       return TurboResponse.fail(error: exception);
@@ -158,22 +160,25 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        query: whereDescription,
+        operationType: TOperationType.read,
+      );
+
       _log.error(
         message: 'Unable to find documents with custom query',
         sensitiveData: TSensitiveData(
-          path: _collectionPath(),
+          path: path,
           whereDescription: whereDescription,
+          operationType: TOperationType.read,
+          fullPath: path,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
-        query: whereDescription,
       );
 
       return TurboResponse.fail(error: exception);
@@ -224,21 +229,24 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        query: 'listAll()',
+        operationType: TOperationType.read,
+      );
+
       _log.error(
         message: 'Unable to find all documents',
         sensitiveData: TSensitiveData(
-          path: _collectionPath(),
+          path: path,
+          operationType: TOperationType.read,
+          fullPath: path,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
-        query: 'listAll()',
       );
 
       return TurboResponse.fail(error: exception);
@@ -280,29 +288,31 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           path: _collectionPath(),
         ),
       );
-      final result =
-          (await listCollectionReferenceWithConverter().get(_getOptions))
-              .docs
-              .map((e) => e.data())
-              .toList();
+      final result = (await listCollectionReferenceWithConverter().get(_getOptions))
+          .docs
+          .map((e) => e.data())
+          .toList();
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
+        query: 'listAllWithConverter()',
+        operationType: TOperationType.read,
+      );
+
       _log.error(
         message: 'Unable to find all documents',
         sensitiveData: TSensitiveData(
-          path: _collectionPath(),
+          path: path,
+          operationType: TOperationType.read,
+          fullPath: path,
         ),
         error: error,
         stackTrace: stackTrace,
-      );
-
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
-        query: 'listAllWithConverter()',
       );
 
       return TurboResponse.fail(error: exception);
@@ -357,8 +367,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
               );
         } catch (error) {
           _log.error(
-            message:
-                'Unexpected error caught while adding local id and document reference',
+            message: 'Unexpected error caught while adding local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               id: snapshot.id,
@@ -444,8 +453,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           );
         } catch (error, stackTrace) {
           _log.error(
-            message:
-                'Unexpected error caught while adding local id and document reference',
+            message: 'Unexpected error caught while adding local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               id: snapshot.id,
@@ -479,8 +487,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
             );
           } catch (error, stackTrace) {
             _log.error(
-              message:
-                  'Unexpected error caught while adding local id and document reference',
+              message: 'Unexpected error caught while adding local id and document reference',
               sensitiveData: TSensitiveData(
                 path: _collectionPath(),
                 id: snapshot.id,
@@ -506,8 +513,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
               );
         } catch (error) {
           _log.error(
-            message:
-                'Unexpected error caught while removing local id and document reference',
+            message: 'Unexpected error caught while removing local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               data: data,

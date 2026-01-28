@@ -49,8 +49,8 @@ cd "$PROJECT_ROOT"
 flutter run \
   --dart-define=env=emulators \
   --dart-define=ip="$IP" \
-  --dart-define=authPort="$AUTH_PORT" \
-  --dart-define=firestorePort="$FIRESTORE_PORT" \
-  --dart-define=functionsPort="$FUNCTIONS_PORT" \
-  --dart-define=storagePort="$STORAGE_PORT" \
+  --dart-define=AUTH_PORT="$AUTH_PORT" \
+  --dart-define=FIRESTORE_PORT="$FIRESTORE_PORT" \
+  --dart-define=FUNCTIONS_PORT="$FUNCTIONS_PORT" \
+  --dart-define=STORAGE_PORT="$STORAGE_PORT" \
   "$@"

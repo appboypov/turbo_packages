@@ -43,6 +43,9 @@ class TSensitiveData {
   /// [type] operation type identifier
   /// [updateTimeStampType] timestamp type for document updates
   /// [data] additional operation data
+  /// [operationType] type of Firestore operation being performed
+  /// [documentData] JSON data being accessed (especially useful for permission errors)
+  /// [fullPath] complete document path (collection + document ID)
   const TSensitiveData({
     required this.path,
     this.id,
@@ -60,6 +63,9 @@ class TSensitiveData {
     this.type,
     this.updateTimeStampType,
     this.data,
+    this.operationType,
+    this.documentData,
+    this.fullPath,
   });
 
   /// The Firestore path being accessed
@@ -110,11 +116,22 @@ class TSensitiveData {
   /// Additional operation data
   final Object? data;
 
+  /// Type of Firestore operation being performed
+  final TOperationType? operationType;
+
+  /// JSON data being accessed (especially useful for permission errors)
+  final Map<String, dynamic>? documentData;
+
+  /// Complete document path (collection + document ID)
+  final String? fullPath;
+
   @override
   String toString() {
     return 'SensitiveData:'
         'path: $path'
         '${id != null ? ', id: $id' : ''}'
+        '${fullPath != null ? ', fullPath: $fullPath' : ''}'
+        '${operationType != null ? ', operationType: $operationType' : ''}'
         '${whereDescription != null ? ', whereDescription: $whereDescription' : ''}'
         '${createTimeStampType != null ? ', createTimeStampType: $createTimeStampType' : ''}'
         '${field != null ? ', field: $field' : ''}'
@@ -128,6 +145,7 @@ class TSensitiveData {
         '${searchTermType != null ? ', searchTermType: $searchTermType' : ''}'
         '${type != null ? ', type: $type' : ''}'
         '${updateTimeStampType != null ? ', updateTimeStampType: $updateTimeStampType' : ''}'
-        '${data != null ? ', data: $data' : ''}';
+        '${data != null ? ', data: $data' : ''}'
+        '${documentData != null ? ', documentData: $documentData' : ''}';
   }
 }

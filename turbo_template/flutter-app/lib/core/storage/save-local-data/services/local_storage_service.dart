@@ -9,16 +9,16 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:turbo_firestore_api/extensions/completer_extension.dart';
-import 'package:turbo_flutter_template/core/auth/authenticate-users/services/auth_service.dart';
 import 'package:turbo_flutter_template/core/auth/globals/g_now.dart';
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/enums/navigation_tab.dart';
+import 'package:turbo_flutter_template/core/auth/services/auth_service.dart';
+import 'package:turbo_flutter_template/core/infrastructure/enums/navigation_tab.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_values.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/list_extension.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/enums/box_key.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/t_theme_mode.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/services/badge_service.dart';
-import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
+import 'package:turbo_flutter_template/core/ui/enums/t_theme_mode.dart';
+import 'package:turbo_flutter_template/core/ui/services/badge_service.dart';
+import 'package:turbo_flutter_template/core/ux/enums/t_supported_language.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class LocalStorageService extends ChangeNotifier with Turbolytics {
@@ -88,8 +88,8 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
   TThemeMode get themeMode =>
       _boxGet<bool>(boxKey: BoxKey.isLightMode, id: null, userId: null) ?? false
-          ? TThemeMode.light
-          : TThemeMode.dark;
+      ? TThemeMode.light
+      : TThemeMode.dark;
 
   TSupportedLanguage get language {
     final storedLanguage = _boxGet<String>(
@@ -128,14 +128,14 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   NavigationTab get navigationTab =>
       NavigationTab.values.indexOrNull(
         _boxGet<int>(
-          id: null,
-          userId: _userId,
-          boxKey: BoxKey.bottomNavigationIndex,
-          defaultValue: 0,
-        ) ??
+              id: null,
+              userId: _userId,
+              boxKey: BoxKey.bottomNavigationIndex,
+              defaultValue: 0,
+            ) ??
             0,
       ) ??
-          NavigationTab.defaultValue;
+      NavigationTab.defaultValue;
 
   /// Checks if a language preference has been stored
   ///
@@ -145,6 +145,12 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     userId: null,
     boxKey: BoxKey.language,
     id: null,
+  );
+
+  String? get lastEnvironment => _boxGet<String>(
+    boxKey: BoxKey.lastEnvironment,
+    id: null,
+    userId: null,
   );
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
@@ -269,5 +275,14 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
       value: version,
     );
     unawaited(_badgeService.manageHasUnreadChangelog());
+  }
+
+  Future<void> updateLastEnvironment({required String environment}) async {
+    await _boxInsert(
+      boxKey: BoxKey.lastEnvironment,
+      id: null,
+      userId: null,
+      value: environment,
+    );
   }
 }

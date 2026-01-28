@@ -1,7 +1,7 @@
-part of '../data/models/t_view_model.dart';
+part of '../data/models/t_base_view_model.dart';
 
-/// Used to build and provide a [TViewModel] to the widget tree.
-class TViewModelBuilder<T extends TViewModel> extends StatefulWidget {
+/// Used to build and provide a [TBaseViewModel] to the widget tree.
+class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
   const TViewModelBuilder({
     this.child,
     required Widget Function(
@@ -29,16 +29,16 @@ class TViewModelBuilder<T extends TViewModel> extends StatefulWidget {
           BuildContext context, T model, bool isInitialised, Widget? child,)
       _builder;
 
-  /// Builder method that provides the [TViewModel].
+  /// Builder method that provides the [TBaseViewModel].
   final T Function() _viewModelBuilder;
 
-  /// Builder method that provides the [TViewModel.initialise] with arguments.
+  /// Builder method that provides the [TBaseViewModel.initialise] with arguments.
   final dynamic Function()? _argumentBuilder;
 
-  /// Whether the [TViewModel] should listen to [TViewModel.notifyListeners] for rebuilds.
+  /// Whether the [TBaseViewModel] should listen to [TBaseViewModel.notifyListeners] for rebuilds.
   final bool isReactive;
 
-  /// Whether the [ChangeNotifierProvider] should dispose the [TViewModel] when it's removed from the widget tree.
+  /// Whether the [ChangeNotifierProvider] should dispose the [TBaseViewModel] when it's removed from the widget tree.
   final bool shouldDispose;
 
   /// Fires when [TViewModelBuilder] is removed from the widget tree.
@@ -49,12 +49,12 @@ class TViewModelBuilder<T extends TViewModel> extends StatefulWidget {
       TViewModelBuilderState<T>();
 }
 
-class TViewModelBuilderState<T extends TViewModel>
+class TViewModelBuilderState<T extends TBaseViewModel>
     extends State<TViewModelBuilder<T>> {
-  /// The current [TViewModel].
+  /// The current [TBaseViewModel].
   late final T _viewModel;
 
-  /// Initialises the [TViewModel] and its needed methods.
+  /// Initialises the [TBaseViewModel] and its needed methods.
   @override
   void initState() {
     _viewModel = widget._viewModelBuilder()
@@ -65,7 +65,7 @@ class TViewModelBuilderState<T extends TViewModel>
     super.initState();
   }
 
-  /// Disposes the [TViewModel] and its given methods.
+  /// Disposes the [TBaseViewModel] and its given methods.
   @override
   void dispose() {
     widget.onDispose?.call(_viewModel);

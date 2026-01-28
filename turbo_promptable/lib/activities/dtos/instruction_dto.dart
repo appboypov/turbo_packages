@@ -12,22 +12,13 @@ part 'instruction_dto.g.dart';
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class InstructionDto extends TurboPromptable {
   /// Creates an [InstructionDto] with the given properties.
-  InstructionDto({
-    super.metaData,
-  });
 
   static const fromJsonFactory = _$InstructionDtoFromJson;
-  factory InstructionDto.fromJson(Map<String, dynamic> json) =>
-      _$InstructionDtoFromJson(json);
+  factory InstructionDto.fromJson(Map<String, dynamic> json) => _$InstructionDtoFromJson(json);
   static const toJsonFactory = _$InstructionDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$InstructionDtoToJson(this);
+  Map<String, dynamic> toJson() => _$InstructionDtoToJson(this);
 
-  InstructionDto copyWith({
-    MetaDataDto? metaData,
-  }) {
-    return InstructionDto(
-      metaData: metaData ?? this.metaData,
-    );
-  }
+  @override
+  String toString() => 'InstructionDto()';
 }

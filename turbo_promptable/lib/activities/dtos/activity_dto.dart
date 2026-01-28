@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:turbo_promptable/abstracts/has_to_json.dart';
 import 'package:turbo_promptable/activities/dtos/instruction_dto.dart';
 import 'package:turbo_promptable/activities/dtos/sub_agent_dto.dart';
 import 'package:turbo_promptable/workflows/dtos/workflow_dto.dart';
@@ -12,11 +13,13 @@ part 'activity_dto.g.dart';
 ///
 /// Activities are AI commands that agents can execute.
 @JsonSerializable(
-    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true,)
-class ActivityDto<INPUT, OUTPUT> extends TurboPromptable {
+  includeIfNull: true,
+  explicitToJson: true,
+  genericArgumentFactories: true,
+)
+class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends TurboPromptable {
   /// Creates an [ActivityDto] with the given properties.
   ActivityDto({
-    super.metaData,
     required this.output,
     required this.workflow,
     this.input,
@@ -24,33 +27,57 @@ class ActivityDto<INPUT, OUTPUT> extends TurboPromptable {
     this.subAgents,
   });
 
+  @JsonKey(toJson: _toJsonINPUT, fromJson: _fromJsonINPUT)
   final INPUT? input;
   final List<InstructionDto>? instructions;
   final List<SubAgentDto>? subAgents;
+  @JsonKey(toJson: _toJsonOUTPUT, fromJson: _fromJsonOUTPUT)
   final OUTPUT? output;
   final WorkflowDto workflow;
 
+  static const fromJsonFactory = _$ActivityDtoFromJson;
   factory ActivityDto.fromJson(
     Map<String, dynamic> json,
     INPUT Function(Object? json) fromJsonINPUT,
     OUTPUT Function(Object? json) fromJsonOUTPUT,
   ) =>
-      _$ActivityDtoFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
+      _$ActivityDtoFromJson(
+        json,
+        fromJsonINPUT,
+        fromJsonOUTPUT,
+      );
+  static const toJsonFactory = _$ActivityDtoToJson;
+  @override
+  Map<String, dynamic> toJson() => _$ActivityDtoToJson(
+        this,
+        (value) => value.toJson(),
+        (value) => value.toJson(),
+      );
 
-  /// JSON serialization method for generic types.
-  /// Requires converters for INPUT and OUTPUT types.
-  Map<String, dynamic> toJsonWithConverters(
-    Object? Function(INPUT value) toJsonINPUT,
-    Object? Function(OUTPUT value) toJsonOUTPUT,
+  static INPUT? _fromJsonINPUT<INPUT>(
+    Object? json,
+    INPUT Function(Object? json) fromJson,
   ) =>
-      _$ActivityDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
+      json == null ? null : fromJson(json);
+
+  static Object? _toJsonINPUT<INPUT>(
+    INPUT? input,
+    Object? Function(INPUT value) toJson,
+  ) =>
+      input == null ? null : toJson(input);
+
+  static OUTPUT? _fromJsonOUTPUT<OUTPUT>(
+    Object? json,
+    OUTPUT Function(Object? json) fromJson,
+  ) =>
+      json == null ? null : fromJson(json);
+
+  static Object? _toJsonOUTPUT<OUTPUT>(
+    OUTPUT? output,
+    Object? Function(OUTPUT value) toJson,
+  ) =>
+      output == null ? null : toJson(output);
 
   @override
-  Map<String, dynamic>? toJsonMap() {
-    // For generic types, toJsonMap() cannot be implemented without type converters.
-    // Use toJsonWithConverters() instead with appropriate converters.
-    throw UnimplementedError(
-      'ActivityDto.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
-    );
-  }
+  String toString() => 'ActivityDto{input: $input, instructions: $instructions, subAgents: $subAgents, output: $output, workflow: $workflow}';
 }

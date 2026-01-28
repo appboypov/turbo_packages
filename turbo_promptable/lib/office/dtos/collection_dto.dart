@@ -13,7 +13,6 @@ part 'collection_dto.g.dart';
 class CollectionDto extends TurboPromptable {
   /// Creates a [CollectionDto] with the given properties.
   CollectionDto({
-    super.metaData,
     required this.items,
   });
 
@@ -23,19 +22,18 @@ class CollectionDto extends TurboPromptable {
   final List<String> items;
 
   static const fromJsonFactory = _$CollectionDtoFromJson;
-  factory CollectionDto.fromJson(Map<String, dynamic> json) =>
-      _$CollectionDtoFromJson(json);
+  factory CollectionDto.fromJson(Map<String, dynamic> json) => _$CollectionDtoFromJson(json);
   static const toJsonFactory = _$CollectionDtoToJson;
+  @override
+  Map<String, dynamic> toJson() => _$CollectionDtoToJson(this);
 
   @override
-  Map<String, dynamic>? toJsonMap() => _$CollectionDtoToJson(this);
+  String toString() => 'CollectionDto{items: $items}';
 
   CollectionDto copyWith({
-    MetaDataDto? metaData,
     List<String>? items,
   }) =>
       CollectionDto(
-        metaData: metaData ?? this.metaData,
         items: items ?? this.items,
       );
 }

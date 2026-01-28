@@ -2,8 +2,6 @@
 
 ## Purpose
 This file configures release preparation and pre-release consistency verification.
-Run `/plx:refine-release` to populate project-specific checklists.
-Run `/plx:prepare-release` to execute release preparation.
 
 ## Documentation Config
 ```yaml

@@ -18,14 +18,18 @@ Future<void> main(List<String> args) async {
     try {
       final client = HttpClient();
       final request = await client.postUrl(
-        Uri.parse('http://$host/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-api-key'),
+        Uri.parse(
+          'http://$host/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-api-key',
+        ),
       );
       request.headers.contentType = ContentType.json;
-      request.write(jsonEncode({
-        'email': email,
-        'password': password,
-        'returnSecureToken': true,
-      }));
+      request.write(
+        jsonEncode({
+          'email': email,
+          'password': password,
+          'returnSecureToken': true,
+        }),
+      );
 
       final response = await request.close();
       final body = await response.transform(utf8.decoder).join();

@@ -15,7 +15,6 @@ part 'workflow_dto.g.dart';
 class WorkflowDto extends TurboPromptable {
   /// Creates a [WorkflowDto] with the given properties.
   WorkflowDto({
-    super.metaData,
     this.guardRails,
     required this.steps,
   });
@@ -28,17 +27,18 @@ class WorkflowDto extends TurboPromptable {
       _$WorkflowDtoFromJson(json);
   static const toJsonFactory = _$WorkflowDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$WorkflowDtoToJson(this);
+  Map<String, dynamic> toJson() => _$WorkflowDtoToJson(this);
 
   WorkflowDto copyWith({
-    MetaDataDto? metaData,
     List<GuardRailDto>? guardRails,
     List<WorkflowStep>? steps,
   }) {
     return WorkflowDto(
-      metaData: metaData ?? this.metaData,
       guardRails: guardRails ?? this.guardRails,
       steps: steps ?? this.steps,
     );
   }
+
+  @override
+  String toString() => 'WorkflowDto{guardRails: $guardRails, steps: $steps}';
 }

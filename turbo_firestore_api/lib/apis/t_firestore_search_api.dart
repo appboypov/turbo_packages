@@ -163,8 +163,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
           }
         } catch (error, stackTrace) {
           _log.error(
-            message:
-                '${error.runtimeType} caught while trying to search for number equivalent',
+            message: '${error.runtimeType} caught while trying to search for number equivalent',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               searchTerm: searchTerm,
@@ -191,12 +190,13 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
         stackTrace: stackTrace,
       );
 
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
         query: 'search(searchTerm: $searchTerm, searchField: $searchField)',
+        operationType: TOperationType.read,
       );
 
       return TurboResponse.fail(error: exception);
@@ -262,8 +262,7 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
           limit: limit,
         ),
       );
-      Query<T> collectionReferenceQuery(Query<T> collectionReference) =>
-          switch (searchTermType) {
+      Query<T> collectionReferenceQuery(Query<T> collectionReference) => switch (searchTermType) {
             TSearchTermType.arrayContains => limit == null
                 ? collectionReference.where(
                     searchField,
@@ -361,12 +360,13 @@ extension TurboFirestoreSearchApi<T> on TFirestoreApi<T> {
         stackTrace: stackTrace,
       );
 
-      // Convert to TurboFirestoreException and wrap in TurboResponse
-      final exception = TFirestoreException.fromFirestoreException(
-        error,
-        stackTrace,
-        path: _collectionPath(),
+      final path = _collectionPath();
+      final exception = _createException(
+        error: error,
+        stackTrace: stackTrace,
+        path: path,
         query: 'search(searchTerm: $searchTerm, searchField: $searchField)',
+        operationType: TOperationType.read,
       );
 
       return TurboResponse.fail(error: exception);

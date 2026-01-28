@@ -92,11 +92,13 @@ class FileUtils {
     for (var i = 0; i < lines.length; i++) {
       final line = lines[i];
       if (line.contains(oldValue)) {
-        changes.add(LineChange(
-          lineNumber: i + 1,
-          before: line,
-          after: line.replaceAll(oldValue, newValue),
-        ),);
+        changes.add(
+          LineChange(
+            lineNumber: i + 1,
+            before: line,
+            after: line.replaceAll(oldValue, newValue),
+          ),
+        );
       }
     }
 
@@ -173,8 +175,7 @@ class FileUtils {
       return path.endsWith(ext);
     } else if (pattern.contains('/') || pattern.contains('\\')) {
       // Path suffix match
-      return path.endsWith(pattern) ||
-          path.endsWith(pattern.replaceAll('/', '\\'));
+      return path.endsWith(pattern) || path.endsWith(pattern.replaceAll('/', '\\'));
     } else {
       // Exact filename match
       return p.basename(path) == pattern;

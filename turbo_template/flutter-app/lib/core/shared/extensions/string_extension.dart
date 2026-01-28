@@ -1,8 +1,7 @@
-import 'package:turbo_flutter_template/core/infrastructure/navigate-app/constants/t_params.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_keys.dart';
 import 'package:turbo_flutter_template/core/shared/constants/t_values.dart';
-import 'package:turbo_flutter_template/core/ui/show-ui/enums/emoji.dart';
-import 'package:turbo_flutter_template/core/ux/manage-language/enums/t_supported_language.dart';
+import 'package:turbo_flutter_template/core/ui/enums/emoji.dart';
+import 'package:turbo_flutter_template/core/ux/enums/t_supported_language.dart';
 
 extension StringExtension on String {
   String get withPeriod {
@@ -39,7 +38,7 @@ extension StringExtension on String {
   String get asPhoneNumber => 'tel:$this';
   String get asEmail => 'mailto:$this';
 
-  String withId(String id) => replaceAll(TParams.id, id);
+  String withId(String id) => replaceAll(TKeys.id, id);
 
   String capitalize({bool forceLowercase = false}) {
     if (isEmpty) {

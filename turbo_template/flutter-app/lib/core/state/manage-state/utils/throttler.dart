@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 
 class Throttler {
   Throttler({this.duration = TDurations.throttle});

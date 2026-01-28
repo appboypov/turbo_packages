@@ -1,9 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('TContextualButtonsService', () {
     tearDown(() {
       TContextualButtonsService.resetInstance();
@@ -367,6 +370,43 @@ void main() {
 
         // Assert
         expect(service.value, const TContextualButtonsConfig());
+      });
+    });
+
+    group('config equality', () {
+      test('''
+        Given two configs with the same function references
+        When the configs are compared
+        Then they are treated as equal
+      ''', () {
+        // Arrange
+        List<Widget> topBuilder(BuildContext _) => const [
+              SizedBox(key: ValueKey('top-primary')),
+            ];
+
+        final first = TContextualButtonsConfig(top: topBuilder);
+        final second = TContextualButtonsConfig(top: topBuilder);
+
+        // Assert
+        expect(first, second);
+        expect(first.hashCode, second.hashCode);
+      });
+
+      test('''
+        Given two configs with different function references
+        When the configs are compared
+        Then they are not equal
+      ''', () {
+        // Arrange
+        final first = TContextualButtonsConfig(
+          top: (_) => const [SizedBox(key: ValueKey('top-primary'))],
+        );
+        final second = TContextualButtonsConfig(
+          top: (_) => const [SizedBox(key: ValueKey('top-primary'))],
+        );
+
+        // Assert
+        expect(first, isNot(equals(second)));
       });
     });
 

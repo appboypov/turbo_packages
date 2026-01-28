@@ -7,25 +7,61 @@ import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 ///
 /// Provides reactive state management through [ValueListenable] pattern,
 /// allowing widgets to listen to configuration changes and update accordingly.
+///
+/// Supports scoped button configurations where:
+/// - Persistent buttons (scope: null) are always visible
+/// - Scoped buttons only contribute when their scope matches [activeScope]
 abstract class TContextualButtonsServiceInterface extends ChangeNotifier
     implements ValueListenable<TContextualButtonsConfig> {
   /// Current configuration value.
   @override
   TContextualButtonsConfig get value;
 
-  /// Updates the configuration directly.
+  /// Currently active scope for scoped buttons.
+  Object? get activeScope;
+
+  /// Sets the active scope for scoped buttons.
   ///
-  /// If [doNotifyListeners] is true, listeners are notified of the change.
-  /// If false, the value is updated silently without notifying listeners.
+  /// When the active scope changes, the effective configuration is recomputed
+  /// to include only persistent buttons and buttons matching the new scope.
+  void setActiveScope(Object? scope, {bool doNotifyListeners = true});
+
+  /// Pushes button configuration for a specific scope and owner.
+  ///
+  /// - [scope]: The scope for these buttons. Use null for persistent buttons
+  ///   that should always be visible regardless of active scope.
+  /// - [owner]: Unique identifier for the source of these buttons. Used to
+  ///   remove buttons when the owner disposes.
+  /// - [config]: The button configuration to push.
+  void pushButtons({
+    Object? scope,
+    required Object owner,
+    required TContextualButtonsConfig config,
+    bool doNotifyListeners = true,
+  });
+
+  /// Removes buttons for a specific scope and owner.
+  void removeButtons({
+    Object? scope,
+    required Object owner,
+    bool doNotifyListeners = true,
+  });
+
+  /// Clears all buttons for a specific scope.
+  ///
+  /// If [scope] is null, clears persistent buttons.
+  void clearButtons({Object? scope, bool doNotifyListeners = true});
+
+  /// Updates the base configuration settings directly.
+  ///
+  /// Base settings like [allowFilter], [positionOverrides], [hiddenPositions],
+  /// and animation settings are applied on top of merged pushed configs.
   void update(
     TContextualButtonsConfig config, {
     bool doNotifyListeners = true,
   });
 
-  /// Updates the configuration using an updater function.
-  ///
-  /// If [doNotifyListeners] is true, listeners are notified of the change.
-  /// If false, the value is updated silently without notifying listeners.
+  /// Updates the base configuration using an updater function.
   void updateWith(
     TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
     bool doNotifyListeners = true,
@@ -33,12 +69,8 @@ abstract class TContextualButtonsServiceInterface extends ChangeNotifier
 
   /// Updates the configuration with animated transitions.
   ///
-  /// When [animated] is true and [doNotifyListeners] is true:
-  /// 1. Checks if the new config differs from current
-  /// 2. Hides buttons by adding affected positions to hiddenPositions
-  /// 3. Waits for hide animation to complete
-  /// 4. Updates the configuration
-  /// 5. Shows buttons by removing positions from hiddenPositions
+  /// When [animated] is true, the implementation may coordinate any
+  /// extra transition behavior in addition to the widget-level animations.
   ///
   /// [positionsToAnimate] specifies which positions to animate (defaults to all).
   Future<void> updateContextualButtons(

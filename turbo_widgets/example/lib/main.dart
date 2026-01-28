@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbo_widgets_example/views/styling/styling_view.dart';
 
 void main() {
@@ -24,7 +25,12 @@ class TurboWidgetsExampleApp extends StatelessWidget {
         colorScheme: const ShadZincColorScheme.dark(),
         brightness: Brightness.dark,
       ),
-      home: const ShadToaster(child: StylingView()),
+      home: ShadToaster(
+        child: TContextualButtons(
+          service: TContextualButtonsService.instance,
+          child: const StylingView(),
+        ),
+      ),
     );
   }
 }

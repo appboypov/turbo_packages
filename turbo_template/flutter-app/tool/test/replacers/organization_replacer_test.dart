@@ -27,10 +27,8 @@ void main() {
       });
 
       test('replaces organization in project.pbxproj', () {
-        const input =
-            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
-        const expected =
-            'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate;';
+        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
+        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate;';
 
         final result = input.replaceAll(
           OrganizationReplacer.oldValue,
@@ -41,8 +39,7 @@ void main() {
 
       test('replaces organization in AppInfo.xcconfig', () {
         const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate';
-        const expected =
-            'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate';
+        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = io.mycompany.turboFlutterTemplate';
 
         final result = input.replaceAll(
           OrganizationReplacer.oldValue,
@@ -65,10 +62,8 @@ void main() {
       });
 
       test('replaces organization in macOS AppInfo.xcconfig copyright', () {
-        const input =
-            'PRODUCT_COPYRIGHT = Copyright © 2026 app.apewpew. All rights reserved.';
-        const expected =
-            'PRODUCT_COPYRIGHT = Copyright © 2026 io.mycompany. All rights reserved.';
+        const input = 'PRODUCT_COPYRIGHT = Copyright © 2026 app.apewpew. All rights reserved.';
+        const expected = 'PRODUCT_COPYRIGHT = Copyright © 2026 io.mycompany. All rights reserved.';
 
         final result = input.replaceAll(
           OrganizationReplacer.oldValue,

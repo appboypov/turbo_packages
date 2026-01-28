@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_widgets/src/constants/turbo_widgets_defaults.dart';
+import 'package:turbo_widgets/src/enums/turbo_widgets_playground_tab.dart';
 
 class TPlaygroundPromptGenerator extends StatelessWidget {
   const TPlaygroundPromptGenerator({
@@ -19,13 +20,13 @@ class TPlaygroundPromptGenerator extends StatelessWidget {
     this.clearCanvasInstructions = TurboWidgetsDefaults.clearCanvasInstructions,
   });
 
-  final String activeTab;
+  final TurboWidgetsPlaygroundTab activeTab;
   final String clearCanvasInstructions;
   final String instructions;
   final String solidifyInstructions;
   final String userRequest;
   final String variations;
-  final ValueChanged<String> onActiveTabChanged;
+  final ValueChanged<TurboWidgetsPlaygroundTab> onActiveTabChanged;
   final ValueChanged<String> onUserRequestChanged;
   final ValueChanged<String> onVariationsChanged;
   final ValueChanged<String>? onInstructionsChanged;
@@ -38,36 +39,16 @@ class TPlaygroundPromptGenerator extends StatelessWidget {
   String get _effectiveClearCanvasInstructions => clearCanvasInstructions;
 
   String _buildPrompt() {
-    if (activeTab == 'solidify') {
-      return '''Solidify the widget from the Component Playground.
-
-$_effectiveSolidifyInstructions
-
-Task:
-Add the widget from the playground to the project following conventions, add it to your components/styling page catalog, and clear the canvas.''';
-    } else if (activeTab == 'clear') {
-      return '''Clear the Component Playground canvas.
-
-$_effectiveClearCanvasInstructions
-
-Task:
-Clear the playground canvas and restore the placeholder content.''';
-    } else {
-      return '''We are working on a new widget in the Component Playground.
-
-$_effectiveInstructions
-
-Task:
-Create the following widget in the Playground:
-$userRequest
-
-Requirements:
-- Create $variations variant(s) of this widget.
-- Ensure it follows the rules above.
-- MANDATORY: Configure TPlaygroundParameterModel with entries in the typed maps (strings, bools, ints, doubles, selects) for EVERY widget prop.
-- MANDATORY: Use childBuilder to render the widget - NEVER use child directly.
-- Add the widget(s) to the TPlayground's childBuilder, replacing the placeholder content.
-''';
+    switch (activeTab) {
+      case TurboWidgetsPlaygroundTab.solidify:
+        return _effectiveSolidifyInstructions;
+      case TurboWidgetsPlaygroundTab.clear:
+        return _effectiveClearCanvasInstructions;
+      case TurboWidgetsPlaygroundTab.request:
+      case TurboWidgetsPlaygroundTab.instructions:
+        return _effectiveInstructions
+            .replaceAll('{{USER_REQUEST}}', userRequest)
+            .replaceAll('{{VARIATIONS}}', variations);
     }
   }
 
@@ -108,12 +89,12 @@ Requirements:
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: ShadTabs<String>(
+            child: ShadTabs<TurboWidgetsPlaygroundTab>(
               value: activeTab,
               onChanged: onActiveTabChanged,
               tabs: [
                 ShadTab(
-                  value: 'request',
+                  value: TurboWidgetsPlaygroundTab.request,
                   content: _RequestTabContent(
                     userRequest: userRequest,
                     onUserRequestChanged: onUserRequestChanged,
@@ -123,7 +104,7 @@ Requirements:
                   child: const Text('Request'),
                 ),
                 ShadTab(
-                  value: 'instructions',
+                  value: TurboWidgetsPlaygroundTab.instructions,
                   content: _InstructionsTabContent(
                     instructions: _effectiveInstructions,
                     onInstructionsChanged: onInstructionsChanged,
@@ -131,14 +112,14 @@ Requirements:
                   child: const Text('Instructions'),
                 ),
                 ShadTab(
-                  value: 'solidify',
+                  value: TurboWidgetsPlaygroundTab.solidify,
                   content: _SolidifyTabContent(
                     instructions: _effectiveSolidifyInstructions,
                   ),
                   child: const Text('Solidify'),
                 ),
                 ShadTab(
-                  value: 'clear',
+                  value: TurboWidgetsPlaygroundTab.clear,
                   content: _ClearTabContent(
                     instructions: _effectiveClearCanvasInstructions,
                   ),

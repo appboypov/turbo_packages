@@ -494,7 +494,7 @@ class FirstVetoView extends StatelessWidget {
   }
 }
 
-class FirstVetoViewModel extends TViewModel<Object?>
+class FirstVetoViewModel extends TBaseViewModel<Object?>
     with TBusyManagement, TErrorManagement, TViewModelHelpers {
   int _modelCounter = 0;
   int get modelCounter => _modelCounter;

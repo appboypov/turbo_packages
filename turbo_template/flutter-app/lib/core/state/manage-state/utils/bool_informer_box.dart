@@ -1,4 +1,3 @@
-
 import 'package:turbo_notifiers/t_notifier.dart';
 
 /// Used to provide and dispose notifiers in a neat way.
@@ -79,7 +78,6 @@ class BoolNotifierBox {
     _box.clear();
   }
 }
-
 
 extension TNotifierBoolExtension<T> on TNotifier<bool> {
   void toggle() => updateCurrent((value) => !value);

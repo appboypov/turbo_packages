@@ -12,22 +12,19 @@ part 'raw_box_dto.g.dart';
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class RawBoxDto extends TurboPromptable {
   /// Creates a [RawBoxDto] with the given properties.
-  RawBoxDto({
-    super.metaData,
-  });
+  RawBoxDto();
 
   static const fromJsonFactory = _$RawBoxDtoFromJson;
   factory RawBoxDto.fromJson(Map<String, dynamic> json) =>
       _$RawBoxDtoFromJson(json);
   static const toJsonFactory = _$RawBoxDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$RawBoxDtoToJson(this);
+  Map<String, dynamic> toJson() => _$RawBoxDtoToJson(this);
 
-  RawBoxDto copyWith({
-    MetaDataDto? metaData,
-  }) {
-    return RawBoxDto(
-      metaData: metaData ?? this.metaData,
-    );
+  RawBoxDto copyWith() {
+    return RawBoxDto();
   }
+
+  @override
+  String toString() => 'RawBoxDto()';
 }

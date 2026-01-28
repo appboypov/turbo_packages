@@ -12,7 +12,6 @@ part 'end_goal_dto.g.dart';
 class EndGoalDto extends TurboPromptable {
   /// Creates an [EndGoalDto] with the given properties.
   EndGoalDto({
-    super.metaData,
     this.acceptanceCriteria,
     this.constraints,
   });
@@ -21,21 +20,11 @@ class EndGoalDto extends TurboPromptable {
   final List<String>? constraints;
 
   static const fromJsonFactory = _$EndGoalDtoFromJson;
-  factory EndGoalDto.fromJson(Map<String, dynamic> json) =>
-      _$EndGoalDtoFromJson(json);
+  factory EndGoalDto.fromJson(Map<String, dynamic> json) => _$EndGoalDtoFromJson(json);
   static const toJsonFactory = _$EndGoalDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$EndGoalDtoToJson(this);
+  Map<String, dynamic> toJson() => _$EndGoalDtoToJson(this);
 
-  EndGoalDto copyWith({
-    MetaDataDto? metaData,
-    List<String>? acceptanceCriteria,
-    List<String>? constraints,
-  }) {
-    return EndGoalDto(
-      metaData: metaData ?? this.metaData,
-      acceptanceCriteria: acceptanceCriteria ?? this.acceptanceCriteria,
-      constraints: constraints ?? this.constraints,
-    );
-  }
+  @override
+  String toString() => 'EndGoalDto{acceptanceCriteria: $acceptanceCriteria, constraints: $constraints}';
 }

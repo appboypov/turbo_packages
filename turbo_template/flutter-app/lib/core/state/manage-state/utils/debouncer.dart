@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:turbo_flutter_template/core/ui/show-animations/constants/t_durations.dart';
+import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
 
 import '../extensions/completer_extension.dart';
 

@@ -41,6 +41,7 @@ dependencies:
   turbo_mvvm:
   turbo_serializable:
   turbo_firestore_api:
+  turbo_forms:
   url_launcher: ^6.3.2
   flutter_slidable: ^4.0.3
   url_strategy: ^0.3.0
@@ -61,6 +62,7 @@ dev_dependencies:
   mockito: ^5.4.5
   yaml: ^3.1.2
   icons_launcher: ^3.0.1
+
 
   firebase_storage_platform_interface: any
   firebase_core_platform_interface: any
@@ -144,6 +146,6 @@ flutter:
           weight: 900
 
 flutter_gen:
-  output: lib/generated/
+  output: lib/core/generated/
   integrations:
     flutter_svg: true

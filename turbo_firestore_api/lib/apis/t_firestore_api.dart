@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:turbo_firestore_api/enums/t_operation_type.dart';
 import 'package:turbo_firestore_api/enums/t_search_term_type.dart';
 import 'package:turbo_firestore_api/enums/t_timestamp_type.dart';
 import 'package:turbo_firestore_api/exceptions/invalid_json_exception.dart';
 import 'package:turbo_firestore_api/exceptions/t_firestore_exception.dart';
 import 'package:turbo_firestore_api/extensions/t_map_extension.dart';
-import 'package:turbo_firestore_api/models/t_sensitive_data.dart';
 import 'package:turbo_firestore_api/models/t_api_vars.dart';
+import 'package:turbo_firestore_api/models/t_sensitive_data.dart';
 import 'package:turbo_firestore_api/models/t_write_batch_with_reference.dart';
 import 'package:turbo_firestore_api/typedefs/collection_reference_def.dart';
 import 'package:turbo_firestore_api/util/t_firestore_logger.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
-import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
 part 't_firestore_create_api.dart';
 part 't_firestore_delete_api.dart';
@@ -231,8 +231,7 @@ class TFirestoreApi<T> {
   WriteBatch get writeBatch => _firebaseFirestore.batch();
 
   /// The current collection
-  CollectionReference get collection =>
-      _firebaseFirestore.collection(_collectionPath());
+  CollectionReference get collection => _firebaseFirestore.collection(_collectionPath());
 
   /// A new document
   DocumentReference get doc => collection.doc();
@@ -251,8 +250,7 @@ class TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final docRef =
-        getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
+    final docRef = getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
     _log.debug(
       message: 'Checking if document exists..',
       sensitiveData: TSensitiveData(
@@ -264,6 +262,68 @@ class TFirestoreApi<T> {
   }
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
+
+  /// Safely extracts document data from a writeable object.
+  ///
+  /// Returns the JSON representation of the writeable, or null if conversion fails.
+  Map<String, dynamic>? _extractDocumentData(TWriteable? writeable) {
+    if (writeable == null) return null;
+    try {
+      return writeable.toJson();
+    } catch (_) {
+      // Ignore conversion errors
+      return null;
+    }
+  }
+
+  /// Constructs a full document path from collection path and document ID.
+  ///
+  /// Returns the full path (collection/id) if both are provided,
+  /// otherwise returns just the collection path.
+  String _buildFullPath(String path, String? id) {
+    if (id != null) {
+      return '$path/$id';
+    }
+    return path;
+  }
+
+  /// Creates a TFirestoreException with extracted context.
+  ///
+  /// This helper extracts document data and builds the exception with full context.
+  /// The caller is responsible for logging and handling the exception.
+  ///
+  /// Parameters:
+  /// - [error] - The error that occurred
+  /// - [stackTrace] - The stack trace associated with the error
+  /// - [path] - The collection path where the error occurred
+  /// - [id] - Optional document ID where the error occurred
+  /// - [operationType] - The type of operation being performed
+  /// - [query] - Optional query description
+  /// - [writeable] - Optional writeable object to extract document data from
+  /// - [documentData] - Optional pre-extracted document data
+  ///
+  /// Returns a TFirestoreException with full context.
+  TFirestoreException _createException({
+    required Object error,
+    required StackTrace stackTrace,
+    required String path,
+    String? id,
+    required TOperationType operationType,
+    String? query,
+    TWriteable? writeable,
+    Map<String, dynamic>? documentData,
+  }) {
+    final extractedData = documentData ?? _extractDocumentData(writeable);
+    return TFirestoreException.fromFirestoreException(
+      error,
+      stackTrace,
+      path: path,
+      id: id,
+      query: query,
+      operationType: operationType,
+      documentData: extractedData,
+    );
+  }
 
   /// Helper method for logging the length of a List result.
   void _logResultLength(List<dynamic> result) {

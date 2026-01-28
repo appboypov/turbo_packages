@@ -3,18 +3,16 @@ import 'package:turbo_serializable/turbo_serializable.dart';
 
 part 'meta_data_dto.g.dart';
 
-@JsonSerializable(includeIfNull: true, explicitToJson: true)
-class MetaDataDto implements HasToJson {
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
+class MetaDataDto {
   MetaDataDto({required this.name, required this.description});
 
   final String? name;
   final String? description;
 
   static const fromJsonFactory = _$MetaDataDtoFromJson;
-  factory MetaDataDto.fromJson(Map<String, dynamic> json) =>
-      _$MetaDataDtoFromJson(json);
+  factory MetaDataDto.fromJson(Map<String, dynamic> json) => _$MetaDataDtoFromJson(json);
   static const toJsonFactory = _$MetaDataDtoToJson;
-  @override
   Map<String, dynamic> toJson() => _$MetaDataDtoToJson(this);
 
   MetaDataDto copyWith({

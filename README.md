@@ -52,12 +52,11 @@ melos pub-publish-dry-run
 
 ### Publishing
 
-See [workspace/AGENTS.md](workspace/AGENTS.md#publishing-packages-to-pubdev) for comprehensive publishing guidelines, including:
-- 160/160 pub points breakdown
-- Pre-publish checklist
-- CHANGELOG.md format
-- Semantic versioning guidelines
-- Common issues and solutions
+Publishing guidelines:
+- Run `melos pub-check` to validate 160/160 pub points before publishing
+- Use `melos pub-publish` (or `make pub-publish`) to publish; see `tool/pub_publish.sh`
+- Each package maintains independent versioning; use CHANGELOG.md and semantic versioning
+- See Makefile and `tool/` for pub-check and pub-publish scripts
 
 ## License
 

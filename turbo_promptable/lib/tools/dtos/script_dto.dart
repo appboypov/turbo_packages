@@ -14,7 +14,6 @@ part 'script_dto.g.dart';
 class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [ScriptDto] with the given properties.
   ScriptDto({
-    super.metaData,
     this.input,
     this.output,
     this.instructions,
@@ -42,11 +41,14 @@ class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
       _$ScriptDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
-  Map<String, dynamic>? toJsonMap() {
-    // For generic types, toJsonMap() cannot be implemented without type converters.
+  Map<String, dynamic> toJson() {
+    // For generic types, toJson() cannot be implemented without type converters.
     // Use toJsonWithConverters() instead with appropriate converters.
     throw UnimplementedError(
-      'ScriptDto.toJsonMap() requires type converters. Use toJsonWithConverters() instead.',
+      'ScriptDto.toJson() requires type converters. Use toJsonWithConverters() instead.',
     );
   }
+
+  @override
+  String toString() => 'ScriptDto{input: $input, output: $output, instructions: $instructions}';
 }

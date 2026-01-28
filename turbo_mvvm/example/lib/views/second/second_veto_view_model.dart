@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
-class SecondVetoViewModel extends TViewModel<SecondVetoViewArguments> {
+class SecondVetoViewModel extends TBaseViewModel<SecondVetoViewArguments> {
   SecondVetoViewModel();
 
   final ValueNotifier<int> _firstValue = ValueNotifier(0);

@@ -79,7 +79,6 @@ turbo_template/
 │   ├── assets/                        # Static assets
 │   ├── test/                          # Tests
 │   └── tool/                          # Template initialization tools
-└── workspace/                          # Development workspace
 ```
 
 ## Component Inventory
@@ -98,10 +97,10 @@ turbo_template/
 | `SettingsDto` | `lib/core/settings/dtos/settings_dto.dart` | App settings data |
 | `CurrentWeekDto` | `lib/core/shared/dtos/current_week_dto.dart` | Week calculation utility |
 | `IconLabelDto` | `lib/core/ui/show-ui/dtos/icon_label_dto.dart` | Icon with label display |
-| `ExtraArguments` | `lib/core/infrastructure/navigate-app/models/extra_arguments.dart` | Navigation extra data |
+| `RouteArguments` | `lib/core/infrastructure/navigate-app/models/extra_arguments.dart` | Navigation extra data |
 | `Crud` | `lib/core/state/manage-state/models/crud.dart` | CRUD operation model |
 | `TColors` | `lib/core/ui/show-ui/models/t_colors.dart` | Theme color accessor |
-| `TData` | `lib/core/ui/show-ui/models/t_data.dart` | UI data container |
+| `TData` | `package:turbo_widgets/src/responsive/models/t_data.dart` | UI data container |
 | `TSizes` | `lib/core/ui/show-ui/models/t_sizes.dart` | Theme size accessor |
 | `TTexts` | `lib/core/ui/show-ui/models/t_texts.dart` | Theme text style accessor |
 
@@ -270,7 +269,7 @@ turbo_template/
 | `ListPosition` | `lib/core/ui/show-ui/enums/list_position.dart` | List item position |
 | `Month` | `lib/core/ui/show-ui/enums/month.dart` | Month enum |
 | `TDevice` | `lib/core/ui/show-ui/enums/t_device.dart` | Device type enum |
-| `TDeviceType` | `lib/core/ui/show-ui/enums/t_device_type.dart` | Device type categories |
+| `TDeviceType` | `package:turbo_widgets/src/responsive/enums/t_device_type.dart` | Device type categories |
 | `TOrientation` | `lib/core/ui/show-ui/enums/t_orientation.dart` | Orientation enum |
 | `TSelectedState` | `lib/core/ui/show-ui/enums/t_selected_state.dart` | Selection state |
 | `TTheme` | `lib/core/ui/show-ui/enums/t_theme.dart` | Theme variant |
@@ -338,7 +337,7 @@ turbo_template/
 | `Notifier` | `lib/core/state/manage-state/utils/notifier.dart` | Simple notifier |
 | `ScrollControllerBox` | `lib/core/state/manage-state/utils/scroll_controller_box.dart` | Scroll controller wrapper |
 | `Throttler` | `lib/core/state/manage-state/utils/throttler.dart` | Throttle utility |
-| `TTools` | `lib/core/ui/show-ui/utils/t_tools.dart` | UI utilities |
+| `TTools` | `package:turbo_widgets/src/responsive/utils/t_tools.dart` | UI utilities |
 | `HapticButtonUtils` | `lib/core/ux/provide-feedback/utils/haptic_button_utils.dart` | Haptic feedback utilities |
 
 ### Routing / Navigation

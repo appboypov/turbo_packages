@@ -15,7 +15,6 @@ part 'team_dto.g.dart';
 class TeamDto extends TurboPromptable {
   /// Creates a [TeamDto] with the given properties.
   TeamDto({
-    super.metaData,
     this.areas,
     this.roles,
   });
@@ -31,17 +30,18 @@ class TeamDto extends TurboPromptable {
       _$TeamDtoFromJson(json);
   static const toJsonFactory = _$TeamDtoToJson;
   @override
-  Map<String, dynamic>? toJsonMap() => _$TeamDtoToJson(this);
+  Map<String, dynamic> toJson() => _$TeamDtoToJson(this);
 
   TeamDto copyWith({
-    MetaDataDto? metaData,
     List<AreaDto>? areas,
     List<RoleDto>? roles,
   }) {
     return TeamDto(
-      metaData: metaData ?? this.metaData,
       areas: areas ?? this.areas,
       roles: roles ?? this.roles,
     );
   }
+
+  @override
+  String toString() => 'TeamDto{areas: $areas, roles: $roles}';
 }
