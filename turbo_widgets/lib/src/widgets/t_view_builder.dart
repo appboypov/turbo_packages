@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
-import 'package:turbo_widgets/src/abstracts/t_contextual_buttons_service_interface.dart';
+import 'package:turbo_widgets/src/typedefs/t_view_model_builder_def.dart';
 import 'package:turbo_widgets/src/widgets/t_contextual_buttons.dart';
 
 /// A convenience wrapper that combines [TContextualButtons] and [TViewModelBuilder]
@@ -20,44 +20,32 @@ import 'package:turbo_widgets/src/widgets/t_contextual_buttons.dart';
 /// ```
 class TViewBuilder<T extends TBaseViewModel> extends StatelessWidget {
   const TViewBuilder({
-    required Widget Function(
-      BuildContext context,
-      T model,
-      bool isInitialised,
-      Widget? child,
-    ) builder,
-    required T Function() viewModelBuilder,
-    this.contextualButtonsService,
+    required this.builder,
+    required this.viewModelBuilder,
+    this.contextualButtonsBuilder,
+    this.argumentBuilder,
     this.child,
-    Object? Function()? argumentBuilder,
     this.isReactive = TurboMvvmDefaults.isReactive,
-    this.shouldDispose = TurboMvvmDefaults.shouldDispose,
     this.onDispose,
+    this.shouldDispose = TurboMvvmDefaults.shouldDispose,
     super.key,
-  })  : _builder = builder,
-        _viewModelBuilder = viewModelBuilder,
-        _argumentBuilder = argumentBuilder;
+  });
 
-  /// Optional service instance for contextual buttons. If not provided,
-  /// uses the singleton [TContextualButtonsService.instance].
-  final TContextualButtonsServiceInterface? contextualButtonsService;
+  /// Optional builder for contextual buttons. If provided, builds buttons
+  /// using the view model and sends them to the shell-level contextual buttons.
+  final TViewModelBuilderDef<T>? contextualButtonsBuilder;
 
   /// Child widget that will not rebuild when notifyListeners is called.
   final Widget? child;
 
   /// Builder method that builds the widget tree.
-  final Widget Function(
-    BuildContext context,
-    T model,
-    bool isInitialised,
-    Widget? child,
-  ) _builder;
+  final TViewModelBuilderDef<T> builder;
 
   /// Builder method that provides the [TViewModel].
-  final T Function() _viewModelBuilder;
+  final T Function() viewModelBuilder;
 
   /// Builder method that provides the [TViewModel.initialise] with arguments.
-  final dynamic Function()? _argumentBuilder;
+  final dynamic Function()? argumentBuilder;
 
   /// Whether the [TViewModel] should listen to [TViewModel.notifyListeners] for rebuilds.
   final bool isReactive;
@@ -70,18 +58,15 @@ class TViewBuilder<T extends TBaseViewModel> extends StatelessWidget {
   final void Function(T model)? onDispose;
 
   @override
-  Widget build(BuildContext context) {
-    return TContextualButtons(
-      service: contextualButtonsService,
-      child: TViewModelBuilder<T>(
-        child: child,
-        builder: _builder,
-        viewModelBuilder: _viewModelBuilder,
-        argumentBuilder: _argumentBuilder,
-        isReactive: isReactive,
-        shouldDispose: shouldDispose,
-        onDispose: onDispose,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => TContextualButtons(
+        child: TViewModelBuilder<T>(
+          child: child,
+          builder: builder,
+          viewModelBuilder: viewModelBuilder,
+          argumentBuilder: argumentBuilder,
+          isReactive: isReactive,
+          shouldDispose: shouldDispose,
+          onDispose: onDispose,
+        ),
+      );
 }
