@@ -161,6 +161,10 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
 
     if (contributors.isEmpty) {
       _value = TContextualButtonsConfig(
+        top: _baseConfig.top,
+        bottom: _baseConfig.bottom,
+        left: _baseConfig.left,
+        right: _baseConfig.right,
         allowFilter: _baseConfig.allowFilter,
         positionOverrides: _baseConfig.positionOverrides,
         hiddenPositions: _baseConfig.hiddenPositions,
