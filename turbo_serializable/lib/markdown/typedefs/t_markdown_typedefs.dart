@@ -11,8 +11,11 @@ typedef TMdFrontmatterBuilder<T extends TWriteable> = TMdFrontmatter Function(
 /// A single Markdown section, represented as a String.
 typedef TMdSection = String;
 
-/// Signature for building a list of Markdown sections from a TWriteable and frontmatter.
-typedef TMdSectionsBuilder<T extends TWriteable> = List<TMdSection> Function(
+// /// Signature for building a list of Markdown sections from a TWritable and frontmatter.
+typedef
+TMdSectionsBuilder
+<
+T extends TWriteable> = List<TMdSection> Function(
   T writeable,
   TMdFrontmatter frontmatter,
 );
