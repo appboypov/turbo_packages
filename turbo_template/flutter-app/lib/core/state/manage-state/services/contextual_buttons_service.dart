@@ -166,46 +166,42 @@ class ContextualButtonsService extends TContextualButtonsService
     List<ContextualButtonEntry> entries, {
     required TDeviceType deviceType,
   }) {
-    final entriesByPosition =
-        <TContextualPosition, Map<TContextualVariation, List<ContextualButtonEntry>>>{
-          for (final position in TContextualPosition.values)
-            position: {
-              for (final variation in TContextualVariation.values) variation: <ContextualButtonEntry>[],
-            },
-        };
+    final entriesByPosition = <TContextualPosition, List<ContextualButtonEntry>>{
+      for (final position in TContextualPosition.values)
+        position: <ContextualButtonEntry>[],
+    };
 
     for (final entry in entries) {
-      entriesByPosition[entry.position]![entry.variation]!.add(entry);
+      entriesByPosition[entry.position]!.add(entry);
     }
 
+    // On non-mobile, move bottom entries to left
     if (!deviceType.isMobile) {
-      for (final variation in TContextualVariation.values) {
-        entriesByPosition[TContextualPosition.left]![variation]!.addAll(
-          entriesByPosition[TContextualPosition.bottom]![variation]!,
-        );
-        entriesByPosition[TContextualPosition.bottom]![variation]!.clear();
-      }
+      entriesByPosition[TContextualPosition.left]!.addAll(
+        entriesByPosition[TContextualPosition.bottom]!,
+      );
+      entriesByPosition[TContextualPosition.bottom]!.clear();
     }
 
     var config = TContextualButtonsConfig(
-      top: _slotFromEntries(
+      top: (_) => _widgetsForPosition(
         position: TContextualPosition.top,
-        entriesByVariation: entriesByPosition[TContextualPosition.top]!,
+        entries: entriesByPosition[TContextualPosition.top]!,
         deviceType: deviceType,
       ),
-      bottom: _slotFromEntries(
+      bottom: (_) => _widgetsForPosition(
         position: TContextualPosition.bottom,
-        entriesByVariation: entriesByPosition[TContextualPosition.bottom]!,
+        entries: entriesByPosition[TContextualPosition.bottom]!,
         deviceType: deviceType,
       ),
-      left: _slotFromEntries(
+      left: (_) => _widgetsForPosition(
         position: TContextualPosition.left,
-        entriesByVariation: entriesByPosition[TContextualPosition.left]!,
+        entries: entriesByPosition[TContextualPosition.left]!,
         deviceType: deviceType,
       ),
-      right: _slotFromEntries(
+      right: (_) => _widgetsForPosition(
         position: TContextualPosition.right,
-        entriesByVariation: entriesByPosition[TContextualPosition.right]!,
+        entries: entriesByPosition[TContextualPosition.right]!,
         deviceType: deviceType,
       ),
       positionOverrides: _positionOverrides,
@@ -224,36 +220,8 @@ class ContextualButtonsService extends TContextualButtonsService
     return config;
   }
 
-  TContextualButtonsSlotConfig _slotFromEntries({
+  List<Widget> _widgetsForPosition({
     required TContextualPosition position,
-    required Map<TContextualVariation, List<ContextualButtonEntry>> entriesByVariation,
-    required TDeviceType deviceType,
-  }) {
-    return TContextualButtonsSlotConfig(
-      primary: _widgetsForVariation(
-        position: position,
-        variation: TContextualVariation.primary,
-        entries: entriesByVariation[TContextualVariation.primary] ?? const [],
-        deviceType: deviceType,
-      ),
-      secondary: _widgetsForVariation(
-        position: position,
-        variation: TContextualVariation.secondary,
-        entries: entriesByVariation[TContextualVariation.secondary] ?? const [],
-        deviceType: deviceType,
-      ),
-      tertiary: _widgetsForVariation(
-        position: position,
-        variation: TContextualVariation.tertiary,
-        entries: entriesByVariation[TContextualVariation.tertiary] ?? const [],
-        deviceType: deviceType,
-      ),
-    );
-  }
-
-  List<Widget> _widgetsForVariation({
-    required TContextualPosition position,
-    required TContextualVariation variation,
     required List<ContextualButtonEntry> entries,
     required TDeviceType deviceType,
   }) {
@@ -266,7 +234,7 @@ class ContextualButtonsService extends TContextualButtonsService
         .entries
         .map((entry) => _entryKey(entry.value, entry.key))
         .toList();
-    final widgetKey = ValueKey('${position.name}-${variation.name}-${entryKeys.join("-")}');
+    final widgetKey = ValueKey('${position.name}-${entryKeys.join("-")}');
     final actions = entries.map((entry) => entry.config).toList();
     final buttonMap = <String, TButtonConfig>{
       for (var i = 0; i < entries.length; i++) _entryKey(entries[i], i): entries[i].config,
@@ -308,7 +276,7 @@ class ContextualButtonsService extends TContextualButtonsService
   }
 
   String _entryKey(ContextualButtonEntry entry, int index) =>
-      entry.id ?? '${entry.position.name}-${entry.variation.name}-$index';
+      entry.id ?? '${entry.position.name}-$index';
 
   bool _mapEquals(
     Map<TContextualPosition, TContextualPosition> a,

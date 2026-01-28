@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:turbo_widgets/src/abstracts/t_contextual_buttons_service_interface.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
-import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
 import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 
@@ -15,8 +14,8 @@ import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 /// ```dart
 /// class MyViewModel with TContextualButtonsManagement {
 ///   // Uses default singleton service
-///   void showTopButton() {
-///     setContent(TContextualPosition.top, TContextualVariation.primary, [MyButton()]);
+///   void showTopButtons() {
+///     setTopWidgets([MyButton()]);
 ///   }
 /// }
 ///
@@ -116,201 +115,68 @@ mixin TContextualButtonsManagement {
     contextualButtonsService.reset(doNotifyListeners: doNotifyListeners);
   }
 
-  /// Sets content for a specific position and variation.
-  ///
-  /// This is the unified method for setting content. The position-specific
-  /// convenience methods (setTopPrimary, setBottomSecondary, etc.) delegate
-  /// to this method.
-  void setContent(
+  /// Sets widgets for a specific position.
+  void setPositionWidgets(
     TContextualPosition position,
-    TContextualVariation variation,
     List<Widget> widgets, {
     bool doNotifyListeners = true,
   }) {
     updateContextualButtonsConfig(
       (config) {
-        final slot = _getSlotForPosition(config, position);
-        final updatedSlot = _updateSlotVariation(slot, variation, widgets);
-        return _updateConfigWithSlot(config, position, updatedSlot);
+        switch (position) {
+          case TContextualPosition.top:
+            return config.copyWith(top: (_) => widgets);
+          case TContextualPosition.bottom:
+            return config.copyWith(bottom: (_) => widgets);
+          case TContextualPosition.left:
+            return config.copyWith(left: (_) => widgets);
+          case TContextualPosition.right:
+            return config.copyWith(right: (_) => widgets);
+        }
       },
       doNotifyListeners: doNotifyListeners,
     );
   }
 
-  TContextualButtonsSlotConfig _getSlotForPosition(
-    TContextualButtonsConfig config,
-    TContextualPosition position,
-  ) {
-    switch (position) {
-      case TContextualPosition.top:
-        return config.top;
-      case TContextualPosition.bottom:
-        return config.bottom;
-      case TContextualPosition.left:
-        return config.left;
-      case TContextualPosition.right:
-        return config.right;
-    }
-  }
-
-  TContextualButtonsSlotConfig _updateSlotVariation(
-    TContextualButtonsSlotConfig slot,
-    TContextualVariation variation,
-    List<Widget> widgets,
-  ) {
-    switch (variation) {
-      case TContextualVariation.primary:
-        return slot.copyWith(primary: widgets);
-      case TContextualVariation.secondary:
-        return slot.copyWith(secondary: widgets);
-      case TContextualVariation.tertiary:
-        return slot.copyWith(tertiary: widgets);
-    }
-  }
-
-  TContextualButtonsConfig _updateConfigWithSlot(
-    TContextualButtonsConfig config,
-    TContextualPosition position,
-    TContextualButtonsSlotConfig slot,
-  ) {
-    switch (position) {
-      case TContextualPosition.top:
-        return config.copyWith(top: slot);
-      case TContextualPosition.bottom:
-        return config.copyWith(bottom: slot);
-      case TContextualPosition.left:
-        return config.copyWith(left: slot);
-      case TContextualPosition.right:
-        return config.copyWith(right: slot);
-    }
-  }
-
-  // Convenience methods for setting content at specific positions
-
-  /// Sets primary content for top position.
-  void setTopPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.top,
-      TContextualVariation.primary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets secondary content for top position.
-  void setTopSecondary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.top,
-      TContextualVariation.secondary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets tertiary content for top position.
-  void setTopTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.top,
-      TContextualVariation.tertiary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets primary content for bottom position.
-  void setBottomPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.bottom,
-      TContextualVariation.primary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets secondary content for bottom position.
-  void setBottomSecondary(
-    List<Widget> widgets, {
+  /// Clears widgets for a specific position.
+  void clearPosition(
+    TContextualPosition position, {
     bool doNotifyListeners = true,
   }) {
-    setContent(
+    setPositionWidgets(position, const [], doNotifyListeners: doNotifyListeners);
+  }
+
+  /// Sets widgets for top position.
+  void setTopWidgets(List<Widget> widgets, {bool doNotifyListeners = true}) {
+    setPositionWidgets(
+      TContextualPosition.top,
+      widgets,
+      doNotifyListeners: doNotifyListeners,
+    );
+  }
+
+  /// Sets widgets for bottom position.
+  void setBottomWidgets(List<Widget> widgets, {bool doNotifyListeners = true}) {
+    setPositionWidgets(
       TContextualPosition.bottom,
-      TContextualVariation.secondary,
       widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
-  /// Sets tertiary content for bottom position.
-  void setBottomTertiary(
-    List<Widget> widgets, {
-    bool doNotifyListeners = true,
-  }) {
-    setContent(
-      TContextualPosition.bottom,
-      TContextualVariation.tertiary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets primary content for left position.
-  void setLeftPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
+  /// Sets widgets for left position.
+  void setLeftWidgets(List<Widget> widgets, {bool doNotifyListeners = true}) {
+    setPositionWidgets(
       TContextualPosition.left,
-      TContextualVariation.primary,
       widgets,
       doNotifyListeners: doNotifyListeners,
     );
   }
 
-  /// Sets secondary content for left position.
-  void setLeftSecondary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.left,
-      TContextualVariation.secondary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets tertiary content for left position.
-  void setLeftTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.left,
-      TContextualVariation.tertiary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets primary content for right position.
-  void setRightPrimary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
+  /// Sets widgets for right position.
+  void setRightWidgets(List<Widget> widgets, {bool doNotifyListeners = true}) {
+    setPositionWidgets(
       TContextualPosition.right,
-      TContextualVariation.primary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets secondary content for right position.
-  void setRightSecondary(
-    List<Widget> widgets, {
-    bool doNotifyListeners = true,
-  }) {
-    setContent(
-      TContextualPosition.right,
-      TContextualVariation.secondary,
-      widgets,
-      doNotifyListeners: doNotifyListeners,
-    );
-  }
-
-  /// Sets tertiary content for right position.
-  void setRightTertiary(List<Widget> widgets, {bool doNotifyListeners = true}) {
-    setContent(
-      TContextualPosition.right,
-      TContextualVariation.tertiary,
       widgets,
       doNotifyListeners: doNotifyListeners,
     );

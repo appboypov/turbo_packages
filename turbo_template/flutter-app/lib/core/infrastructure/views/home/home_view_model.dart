@@ -66,7 +66,6 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
         onPressed: onPlaygroundPressed,
       ),
       position: TContextualPosition.top,
-      variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
       id: 'home-settings',
@@ -77,7 +76,6 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
         onPressed: onSettingsPressed,
       ),
       position: TContextualPosition.top,
-      variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
       id: 'home-logout',
@@ -88,7 +86,6 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
         onPressed: onLogoutTapped,
       ),
       position: TContextualPosition.top,
-      variation: TContextualVariation.secondary,
     ),
     ContextualButtonEntry(
       id: 'home-dummy',
@@ -99,7 +96,6 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
         onPressed: () {},
       ),
       position: TContextualPosition.bottom,
-      variation: TContextualVariation.tertiary,
     ),
   ];
 

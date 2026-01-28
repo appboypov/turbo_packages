@@ -7,13 +7,11 @@ class ContextualButtonEntry {
     required this.config,
     this.id,
     this.position = TContextualPosition.bottom,
-    this.variation = TContextualVariation.primary,
   });
 
   final TButtonConfig config;
   final String? id;
   final TContextualPosition position;
-  final TContextualVariation variation;
 
   @override
   bool operator ==(Object other) =>
@@ -25,5 +23,5 @@ class ContextualButtonEntry {
   @override
   int get hashCode => _identityKey.hashCode;
 
-  Object get _identityKey => id ?? Object.hash(config, position, variation);
+  Object get _identityKey => id ?? Object.hash(config, position);
 }

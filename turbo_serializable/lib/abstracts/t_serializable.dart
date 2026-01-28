@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
 import 'package:turbo_serializable/markdown/factories/t_md_factory.dart';
 
@@ -31,8 +29,11 @@ abstract class TSerializable extends TWriteable {
   /// Throws an [UnimplementedError] if [markdownBuilder] is not provided.
   String toMarkdown({
     TMdFactory? mdFactory,
-  }) =>
-      (mdFactory ?? this.mdFactory)?.call() ?? toJson();
+  }) {
+    final pMdFactory = mdFactory ?? this.mdFactory;
+    if (pMdFactory == null) return '';
+    return pMdFactory.build();
+  }
 
   /// Returns a function that builds a Markdown string from a JSON map.
   ///

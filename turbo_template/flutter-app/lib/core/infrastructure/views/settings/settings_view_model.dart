@@ -33,7 +33,6 @@ class SettingsViewModel extends TViewModel with Turbolytics {
         onPressed: onBackPressed,
       ),
       position: TContextualPosition.top,
-      variation: TContextualVariation.primary,
     ),
   ];
 

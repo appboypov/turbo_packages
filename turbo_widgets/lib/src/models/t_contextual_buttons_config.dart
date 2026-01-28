@@ -1,217 +1,28 @@
 import 'package:flutter/widgets.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
-import 'package:turbo_widgets/src/enums/t_contextual_variation.dart';
-import 'package:turbo_widgets/src/typedefs/contextual_button_builders.dart';
 
-Object _widgetIdentityKey(Widget widget) => widget.key ?? widget;
+/// Callback that builds a list of widgets for a contextual position.
+typedef TContextualPositionWidgetsBuilder = List<Widget> Function(
+  BuildContext context,
+);
 
-/// Compares two widget lists by key identity when available.
-bool _widgetListEquivalent(List<Widget> a, List<Widget> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (var i = 0; i < a.length; i++) {
-    if (_widgetIdentityKey(a[i]) != _widgetIdentityKey(b[i])) return false;
-  }
-  return true;
-}
-
-/// Data configuration containing the widget content for a slot.
-class TContextualButtonsSlotData {
-  const TContextualButtonsSlotData({
-    this.primary = const [],
-    this.secondary = const [],
-    this.tertiary = const [],
-  });
-
-  /// Primary content widgets for this position.
-  final List<Widget> primary;
-
-  /// Secondary content widgets for this position.
-  final List<Widget> secondary;
-
-  /// Tertiary content widgets for this position.
-  final List<Widget> tertiary;
-
-  /// Creates a copy with updated values.
-  TContextualButtonsSlotData copyWith({
-    List<Widget>? primary,
-    List<Widget>? secondary,
-    List<Widget>? tertiary,
-  }) {
-    return TContextualButtonsSlotData(
-      primary: primary ?? this.primary,
-      secondary: secondary ?? this.secondary,
-      tertiary: tertiary ?? this.tertiary,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TContextualButtonsSlotData &&
-          runtimeType == other.runtimeType &&
-          _widgetListEquivalent(primary, other.primary) &&
-          _widgetListEquivalent(secondary, other.secondary) &&
-          _widgetListEquivalent(tertiary, other.tertiary);
-
-  @override
-  int get hashCode => Object.hash(
-        Object.hashAll(primary.map(_widgetIdentityKey)),
-        Object.hashAll(secondary.map(_widgetIdentityKey)),
-        Object.hashAll(tertiary.map(_widgetIdentityKey)),
-      );
-}
-
-/// Presentation configuration for how content is displayed at a slot.
-class TContextualButtonsSlotPresentation {
-  const TContextualButtonsSlotPresentation({
-    required this.variation,
-    this.alignment = Alignment.center,
-    this.mainAxisSize = MainAxisSize.min,
-    this.builder,
-  });
-
-  final TContextualVariation variation;
-
-  /// Alignment for content at this position.
-  final Alignment alignment;
-
-  /// Main axis size for content at this position.
-  final MainAxisSize mainAxisSize;
-
-  /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
-  final Widget Function(
-    TContextualVariation variation,
-    List<Widget> children,
-    BuildContext context,
-  )? builder;
-
-  /// Creates a copy with updated values.
-  TContextualButtonsSlotPresentation copyWith({
-    TContextualVariation? variation,
-    Alignment? alignment,
-    MainAxisSize? mainAxisSize,
-    Widget Function(
-      TContextualVariation variation,
-      List<Widget> children,
-      BuildContext context,
-    )? builder,
-  }) {
-    return TContextualButtonsSlotPresentation(
-      variation: variation ?? this.variation,
-      alignment: alignment ?? this.alignment,
-      mainAxisSize: mainAxisSize ?? this.mainAxisSize,
-      builder: builder ?? this.builder,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TContextualButtonsSlotPresentation &&
-          runtimeType == other.runtimeType &&
-          alignment == other.alignment &&
-          mainAxisSize == other.mainAxisSize &&
-          builder == other.builder;
-
-  @override
-  int get hashCode => Object.hash(
-        alignment,
-        mainAxisSize,
-        builder,
-      );
-}
-
-/// Configuration for a single position slot (top, bottom, left, or right).
-///
-/// Combines [TContextualButtonsSlotData] for content and
-/// [TContextualButtonsSlotPresentation] for layout/styling.
-class TContextualButtonsSlotConfig {
-  const TContextualButtonsSlotConfig({
-    this.primary = const [],
-    this.secondary = const [],
-    this.tertiary = const [],
-    this.alignment = Alignment.center,
-    this.mainAxisSize = MainAxisSize.min,
-    this.builder,
-  });
-
-  /// Primary content widgets for this position.
-  final List<Widget> primary;
-
-  /// Secondary content widgets for this position.
-  final List<Widget> secondary;
-
-  /// Tertiary content widgets for this position.
-  final List<Widget> tertiary;
-
-  /// Alignment for content at this position.
-  final Alignment alignment;
-
-  /// Main axis size for content at this position.
-  final MainAxisSize mainAxisSize;
-
-  /// Optional builder to wrap content with custom widgets (e.g., padding, margin).
-  final TContextualButtonsBuilder? builder;
-
-  /// Creates a copy with updated values.
-  TContextualButtonsSlotConfig copyWith({
-    List<Widget>? primary,
-    List<Widget>? secondary,
-    List<Widget>? tertiary,
-    Alignment? alignment,
-    MainAxisSize? mainAxisSize,
-    TContextualButtonsBuilder? builder,
-  }) {
-    return TContextualButtonsSlotConfig(
-      primary: primary ?? this.primary,
-      secondary: secondary ?? this.secondary,
-      tertiary: tertiary ?? this.tertiary,
-      alignment: alignment ?? this.alignment,
-      mainAxisSize: mainAxisSize ?? this.mainAxisSize,
-      builder: builder ?? this.builder,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TContextualButtonsSlotConfig &&
-          runtimeType == other.runtimeType &&
-          _widgetListEquivalent(primary, other.primary) &&
-          _widgetListEquivalent(secondary, other.secondary) &&
-          _widgetListEquivalent(tertiary, other.tertiary) &&
-          alignment == other.alignment &&
-          mainAxisSize == other.mainAxisSize &&
-          builder == other.builder;
-
-  @override
-  int get hashCode => Object.hash(
-        Object.hashAll(primary.map(_widgetIdentityKey)),
-        Object.hashAll(secondary.map(_widgetIdentityKey)),
-        Object.hashAll(tertiary.map(_widgetIdentityKey)),
-        alignment,
-        mainAxisSize,
-        builder,
-      );
-}
+/// Default empty position builder.
+List<Widget> _emptyPosition(BuildContext _) => const [];
 
 /// Configuration model for contextual buttons widget.
 ///
 /// Contains all parameters needed to configure the display of contextual
 /// buttons at various positions (top, bottom, left, right).
+///
+/// Each position uses a [TContextualPositionWidgetsBuilder] callback that
+/// receives a [BuildContext] and returns a list of widgets to display.
 class TContextualButtonsConfig {
   const TContextualButtonsConfig({
-    this.top = const TContextualButtonsSlotConfig(),
-    this.bottom = const TContextualButtonsSlotConfig(),
-    this.left = const TContextualButtonsSlotConfig(),
-    this.right = const TContextualButtonsSlotConfig(),
-    this.activeVariations = const {
-      TContextualVariation.primary,
-      TContextualVariation.secondary,
-      TContextualVariation.tertiary,
-    },
+    this.top = _emptyPosition,
+    this.bottom = _emptyPosition,
+    this.left = _emptyPosition,
+    this.right = _emptyPosition,
     this.allowFilter = TContextualAllowFilter.all,
     this.positionOverrides = const {},
     this.hiddenPositions = const {},
@@ -219,24 +30,17 @@ class TContextualButtonsConfig {
     this.animationCurve = Curves.easeInOut,
   });
 
-  /// Configuration for top position.
-  final TContextualButtonsSlotConfig top;
+  /// Builder for top position widgets.
+  final TContextualPositionWidgetsBuilder top;
 
-  /// Configuration for bottom position.
-  final TContextualButtonsSlotConfig bottom;
+  /// Builder for bottom position widgets.
+  final TContextualPositionWidgetsBuilder bottom;
 
-  /// Configuration for left position.
-  final TContextualButtonsSlotConfig left;
+  /// Builder for left position widgets.
+  final TContextualPositionWidgetsBuilder left;
 
-  /// Configuration for right position.
-  final TContextualButtonsSlotConfig right;
-
-  /// Set of active variations to display.
-  ///
-  /// Only variations in this set will be rendered. If multiple variations
-  /// are active for the same position, they are stacked according to the
-  /// position's axis (vertical for top/bottom, horizontal for left/right).
-  final Set<TContextualVariation> activeVariations;
+  /// Builder for right position widgets.
+  final TContextualPositionWidgetsBuilder right;
 
   /// Filter to restrict which positions can display content.
   ///
@@ -259,13 +63,26 @@ class TContextualButtonsConfig {
   /// Curve applied to both out and in animation phases.
   final Curve animationCurve;
 
+  /// Returns the builder for a specific position.
+  TContextualPositionWidgetsBuilder builderFor(TContextualPosition position) {
+    switch (position) {
+      case TContextualPosition.top:
+        return top;
+      case TContextualPosition.bottom:
+        return bottom;
+      case TContextualPosition.left:
+        return left;
+      case TContextualPosition.right:
+        return right;
+    }
+  }
+
   /// Creates a copy with updated values.
   TContextualButtonsConfig copyWith({
-    TContextualButtonsSlotConfig? top,
-    TContextualButtonsSlotConfig? bottom,
-    TContextualButtonsSlotConfig? left,
-    TContextualButtonsSlotConfig? right,
-    Set<TContextualVariation>? activeVariations,
+    TContextualPositionWidgetsBuilder? top,
+    TContextualPositionWidgetsBuilder? bottom,
+    TContextualPositionWidgetsBuilder? left,
+    TContextualPositionWidgetsBuilder? right,
     TContextualAllowFilter? allowFilter,
     Map<TContextualPosition, TContextualPosition>? positionOverrides,
     Set<TContextualPosition>? hiddenPositions,
@@ -277,7 +94,6 @@ class TContextualButtonsConfig {
       bottom: bottom ?? this.bottom,
       left: left ?? this.left,
       right: right ?? this.right,
-      activeVariations: activeVariations ?? this.activeVariations,
       allowFilter: allowFilter ?? this.allowFilter,
       positionOverrides: positionOverrides ?? this.positionOverrides,
       hiddenPositions: hiddenPositions ?? this.hiddenPositions,
@@ -295,7 +111,6 @@ class TContextualButtonsConfig {
           bottom == other.bottom &&
           left == other.left &&
           right == other.right &&
-          _setEquals(activeVariations, other.activeVariations) &&
           allowFilter == other.allowFilter &&
           _mapEquals(positionOverrides, other.positionOverrides) &&
           _setEquals(hiddenPositions, other.hiddenPositions) &&
@@ -308,7 +123,6 @@ class TContextualButtonsConfig {
         bottom,
         left,
         right,
-        Object.hashAll(activeVariations),
         allowFilter,
         Object.hashAll(positionOverrides.entries),
         Object.hashAll(hiddenPositions),

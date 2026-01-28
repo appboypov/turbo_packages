@@ -19,15 +19,10 @@ class EmulatorConfig {
   static const _localhost = 'localhost';
   static const _defaultHost = '127.0.0.1';
 
-  static const _kAuthPort = 'AUTH_PORT';
-  static const _kFirestorePort = 'FIRESTORE_PORT';
-  static const _kFunctionsPort = 'FUNCTIONS_PORT';
-  static const _kStoragePort = 'STORAGE_PORT';
-
-  static int _readPort(String key, int defaultValue) {
-    final value = String.fromEnvironment(key, defaultValue: '$defaultValue');
-    return int.tryParse(value) ?? defaultValue;
-  }
+  static const _authPort = int.fromEnvironment('AUTH_PORT', defaultValue: 9099);
+  static const _firestorePort = int.fromEnvironment('FIRESTORE_PORT', defaultValue: 8080);
+  static const _functionsPort = int.fromEnvironment('FUNCTIONS_PORT', defaultValue: 5001);
+  static const _storagePort = int.fromEnvironment('STORAGE_PORT', defaultValue: 9199);
 
   /// Whether emulators should be used for the current environment.
   static bool get _shouldUseEmulators => Environment.isEmulators || Environment.isDemo;
@@ -65,29 +60,24 @@ class EmulatorConfig {
       }
 
       try {
-        final authPort = _readPort(_kAuthPort, 9200);
-        final firestorePort = _readPort(_kFirestorePort, 9201);
-        final functionsPort = _readPort(_kFunctionsPort, 9202);
-        final storagePort = _readPort(_kStoragePort, 9203);
-
         log.info(
-          'Using emulator ports -> auth:$authPort firestore:$firestorePort functions:$functionsPort storage:$storagePort',
+          'Using emulator ports -> auth:$_authPort firestore:$_firestorePort functions:$_functionsPort storage:$_storagePort',
         );
 
-        log.info('Configuring Auth emulator at $host:$authPort');
-        await FirebaseAuth.instance.useAuthEmulator(host, authPort);
+        log.info('Configuring Auth emulator at $host:$_authPort');
+        await FirebaseAuth.instance.useAuthEmulator(host, _authPort);
         log.info('Auth emulator configured');
 
-        log.info('Configuring Firestore emulator at $host:$firestorePort');
-        FirebaseFirestore.instance.useFirestoreEmulator(host, firestorePort);
+        log.info('Configuring Firestore emulator at $host:$_firestorePort');
+        FirebaseFirestore.instance.useFirestoreEmulator(host, _firestorePort);
         log.info('Firestore emulator configured');
 
-        log.info('Configuring Functions emulator at $host:$functionsPort');
-        FirebaseFunctions.instance.useFunctionsEmulator(host, functionsPort);
+        log.info('Configuring Functions emulator at $host:$_functionsPort');
+        FirebaseFunctions.instance.useFunctionsEmulator(host, _functionsPort);
         log.info('Functions emulator configured');
 
-        log.info('Configuring Storage emulator at $host:$storagePort');
-        await FirebaseStorage.instance.useStorageEmulator(host, storagePort);
+        log.info('Configuring Storage emulator at $host:$_storagePort');
+        await FirebaseStorage.instance.useStorageEmulator(host, _storagePort);
         log.info('Storage emulator configured');
 
         final currentUser = FirebaseAuth.instance.currentUser;

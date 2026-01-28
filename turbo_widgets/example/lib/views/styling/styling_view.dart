@@ -47,7 +47,13 @@ class StylingView extends StatelessWidget {
   static const String path = 'styling';
 
   @override
-  Widget build(BuildContext context) => TViewModelBuilder<StylingViewModel>(
+  Widget build(BuildContext context) => TViewBuilder<StylingViewModel>(
+        contextualButtonsBuilder: (context, model, isInitialised) =>
+            TContextualButtonsConfig(
+          top: (_) => const [_StylingViewTopBar()],
+          bottom: (_) => const [_StylingViewBottomBar()],
+        ),
+        viewModelBuilder: () => StylingViewModel.locate,
         builder: (context, model, isInitialised, child) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -118,45 +124,29 @@ class StylingView extends StatelessWidget {
                         children: [
                           _TContextualButtonsShowcase(
                             title: 'Basic - All Positions',
-                            config: const TContextualButtonsConfig(
-                              top: TContextualButtonsSlotConfig(
-                                primary: [_ShowcaseBar(label: 'Top')],
-                              ),
-                              bottom: TContextualButtonsSlotConfig(
-                                primary: [_ShowcaseBar(label: 'Bottom')],
-                              ),
-                              left: TContextualButtonsSlotConfig(
-                                primary: [_ShowcaseBar(label: 'Left')],
-                              ),
-                              right: TContextualButtonsSlotConfig(
-                                primary: [_ShowcaseBar(label: 'Right')],
-                              ),
+                            config: TContextualButtonsConfig(
+                              top: (_) => const [_ShowcaseBar(label: 'Top')],
+                              bottom: (_) => const [_ShowcaseBar(label: 'Bottom')],
+                              left: (_) => const [_ShowcaseBar(label: 'Left')],
+                              right: (_) => const [_ShowcaseBar(label: 'Right')],
                             ),
                           ),
                           const SizedBox(height: 16),
                           _TContextualButtonsShowcase(
                             title: 'Position Filter - Bottom Only',
-                            config: const TContextualButtonsConfig(
+                            config: TContextualButtonsConfig(
                               allowFilter: TContextualAllowFilter.bottom,
-                              top: TContextualButtonsSlotConfig(
-                                primary: [
-                                  _ShowcaseBar(label: 'Filtered to Bottom')
-                                ],
-                              ),
+                              top: (_) => const [_ShowcaseBar(label: 'Filtered to Bottom')],
                             ),
                           ),
                           const SizedBox(height: 16),
                           _TContextualButtonsShowcase(
-                            title: 'Multiple Variations',
-                            config: const TContextualButtonsConfig(
-                              activeVariations: {
-                                TContextualVariation.primary,
-                                TContextualVariation.secondary,
-                              },
-                              bottom: TContextualButtonsSlotConfig(
-                                primary: [_ShowcaseBar(label: 'Primary')],
-                                secondary: [_ShowcaseBar(label: 'Secondary')],
-                              ),
+                            title: 'Multiple Widgets Per Position',
+                            config: TContextualButtonsConfig(
+                              bottom: (_) => const [
+                                _ShowcaseBar(label: 'First'),
+                                _ShowcaseBar(label: 'Second'),
+                              ],
                             ),
                           ),
                         ],
@@ -212,8 +202,54 @@ class StylingView extends StatelessWidget {
             ),
           );
         },
-        viewModelBuilder: () => StylingViewModel.locate,
       );
+}
+
+class _StylingViewTopBar extends StatelessWidget {
+  const _StylingViewTopBar();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary,
+      ),
+      child: Text(
+        'Turbo Widgets Example',
+        style: theme.textTheme.p.copyWith(
+          color: theme.colorScheme.primaryForeground,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class _StylingViewBottomBar extends StatelessWidget {
+  const _StylingViewBottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.muted,
+        border: Border(top: BorderSide(color: theme.colorScheme.border)),
+      ),
+      child: Text(
+        'Styling View',
+        style: theme.textTheme.small.copyWith(
+          color: theme.colorScheme.mutedForeground,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
 }
 
 class _TCategoryWidgetsShowcase extends StatelessWidget {
@@ -455,10 +491,8 @@ class _TViewBuilderShowcase extends StatelessWidget {
             child: TViewBuilder<_ExampleViewModel>(
               contextualButtonsService: useCustomService
                   ? TContextualButtonsService(
-                      const TContextualButtonsConfig(
-                        bottom: TContextualButtonsSlotConfig(
-                          primary: [_ShowcaseBar(label: 'Custom Service')],
-                        ),
+                      TContextualButtonsConfig(
+                        bottom: (_) => const [_ShowcaseBar(label: 'Custom Service')],
                       ),
                     )
                   : null,

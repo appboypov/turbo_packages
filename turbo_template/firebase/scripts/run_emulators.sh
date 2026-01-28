@@ -151,10 +151,18 @@ echo "Use this IP in your Flutter app with: flutter run --dart-define=ip=$IP_ADD
 # Update IntelliJ run configuration with current IP and ports
 PROJECT_DIR="$( cd "$FIREBASE_DIR/.." &> /dev/null && pwd )"
 RUN_CONFIG="$PROJECT_DIR/.run/Run Emulators.run.xml"
+NEW_ARGS="--dart-define=env=emulators --dart-define=ip=$IP_ADDRESS --dart-define=AUTH_PORT=$AUTH_PORT --dart-define=FIRESTORE_PORT=$FIRESTORE_PORT --dart-define=FUNCTIONS_PORT=$FUNCTIONS_PORT --dart-define=STORAGE_PORT=$STORAGE_PORT --flavor prod"
 if [ -f "$RUN_CONFIG" ]; then
-    NEW_ARGS="--dart-define=env=emulators --dart-define=ip=$IP_ADDRESS --dart-define=AUTH_PORT=$AUTH_PORT --dart-define=FIRESTORE_PORT=$FIRESTORE_PORT --dart-define=FUNCTIONS_PORT=$FUNCTIONS_PORT --dart-define=STORAGE_PORT=$STORAGE_PORT"
     sed -i '' "s|value=\"--dart-define=env=emulators[^\"]*\"|value=\"$NEW_ARGS\"|" "$RUN_CONFIG"
     echo "✅ Updated Run Emulators run configuration with IP: $IP_ADDRESS"
+fi
+
+# Update monorepo run configuration
+MONOREPO_DIR="$( cd "$FIREBASE_DIR/../.." &> /dev/null && pwd )"
+MONOREPO_RUN_CONFIG="$MONOREPO_DIR/.run/Turbo Template - Emulators.run.xml"
+if [ -f "$MONOREPO_RUN_CONFIG" ]; then
+    sed -i '' "s|value=\"--dart-define=env=emulators[^\"]*\"|value=\"$NEW_ARGS\"|" "$MONOREPO_RUN_CONFIG"
+    echo "✅ Updated monorepo run configuration with IP: $IP_ADDRESS"
 fi
 
 if [ -d "exports/firestore_export" ] || [ -f "exports/auth_export.json" ]; then

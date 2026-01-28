@@ -67,7 +67,6 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
         isActive: contextualButtonsService.navigationTabService.activeTab.value == NavigationTab.home,
       ),
       position: TContextualPosition.bottom,
-      variation: TContextualVariation.primary,
     ),
     ContextualButtonEntry(
       id: 'shell-styling',
@@ -79,7 +78,6 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
         isActive: contextualButtonsService.navigationTabService.activeTab.value == NavigationTab.styling,
       ),
       position: TContextualPosition.bottom,
-      variation: TContextualVariation.primary,
     ),
   ];
 
