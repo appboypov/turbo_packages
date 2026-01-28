@@ -21,14 +21,14 @@ await plxService.connect('/path/to/project');
 final fileApi = PlxFileApi(plxService: plxService);
 
 // Get a single file
-final response = await fileApi.get('workspace/specs/auth/spec.md');
+final response = await fileApi.get('specs/auth/spec.md');
 if (response.isSuccess) {
   print(response.result.content);
   print(response.result.lastModified);
 }
 
 // List files in a directory
-final listResponse = await fileApi.list('workspace/specs');
+final listResponse = await fileApi.list('specs');
 if (listResponse.isSuccess) {
   for (final file in listResponse.result) {
     print('${file.path}: ${file.lastModified}');

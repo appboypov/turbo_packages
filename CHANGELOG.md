@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Root pubspec.yaml with workspace definition for all 7 packages
 - Standard Melos scripts: analyze, format, test, build_runner
 - Monorepo README.md with package overview and development instructions
-- Monorepo spec documentation in workspace/specs/monorepo-structure
+- Monorepo structure and development instructions
 
 ### Changed
 - All packages now use `resolution: workspace` for dependency management

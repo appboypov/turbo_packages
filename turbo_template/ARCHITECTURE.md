@@ -79,7 +79,6 @@ turbo_template/
 │   ├── assets/                        # Static assets
 │   ├── test/                          # Tests
 │   └── tool/                          # Template initialization tools
-└── workspace/                          # Development workspace
 ```
 
 ## Component Inventory
