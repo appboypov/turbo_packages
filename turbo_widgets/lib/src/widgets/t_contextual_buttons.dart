@@ -10,8 +10,9 @@ import 'package:turbo_widgets/src/services/t_contextual_buttons_service.dart';
 /// A widget that displays contextual buttons at configurable positions
 /// (top, bottom, left, right) as overlays on top of the main content.
 ///
-/// Content at each position animates with a sequential out-then-in transition:
-/// old content animates out completely before new content animates in.
+/// Content at each position animates with per-widget granularity:
+/// widgets with stable keys across config changes remain in place,
+/// new widgets animate in, and removed widgets animate out.
 ///
 /// Configuration is managed through [TContextualButtonsService]. By default,
 /// uses the singleton [TContextualButtonsService.instance]. Pass a custom
@@ -78,9 +79,18 @@ class _TContextualButtonsAnimated extends StatefulWidget {
 
 class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated>
     with TickerProviderStateMixin {
-  late final Map<TContextualPosition, AnimationController> _controllers;
-  final Map<TContextualPosition, _AnimationPhase> _phases = {};
+  /// Per-widget animation controllers, keyed by widget identity key.
+  final Map<Object, AnimationController> _widgetControllers = {};
+
+  /// Per-widget animation phases, keyed by widget identity key.
+  final Map<Object, _AnimationPhase> _widgetPhases = {};
+
+  /// Currently displayed widgets per position (includes stable + animating-out).
   Map<TContextualPosition, List<Widget>> _displayedContent = {};
+
+  /// Widgets that are animating out (kept visible until animation completes).
+  final Map<TContextualPosition, List<Widget>> _animatingOutWidgets = {};
+
   final Queue<Map<TContextualPosition, List<Widget>>> _pendingQueue = Queue();
   bool _isAnimating = false;
   bool _isDisposed = false;
@@ -88,35 +98,12 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
   @override
   void initState() {
     super.initState();
-
-    final halfDuration = Duration(
-      milliseconds: widget.config.animationDuration.inMilliseconds ~/ 2,
-    );
-
-    _controllers = {
-      for (final position in TContextualPosition.values)
-        position: AnimationController(duration: halfDuration, vsync: this),
-    };
-
-    for (final position in TContextualPosition.values) {
-      _phases[position] = _AnimationPhase.idle;
-    }
-
     _displayedContent = _ContentResolver.resolve(widget.config, context);
   }
 
   @override
   void didUpdateWidget(_TContextualButtonsAnimated oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.config.animationDuration != widget.config.animationDuration) {
-      final halfDuration = Duration(
-        milliseconds: widget.config.animationDuration.inMilliseconds ~/ 2,
-      );
-      for (final controller in _controllers.values) {
-        controller.duration = halfDuration;
-      }
-    }
 
     final newContent = _ContentResolver.resolve(widget.config, context);
     if (!_contentMapsEqual(_displayedContent, newContent)) {
@@ -127,11 +114,16 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
   @override
   void dispose() {
     _isDisposed = true;
-    for (final controller in _controllers.values) {
+    for (final controller in _widgetControllers.values) {
       controller.dispose();
     }
+    _widgetControllers.clear();
     super.dispose();
   }
+
+  Duration get _halfDuration => Duration(
+    milliseconds: widget.config.animationDuration.inMilliseconds ~/ 2,
+  );
 
   void _enqueueAnimation(Map<TContextualPosition, List<Widget>> newContent) {
     _pendingQueue.add(newContent);
@@ -161,7 +153,7 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
     Map<TContextualPosition, List<Widget>> b,
   ) {
     for (final position in TContextualPosition.values) {
-      if (!_listEquals(a[position] ?? const [], b[position] ?? const [])) {
+      if (!_listKeyEquals(a[position] ?? const [], b[position] ?? const [])) {
         return false;
       }
     }
@@ -170,7 +162,7 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
 
   Object _widgetIdentityKey(Widget widget) => widget.key ?? widget;
 
-  bool _listEquals(List<Widget> a, List<Widget> b) {
+  bool _listKeyEquals(List<Widget> a, List<Widget> b) {
     if (identical(a, b)) return true;
     if (a.length != b.length) return false;
     for (var i = 0; i < a.length; i++) {
@@ -179,39 +171,89 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
     return true;
   }
 
+  AnimationController _getOrCreateController(Object key) {
+    return _widgetControllers.putIfAbsent(
+      key,
+      () => AnimationController(duration: _halfDuration, vsync: this),
+    );
+  }
+
+  void _disposeController(Object key) {
+    _widgetControllers.remove(key)?.dispose();
+    _widgetPhases.remove(key);
+  }
+
   Future<void> _animateContentChanges(
     Map<TContextualPosition, List<Widget>> newContent,
   ) async {
     if (_isDisposed) return;
 
-    final positionsToAnimateOut = <TContextualPosition>[];
-    final positionsToAnimateIn = <TContextualPosition>[];
+    final widgetsToAnimateOut = <Object, Widget>{};
+    final widgetsToAnimateIn = <Object, Widget>{};
+    final stableKeys = <Object>{};
 
     for (final position in TContextualPosition.values) {
       final oldWidgets = _displayedContent[position] ?? const [];
       final newWidgets = newContent[position] ?? const [];
-      if (!_listEquals(oldWidgets, newWidgets)) {
-        if (oldWidgets.isNotEmpty) {
-          positionsToAnimateOut.add(position);
+
+      final oldKeyMap = <Object, Widget>{
+        for (final w in oldWidgets) _widgetIdentityKey(w): w,
+      };
+      final newKeyMap = <Object, Widget>{
+        for (final w in newWidgets) _widgetIdentityKey(w): w,
+      };
+
+      for (final key in oldKeyMap.keys) {
+        if (newKeyMap.containsKey(key)) {
+          stableKeys.add(key);
+        } else {
+          widgetsToAnimateOut[key] = oldKeyMap[key]!;
         }
-        if (newWidgets.isNotEmpty) {
-          positionsToAnimateIn.add(position);
+      }
+
+      for (final key in newKeyMap.keys) {
+        if (!oldKeyMap.containsKey(key)) {
+          widgetsToAnimateIn[key] = newKeyMap[key]!;
         }
       }
     }
 
-    // Phase 1: Animate out all positions losing content (in parallel)
-    if (positionsToAnimateOut.isNotEmpty) {
-      for (final position in positionsToAnimateOut) {
-        _phases[position] = _AnimationPhase.animatingOut;
-        _controllers[position]!.reset();
+    // Snapshot removed widgets per position before updating displayed content.
+    final removedPerPosition = <TContextualPosition, List<Widget>>{};
+    if (widgetsToAnimateOut.isNotEmpty) {
+      for (final position in TContextualPosition.values) {
+        final oldWidgets = _displayedContent[position] ?? const [];
+        final removedFromPosition = <Widget>[];
+        for (final w in oldWidgets) {
+          final key = _widgetIdentityKey(w);
+          if (widgetsToAnimateOut.containsKey(key)) {
+            removedFromPosition.add(w);
+          }
+        }
+        if (removedFromPosition.isNotEmpty) {
+          removedPerPosition[position] = removedFromPosition;
+        }
       }
+    }
+
+    // Update displayed content to new state immediately so build() shows
+    // new content + animating-out old content without duplicate widgets.
+    _displayedContent = {
+      for (final position in TContextualPosition.values)
+        position: newContent[position] ?? const [],
+    };
+
+    // Phase 1: Animate out removed widgets (in parallel)
+    if (widgetsToAnimateOut.isNotEmpty) {
+      _animatingOutWidgets.addAll(removedPerPosition);
 
       final outFutures = <Future<void>>[];
-      for (final position in positionsToAnimateOut) {
-        outFutures.add(
-          _controllers[position]!.forward().orCancel.catchError((_) {}),
-        );
+      for (final entry in widgetsToAnimateOut.entries) {
+        final controller = _getOrCreateController(entry.key);
+        controller.duration = _halfDuration;
+        controller.reset();
+        _widgetPhases[entry.key] = _AnimationPhase.animatingOut;
+        outFutures.add(controller.forward().orCancel.catchError((_) {}));
       }
 
       if (mounted && !_isDisposed) setState(() {});
@@ -220,26 +262,21 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
 
       if (!mounted || _isDisposed) return;
 
-      // Clear content from positions that animated out
-      for (final position in positionsToAnimateOut) {
-        _displayedContent[position] = const [];
-        _phases[position] = _AnimationPhase.idle;
+      for (final key in widgetsToAnimateOut.keys) {
+        _disposeController(key);
       }
+      _animatingOutWidgets.clear();
     }
 
-    // Phase 2: Update displayed content and animate in positions gaining content
-    if (positionsToAnimateIn.isNotEmpty) {
-      for (final position in positionsToAnimateIn) {
-        _displayedContent[position] = newContent[position] ?? const [];
-        _phases[position] = _AnimationPhase.animatingIn;
-        _controllers[position]!.reset();
-      }
-
+    // Phase 2: Animate in new widgets (in parallel)
+    if (widgetsToAnimateIn.isNotEmpty) {
       final inFutures = <Future<void>>[];
-      for (final position in positionsToAnimateIn) {
-        inFutures.add(
-          _controllers[position]!.forward().orCancel.catchError((_) {}),
-        );
+      for (final entry in widgetsToAnimateIn.entries) {
+        final controller = _getOrCreateController(entry.key);
+        controller.duration = _halfDuration;
+        controller.reset();
+        _widgetPhases[entry.key] = _AnimationPhase.animatingIn;
+        inFutures.add(controller.forward().orCancel.catchError((_) {}));
       }
 
       if (mounted && !_isDisposed) setState(() {});
@@ -247,22 +284,16 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
       await Future.wait(inFutures);
 
       if (!mounted || _isDisposed) return;
-    }
 
-    // Update remaining positions that changed without animation
-    for (final position in TContextualPosition.values) {
-      final oldWidgets = _displayedContent[position] ?? const [];
-      final newWidgets = newContent[position] ?? const [];
-      final didAnimateOut = positionsToAnimateOut.contains(position);
-      final didAnimateIn = positionsToAnimateIn.contains(position);
-      if (!didAnimateOut && !didAnimateIn && !_listEquals(oldWidgets, newWidgets)) {
-        _displayedContent[position] = newWidgets;
+      // Reset phases to idle
+      for (final key in widgetsToAnimateIn.keys) {
+        _widgetPhases[key] = _AnimationPhase.idle;
       }
     }
 
-    // Reset all phases to idle
-    for (final position in TContextualPosition.values) {
-      _phases[position] = _AnimationPhase.idle;
+    // Ensure all phases are idle
+    for (final key in _widgetPhases.keys.toList()) {
+      _widgetPhases[key] = _AnimationPhase.idle;
     }
 
     if (mounted && !_isDisposed) setState(() {});
@@ -281,10 +312,13 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
           child: RepaintBoundary(
             child: _TPositionContent(
               widgets: _displayedContent[TContextualPosition.top] ?? const [],
+              animatingOutWidgets:
+                  _animatingOutWidgets[TContextualPosition.top] ?? const [],
               position: TContextualPosition.top,
-              phase: _phases[TContextualPosition.top]!,
-              controller: _controllers[TContextualPosition.top]!,
+              widgetPhases: _widgetPhases,
+              widgetControllers: _widgetControllers,
               curve: config.animationCurve,
+              widgetIdentityKey: _widgetIdentityKey,
             ),
           ),
         ),
@@ -294,11 +328,15 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
           right: 0,
           child: RepaintBoundary(
             child: _TPositionContent(
-              widgets: _displayedContent[TContextualPosition.bottom] ?? const [],
+              widgets:
+                  _displayedContent[TContextualPosition.bottom] ?? const [],
+              animatingOutWidgets:
+                  _animatingOutWidgets[TContextualPosition.bottom] ?? const [],
               position: TContextualPosition.bottom,
-              phase: _phases[TContextualPosition.bottom]!,
-              controller: _controllers[TContextualPosition.bottom]!,
+              widgetPhases: _widgetPhases,
+              widgetControllers: _widgetControllers,
               curve: config.animationCurve,
+              widgetIdentityKey: _widgetIdentityKey,
             ),
           ),
         ),
@@ -309,10 +347,13 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
           child: RepaintBoundary(
             child: _TPositionContent(
               widgets: _displayedContent[TContextualPosition.left] ?? const [],
+              animatingOutWidgets:
+                  _animatingOutWidgets[TContextualPosition.left] ?? const [],
               position: TContextualPosition.left,
-              phase: _phases[TContextualPosition.left]!,
-              controller: _controllers[TContextualPosition.left]!,
+              widgetPhases: _widgetPhases,
+              widgetControllers: _widgetControllers,
               curve: config.animationCurve,
+              widgetIdentityKey: _widgetIdentityKey,
             ),
           ),
         ),
@@ -323,10 +364,13 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
           child: RepaintBoundary(
             child: _TPositionContent(
               widgets: _displayedContent[TContextualPosition.right] ?? const [],
+              animatingOutWidgets:
+                  _animatingOutWidgets[TContextualPosition.right] ?? const [],
               position: TContextualPosition.right,
-              phase: _phases[TContextualPosition.right]!,
-              controller: _controllers[TContextualPosition.right]!,
+              widgetPhases: _widgetPhases,
+              widgetControllers: _widgetControllers,
               curve: config.animationCurve,
+              widgetIdentityKey: _widgetIdentityKey,
             ),
           ),
         ),
@@ -426,26 +470,44 @@ class _ContentResolver {
   }
 }
 
-/// Stateless widget that renders content for a position with animation.
+/// Renders content for a position with per-widget animation.
+///
+/// Each widget gets its own independent animation wrapper (fade + slide)
+/// based on its current phase. Stable widgets render without animation.
+/// For bottom/top positions, groups stack perpendicular to the edge
+/// (primary closest to edge, secondary inward).
+/// For left/right positions, groups stack perpendicular to the edge
+/// (primary closest to edge, secondary inward).
 class _TPositionContent extends StatelessWidget {
   const _TPositionContent({
     required this.widgets,
+    required this.animatingOutWidgets,
     required this.position,
-    required this.phase,
-    required this.controller,
+    required this.widgetPhases,
+    required this.widgetControllers,
     required this.curve,
+    required this.widgetIdentityKey,
   });
 
   final List<Widget> widgets;
+  final List<Widget> animatingOutWidgets;
   final TContextualPosition position;
-  final _AnimationPhase phase;
-  final AnimationController controller;
+  final Map<Object, _AnimationPhase> widgetPhases;
+  final Map<Object, AnimationController> widgetControllers;
   final Curve curve;
+  final Object Function(Widget) widgetIdentityKey;
 
   bool get _isTopOrBottom =>
-      position == TContextualPosition.top || position == TContextualPosition.bottom;
+      position == TContextualPosition.top ||
+      position == TContextualPosition.bottom;
 
-  Axis get _contentAxis => _isTopOrBottom ? Axis.horizontal : Axis.vertical;
+  /// The axis along which multiple groups stack (perpendicular to the edge).
+  Axis get _stackAxis => _isTopOrBottom ? Axis.vertical : Axis.horizontal;
+
+  /// Whether to reverse the stack order so primary is closest to the edge.
+  bool get _reverseStack =>
+      position == TContextualPosition.bottom ||
+      position == TContextualPosition.right;
 
   Offset _getSlideOffset() {
     switch (position) {
@@ -462,67 +524,106 @@ class _TPositionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (widgets.isEmpty) {
+    final allWidgets = [
+      ...widgets,
+      ...animatingOutWidgets,
+    ];
+
+    if (allWidgets.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final Widget contentWidget;
-    if (widgets.length == 1) {
-      contentWidget = widgets.first;
-    } else {
-      contentWidget = SingleChildScrollView(
-        scrollDirection: _contentAxis,
-        child: Flex(
-          direction: _contentAxis,
-          mainAxisSize: MainAxisSize.min,
-          children: widgets,
-        ),
-      );
+    final children = <Widget>[];
+    for (final w in allWidgets) {
+      final key = widgetIdentityKey(w);
+      final phase = widgetPhases[key] ?? _AnimationPhase.idle;
+      final controller = widgetControllers[key];
+
+      if (phase == _AnimationPhase.idle || controller == null) {
+        children.add(w);
+      } else {
+        children.add(
+          _AnimatedWidgetWrapper(
+            widget: w,
+            phase: phase,
+            controller: controller,
+            curve: curve,
+            slideOffset: _getSlideOffset(),
+          ),
+        );
+      }
     }
+
+    final orderedChildren = _reverseStack ? children.reversed.toList() : children;
 
     return Semantics(
       container: true,
       liveRegion: true,
       label: '${position.name} contextual content',
-      child: IgnorePointer(
-        ignoring: phase != _AnimationPhase.idle,
-        child: AnimatedBuilder(
-          animation: controller,
-          builder: (context, child) {
-            final curvedValue = curve.transform(controller.value);
+      child: Flex(
+        direction: _stackAxis,
+        mainAxisSize: MainAxisSize.min,
+        children: orderedChildren,
+      ),
+    );
+  }
+}
 
-            final double opacity;
-            final Offset offset;
-            final slideOffset = _getSlideOffset();
+/// Wraps a single widget with fade + slide animation based on its phase.
+class _AnimatedWidgetWrapper extends StatelessWidget {
+  const _AnimatedWidgetWrapper({
+    required this.widget,
+    required this.phase,
+    required this.controller,
+    required this.curve,
+    required this.slideOffset,
+  });
 
-            switch (phase) {
-              case _AnimationPhase.idle:
-                opacity = 1.0;
-                offset = Offset.zero;
-              case _AnimationPhase.animatingOut:
-                opacity = 1.0 - curvedValue;
-                offset = Offset(
-                  slideOffset.dx * curvedValue,
-                  slideOffset.dy * curvedValue,
-                );
-              case _AnimationPhase.animatingIn:
-                opacity = curvedValue;
-                offset = Offset(
-                  slideOffset.dx * (1.0 - curvedValue),
-                  slideOffset.dy * (1.0 - curvedValue),
-                );
-            }
+  final Widget widget;
+  final _AnimationPhase phase;
+  final AnimationController controller;
+  final Curve curve;
+  final Offset slideOffset;
 
-            return Opacity(
-              opacity: opacity,
-              child: FractionalTranslation(
-                translation: offset,
-                child: child,
-              ),
-            );
-          },
-          child: contentWidget,
-        ),
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      ignoring: phase != _AnimationPhase.idle,
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) {
+          final curvedValue = curve.transform(controller.value);
+
+          final double opacity;
+          final Offset offset;
+
+          switch (phase) {
+            case _AnimationPhase.idle:
+              opacity = 1.0;
+              offset = Offset.zero;
+            case _AnimationPhase.animatingOut:
+              opacity = 1.0 - curvedValue;
+              offset = Offset(
+                slideOffset.dx * curvedValue,
+                slideOffset.dy * curvedValue,
+              );
+            case _AnimationPhase.animatingIn:
+              opacity = curvedValue;
+              offset = Offset(
+                slideOffset.dx * (1.0 - curvedValue),
+                slideOffset.dy * (1.0 - curvedValue),
+              );
+          }
+
+          return Opacity(
+            opacity: opacity,
+            child: FractionalTranslation(
+              translation: offset,
+              child: child,
+            ),
+          );
+        },
+        child: widget,
       ),
     );
   }
