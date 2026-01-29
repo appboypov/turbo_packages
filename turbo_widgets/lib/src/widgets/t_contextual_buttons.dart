@@ -236,11 +236,16 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
       }
     }
 
-    // Update displayed content to new state immediately so build() shows
-    // new content + animating-out old content without duplicate widgets.
+    // Update displayed content to stable + removed widgets only.
+    // Exclude widgets that need to animate in — they get added in Phase 2
+    // to prevent them flashing at full opacity during the out-animation.
     _displayedContent = {
       for (final position in TContextualPosition.values)
-        position: newContent[position] ?? const [],
+        position: (newContent[position] ?? const [])
+            .where(
+                (w) =>
+                    !widgetsToAnimateIn.containsKey(_widgetIdentityKey(w)),)
+            .toList(),
     };
 
     // Phase 1: Animate out removed widgets (in parallel)
@@ -266,6 +271,15 @@ class _TContextualButtonsAnimatedState extends State<_TContextualButtonsAnimated
         _disposeController(key);
       }
       _animatingOutWidgets.clear();
+    }
+
+    // Add in-animation widgets to displayed content now that out-animation
+    // is complete. They start hidden (controller at 0, animatingIn phase).
+    if (widgetsToAnimateIn.isNotEmpty) {
+      _displayedContent = {
+        for (final position in TContextualPosition.values)
+          position: newContent[position] ?? const [],
+      };
     }
 
     // Phase 2: Animate in new widgets (in parallel)
