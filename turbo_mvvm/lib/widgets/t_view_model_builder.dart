@@ -61,7 +61,9 @@ class TViewModelBuilderState<T extends TBaseViewModel>
       ..disposableBuildContext = DisposableBuildContext(this)
       .._mounted = (() => mounted)
       ..arguments = widget._argumentBuilder?.call();
-    _viewModel.initialise();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _viewModel.initialise();
+    });
     super.initState();
   }
 
