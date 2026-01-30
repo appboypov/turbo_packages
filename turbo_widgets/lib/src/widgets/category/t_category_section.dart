@@ -76,7 +76,7 @@ class _TCategorySectionState extends State<TCategorySection> {
     final isExpanded = canExpand && _isExpanded;
     final shouldShowAllAction = isLimited && !isExpanded;
     final visibleCount = isLimited && !isExpanded
-        ? min(maxItems!, widget.itemCount)
+        ? min(maxItems, widget.itemCount)
         : widget.itemCount;
 
     final items = <Widget>[

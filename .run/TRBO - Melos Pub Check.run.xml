@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Melos Pub Check" type="ShConfigurationType" factoryName="Shell Script">
+  <configuration default="false" name="TRBO - Melos Pub Check" type="ShConfigurationType" factoryName="Shell Script">
     <option name="scriptPath" value="$PROJECT_DIR$/.run/scripts/melos_pub_check.sh" />
     <option name="interpreterPath" value="/bin/bash" />
     <option name="interpreterOptions" value="" />

@@ -14,6 +14,8 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
     Object? Function()? argumentBuilder,
     this.isReactive = TurboMvvmDefaults.isReactive,
     this.shouldDispose = TurboMvvmDefaults.shouldDispose,
+    this.minBusyDuration = TurboMvvmDefaults.minBusyAnimation,
+    this.contentFadeDuration = TurboMvvmDefaults.animation,
     this.onDispose,
     Key? key,
   })  : _builder = builder,
@@ -26,8 +28,11 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
 
   /// Builder method that builds the widget tree.
   final Widget Function(
-          BuildContext context, T model, bool isInitialised, Widget? child,)
-      _builder;
+    BuildContext context,
+    T model,
+    bool isInitialised,
+    Widget? child,
+  ) _builder;
 
   /// Builder method that provides the [TBaseViewModel].
   final T Function() _viewModelBuilder;
@@ -41,18 +46,30 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
   /// Whether the [ChangeNotifierProvider] should dispose the [TBaseViewModel] when it's removed from the widget tree.
   final bool shouldDispose;
 
+  /// Minimum duration the global busy overlay stays visible during initialisation.
+  ///
+  /// When non-null, [TBusyService] is set to busy on creation and cleared
+  /// after [TBaseViewModel.initialise] completes, with the overlay held for
+  /// at least this duration. Content fades in after the overlay has fully
+  /// faded out. When `null`, no busy state handling occurs.
+  final Duration? minBusyDuration;
+
+  /// Duration of the content fade-in animation after the busy overlay clears.
+  final Duration contentFadeDuration;
+
   /// Fires when [TViewModelBuilder] is removed from the widget tree.
   final void Function(T model)? onDispose;
 
   @override
-  TViewModelBuilderState<T> createState() =>
-      TViewModelBuilderState<T>();
+  TViewModelBuilderState<T> createState() => TViewModelBuilderState<T>();
 }
 
-class TViewModelBuilderState<T extends TBaseViewModel>
-    extends State<TViewModelBuilder<T>> {
+class TViewModelBuilderState<T extends TBaseViewModel> extends State<TViewModelBuilder<T>> {
   /// The current [TBaseViewModel].
   late final T _viewModel;
+
+  /// Listener for busy state changes.
+  VoidCallback? _busyListener;
 
   /// Initialises the [TBaseViewModel] and its needed methods.
   @override
@@ -61,8 +78,30 @@ class TViewModelBuilderState<T extends TBaseViewModel>
       ..disposableBuildContext = DisposableBuildContext(this)
       .._mounted = (() => mounted)
       ..arguments = widget._argumentBuilder?.call();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.initialise();
+    final minBusyDuration = widget.minBusyDuration;
+    final showLoadingIndicator = minBusyDuration != null;
+    if (showLoadingIndicator) {
+      final busyService = TBusyService.instance();
+      busyService.setBusy(
+        true,
+        minBusyDuration: minBusyDuration,
+      );
+      _busyListener = () {
+        if (!busyService.isBusy) {
+          busyService.isBusyListenable.removeListener(_busyListener!);
+          _busyListener = null;
+          Future.delayed(widget.contentFadeDuration, () {
+            _viewModel.setInitialised(true);
+          });
+        }
+      };
+      busyService.isBusyListenable.addListener(_busyListener!);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _viewModel.initialise(doSetInitialised: false);
+      if (showLoadingIndicator) {
+        TBusyService.instance().setBusy(false);
+      }
     });
     super.initState();
   }
@@ -70,6 +109,10 @@ class TViewModelBuilderState<T extends TBaseViewModel>
   /// Disposes the [TBaseViewModel] and its given methods.
   @override
   void dispose() {
+    if (_busyListener != null) {
+      TBusyService.instance().isBusyListenable.removeListener(_busyListener!);
+      _busyListener = null;
+    }
     widget.onDispose?.call(_viewModel);
     if (widget.shouldDispose) {
       _viewModel.dispose();

@@ -14,4 +14,10 @@ abstract class TurboMvvmDefaults {
 
   /// Default value for [TBusyService.minBusy].
   static const minBusy = Duration.zero;
+
+  /// Default animation duration used for fade transitions.
+  static const animation = Duration(milliseconds: 225);
+
+  /// Default minimum busy animation duration used by [TViewModelBuilder.minBusyDuration].
+  static const minBusyAnimation = Duration(milliseconds: 450);
 }

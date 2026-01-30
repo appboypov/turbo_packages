@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Melos Format" type="ShConfigurationType" factoryName="Shell Script">
-    <option name="scriptPath" value="$PROJECT_DIR$/.run/scripts/melos_format.sh" />
+  <configuration default="false" name="TRBO - Melos Analyze" type="ShConfigurationType" factoryName="Shell Script">
+    <option name="scriptPath" value="$PROJECT_DIR$/.run/scripts/melos_analyze.sh" />
     <option name="interpreterPath" value="/bin/bash" />
     <option name="interpreterOptions" value="" />
     <option name="workingDirectory" value="$PROJECT_DIR$" />

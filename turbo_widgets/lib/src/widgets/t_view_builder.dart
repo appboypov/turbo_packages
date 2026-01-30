@@ -51,6 +51,8 @@ class TViewBuilder<T extends TBaseViewModel> extends StatefulWidget {
     this.argumentBuilder,
     this.child,
     this.isReactive = TurboMvvmDefaults.isReactive,
+    this.minBusyDuration = TurboMvvmDefaults.minBusyAnimation,
+    this.contentFadeDuration = TurboMvvmDefaults.animation,
     this.onDispose,
     this.shouldDispose = TurboMvvmDefaults.shouldDispose,
     super.key,
@@ -87,6 +89,17 @@ class TViewBuilder<T extends TBaseViewModel> extends StatefulWidget {
 
   /// Whether the [TViewModel] should listen to [TViewModel.notifyListeners] for rebuilds.
   final bool isReactive;
+
+  /// Minimum duration the global busy overlay stays visible during initialisation.
+  ///
+  /// When non-null, [TBusyService] is set to busy on creation and cleared
+  /// after [TBaseViewModel.initialise] completes, with the overlay held for
+  /// at least this duration. Content fades in after the overlay has fully
+  /// faded out. When `null`, no busy state handling occurs.
+  final Duration? minBusyDuration;
+
+  /// Duration of the content fade-in animation after the busy overlay clears.
+  final Duration contentFadeDuration;
 
   /// Whether the [TViewModelBuilder] should dispose the [TViewModel] when
   /// it's removed from the widget tree.
@@ -158,6 +171,8 @@ class _TViewBuilderState<T extends TBaseViewModel> extends State<TViewBuilder<T>
       viewModelBuilder: widget.viewModelBuilder,
       argumentBuilder: widget.argumentBuilder,
       isReactive: widget.isReactive,
+      minBusyDuration: widget.minBusyDuration,
+      contentFadeDuration: widget.contentFadeDuration,
       shouldDispose: widget.shouldDispose,
       onDispose: (model) {
         _removeButtons();

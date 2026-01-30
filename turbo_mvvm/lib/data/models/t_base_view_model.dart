@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:turbo_mvvm/data/constants/turbo_mvvm_defaults.dart';
+import 'package:turbo_mvvm/services/t_busy_service.dart';
 
 part '../../widgets/t_view_model_builder.dart';
 
@@ -30,8 +33,8 @@ abstract class TBaseViewModel<A> extends ChangeNotifier {
 
   /// Used to perform any initialising logic for the [TBaseViewModel].
   @mustCallSuper
-  void initialise() {
-    _isInitialised.value = true;
+  FutureOr<void> initialise({bool doSetInitialised = true}) {
+    _isInitialised.value = doSetInitialised;
   }
 
   /// Used to perform any disposing logic for the [TBaseViewModel].
