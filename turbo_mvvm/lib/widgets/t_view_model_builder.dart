@@ -98,7 +98,7 @@ class TViewModelBuilderState<T extends TBaseViewModel> extends State<TViewModelB
       busyService.isBusyListenable.addListener(_busyListener!);
     }
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _viewModel.initialise(doSetInitialised: false);
+      await _viewModel.initialise(doSetInitialised: !showLoadingIndicator);
       if (showLoadingIndicator) {
         TBusyService.instance().setBusy(false);
       }
