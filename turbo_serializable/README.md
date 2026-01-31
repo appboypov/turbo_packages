@@ -2,23 +2,23 @@
 
 [![pub package](https://img.shields.io/pub/v/turbo_serializable.svg)](https://pub.dev/packages/turbo_serializable)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Dart 3](https://img.shields.io/badge/Dart-%3E%3D3.0.0-blue.svg)](https://dart.dev)
+[![Dart 3](https://img.shields.io/badge/Dart-%3E%3D3.6.0-blue.svg)](https://dart.dev)
 
 A minimal serialization abstraction for the turbo ecosystem with optional multi-format support (JSON, YAML, Markdown, XML).
 
 ## Features
 
 - **Simple abstraction** - Minimal base classes for serializable objects
-- **Multi-format support** - Optional YAML, Markdown, and XML serialization via builder functions
-- **Validation integration** - Built-in validation using TurboResponse
+- **Multi-format support** - Optional YAML, Markdown, and XML serialization
+- **Factory pattern** - `TMdFactory`, `TXmlFactory`, and `TYamlFactory` for structured format building
+- **Validation integration** - Built-in validation using `TurboResponse`
 - **Typed identifiers** - `TSerializableId` for objects with unique identifiers
-- **Builder pattern** - Optional format builders for custom serialization logic
 
 ## Installation
 
 ```yaml
 dependencies:
-  turbo_serializable: ^1.0.0
+  turbo_serializable: ^0.3.0
 ```
 
 ## Quick Start
@@ -39,52 +39,66 @@ class User extends TSerializable {
   };
 
   @override
-  String Function(Map<String, dynamic> json)? get yamlBuilder =>
-      (json) => 'name: ${json['name']}\nage: ${json['age']}';
-
-  @override
-  String Function(Map<String, dynamic> json)? get markdownBuilder =>
-      (json) => '# ${json['name']}\n\nAge: ${json['age']}';
+  String Function(TWriteable writeable)? yamlBuilder =
+      (writeable) {
+        final json = writeable.toJson();
+        return 'name: ${json['name']}\nage: ${json['age']}';
+      };
 }
 
 void main() {
   final user = User(name: 'Alice', age: 30);
 
-  print(user.toJson());     // {name: Alice, age: 30}
-  print(user.toYaml());     // name: Alice\nage: 30
-  print(user.toMarkdown()); // # Alice\n\nAge: 30
+  print(user.toJson()); // {name: Alice, age: 30}
+  print(user.toYaml()); // name: Alice\nage: 30
 }
 ```
 
 ## API Reference
 
-### Classes
+### Core Classes
 
-| Class                | Description                                                          |
-|----------------------|----------------------------------------------------------------------|
-| `TSerializable`      | Base class for serializable objects                                  |
-| `TSerializableId`    | Extends TSerializable with identifier support                       |
-| `TWriteable`         | Base class providing `toJson()` and `validate()` methods            |
-| `TWriteableId`       | Base class for objects with string identifiers                      |
-| `TWriteableCustomId` | Base class for objects with typed identifiers                       |
+| Class | Description |
+|---|---|
+| `TWriteable` | Base class providing `toJson()` and `validate()` |
+| `TWriteableId` | Extends `TWriteable` with a string identifier |
+| `TWriteableCustomId<T>` | Extends `TWriteable` with a typed identifier |
+| `TSerializable` | Extends `TWriteable` with YAML, Markdown, and XML serialization |
+| `TSerializableId` | Extends `TWriteableCustomId` with YAML, Markdown, and XML serialization |
 
-### TSerializable Methods
+### TSerializable
 
-| Method                | Returns                 | Description                                                          |
-|-----------------------|-------------------------|----------------------------------------------------------------------|
-| `toJson()`            | `Map<String, dynamic>`  | Serialize to JSON map (required override)                            |
-| `toYaml()`            | `String`                | Serialize to YAML string (throws `UnimplementedError` if `yamlBuilder` is null) |
-| `toMarkdown()`        | `String`                | Serialize to Markdown string (throws `UnimplementedError` if `markdownBuilder` is null) |
-| `toXml()`             | `String`                | Serialize to XML string (throws `UnimplementedError` if `xmlBuilder` is null) |
-| `validate<T>()`       | `TurboResponse<T>?`     | Returns `null` if valid, `TurboResponse.fail` if invalid (optional override) |
+| Member | Type | Description |
+|---|---|---|
+| `toJson()` | `Map<String, dynamic>` | Serialize to JSON map (required override) |
+| `toYaml()` | `String` | Serialize via `yamlBuilder`. Throws `UnimplementedError` if null. |
+| `toMarkdown()` | `String` | Serialize via `mdFactory`. Returns empty string if null. |
+| `toXml()` | `String` | Serialize via `xmlBuilder`. Throws `UnimplementedError` if null. |
+| `validate<T>()` | `TurboResponse<T>?` | Returns `null` if valid, `TurboResponse.fail` if invalid |
+| `yamlBuilder` | `String Function(TWriteable)?` | Optional YAML builder function |
+| `mdFactory` | `TMdFactory?` | Optional Markdown factory |
+| `xmlBuilder` | `String Function(Map<String, dynamic>)?` | Optional XML builder function |
 
-### Builder Getters
+### TSerializableId
 
-| Getter                | Type                                           | Description                                    |
-|-----------------------|------------------------------------------------|------------------------------------------------|
-| `yamlBuilder`         | `String Function(Map<String, dynamic> json)?`   | Optional builder for YAML serialization        |
-| `markdownBuilder`     | `String Function(Map<String, dynamic> json)?`  | Optional builder for Markdown serialization    |
-| `xmlBuilder`          | `String Function(Map<String, dynamic> json)?` | Optional builder for XML serialization         |
+| Member | Type | Description |
+|---|---|---|
+| `toJson()` | `Map<String, dynamic>` | Serialize to JSON map (required override) |
+| `toYaml()` | `String` | Serialize via `yamlBuilder`. Throws `UnimplementedError` if null. |
+| `toMarkdown()` | `String` | Serialize via `markdownBuilder`. Throws `UnimplementedError` if null. |
+| `toXml()` | `String` | Serialize via `xmlBuilder`. Throws `UnimplementedError` if null. |
+| `id` | `dynamic` | Unique identifier (required override) |
+| `yamlBuilder` | `String Function(Map<String, dynamic>)?` | Optional YAML builder getter |
+| `markdownBuilder` | `String Function(Map<String, dynamic>)?` | Optional Markdown builder getter |
+| `xmlBuilder` | `String Function(Map<String, dynamic>)?` | Optional XML builder getter |
+
+### Format Factories
+
+| Factory | Description |
+|---|---|
+| `TMdFactory<T>` | Structured Markdown builder with frontmatter, sections, body, and file stages |
+| `TXmlFactory<T>` | Structured XML builder with document and file stages |
+| `TYamlFactory<T>` | Structured YAML builder with document and file stages |
 
 ## Examples
 
@@ -105,23 +119,6 @@ class User extends TSerializable {
 }
 ```
 
-### With Optional Format Builders
-
-```dart
-class Document extends TSerializable {
-  Document({required this.content});
-
-  final String content;
-
-  @override
-  Map<String, dynamic> toJson() => {'content': content};
-
-  @override
-  String Function(Map<String, dynamic> json)? get markdownBuilder =>
-      (json) => json['content'] as String;
-}
-```
-
 ### With Identifier
 
 ```dart
@@ -137,27 +134,6 @@ class Product extends TSerializableId {
     'id': id,
     'name': name,
   };
-}
-```
-
-### With Custom ID Type
-
-```dart
-class CustomId {
-  const CustomId(this.value);
-  final int value;
-}
-
-class Document extends TSerializableId {
-  Document(int idValue) : _id = CustomId(idValue);
-
-  final CustomId _id;
-
-  @override
-  CustomId get id => _id;
-
-  @override
-  Map<String, dynamic> toJson() => {'id': _id.value};
 }
 ```
 
@@ -189,34 +165,38 @@ class User extends TSerializable {
 }
 ```
 
-### Partial Implementation
-
-You can implement only `toJson()` and leave format builders as `null`. Calling `toYaml()`, `toMarkdown()`, or `toXml()` will throw `UnimplementedError`:
+### Using TMdFactory
 
 ```dart
-class SimpleModel extends TSerializable {
-  SimpleModel(this.name);
+class Article extends TSerializable {
+  Article({required this.title, required this.content});
 
-  final String name;
-
-  @override
-  Map<String, dynamic> toJson() => {'name': name};
+  final String title;
+  final String content;
 
   @override
-  String Function(Map<String, dynamic> json)? get yamlBuilder => null;
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'content': content,
+  };
 
   @override
-  String Function(Map<String, dynamic> json)? get markdownBuilder => null;
-
-  @override
-  String Function(Map<String, dynamic> json)? get xmlBuilder => null;
+  TMdFactory? get mdFactory => TMdFactory(
+    writeable: this,
+    mdBuilder: (writeable, frontmatter, sections, body) {
+      final json = writeable.toJson();
+      return '# ${json['title']}\n\n${json['content']}';
+    },
+  );
 }
 ```
 
 ## Error Handling
 
-- **Serialization methods** (`toYaml`, `toMarkdown`, `toXml`) throw `UnimplementedError` if the corresponding builder getter returns `null`
-- **Validation** returns `null` if valid, or `TurboResponse.fail` if invalid
+- `toYaml()` and `toXml()` throw `UnimplementedError` if the corresponding builder is `null`
+- `toMarkdown()` on `TSerializable` returns an empty string if `mdFactory` is `null`
+- `toMarkdown()` on `TSerializableId` throws `UnimplementedError` if `markdownBuilder` is `null`
+- `validate()` returns `null` if valid, or `TurboResponse.fail` if invalid
 
 ## Additional Information
 

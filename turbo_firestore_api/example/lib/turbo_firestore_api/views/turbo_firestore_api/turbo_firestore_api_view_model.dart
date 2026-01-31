@@ -6,10 +6,10 @@ class CloudFirestoreApiViewModel extends TBaseViewModel {
   CloudFirestoreApiViewModel();
 
   @override
-  Future<void> initialise() async {
+  Future<void> initialise({bool doSetInitialised = true}) async {
     await Firebase.initializeApp();
     ExampleAPI().createExample();
-    super.initialise();
+    super.initialise(doSetInitialised: doSetInitialised);
   }
 
   static CloudFirestoreApiViewModel get locate => CloudFirestoreApiViewModel();

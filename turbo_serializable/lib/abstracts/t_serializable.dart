@@ -25,8 +25,8 @@ abstract class TSerializable extends TWriteable {
 
   /// Converts this object to a Markdown string.
   ///
-  /// Uses [markdownBuilder] to serialize the result of [toJson()].
-  /// Throws an [UnimplementedError] if [markdownBuilder] is not provided.
+  /// Uses [mdFactory] to serialize the result of [toJson()].
+  /// Throws an [UnimplementedError] if [mdFactory] is not provided.
   String toMarkdown({
     TMdFactory? mdFactory,
   }) {

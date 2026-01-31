@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-01-18
+## [0.3.0] - 2026-01-31
 
 ### Added
 - Simplified abstract base classes: `TSerializable` and `TSerializableId`
 - Builder-based serialization pattern with optional format builders (`yamlBuilder`, `markdownBuilder`, `xmlBuilder`)
+- `TMdFactory` markdown factory with section-based builder pattern and typedefs (`TMdSectionsBuilder`, `TMdSectionBuilder`, `TMdBodyBuilder`, `TMdHeaderBuilder`)
+- `TXmlFactory` XML factory with element-based builder pattern and typedefs (`TXmlRootBuilder`, `TXmlElementsBuilder`, `TXmlElementBuilder`)
+- `TYamlFactory` YAML factory with entry-based builder pattern and typedefs (`TYamlEntriesBuilder`, `TYamlEntryBuilder`)
 - Comprehensive Dart documentation for all classes and methods
 - Example project demonstrating simplified API usage
 
@@ -22,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: Removed `isLocalDefault` parameter from ID-based classes
 - **BREAKING**: Removed case transformation utilities and `CaseStyle` enum
 - **BREAKING**: Removed layout preservation features and related models
+- `TSerializable.toMarkdown()` now uses `TMdFactory` instead of a simple builder function
 - Simplified API to focus on core serialization abstraction
 - Updated example project to demonstrate new simplified API
 
@@ -35,12 +39,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enums (`CaseStyle`, `SerializationFormat`)
 - Comprehensive test suite and integration tests
 
+### Fixed
+- Unresolvable dartdoc references in `TSerializable` and `TSerializableId`
+- `dart format` issues in factory and typedef files
+- Export directive ordering in barrel file
+
 ### Technical Details
 - Package now provides minimal abstraction layer for serialization
 - Focus on core functionality: `toJson()`, `validate()`, and optional format builders
 - Reduced complexity from multi-format conversion system to simple serialization base classes
 - Maintains compatibility with `turbo_response` for validation
-- All serialization format support is now optional and implemented via builder functions
+- All serialization format support is now optional and implemented via builder functions or factory classes
 
 ## [0.2.0] - 2026-01-12
 

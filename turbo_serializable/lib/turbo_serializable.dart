@@ -69,7 +69,7 @@
 /// ```
 library turbo_serializable;
 
-export 'abstracts/t_writeable.dart';
-export 'abstracts/t_writeable_id.dart';
 export 'abstracts/t_serializable.dart';
 export 'abstracts/t_serializable_id.dart';
+export 'abstracts/t_writeable.dart';
+export 'abstracts/t_writeable_id.dart';

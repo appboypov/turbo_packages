@@ -21,7 +21,5 @@ class TXmlFactory<T extends TWriteable> {
   TXmlFile build({
     TXmlBuilder<T>? xmlBuilder,
   }) =>
-      (xmlBuilder ?? this.xmlBuilder)
-          ?.call(writeable, buildDocument()) ??
-      '';
+      (xmlBuilder ?? this.xmlBuilder)?.call(writeable, buildDocument()) ?? '';
 }

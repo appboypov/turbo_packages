@@ -21,7 +21,5 @@ class TYamlFactory<T extends TWriteable> {
   TYamlFile build({
     TYamlBuilder<T>? yamlBuilder,
   }) =>
-      (yamlBuilder ?? this.yamlBuilder)
-          ?.call(writeable, buildDocument()) ??
-      '';
+      (yamlBuilder ?? this.yamlBuilder)?.call(writeable, buildDocument()) ?? '';
 }
