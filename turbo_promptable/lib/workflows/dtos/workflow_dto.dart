@@ -3,7 +3,6 @@ import 'package:turbo_promptable/activities/dtos/guard_rail_dto.dart';
 import 'package:turbo_promptable/workflows/dtos/workflow_step.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
-import '../../shared/dtos/meta_data_dto.dart';
 
 part 'workflow_dto.g.dart';
 

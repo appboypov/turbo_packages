@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_promptable/roles/dtos/role_dto.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
-import '../../shared/dtos/meta_data_dto.dart';
 
 part 'sub_agent_dto.g.dart';
 

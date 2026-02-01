@@ -3,7 +3,6 @@ import 'package:turbo_promptable/roles/dtos/expertise_dto.dart';
 import 'package:turbo_promptable/roles/dtos/persona_dto.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
-import '../../shared/dtos/meta_data_dto.dart';
 
 part 'role_dto.g.dart';
 
