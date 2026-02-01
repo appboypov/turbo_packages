@@ -33,3 +33,9 @@ coverage/
 # Pub cache
 .pub-cache/
 .pub/
+
+# MCP config (contains API keys)
+.mcp.json
+
+# Generated Flutter plugin dependencies
+.flutter-plugins-dependencies
