@@ -20,7 +20,8 @@ class WatchConfigDto {
   final List<String> ignoreFolders;
 
   static const fromJsonFactory = _$WatchConfigDtoFromJson;
-  factory WatchConfigDto.fromJson(Map<String, dynamic> json) => _$WatchConfigDtoFromJson(json);
+  factory WatchConfigDto.fromJson(Map<String, dynamic> json) =>
+      _$WatchConfigDtoFromJson(json);
   static const toJsonFactory = _$WatchConfigDtoToJson;
   Map<String, dynamic> toJson() => _$WatchConfigDtoToJson(this);
 
@@ -51,5 +52,6 @@ class WatchConfigDto {
           ignoreFolders == other.ignoreFolders;
 
   @override
-  int get hashCode => throttleMs.hashCode ^ extensions.hashCode ^ ignoreFolders.hashCode;
+  int get hashCode =>
+      throttleMs.hashCode ^ extensions.hashCode ^ ignoreFolders.hashCode;
 }

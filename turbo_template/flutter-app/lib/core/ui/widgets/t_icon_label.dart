@@ -22,14 +22,26 @@ class TIconLabel extends StatelessWidget {
     required IconData icon,
     required String text,
     required BuildContext context,
-  }) => TIconLabel(key: key, iconData: icon, size: 16, text: text, textStyle: context.texts.list);
+  }) => TIconLabel(
+    key: key,
+    iconData: icon,
+    size: 16,
+    text: text,
+    textStyle: context.texts.list,
+  );
 
   factory TIconLabel.forFormField({
     Key? key,
     required IconData? icon,
     required String text,
     required BuildContext context,
-  }) => TIconLabel(key: key, iconData: icon, size: 14, text: text, textStyle: context.texts.small);
+  }) => TIconLabel(
+    key: key,
+    iconData: icon,
+    size: 14,
+    text: text,
+    textStyle: context.texts.small,
+  );
 
   @override
   Widget build(BuildContext context) => Row(

@@ -78,22 +78,26 @@ enum TRoute {
         return StatefulShellRoute.indexedStack(
           restorationScopeId: TRoute.shell.routerPath,
           parentNavigatorKey: BaseRouterService.rootNavigatorKey,
-          pageBuilder: (context, state, navigationShell) =>
-              TRoute.shell.pageBuilder(navigationShell: navigationShell)(context, state),
+          pageBuilder: (context, state, navigationShell) => TRoute.shell
+              .pageBuilder(navigationShell: navigationShell)(context, state),
           branches: [
             StatefulShellBranch(
               routes: [
                 home.route,
               ],
               restorationScopeId: TRoute.home.routerPath,
-              navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.home.routerPath),
+              navigatorKey: GlobalKey<NavigatorState>(
+                debugLabel: TRoute.home.routerPath,
+              ),
             ),
             StatefulShellBranch(
               routes: [
                 styling.route,
               ],
               restorationScopeId: TRoute.styling.routerPath,
-              navigatorKey: GlobalKey<NavigatorState>(debugLabel: TRoute.styling.routerPath),
+              navigatorKey: GlobalKey<NavigatorState>(
+                debugLabel: TRoute.styling.routerPath,
+              ),
             ),
           ],
         );

@@ -175,7 +175,8 @@ class FileUtils {
       return path.endsWith(ext);
     } else if (pattern.contains('/') || pattern.contains('\\')) {
       // Path suffix match
-      return path.endsWith(pattern) || path.endsWith(pattern.replaceAll('/', '\\'));
+      return path.endsWith(pattern) ||
+          path.endsWith(pattern.replaceAll('/', '\\'));
     } else {
       // Exact filename match
       return p.basename(path) == pattern;

@@ -26,22 +26,34 @@ class HoverAnimation extends StatefulWidget {
   final EdgeInsets padding;
   final MouseCursor cursor;
   final bool overrideHover;
-  final void Function(PointerHoverEvent event, AnimationController animationController)? onHover;
+  final void Function(
+    PointerHoverEvent event,
+    AnimationController animationController,
+  )?
+  onHover;
   final VoidCallback? onEnter;
-  final void Function(PointerExitEvent event, AnimationController animationController)? onExit;
+  final void Function(
+    PointerExitEvent event,
+    AnimationController animationController,
+  )?
+  onExit;
   final bool Function()? shouldHover;
 
   @override
   _HoverAnimationState createState() => _HoverAnimationState();
 }
 
-class _HoverAnimationState extends State<HoverAnimation> with SingleTickerProviderStateMixin {
+class _HoverAnimationState extends State<HoverAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: widget.animateDuration);
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.animateDuration,
+    );
   }
 
   @override
@@ -102,11 +114,15 @@ class _SquarePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()..color = color.withValues(alpha: controllerValue);
+    final Paint paint = Paint()
+      ..color = color.withValues(alpha: controllerValue);
 
     final rect =
         Offset(0 - padding.left, 0 - padding.top) &
-        Size(size.width + padding.left + padding.right, size.height + padding.top + padding.bottom);
+        Size(
+          size.width + padding.left + padding.right,
+          size.height + padding.top + padding.bottom,
+        );
 
     canvas.drawRRect(
       RRect.fromRectAndCorners(

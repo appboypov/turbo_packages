@@ -34,12 +34,14 @@ class UserLevelDto {
   final Duration? userLevelDurationInDays;
 
   static const fromJsonFactory = _$UserLevelDtoFromJson;
-  factory UserLevelDto.fromJson(Map<String, dynamic> json) => _$UserLevelDtoFromJson(json);
+  factory UserLevelDto.fromJson(Map<String, dynamic> json) =>
+      _$UserLevelDtoFromJson(json);
   static const toJsonFactory = _$UserLevelDtoToJson;
   Map<String, dynamic> toJson() => _$UserLevelDtoToJson(this);
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   bool get isExpired =>
-      userLevelDurationInDays != null && startedAt.add(userLevelDurationInDays!).isBefore(gNow);
+      userLevelDurationInDays != null &&
+      startedAt.add(userLevelDurationInDays!).isBefore(gNow);
 }

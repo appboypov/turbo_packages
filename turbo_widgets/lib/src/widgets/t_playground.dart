@@ -93,7 +93,8 @@ class TPlayground<T extends TPlaygroundParameterModel> extends StatefulWidget {
   State<TPlayground<T>> createState() => _TPlaygroundState<T>();
 }
 
-class _TPlaygroundState<T extends TPlaygroundParameterModel> extends State<TPlayground<T>> {
+class _TPlaygroundState<T extends TPlaygroundParameterModel>
+    extends State<TPlayground<T>> {
   late T _parameters;
   late bool _isGeneratorOpen;
   late TurboWidgetsScreenTypes _screenType;

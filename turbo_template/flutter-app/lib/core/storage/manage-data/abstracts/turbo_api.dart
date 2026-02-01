@@ -10,13 +10,15 @@ abstract class TurboApi<T extends Object> extends TFirestoreApi<T> {
     String Function(FirestoreCollection firestoreCollection)? path,
   }) : super(
          firebaseFirestore: FirebaseFirestore.instance,
-         collectionPath: () => path?.call(firestoreCollection) ?? firestoreCollection.path(),
+         collectionPath: () =>
+             path?.call(firestoreCollection) ?? firestoreCollection.path(),
          documentReferenceFieldName: TValues.documentReference,
          fromJson: firestoreCollection.fromJson<T>(),
          isCollectionGroup: firestoreCollection.isCollectionGroup,
          logger: TFirestoreLogger(showSensitiveData: kDebugMode),
          toJson: firestoreCollection.toJson<T>(),
-         tryAddLocalDocumentReference: firestoreCollection.tryAddLocalDocumentReference,
+         tryAddLocalDocumentReference:
+             firestoreCollection.tryAddLocalDocumentReference,
          tryAddLocalId: true,
        );
 }

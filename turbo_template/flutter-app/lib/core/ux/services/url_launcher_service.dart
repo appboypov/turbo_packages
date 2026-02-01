@@ -6,7 +6,8 @@ class UrlLauncherService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static UrlLauncherService get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(UrlLauncherService.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(UrlLauncherService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -28,7 +29,9 @@ class UrlLauncherService with Turbolytics {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        log.warning('canLaunchUrl returned false for $url, attempting launch anyway');
+        log.warning(
+          'canLaunchUrl returned false for $url, attempting launch anyway',
+        );
         // Fallback: try launching even if canLaunchUrl returns false
         // This handles edge cases where queries aren't configured but launch still works
         await launchUrl(uri, mode: LaunchMode.externalApplication);

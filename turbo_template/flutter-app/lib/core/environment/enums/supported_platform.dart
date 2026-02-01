@@ -29,7 +29,8 @@ enum SupportedPlatform {
   }
 
   /// Whether the current platform is mobile (Android or iOS).
-  bool get isMobile => this == SupportedPlatform.android || this == SupportedPlatform.ios;
+  bool get isMobile =>
+      this == SupportedPlatform.android || this == SupportedPlatform.ios;
 
   /// Whether the current platform is desktop (Windows, macOS, or Linux).
   bool get isDesktop =>

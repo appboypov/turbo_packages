@@ -136,7 +136,8 @@ class _TCollectionLayoutToggle extends StatelessWidget {
         _TCollectionLayoutButton(
           isSelected: layout == TCollectionSectionLayout.bento,
           icon: LucideIcons.layoutDashboard,
-          onPressed: () => onLayoutChanged?.call(TCollectionSectionLayout.bento),
+          onPressed: () =>
+              onLayoutChanged?.call(TCollectionSectionLayout.bento),
         ),
         const SizedBox(width: 8),
         _TCollectionLayoutButton(
@@ -169,7 +170,8 @@ class _TCollectionLayoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadButton.raw(
-      variant: isSelected ? ShadButtonVariant.primary : ShadButtonVariant.outline,
+      variant:
+          isSelected ? ShadButtonVariant.primary : ShadButtonVariant.outline,
       size: ShadButtonSize.sm,
       width: 36,
       height: 36,

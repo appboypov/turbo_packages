@@ -4,13 +4,19 @@ import 'package:turbo_forms/turbo_forms.dart';
 
 class EntityDetailForm extends TFormConfig {
   static EntityDetailForm get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(EntityDetailForm.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(EntityDetailForm.new);
 
-  TFormFieldConfig<String> get title => formFieldConfig(EntityDetailFormField.title);
-  TFormFieldConfig<String> get status => formFieldConfig(EntityDetailFormField.status);
-  TFormFieldConfig<String> get owner => formFieldConfig(EntityDetailFormField.owner);
-  TFormFieldConfig<String> get summary => formFieldConfig(EntityDetailFormField.summary);
-  TFormFieldConfig<bool> get isActive => formFieldConfig(EntityDetailFormField.isActive);
+  TFormFieldConfig<String> get title =>
+      formFieldConfig(EntityDetailFormField.title);
+  TFormFieldConfig<String> get status =>
+      formFieldConfig(EntityDetailFormField.status);
+  TFormFieldConfig<String> get owner =>
+      formFieldConfig(EntityDetailFormField.owner);
+  TFormFieldConfig<String> get summary =>
+      formFieldConfig(EntityDetailFormField.summary);
+  TFormFieldConfig<bool> get isActive =>
+      formFieldConfig(EntityDetailFormField.isActive);
 
   @override
   late final Map<Enum, TFormFieldConfig> formFieldConfigs = {

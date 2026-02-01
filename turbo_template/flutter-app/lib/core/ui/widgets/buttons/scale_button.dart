@@ -27,7 +27,8 @@ class ScaleButton extends StatefulWidget {
   ScaleButtonState createState() => ScaleButtonState();
 }
 
-class ScaleButtonState extends State<ScaleButton> with SingleTickerProviderStateMixin {
+class ScaleButtonState extends State<ScaleButton>
+    with SingleTickerProviderStateMixin {
   static const Duration _scaleDuration = TDurations.hover;
 
   late AnimationController _animationController;
@@ -36,7 +37,10 @@ class ScaleButtonState extends State<ScaleButton> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: _scaleDuration, vsync: this);
+    _animationController = AnimationController(
+      duration: _scaleDuration,
+      vsync: this,
+    );
     _scaleAnimation = Tween<double>(begin: 1.0, end: widget.tweenEnd).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -82,7 +86,10 @@ class ScaleButtonState extends State<ScaleButton> with SingleTickerProviderState
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: widget.minSize, minHeight: widget.minSize),
+        constraints: BoxConstraints(
+          minWidth: widget.minSize,
+          minHeight: widget.minSize,
+        ),
         child: Padding(
           padding: widget.padding,
           child: ScaleTransition(scale: _scaleAnimation, child: widget.child),

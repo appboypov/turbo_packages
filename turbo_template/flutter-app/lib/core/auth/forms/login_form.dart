@@ -9,7 +9,8 @@ class LoginForm extends TFormConfig {
   static void registerFactory() => GetIt.I.registerFactory(LoginForm.new);
 
   TFormFieldConfig<String> get email => formFieldConfig(_LoginFormField.email);
-  TFormFieldConfig<String> get password => formFieldConfig(_LoginFormField.password);
+  TFormFieldConfig<String> get password =>
+      formFieldConfig(_LoginFormField.password);
 
   @override
   late final Map<Enum, TFormFieldConfig> formFieldConfigs = {
@@ -26,7 +27,9 @@ class LoginForm extends TFormConfig {
       initialValue: null,
       fieldType: TFieldType.textInput,
       obscureText: true,
-      valueValidator: kValueValidatorsRequired(errorText: () => 'Please enter your password'),
+      valueValidator: kValueValidatorsRequired(
+        errorText: () => 'Please enter your password',
+      ),
     ),
   };
 }

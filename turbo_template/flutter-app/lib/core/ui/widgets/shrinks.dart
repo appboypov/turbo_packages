@@ -78,9 +78,16 @@ class HorizontalSlideShrink extends StatelessWidget {
     curve: curve,
     child: show
         ? builder?.call(context, child) ??
-              child.slideInRightWithFade(begin: 0.6, duration: duration, curve: curve)
+              child.slideInRightWithFade(
+                begin: 0.6,
+                duration: duration,
+                curve: curve,
+              )
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.slideInRightWithFade(duration: duration, curve: curve) ??
+              hideChild?.slideInRightWithFade(
+                duration: duration,
+                curve: curve,
+              ) ??
               TWidgets.nothing),
   );
 }
@@ -177,12 +184,16 @@ class SlideShrink extends StatelessWidget {
     alignment: alignment,
     curve: curve,
     child: show
-        ? (child ?? builder?.call(context, lazyChild!()) ?? lazyChild!()).slideBottomUpWithFade(
-            duration: duration,
-            curve: curve,
-          )
+        ? (child ?? builder?.call(context, lazyChild!()) ?? lazyChild!())
+              .slideBottomUpWithFade(
+                duration: duration,
+                curve: curve,
+              )
         : (hideBuilder?.call(context, hideChild) ??
-              hideChild?.slideBottomUpWithFade(duration: duration, curve: curve) ??
+              hideChild?.slideBottomUpWithFade(
+                duration: duration,
+                curve: curve,
+              ) ??
               TWidgets.nothing),
   );
 }
@@ -227,14 +238,22 @@ class HorizontalShrink extends StatelessWidget {
               opacity: show ? 1 : 0,
               duration: fadeDuration,
               curve: show ? fadeInCurve : fadeOutCurve,
-              child: Align(alignment: alignment, widthFactor: show ? null : 0, child: child),
+              child: Align(
+                alignment: alignment,
+                widthFactor: show ? null : 0,
+                child: child,
+              ),
             ),
             if (hideChild != null)
               AnimatedOpacity(
                 opacity: show ? 0 : 1,
                 duration: fadeDuration,
                 curve: show ? fadeInCurve : fadeOutCurve,
-                child: Align(alignment: alignment, widthFactor: show ? 0 : null, child: hideChild),
+                child: Align(
+                  alignment: alignment,
+                  widthFactor: show ? 0 : null,
+                  child: hideChild,
+                ),
               ),
           ],
         ),
@@ -284,14 +303,22 @@ class VerticalShrink extends StatelessWidget {
               opacity: show ? 1 : 0,
               duration: fadeDuration,
               curve: show ? fadeInCurve : fadeOutCurve,
-              child: Align(alignment: alignment, heightFactor: show ? null : 0, child: child),
+              child: Align(
+                alignment: alignment,
+                heightFactor: show ? null : 0,
+                child: child,
+              ),
             ),
             if (hideChild != null)
               AnimatedOpacity(
                 opacity: show ? 0 : 1,
                 duration: fadeDuration,
                 curve: show ? fadeInCurve : fadeOutCurve,
-                child: Align(alignment: alignment, heightFactor: show ? 0 : null, child: hideChild),
+                child: Align(
+                  alignment: alignment,
+                  heightFactor: show ? 0 : null,
+                  child: hideChild,
+                ),
               ),
           ],
         ),

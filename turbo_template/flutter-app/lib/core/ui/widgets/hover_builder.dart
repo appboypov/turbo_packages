@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-typedef HoverWidgetBuilder = Widget Function(BuildContext context, bool isHovered, Widget? child);
+typedef HoverWidgetBuilder =
+    Widget Function(BuildContext context, bool isHovered, Widget? child);
 
 class HoverBuilder extends StatefulWidget {
   const HoverBuilder({

@@ -72,18 +72,23 @@ class TColorContainer extends StatelessWidget {
                   iconTextColor?.call(context.themeMode, context.theme) ??
                   switch (type) {
                     TColorContainerType.icon => pColor.onColor,
-                    TColorContainerType.chipButton => context.colors.background.onColor,
-                    TColorContainerType.none => context.colors.background.onColor,
+                    TColorContainerType.chipButton =>
+                      context.colors.background.onColor,
+                    TColorContainerType.none =>
+                      context.colors.background.onColor,
                   };
               return TRow(
                 spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (iconData != null) TIconSmall.small(iconData!, color: pIconTextColor),
+                  if (iconData != null)
+                    TIconSmall.small(iconData!, color: pIconTextColor),
                   if (text != null)
                     AutoSizeText(
                       text!,
-                      style: context.texts.button.copyWith(color: pIconTextColor),
+                      style: context.texts.button.copyWith(
+                        color: pIconTextColor,
+                      ),
                     ),
                 ],
               );

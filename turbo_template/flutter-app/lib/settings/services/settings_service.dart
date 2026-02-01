@@ -15,7 +15,8 @@ class SettingsService extends TDocumentService<SettingsDto, SettingsApi> {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static SettingsService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(SettingsService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(SettingsService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -59,15 +60,18 @@ class SettingsService extends TDocumentService<SettingsDto, SettingsApi> {
           ? (current.verifyEmailSnoozeCount + 1)
           : current.verifyEmailSnoozeCount,
     ),
-    remoteUpdateRequestBuilder: (doc) => doc.asUpdateSkippedVerifyEmailDateRequest,
+    remoteUpdateRequestBuilder: (doc) =>
+        doc.asUpdateSkippedVerifyEmailDateRequest,
   );
 
   Future<TurboResponse> resetVerifyEmailSnoozeCount() => updateDoc(
     id: id!,
     doc: (current, vars) => current.copyWith(verifyEmailSnoozeCount: 0),
-    remoteUpdateRequestBuilder: (doc) => doc.asUpdateSkippedVerifyEmailDateRequest,
+    remoteUpdateRequestBuilder: (doc) =>
+        doc.asUpdateSkippedVerifyEmailDateRequest,
   );
 
-  Future<TurboResponse> createSettings({required CreateDocDef<SettingsDto> doc}) async =>
-      createDoc(doc: doc);
+  Future<TurboResponse> createSettings({
+    required CreateDocDef<SettingsDto> doc,
+  }) async => createDoc(doc: doc);
 }

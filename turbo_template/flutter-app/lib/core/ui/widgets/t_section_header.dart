@@ -43,12 +43,18 @@ class TSectionHeader extends StatelessWidget {
               final titleWidget =
                   titleBuilder?.call(
                     Text(
-                      title!.butWhen(emoji != null, (cValue) => cValue.withLeadingEmoji(emoji)),
+                      title!.butWhen(
+                        emoji != null,
+                        (cValue) => cValue.withLeadingEmoji(emoji),
+                      ),
                       style: context.texts.large,
                     ),
                   ) ??
                   Text(
-                    title!.butWhen(emoji != null, (cValue) => cValue.withLeadingEmoji(emoji)),
+                    title!.butWhen(
+                      emoji != null,
+                      (cValue) => cValue.withLeadingEmoji(emoji),
+                    ),
                     style: context.texts.large,
                   );
               return trailingTitle == null
@@ -63,9 +69,13 @@ class TSectionHeader extends StatelessWidget {
           ),
         if (hasSubtitle)
           Padding(
-            padding: title == null ? EdgeInsets.zero : const EdgeInsets.only(top: 2),
+            padding: title == null
+                ? EdgeInsets.zero
+                : const EdgeInsets.only(top: 2),
             child:
-                subtitleBuilder?.call(Text(subtitle!, style: context.texts.muted)) ??
+                subtitleBuilder?.call(
+                  Text(subtitle!, style: context.texts.muted),
+                ) ??
                 Text(subtitle!, style: context.texts.muted),
           ),
         if (actions.isNotEmpty)

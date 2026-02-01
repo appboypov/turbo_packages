@@ -11,7 +11,8 @@ import 'package:turbo_response/turbo_response.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class UserProfilesApi extends TurboApi<UserProfileDto> with Turbolytics {
-  UserProfilesApi() : super(firestoreCollection: FirestoreCollection.userProfiles);
+  UserProfilesApi()
+    : super(firestoreCollection: FirestoreCollection.userProfiles);
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
@@ -27,10 +28,13 @@ class UserProfilesApi extends TurboApi<UserProfileDto> with Turbolytics {
   Future<bool> hasProfile({required String userId}) async =>
       (await getByIdWithConverter(id: userId)).isSuccess;
 
-  Future<TurboResponse<UserProfileDto>> findByUserId({required String userId}) =>
-      getByIdWithConverter(id: userId);
+  Future<TurboResponse<UserProfileDto>> findByUserId({
+    required String userId,
+  }) => getByIdWithConverter(id: userId);
 
-  Future<TurboResponse<List<UserProfileDto>>> findByUserIds({required List<String> userIds}) async {
+  Future<TurboResponse<List<UserProfileDto>>> findByUserIds({
+    required List<String> userIds,
+  }) async {
     final profiles = <UserProfileDto>[];
     for (final userId in userIds) {
       final profileResponse = await findByUserId(userId: userId);
@@ -41,12 +45,13 @@ class UserProfilesApi extends TurboApi<UserProfileDto> with Turbolytics {
     return TurboResponse.success(result: profiles);
   }
 
-  Future<TurboResponse<List<UserProfileDto>>> search({required String searchTerm}) async =>
-      await listBySearchTermWithConverter(
-        searchTerm: searchTerm,
-        searchField: TKeys.searchTerms,
-        searchTermType: TSearchTermType.arrayContains,
-      );
+  Future<TurboResponse<List<UserProfileDto>>> search({
+    required String searchTerm,
+  }) async => await listBySearchTermWithConverter(
+    searchTerm: searchTerm,
+    searchField: TKeys.searchTerms,
+    searchTermType: TSearchTermType.arrayContains,
+  );
 
   Future<bool> profileExists({required String userId}) => docExists(id: userId);
 
@@ -58,7 +63,10 @@ class UserProfilesApi extends TurboApi<UserProfileDto> with Turbolytics {
     required String username,
   }) async => createDoc(
     writeable: CreateProfileRequest(
-      profileDto: UserProfileDto.defaultValue(userId: userId, username: username),
+      profileDto: UserProfileDto.defaultValue(
+        userId: userId,
+        username: username,
+      ),
     ),
     id: userId,
   );

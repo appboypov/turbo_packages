@@ -28,8 +28,9 @@ mixin Turbolytics<D extends TAnalytics> {
   static final GetIt _getIt = GetIt.asNewInstance();
 
   // Used to create an instance of Turbolytics when using a mixin is not possible or breaks a const constructor.
-  static Turbolytics<T> create<T extends TAnalytics>(
-          {required String location,}) =>
+  static Turbolytics<T> create<T extends TAnalytics>({
+    required String location,
+  }) =>
       _Turbolytics<T>(
         location: location,
       );
@@ -49,7 +50,8 @@ mixin Turbolytics<D extends TAnalytics> {
   ///
   /// [location] is used for logging purposes, can be left out if desired.
   static E getAnalytics<E extends TAnalytics>({String? location}) =>
-      _getIt.get<E>()..service = TAnalyticsService(log: TLog(location: location));
+      _getIt.get<E>()
+        ..service = TAnalyticsService(log: TLog(location: location));
 
   /// Used to provide all logging capabilities.
   late final TLog log = TLog(

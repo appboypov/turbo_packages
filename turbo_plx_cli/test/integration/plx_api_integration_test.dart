@@ -35,7 +35,8 @@ void main() {
 
     // Build silent mock CLI for timeout tests
     final testDir = Directory.current.path;
-    final mockCliPath = '$testDir/test/integration/helpers/silent_mock_cli.dart';
+    final mockCliPath =
+        '$testDir/test/integration/helpers/silent_mock_cli.dart';
     final mockBuildResult = await Process.run(
       'dart',
       ['compile', 'exe', mockCliPath, '-o', '$testDir/silent_mock_cli_test'],

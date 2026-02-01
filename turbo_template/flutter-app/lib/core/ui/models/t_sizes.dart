@@ -75,23 +75,36 @@ class TSizes {
   }
 
   Offset get globalBottomLeftPosition =>
-      context.renderBox?.localToGlobal(context.renderBox!.size.bottomLeft(Offset.zero)) ??
+      context.renderBox?.localToGlobal(
+        context.renderBox!.size.bottomLeft(Offset.zero),
+      ) ??
       Offset.zero;
   Offset get globalBottomRightPosition =>
-      context.renderBox?.localToGlobal(context.renderBox!.size.bottomRight(Offset.zero)) ??
+      context.renderBox?.localToGlobal(
+        context.renderBox!.size.bottomRight(Offset.zero),
+      ) ??
       Offset.zero;
   Offset get globalCenterPosition =>
-      context.renderBox?.localToGlobal(context.renderBox!.size.center(Offset.zero)) ?? Offset.zero;
+      context.renderBox?.localToGlobal(
+        context.renderBox!.size.center(Offset.zero),
+      ) ??
+      Offset.zero;
   Offset get globalTopLeftPosition =>
-      context.renderBox?.localToGlobal(context.renderBox!.size.topLeft(Offset.zero)) ?? Offset.zero;
+      context.renderBox?.localToGlobal(
+        context.renderBox!.size.topLeft(Offset.zero),
+      ) ??
+      Offset.zero;
   Offset get globalTopRightPosition =>
-      context.renderBox?.localToGlobal(context.renderBox!.size.topRight(Offset.zero)) ??
+      context.renderBox?.localToGlobal(
+        context.renderBox!.size.topRight(Offset.zero),
+      ) ??
       Offset.zero;
 
   bool get hasKeyboard => context.media.viewInsets.bottom > 0;
 
   double get bottomSafeArea => context.media.viewPadding.bottom;
-  double get bottomSafeAreaWithMinimum => hasKeyboard ? 16 : max(bottomSafeArea, 16);
+  double get bottomSafeAreaWithMinimum =>
+      hasKeyboard ? 16 : max(bottomSafeArea, 16);
   double get bottomViewInsets => context.media.viewInsets.bottom;
   double get globalBottomInPositioned => height - globalBottomLeftPosition.dy;
   double get globalLeftInPositioned => globalTopLeftPosition.dx;

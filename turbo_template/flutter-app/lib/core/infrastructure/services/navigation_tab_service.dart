@@ -13,7 +13,8 @@ class NavigationTabService
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static NavigationTabService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(NavigationTabService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(NavigationTabService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
@@ -52,7 +53,9 @@ class NavigationTabService
 
   void updateNavigationTab({required NavigationTab navigationTab}) {
     _navigationTab.update(navigationTab);
-    _localStorageService.updateBottomNavigationIndex(navigationTab: navigationTab);
+    _localStorageService.updateBottomNavigationIndex(
+      navigationTab: navigationTab,
+    );
     log.info('Navigation tab updated to $navigationTab!');
   }
 

@@ -134,7 +134,11 @@ abstract class SyncService<T extends Object?> {
       );
       log.debug('Stream initialization successful\n');
     } catch (error, stack) {
-      log.error('Stream error occurred while setting up stream!', error: error, stackTrace: stack);
+      log.error(
+        'Stream error occurred while setting up stream!',
+        error: error,
+        stackTrace: stack,
+      );
       _tryRetry();
       log.debug('Stream initialization failed\n');
     }

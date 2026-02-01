@@ -23,7 +23,8 @@ abstract class BaseNavigation with Turbolytics {
 
   String get root => router.root;
   NavigationTab? get navigationTab => router.navigationTab;
-  NavigationTab get currentNavigationTab => _navigationTabService.navigationTab.value;
+  NavigationTab get currentNavigationTab =>
+      _navigationTabService.navigationTab.value;
 
   void goBranch({required StatefulNavigationShell statefulNavigationShell}) {
     final initialLocation = currentNavigationTab;
@@ -31,7 +32,8 @@ abstract class BaseNavigation with Turbolytics {
     final branchIndex = cNavigationTab!.branchIndex;
 
     // Add bounds checking to prevent go_router assertion failure
-    if (branchIndex < 0 || branchIndex >= statefulNavigationShell.route.branches.length) {
+    if (branchIndex < 0 ||
+        branchIndex >= statefulNavigationShell.route.branches.length) {
       log.error(
         'Invalid branch index: $branchIndex, available branches: ${statefulNavigationShell.route.branches.length}',
       );
@@ -79,7 +81,10 @@ abstract class BaseNavigation with Turbolytics {
     );
     log.info('Pushing route: $path');
     return context == null
-        ? _baseRouterService.context.push<T>(path, extra: extra?.toRouteArguments)
+        ? _baseRouterService.context.push<T>(
+            path,
+            extra: extra?.toRouteArguments,
+          )
         : context.push<T?>(path, extra: extra?.toRouteArguments);
   }
 
@@ -97,17 +102,24 @@ abstract class BaseNavigation with Turbolytics {
     );
     log.info('Pushing route: $path');
     return context == null
-        ? _baseRouterService.context.pushReplacement(path, extra: extra?.toRouteArguments)
+        ? _baseRouterService.context.pushReplacement(
+            path,
+            extra: extra?.toRouteArguments,
+          )
         : context.pushReplacement(path, extra: extra?.toRouteArguments);
   }
 
   bool canPop({BuildContext? context}) {
     log.debug('Checking if route can pop');
-    final canPop = context == null ? _baseRouterService.context.canPop() : context.canPop();
+    final canPop = context == null
+        ? _baseRouterService.context.canPop()
+        : context.canPop();
     log.info('Can pop: $canPop');
     return canPop;
   }
 
-  String _mapRoutes(List<TRoute> routes) => routes.isNotEmpty ? '$root/${_asPaths(routes)}' : root;
-  String _asPaths(List<TRoute> routes) => routes.map((e) => e.rawPath).join('/');
+  String _mapRoutes(List<TRoute> routes) =>
+      routes.isNotEmpty ? '$root/${_asPaths(routes)}' : root;
+  String _asPaths(List<TRoute> routes) =>
+      routes.map((e) => e.rawPath).join('/');
 }

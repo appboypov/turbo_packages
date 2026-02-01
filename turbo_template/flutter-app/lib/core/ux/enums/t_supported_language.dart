@@ -33,8 +33,9 @@ enum TSupportedLanguage {
 }
 
 extension SupportedLanguagesExtension on String? {
-  TSupportedLanguage get toSupportedLanguage => TSupportedLanguage.values.firstWhere(
-    (element) => element.name == this?.trim().toLowerCase(),
-    orElse: () => TSupportedLanguage.defaultValue,
-  );
+  TSupportedLanguage get toSupportedLanguage =>
+      TSupportedLanguage.values.firstWhere(
+        (element) => element.name == this?.trim().toLowerCase(),
+        orElse: () => TSupportedLanguage.defaultValue,
+      );
 }

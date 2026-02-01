@@ -45,7 +45,8 @@ void main(List<String> arguments) async {
 
     if (templateRoot == null) {
       stderr.writeln('Error: Could not find turbo_template_config.yaml');
-      stderr.writeln('Make sure you are running this script from within the template directory.');
+      stderr.writeln(
+          'Make sure you are running this script from within the template directory.');
       exit(1);
     }
 
@@ -117,8 +118,10 @@ void main(List<String> arguments) async {
       stdout.writeln('  4. flutter run');
       stdout.writeln('');
       stdout.writeln('Manual setup required:');
-      stdout.writeln('  - Configure Firebase: firebase projects:list, firebase use <project>');
-      stdout.writeln('  - iOS/macOS: Update DEVELOPMENT_TEAM in Xcode project settings');
+      stdout.writeln(
+          '  - Configure Firebase: firebase projects:list, firebase use <project>');
+      stdout.writeln(
+          '  - iOS/macOS: Update DEVELOPMENT_TEAM in Xcode project settings');
       stdout.writeln('  - Android: Create signing keys for release builds');
     }
   } on FormatException catch (e) {
@@ -163,18 +166,28 @@ void _printConfiguration(
   Map<String, String> replacements,
 ) {
   stdout.writeln('Configuration:');
-  stdout.writeln('  Package name:     ${TemplateDefaults.packageName} → ${config.packageName}');
-  stdout.writeln('  Organization:     ${TemplateDefaults.organization} → ${config.organization}');
-  stdout.writeln('  App name:         ${TemplateDefaults.appName} → ${config.appName}');
-  stdout.writeln('  Display name:     ${TemplateDefaults.displayName} → ${config.displayName}');
-  stdout.writeln('  Description:      ${TemplateDefaults.description} → ${config.description}');
+  stdout.writeln(
+      '  Package name:     ${TemplateDefaults.packageName} → ${config.packageName}');
+  stdout.writeln(
+      '  Organization:     ${TemplateDefaults.organization} → ${config.organization}');
+  stdout.writeln(
+      '  App name:         ${TemplateDefaults.appName} → ${config.appName}');
+  stdout.writeln(
+      '  Display name:     ${TemplateDefaults.displayName} → ${config.displayName}');
+  stdout.writeln(
+      '  Description:      ${TemplateDefaults.description} → ${config.description}');
   stdout.writeln('');
-  stdout.writeln('  Privacy Policy:   ${TemplateDefaults.privacyPolicyUrl} → ${config.privacyPolicyUrl}');
-  stdout.writeln('  Terms of Service: ${TemplateDefaults.termsOfServiceUrl} → ${config.termsOfServiceUrl}');
-  stdout.writeln('  Support URL:      ${TemplateDefaults.supportUrl} → ${config.supportUrl}');
+  stdout.writeln(
+      '  Privacy Policy:   ${TemplateDefaults.privacyPolicyUrl} → ${config.privacyPolicyUrl}');
+  stdout.writeln(
+      '  Terms of Service: ${TemplateDefaults.termsOfServiceUrl} → ${config.termsOfServiceUrl}');
+  stdout.writeln(
+      '  Support URL:      ${TemplateDefaults.supportUrl} → ${config.supportUrl}');
   stdout.writeln('');
-  stdout.writeln('  Prod Firebase:    ${TemplateDefaults.prodProjectId} → ${config.prodProjectId}');
-  stdout.writeln('  Staging Firebase: ${TemplateDefaults.stagingProjectId} → ${config.stagingProjectId}');
+  stdout.writeln(
+      '  Prod Firebase:    ${TemplateDefaults.prodProjectId} → ${config.prodProjectId}');
+  stdout.writeln(
+      '  Staging Firebase: ${TemplateDefaults.stagingProjectId} → ${config.stagingProjectId}');
 }
 
 /// Finds the template root directory by looking for turbo_template_config.yaml.
@@ -202,7 +215,8 @@ Future<Directory?> _findTemplateRoot(Directory startDir) async {
 void _printUsage(ArgParser parser) {
   stdout.writeln('Usage: dart run scripts/init_project.dart [options]');
   stdout.writeln('');
-  stdout.writeln('Initializes the turbo template with your project configuration.');
+  stdout.writeln(
+      'Initializes the turbo template with your project configuration.');
   stdout.writeln('');
   stdout.writeln('Edit turbo_template_config.yaml before running this script.');
   stdout.writeln('');

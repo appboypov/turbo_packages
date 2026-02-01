@@ -5,7 +5,8 @@ abstract class TFormConfig {
   @protected
   Map<Enum, TFormFieldConfig> get formFieldConfigs;
 
-  TFormFieldConfig<T> formFieldConfig<T>(Enum id) => formFieldConfigs[id] as TFormFieldConfig<T>;
+  TFormFieldConfig<T> formFieldConfig<T>(Enum id) =>
+      formFieldConfigs[id] as TFormFieldConfig<T>;
 
   bool get isValid {
     bool formIsValid = true;

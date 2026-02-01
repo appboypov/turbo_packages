@@ -38,10 +38,11 @@ class MountedIsTrueScenario extends IntegrationScenario {
               'The TurboViewModel.isMounted method should return true',
               (tester, log, box, mocks, [example, binding]) {
                 expect(
-                    box
-                        .read<BaseViewModelImplementation>(#baseViewModel)
-                        .isMounted,
-                    true,);
+                  box
+                      .read<BaseViewModelImplementation>(#baseViewModel)
+                      .isMounted,
+                  true,
+                );
                 log.success('TurboViewModel was mounted!');
               },
             ),

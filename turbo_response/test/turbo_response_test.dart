@@ -82,8 +82,10 @@ void main() {
       expect(exceptionWithoutError.hasTitle, isTrue);
       expect(exceptionWithoutError.hasMessage, isTrue);
       expect(exceptionWithoutError.hasError, isFalse);
-      expect(exceptionWithoutError.toString(),
-          equals('TurboException(Error Title)\nError Message'),);
+      expect(
+        exceptionWithoutError.toString(),
+        equals('TurboException(Error Title)\nError Message'),
+      );
     });
 
     test('when should handle all states correctly', () {
@@ -742,7 +744,9 @@ void main() {
         expect(state.isFail, isTrue);
         expect(state.error, isA<TurboException>());
         expect(
-            state.error.toString(), equals('TurboException: Operation failed'),);
+          state.error.toString(),
+          equals('TurboException: Operation failed'),
+        );
         expect(state.title, isNull);
         expect(state.message, isNull);
       });

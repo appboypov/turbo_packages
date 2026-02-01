@@ -65,11 +65,13 @@ class _TSliverAppBarState extends State<TSliverAppBar> {
   }
 
   void _updateBorderVisibility() {
-    final currentScrollOffset = widget.controller != null && widget.controller!.hasClients
+    final currentScrollOffset =
+        widget.controller != null && widget.controller!.hasClients
         ? widget.controller!.offset
         : 0.0;
 
-    final newShouldShowBorder = currentScrollOffset > 0 && widget.controller?.hasClients == true;
+    final newShouldShowBorder =
+        currentScrollOffset > 0 && widget.controller?.hasClients == true;
 
     if (_showBorder != newShouldShowBorder) {
       if (mounted) {
@@ -90,12 +92,17 @@ class _TSliverAppBarState extends State<TSliverAppBar> {
     expandedHeight: kToolbarHeight + widget.appBarGap,
     flexibleSpace: FlexibleSpaceBar(
       collapseMode: CollapseMode.parallax,
-      stretchModes: const [StretchMode.blurBackground, StretchMode.zoomBackground],
+      stretchModes: const [
+        StretchMode.blurBackground,
+        StretchMode.zoomBackground,
+      ],
       background: Stack(
         children: [
           Container(
             alignment: Alignment.center,
-            padding: widget.appBarGap > 0 ? EdgeInsets.only(bottom: widget.appBarGap) : null,
+            padding: widget.appBarGap > 0
+                ? EdgeInsets.only(bottom: widget.appBarGap)
+                : null,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -103,17 +110,23 @@ class _TSliverAppBarState extends State<TSliverAppBar> {
                 if (widget.onBackPressed != null)
                   Builder(
                     builder: (context) => Padding(
-                      padding: const EdgeInsets.only(right: TSizes.appPadding / 2),
+                      padding: const EdgeInsets.only(
+                        right: TSizes.appPadding / 2,
+                      ),
                       child: ShadIconButton.ghost(
                         icon: const Icon(Icons.arrow_back),
-                        onPressed: () => widget.onBackPressed!(context: context),
+                        onPressed: () =>
+                            widget.onBackPressed!(context: context),
                       ),
                     ),
                   ),
                 if (widget.leading != null) widget.leading!,
                 if (widget.title != null)
                   Expanded(
-                    child: EmojiTitle.scaffoldTitle(title: widget.title!, emoji: widget.emoji),
+                    child: EmojiTitle.scaffoldTitle(
+                      title: widget.title!,
+                      emoji: widget.emoji,
+                    ),
                   ),
                 if (widget.header != null) widget.header!,
                 if (widget.actions != null) ...[

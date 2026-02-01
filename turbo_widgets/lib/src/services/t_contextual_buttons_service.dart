@@ -175,10 +175,14 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
     }
 
     _value = TContextualButtonsConfig(
-      top: (context) => _mergePosition(contributors, TContextualPosition.top, context),
-      bottom: (context) => _mergePosition(contributors, TContextualPosition.bottom, context),
-      left: (context) => _mergePosition(contributors, TContextualPosition.left, context),
-      right: (context) => _mergePosition(contributors, TContextualPosition.right, context),
+      top: (context) =>
+          _mergePosition(contributors, TContextualPosition.top, context),
+      bottom: (context) =>
+          _mergePosition(contributors, TContextualPosition.bottom, context),
+      left: (context) =>
+          _mergePosition(contributors, TContextualPosition.left, context),
+      right: (context) =>
+          _mergePosition(contributors, TContextualPosition.right, context),
       allowFilter: _baseConfig.allowFilter,
       positionOverrides: _baseConfig.positionOverrides,
       hiddenPositions: _baseConfig.hiddenPositions,
@@ -215,7 +219,8 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
 
   @override
   void updateWith(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
+    TContextualButtonsConfig Function(TContextualButtonsConfig current)
+        updater, {
     bool doNotifyListeners = true,
   }) {
     final newConfig = updater(_baseConfig);
@@ -224,7 +229,8 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
 
   @override
   Future<void> updateContextualButtons(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
+    TContextualButtonsConfig Function(TContextualButtonsConfig current)
+        updater, {
     bool doNotifyListeners = true,
     bool animated = true,
     Set<TContextualPosition>? positionsToAnimate,
@@ -322,8 +328,8 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
   void _notifyListenersSafely() {
     if (_isDisposed) return;
     final phase = SchedulerBinding.instance.schedulerPhase;
-    final isBuilding =
-        phase == SchedulerPhase.persistentCallbacks || phase == SchedulerPhase.midFrameMicrotasks;
+    final isBuilding = phase == SchedulerPhase.persistentCallbacks ||
+        phase == SchedulerPhase.midFrameMicrotasks;
     if (!isBuilding) {
       notifyListeners();
       return;

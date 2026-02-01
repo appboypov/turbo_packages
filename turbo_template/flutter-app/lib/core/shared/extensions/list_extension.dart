@@ -24,7 +24,8 @@ extension ListExtension<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;
   T? get lastOrNull => isEmpty ? null : last;
 
-  T? indexOrNull(int index) => index >= 0 && index < length ? this[index] : null;
+  T? indexOrNull(int index) =>
+      index >= 0 && index < length ? this[index] : null;
 
   bool get isMoreThanOne => length > 1;
   bool get isOne => length == 1;
@@ -117,7 +118,11 @@ extension ListExtension<T> on List<T> {
     return orElse;
   }
 
-  int? indexWhereOrNull({required bool Function(T element) where, int start = 0, int? skip}) {
+  int? indexWhereOrNull({
+    required bool Function(T element) where,
+    int start = 0,
+    int? skip,
+  }) {
     for (int i = start; i < length + start; i++) {
       final index = i % length;
       if (where(this[index])) {

@@ -27,22 +27,27 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   }
 
   static LocalStorageService get locate => GetIt.I.get();
-  static void registerLazySingleton() =>
-      GetIt.I.registerLazySingleton(LocalStorageService.new, dispose: (param) => param.dispose());
+  static void registerLazySingleton() => GetIt.I.registerLazySingleton(
+    LocalStorageService.new,
+    dispose: (param) => param.dispose(),
+  );
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
   AuthService get _authService => AuthService.locate;
   BadgeService get _badgeService => BadgeService.locate;
-  FlutterSecureStorage get _flutterSecureStorage => const FlutterSecureStorage();
+  FlutterSecureStorage get _flutterSecureStorage =>
+      const FlutterSecureStorage();
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   Future<void> _initialise() async {
     try {
       log.info('Initializing LocalStorageService...');
-      Hive.init(kIsWeb ? null : (await getApplicationDocumentsDirectory()).path);
+      Hive.init(
+        kIsWeb ? null : (await getApplicationDocumentsDirectory()).path,
+      );
       _box = await Hive.openBox(
         '_deviceBoxKey',
         encryptionCipher: HiveAesCipher(await _encryptionKey),
@@ -75,8 +80,11 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  String? get lastChangelogVersionRead =>
-      _boxGet<String>(boxKey: BoxKey.lastChangelogVersionRead, id: null, userId: _userId);
+  String? get lastChangelogVersionRead => _boxGet<String>(
+    boxKey: BoxKey.lastChangelogVersionRead,
+    id: null,
+    userId: _userId,
+  );
 
   bool didHappen({required Object id, required String userId}) =>
       _boxGet<bool>(boxKey: BoxKey.didHappen, id: id, userId: userId) ?? false;
@@ -100,7 +108,8 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
     // If a language is stored, return it
     if (storedLanguage != null) {
-      return TSupportedLanguage.values.asNameMap()[storedLanguage] ?? TSupportedLanguage.en;
+      return TSupportedLanguage.values.asNameMap()[storedLanguage] ??
+          TSupportedLanguage.en;
     }
 
     // Otherwise, detect and use the device's system language
@@ -109,7 +118,9 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
   Future<List<int>> get _encryptionKey async {
     final flutterSecureStorage = _flutterSecureStorage;
-    final encryptionKeyEncoded = await flutterSecureStorage.read(key: TKeys.hiveEncryptionKey);
+    final encryptionKeyEncoded = await flutterSecureStorage.read(
+      key: TKeys.hiveEncryptionKey,
+    );
     if (encryptionKeyEncoded == null) {
       final encryptionKey = Hive.generateSecureKey();
       await flutterSecureStorage.write(
@@ -122,8 +133,11 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     }
   }
 
-  DateTime? get skippedVerifyEmailDate =>
-      _boxGet<DateTime>(boxKey: BoxKey.skippedVerifyEmailDate, id: null, userId: _userId);
+  DateTime? get skippedVerifyEmailDate => _boxGet<DateTime>(
+    boxKey: BoxKey.skippedVerifyEmailDate,
+    id: null,
+    userId: _userId,
+  );
 
   NavigationTab get navigationTab =>
       NavigationTab.values.indexOrNull(
@@ -157,9 +171,15 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
 
   String get _userId => _authService.userId ?? TValues.noAuthId;
 
-  bool _boxContains({required String? userId, required BoxKey boxKey, required Object? id}) {
+  bool _boxContains({
+    required String? userId,
+    required BoxKey boxKey,
+    required Object? id,
+  }) {
     try {
-      final containsKey = _box.containsKey(boxKey.genId(id: id, userId: userId));
+      final containsKey = _box.containsKey(
+        boxKey.genId(id: id, userId: userId),
+      );
       log.info('Checking if [BoxKey] contains [$boxKey]: $containsKey');
       return containsKey;
     } catch (error, stackTrace) {
@@ -239,35 +259,54 @@ class LocalStorageService extends ChangeNotifier with Turbolytics {
     required String userId,
     required Object id,
     bool didHappen = true,
-  }) async => _boxInsert(userId: userId, boxKey: BoxKey.didHappen, id: id, value: didHappen);
+  }) async => _boxInsert(
+    userId: userId,
+    boxKey: BoxKey.didHappen,
+    id: id,
+    value: didHappen,
+  );
 
   Future<void> updateDidSee({
     required String userId,
     required Object id,
     bool didSee = true,
-  }) async => _boxInsert(userId: userId, boxKey: BoxKey.didSee, id: id, value: didSee);
+  }) async =>
+      _boxInsert(userId: userId, boxKey: BoxKey.didSee, id: id, value: didSee);
 
-  Future<void> updateTThemeMode({required TThemeMode themeMode}) async => _boxInsert(
-    userId: null,
-    boxKey: BoxKey.isLightMode,
-    id: null,
-    value: themeMode == TThemeMode.light,
-  );
+  Future<void> updateTThemeMode({required TThemeMode themeMode}) async =>
+      _boxInsert(
+        userId: null,
+        boxKey: BoxKey.isLightMode,
+        id: null,
+        value: themeMode == TThemeMode.light,
+      );
 
   Future<void> updateLanguage({required TSupportedLanguage language}) async =>
-      _boxInsert(userId: null, boxKey: BoxKey.language, id: null, value: language.name);
+      _boxInsert(
+        userId: null,
+        boxKey: BoxKey.language,
+        id: null,
+        value: language.name,
+      );
 
-  Future<void> updateSkippedVerifyEmailDate() async =>
-      _boxInsert(userId: _userId, id: null, boxKey: BoxKey.skippedVerifyEmailDate, value: gNow);
-
-  void updateBottomNavigationIndex({required NavigationTab navigationTab}) => _boxInsert(
+  Future<void> updateSkippedVerifyEmailDate() async => _boxInsert(
     userId: _userId,
-    boxKey: BoxKey.bottomNavigationIndex,
-    value: navigationTab.index,
     id: null,
+    boxKey: BoxKey.skippedVerifyEmailDate,
+    value: gNow,
   );
 
-  Future<void> updateLastChangelogVersionRead({required String? version}) async {
+  void updateBottomNavigationIndex({required NavigationTab navigationTab}) =>
+      _boxInsert(
+        userId: _userId,
+        boxKey: BoxKey.bottomNavigationIndex,
+        value: navigationTab.index,
+        id: null,
+      );
+
+  Future<void> updateLastChangelogVersionRead({
+    required String? version,
+  }) async {
     await _boxInsert(
       boxKey: BoxKey.lastChangelogVersionRead,
       id: null,

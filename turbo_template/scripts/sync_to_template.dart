@@ -65,10 +65,12 @@ void main(List<String> arguments) async {
 
     // Find project root (current directory should have turbo_template_config.yaml)
     final projectRoot = Directory.current;
-    final projectConfigFile = File(p.join(projectRoot.path, ConfigReader.configFileName));
+    final projectConfigFile =
+        File(p.join(projectRoot.path, ConfigReader.configFileName));
 
     if (!await projectConfigFile.exists()) {
-      stderr.writeln('Error: ${ConfigReader.configFileName} not found in current directory.');
+      stderr.writeln(
+          'Error: ${ConfigReader.configFileName} not found in current directory.');
       stderr.writeln('Make sure you are running this from your project root.');
       exit(1);
     }
@@ -82,7 +84,8 @@ void main(List<String> arguments) async {
 
     // Validate sync_upwards whitelist
     if (projectConfig.syncUpwards.isEmpty) {
-      stderr.writeln('Error: sync_upwards is empty in ${ConfigReader.configFileName}');
+      stderr.writeln(
+          'Error: sync_upwards is empty in ${ConfigReader.configFileName}');
       stderr.writeln('Add paths to sync_upwards to enable upstream sync.');
       exit(1);
     }
@@ -96,11 +99,14 @@ void main(List<String> arguments) async {
     }
 
     final templateDir = Directory(
-      p.isAbsolute(templatePath) ? templatePath : p.join(projectRoot.path, templatePath),
+      p.isAbsolute(templatePath)
+          ? templatePath
+          : p.join(projectRoot.path, templatePath),
     );
 
     if (!await templateDir.exists()) {
-      stderr.writeln('Error: Template directory not found: ${templateDir.path}');
+      stderr
+          .writeln('Error: Template directory not found: ${templateDir.path}');
       exit(1);
     }
 
@@ -111,9 +117,11 @@ void main(List<String> arguments) async {
     }
 
     // Load template configuration
-    final templateConfigFile = File(p.join(templateDir.path, ConfigReader.configFileName));
+    final templateConfigFile =
+        File(p.join(templateDir.path, ConfigReader.configFileName));
     if (!await templateConfigFile.exists()) {
-      stderr.writeln('Error: Template config not found: ${templateConfigFile.path}');
+      stderr.writeln(
+          'Error: Template config not found: ${templateConfigFile.path}');
       exit(1);
     }
 
@@ -161,7 +169,8 @@ void main(List<String> arguments) async {
     List<String> filesToSync;
     if (specificFile != null) {
       if (!_isWhitelisted(specificFile, projectConfig.syncUpwards)) {
-        stderr.writeln('Error: File "$specificFile" is not in sync_upwards whitelist.');
+        stderr.writeln(
+            'Error: File "$specificFile" is not in sync_upwards whitelist.');
         stderr.writeln('Allowed paths:');
         for (final path in projectConfig.syncUpwards) {
           stderr.writeln('  - $path');
@@ -174,7 +183,8 @@ void main(List<String> arguments) async {
     }
 
     // Build replacement map (reverse: project values → template defaults)
-    final replacements = SyncUtils.buildReplacementMap(projectConfig, templateConfig);
+    final replacements =
+        SyncUtils.buildReplacementMap(projectConfig, templateConfig);
 
     // Display sync information
     stdout.writeln('Sync to template (upstream):');
@@ -190,8 +200,10 @@ void main(List<String> arguments) async {
     stdout.writeln('');
 
     if (lastSync != null && !syncAll) {
-      final shortLastSync = await GitUtils.getShortHash(projectRoot, lastSync) ?? lastSync;
-      final shortHead = await GitUtils.getShortHash(projectRoot, projectHead) ?? projectHead;
+      final shortLastSync =
+          await GitUtils.getShortHash(projectRoot, lastSync) ?? lastSync;
+      final shortHead =
+          await GitUtils.getShortHash(projectRoot, projectHead) ?? projectHead;
       final commitCount = await GitUtils.getCommitCount(
         projectRoot,
         fromCommit: lastSync,
@@ -206,7 +218,8 @@ void main(List<String> arguments) async {
       stdout.writeln('  First sync (checking all whitelisted files)');
     }
 
-    stdout.writeln('  Files:     ${filesToSync.length} whitelisted files to sync');
+    stdout.writeln(
+        '  Files:     ${filesToSync.length} whitelisted files to sync');
     stdout.writeln('');
 
     if (filesToSync.isEmpty) {
@@ -225,8 +238,10 @@ void main(List<String> arguments) async {
 
     // Confirm with user
     if (!isDryRun && !isForce) {
-      stdout.writeln('WARNING: This will overwrite files in the template directory.');
-      stdout.writeln('Project-specific values will be reverted to template defaults.');
+      stdout.writeln(
+          'WARNING: This will overwrite files in the template directory.');
+      stdout.writeln(
+          'Project-specific values will be reverted to template defaults.');
       stdout.write('Proceed with sync? [y/N]: ');
       final response = stdin.readLineSync()?.toLowerCase();
       if (response != 'y' && response != 'yes') {
@@ -289,7 +304,8 @@ void main(List<String> arguments) async {
     stdout.writeln('  Files skipped: $filesSkipped');
 
     if (projectUpdateSuccess) {
-      final shortHead = await GitUtils.getShortHash(projectRoot, projectHead) ?? projectHead;
+      final shortHead =
+          await GitUtils.getShortHash(projectRoot, projectHead) ?? projectHead;
       stdout.writeln('  last_commit_sync updated to: $shortHead');
     } else {
       stderr.writeln('  Warning: Failed to update last_commit_sync');
@@ -311,10 +327,12 @@ void main(List<String> arguments) async {
 /// Tries to find the template path relative to the project.
 String? _findTemplatePath(Directory projectRoot) {
   // Check if we're inside the template already
-  final configFile = File(p.join(projectRoot.path, ConfigReader.configFileName));
+  final configFile =
+      File(p.join(projectRoot.path, ConfigReader.configFileName));
   if (configFile.existsSync()) {
     // Check if parent has the same config (we might be in flutter-app subdirectory)
-    final parentConfig = File(p.join(projectRoot.parent.path, ConfigReader.configFileName));
+    final parentConfig =
+        File(p.join(projectRoot.parent.path, ConfigReader.configFileName));
     if (parentConfig.existsSync()) {
       return projectRoot.parent.path;
     }
@@ -339,7 +357,8 @@ String? _findTemplatePath(Directory projectRoot) {
 }
 
 /// Filters files to only include those matching the whitelist patterns.
-List<String> _filterWhitelistedFiles(List<String> files, List<String> whitelist) {
+List<String> _filterWhitelistedFiles(
+    List<String> files, List<String> whitelist) {
   return files.where((file) => _isWhitelisted(file, whitelist)).toList();
 }
 
@@ -393,9 +412,8 @@ bool _matchesPattern(String filePath, String pattern) {
 
   // Single star wildcard
   if (cleanPattern.contains('*')) {
-    final regexPattern = cleanPattern
-        .replaceAll('.', r'\.')
-        .replaceAll('*', '[^/]*');
+    final regexPattern =
+        cleanPattern.replaceAll('.', r'\.').replaceAll('*', '[^/]*');
     final regex = RegExp('^$regexPattern\$');
     return regex.hasMatch(normalizedFile);
   }
@@ -406,7 +424,8 @@ bool _matchesPattern(String filePath, String pattern) {
 void _printUsage(ArgParser parser) {
   stdout.writeln('Usage: dart run scripts/sync_to_template.dart [options]');
   stdout.writeln('');
-  stdout.writeln('Syncs whitelisted files from your project back to the template.');
+  stdout.writeln(
+      'Syncs whitelisted files from your project back to the template.');
   stdout.writeln('Project-specific values are reverted to template defaults.');
   stdout.writeln('');
   stdout.writeln('Only files listed in sync_upwards are allowed to be synced.');
@@ -422,8 +441,10 @@ void _printUsage(ArgParser parser) {
   stdout.writeln('  dart run scripts/sync_to_template.dart --all');
   stdout.writeln('');
   stdout.writeln('  # Sync a specific file');
-  stdout.writeln('  dart run scripts/sync_to_template.dart --file lib/core/utils/helpers.dart');
+  stdout.writeln(
+      '  dart run scripts/sync_to_template.dart --file lib/core/utils/helpers.dart');
   stdout.writeln('');
   stdout.writeln('  # Sync to a specific template location');
-  stdout.writeln('  dart run scripts/sync_to_template.dart --template ../turbo_template');
+  stdout.writeln(
+      '  dart run scripts/sync_to_template.dart --template ../turbo_template');
 }

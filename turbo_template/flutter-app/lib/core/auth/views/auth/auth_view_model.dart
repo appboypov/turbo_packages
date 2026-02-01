@@ -37,7 +37,8 @@ import 'package:turbolytics/turbolytics.dart';
 import '../../../state/manage-state/extensions/completer_extension.dart';
 import '../../../state/manage-state/utils/mutex.dart';
 
-class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement {
+class AuthViewModel extends TViewModel
+    with Turbolytics, TBusyServiceManagement {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static AuthViewModel get locate => GetIt.I.get();
@@ -86,7 +87,6 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
   @override
   List<ContextualButtonEntry> get contextualButtons => const [];
 
-
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   DateTime? _forgotPasswordAt;
@@ -104,7 +104,9 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
 
-  final _animationDurationCompleter = MinDurationCompleter(TDurations.animation);
+  final _animationDurationCompleter = MinDurationCompleter(
+    TDurations.animation,
+  );
   final _mutex = Mutex();
   static const _kResetPasswordCooldown = Duration(minutes: 1);
 
@@ -112,14 +114,16 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
 
   int get _remainingSeconds => _forgotPasswordAt == null
       ? 0
-      : _kResetPasswordCooldown.inSeconds - gNow.difference(_forgotPasswordAt!).inSeconds;
+      : _kResetPasswordCooldown.inSeconds -
+            gNow.difference(_forgotPasswordAt!).inSeconds;
 
   bool canPop({required BuildContext context}) => context.canPop();
 
   DateTime? get acceptedPrivacyAndTermsAt =>
       (_registerForm.agreePrivacy.data.value ?? false) ? gNow : null;
 
-  ValueListenable<bool> get showAgreeToPrivacyCheckBox => _showAgreeToPrivacyCheckBox;
+  ValueListenable<bool> get showAgreeToPrivacyCheckBox =>
+      _showAgreeToPrivacyCheckBox;
   ValueListenable<AuthViewMode> get authViewMode => _authViewMode;
 
   TFormFieldConfig<String> get emailField {
@@ -144,7 +148,8 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     }
   }
 
-  TFormFieldConfig<String> get confirmPasswordField => _registerForm.confirmPassword;
+  TFormFieldConfig<String> get confirmPasswordField =>
+      _registerForm.confirmPassword;
   TFormFieldConfig<bool> get agreePrivacyField => _registerForm.agreePrivacy;
 
   bool get isResetPasswordCooldownActive => _isResetPasswordCooldownActive;
@@ -194,7 +199,10 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     });
   }
 
-  Future<void> _tryCreateUserDocAndNextView({required String userId, required String email}) async {
+  Future<void> _tryCreateUserDocAndNextView({
+    required String userId,
+    required String email,
+  }) async {
     await _authService.isReady;
     await _localStorageService.isReady;
   }
@@ -202,7 +210,8 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   void _onShowAgreePrivacyCheckbox() =>
-      _registerForm.agreePrivacy.focusNode.skipTraversal = !_showAgreeToPrivacyCheckBox.value;
+      _registerForm.agreePrivacy.focusNode.skipTraversal =
+          !_showAgreeToPrivacyCheckBox.value;
 
   void _onAuthViewModeChanged() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -305,11 +314,17 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
           switch (authViewMode) {
             case AuthViewMode.login:
               if (_loginForm.isValid) {
-                setBusy(true, busyType: TBusyType.indicatorBackdropIgnorePointer);
+                setBusy(
+                  true,
+                  busyType: TBusyType.indicatorBackdropIgnorePointer,
+                );
 
                 final email = _loginForm.email.cValue!;
                 final password = _loginForm.password.cValue!;
-                final authResponse = await _emailService.login(email: email, password: password);
+                final authResponse = await _emailService.login(
+                  email: email,
+                  password: password,
+                );
 
                 authResponse.when(
                   success: (response) {
@@ -390,11 +405,17 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
           case AuthViewMode.register:
             try {
               if (_registerForm.isValid) {
-                setBusy(true, busyType: TBusyType.indicatorBackdropIgnorePointer);
+                setBusy(
+                  true,
+                  busyType: TBusyType.indicatorBackdropIgnorePointer,
+                );
 
                 final email = _registerForm.email.cValue!;
                 final password = _registerForm.password.cValue!;
-                final authResponse = await _emailService.register(email: email, password: password);
+                final authResponse = await _emailService.register(
+                  email: email,
+                  password: password,
+                );
 
                 authResponse.when(success: (response) {}, fail: (response) {});
 
@@ -405,7 +426,10 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
                       title: gStrings.accountCreatedTitle,
                     );
                     final userId = authResponse.result.uid;
-                    await _tryCreateUserDocAndNextView(userId: userId, email: email);
+                    await _tryCreateUserDocAndNextView(
+                      userId: userId,
+                      email: email,
+                    );
                   },
                   fail: (response) {
                     _toastService.showToast(
@@ -482,7 +506,9 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     );
   }
 
-  Future<void> onForgotPasswordSendPressed({required BuildContext context}) async {
+  Future<void> onForgotPasswordSendPressed({
+    required BuildContext context,
+  }) async {
     try {
       if (_isResetPasswordCooldownActive) {
         final minutes = _remainingSeconds ~/ 60;
@@ -516,12 +542,18 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
           _isResetPasswordCooldownActive = false;
         });
 
-        unawaited(_firebaseAuth.sendPasswordResetEmail(email: _forgotPasswordForm.email.cValue!));
+        unawaited(
+          _firebaseAuth.sendPasswordResetEmail(
+            email: _forgotPasswordForm.email.cValue!,
+          ),
+        );
 
         await _dialogService.showOkDialog(
           context: context,
           title: gStrings.resetPassword,
-          message: gStrings.ifRegisteredWeSend(_forgotPasswordForm.email.cValue!),
+          message: gStrings.ifRegisteredWeSend(
+            _forgotPasswordForm.email.cValue!,
+          ),
         );
         if (context.mounted) {
           _updateAuthViewMode(AuthViewMode.login);
@@ -567,7 +599,10 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     }
   }
 
-  void onPasswordSubmitted({required String value, required BuildContext context}) {
+  void onPasswordSubmitted({
+    required String value,
+    required BuildContext context,
+  }) {
     switch (_authViewMode.value) {
       case AuthViewMode.login:
         if (_loginForm.password.isValid) {
@@ -598,5 +633,4 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
     await TDurations.animation.asFuture;
     _canInit.completeIfNotComplete();
   }
-
 }

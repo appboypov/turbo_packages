@@ -135,8 +135,7 @@ class _TCategorySectionState extends State<TCategorySection> {
                   children: [
                     for (int index = 0; index < trailingActions.length; index++)
                       Padding(
-                        padding:
-                            EdgeInsets.only(left: index == 0 ? 0 : 8.0),
+                        padding: EdgeInsets.only(left: index == 0 ? 0 : 8.0),
                         child: trailingActions[index],
                       ),
                   ],

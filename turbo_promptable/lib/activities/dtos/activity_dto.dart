@@ -17,7 +17,8 @@ part 'activity_dto.g.dart';
   explicitToJson: true,
   genericArgumentFactories: true,
 )
-class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends TurboPromptable {
+class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson>
+    extends TurboPromptable {
   /// Creates an [ActivityDto] with the given properties.
   ActivityDto({
     required this.output,
@@ -79,5 +80,6 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson> extends Tur
       output == null ? null : toJson(output);
 
   @override
-  String toString() => 'ActivityDto{input: $input, instructions: $instructions, subAgents: $subAgents, output: $output, workflow: $workflow}';
+  String toString() =>
+      'ActivityDto{input: $input, instructions: $instructions, subAgents: $subAgents, output: $output, workflow: $workflow}';
 }

@@ -160,7 +160,8 @@ class _TSideNavBarVertical extends StatelessWidget {
         TSideNavBarButtonAlignment.start => MainAxisAlignment.start,
         TSideNavBarButtonAlignment.center => MainAxisAlignment.center,
         TSideNavBarButtonAlignment.end => MainAxisAlignment.end,
-        TSideNavBarButtonAlignment.spaceBetween => MainAxisAlignment.spaceBetween,
+        TSideNavBarButtonAlignment.spaceBetween =>
+          MainAxisAlignment.spaceBetween,
         TSideNavBarButtonAlignment.spaceEvenly => MainAxisAlignment.spaceEvenly,
         TSideNavBarButtonAlignment.spaceAround => MainAxisAlignment.spaceAround,
       };
@@ -363,7 +364,8 @@ class _TSideNavBarCollapsedItem extends StatefulWidget {
   final VoidCallback onTap;
 
   @override
-  State<_TSideNavBarCollapsedItem> createState() => _TSideNavBarCollapsedItemState();
+  State<_TSideNavBarCollapsedItem> createState() =>
+      _TSideNavBarCollapsedItemState();
 }
 
 class _TSideNavBarCollapsedItemState extends State<_TSideNavBarCollapsedItem> {
@@ -427,7 +429,8 @@ class _TSideNavBarCollapsedItemState extends State<_TSideNavBarCollapsedItem> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: widget.labelFontSize,
-                    fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                    fontWeight:
+                        widget.isActive ? FontWeight.w600 : FontWeight.w400,
                     color: color,
                     height: 1.2,
                   ),
@@ -463,7 +466,8 @@ class _TSideNavBarExpandedItem extends StatefulWidget {
   final VoidCallback onTap;
 
   @override
-  State<_TSideNavBarExpandedItem> createState() => _TSideNavBarExpandedItemState();
+  State<_TSideNavBarExpandedItem> createState() =>
+      _TSideNavBarExpandedItemState();
 }
 
 class _TSideNavBarExpandedItemState extends State<_TSideNavBarExpandedItem> {
@@ -515,7 +519,8 @@ class _TSideNavBarExpandedItemState extends State<_TSideNavBarExpandedItem> {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: widget.labelFontSize + 3,
-                      fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                      fontWeight:
+                          widget.isActive ? FontWeight.w600 : FontWeight.w400,
                       color: color,
                       height: 1.2,
                     ),

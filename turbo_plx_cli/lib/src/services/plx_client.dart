@@ -61,7 +61,8 @@ class PlxClient implements PlxClientInterface {
         .transform(const LineSplitter())
         .listen(_handleStdoutLine);
 
-    _stderrSubscription = _process!.stderr.transform(utf8.decoder).listen(_handleStderrData);
+    _stderrSubscription =
+        _process!.stderr.transform(utf8.decoder).listen(_handleStderrData);
 
     unawaited(_process!.exitCode.then(_handleProcessExit));
 

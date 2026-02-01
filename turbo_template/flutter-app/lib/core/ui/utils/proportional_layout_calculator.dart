@@ -95,20 +95,42 @@ class ProportionalLayoutCalculator {
       // Vertical split (side by side)
       // Subtract spacing from available width, then distribute proportionally
       final availableWidth = rect.width - spacing;
-      final width1 = (availableWidth * ratio).clamp(_minDimension, availableWidth);
-      final width2 = (availableWidth - width1).clamp(_minDimension, availableWidth);
+      final width1 = (availableWidth * ratio).clamp(
+        _minDimension,
+        availableWidth,
+      );
+      final width2 = (availableWidth - width1).clamp(
+        _minDimension,
+        availableWidth,
+      );
 
       rect1 = Rect.fromLTWH(rect.left, rect.top, width1, rect.height);
-      rect2 = Rect.fromLTWH(rect.left + width1 + spacing, rect.top, width2, rect.height);
+      rect2 = Rect.fromLTWH(
+        rect.left + width1 + spacing,
+        rect.top,
+        width2,
+        rect.height,
+      );
     } else {
       // Horizontal split (stacked)
       // Subtract spacing from available height, then distribute proportionally
       final availableHeight = rect.height - spacing;
-      final height1 = (availableHeight * ratio).clamp(_minDimension, availableHeight);
-      final height2 = (availableHeight - height1).clamp(_minDimension, availableHeight);
+      final height1 = (availableHeight * ratio).clamp(
+        _minDimension,
+        availableHeight,
+      );
+      final height2 = (availableHeight - height1).clamp(
+        _minDimension,
+        availableHeight,
+      );
 
       rect1 = Rect.fromLTWH(rect.left, rect.top, rect.width, height1);
-      rect2 = Rect.fromLTWH(rect.left, rect.top + height1 + spacing, rect.width, height2);
+      rect2 = Rect.fromLTWH(
+        rect.left,
+        rect.top + height1 + spacing,
+        rect.width,
+        height2,
+      );
     }
 
     return [

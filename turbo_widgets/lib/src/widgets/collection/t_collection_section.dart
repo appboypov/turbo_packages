@@ -24,7 +24,8 @@ class TCollectionSection extends StatelessWidget {
     this.gridCrossAxisSpacing = 12.0,
     this.gridChildAspectRatio = 1.0,
     this.gridMainAxisExtent,
-  }) : assert(gridCrossAxisCount > 0, 'gridCrossAxisCount must be greater than 0.');
+  }) : assert(gridCrossAxisCount > 0,
+            'gridCrossAxisCount must be greater than 0.');
 
   final String title;
   final String? caption;
@@ -59,19 +60,20 @@ class TCollectionSection extends StatelessWidget {
           trailing: trailing,
         ),
         SizedBox(height: sectionSpacing),
-        if (items.isNotEmpty) _TCollectionSectionBody(
-          items: items,
-          layout: layout,
-          itemSpacing: itemSpacing,
-          itemSizeBuilder: itemSizeBuilder,
-          bentoHeight: bentoHeight,
-          bentoAnimation: bentoAnimation,
-          gridCrossAxisCount: gridCrossAxisCount,
-          gridCrossAxisSpacing: gridCrossAxisSpacing,
-          gridMainAxisSpacing: gridMainAxisSpacing,
-          gridChildAspectRatio: gridChildAspectRatio,
-          gridMainAxisExtent: gridMainAxisExtent,
-        ),
+        if (items.isNotEmpty)
+          _TCollectionSectionBody(
+            items: items,
+            layout: layout,
+            itemSpacing: itemSpacing,
+            itemSizeBuilder: itemSizeBuilder,
+            bentoHeight: bentoHeight,
+            bentoAnimation: bentoAnimation,
+            gridCrossAxisCount: gridCrossAxisCount,
+            gridCrossAxisSpacing: gridCrossAxisSpacing,
+            gridMainAxisSpacing: gridMainAxisSpacing,
+            gridChildAspectRatio: gridChildAspectRatio,
+            gridMainAxisExtent: gridMainAxisExtent,
+          ),
       ],
     );
   }

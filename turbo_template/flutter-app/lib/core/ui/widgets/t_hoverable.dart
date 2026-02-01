@@ -164,7 +164,9 @@ class _THoverableState extends State<THoverable> with TickerProviderStateMixin {
                 borderColor: borderColor,
               ),
               size: Size.infinite,
-              child: widget.layer == HoverLayer.background ? widget.child : null,
+              child: widget.layer == HoverLayer.background
+                  ? widget.child
+                  : null,
             );
 
             if (widget.layer == HoverLayer.background) {
@@ -208,7 +210,10 @@ class _HoverPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect =
         Offset(0 - padding.left, 0 - padding.top) &
-        Size(size.width + padding.left + padding.right, size.height + padding.top + padding.bottom);
+        Size(
+          size.width + padding.left + padding.right,
+          size.height + padding.top + padding.bottom,
+        );
 
     final rRect = RRect.fromRectAndCorners(
       rect,
@@ -219,7 +224,8 @@ class _HoverPainter extends CustomPainter {
     );
 
     // Draw the background fill
-    final Paint fillPaint = Paint()..color = color.withValues(alpha: opacity * animationValue);
+    final Paint fillPaint = Paint()
+      ..color = color.withValues(alpha: opacity * animationValue);
     canvas.drawRRect(rRect, fillPaint);
 
     // Draw the border if borderWidth > 0

@@ -207,7 +207,8 @@ class TPlaygroundParameterPanel extends StatelessWidget {
   String _formatLabel(String key) {
     final words = key.split(RegExp(r'(?=[A-Z])|_'));
     return words
-        .map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '')
+        .map(
+            (w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '')
         .join(' ')
         .trim();
   }

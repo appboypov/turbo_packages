@@ -30,7 +30,8 @@ class OpacityButton extends StatefulWidget {
   OpacityButtonState createState() => OpacityButtonState();
 }
 
-class OpacityButtonState extends State<OpacityButton> with SingleTickerProviderStateMixin {
+class OpacityButtonState extends State<OpacityButton>
+    with SingleTickerProviderStateMixin {
   static const Duration _fadeDuration = Duration(milliseconds: 100);
   final Tween<double> _opacityTween = Tween<double>(begin: 1.0);
 
@@ -124,13 +125,22 @@ class OpacityButtonState extends State<OpacityButton> with SingleTickerProviderS
           focusNode: _focusNode,
           child: Semantics(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minWidth: widget.minSize, minHeight: widget.minSize),
+              constraints: BoxConstraints(
+                minWidth: widget.minSize,
+                minHeight: widget.minSize,
+              ),
               child: widget.padding != null
                   ? Padding(
                       padding: widget.padding!,
-                      child: FadeTransition(opacity: _opacityAnimation, child: widget.child),
+                      child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: widget.child,
+                      ),
                     )
-                  : FadeTransition(opacity: _opacityAnimation, child: widget.child),
+                  : FadeTransition(
+                      opacity: _opacityAnimation,
+                      child: widget.child,
+                    ),
             ),
           ),
         ),

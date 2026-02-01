@@ -47,9 +47,11 @@ extension ContextExtension on BuildContext {
   NavigatorState get navigation => Navigator.of(this);
   OverlayState get overlay => Overlay.of(this, rootOverlay: true);
   TickerProviderStateMixin get vsync => navigation;
-  TextScaler get textScaler => TextScaler.linear(turboProvider.tools.scaledPerWidth(1));
+  TextScaler get textScaler =>
+      TextScaler.linear(turboProvider.tools.scaledPerWidth(1));
   NavigatorState get navigator => Navigator.of(this);
-  StatefulNavigationShell? get shell => StatefulNavigationShell.maybeOf(this)?.widget;
+  StatefulNavigationShell? get shell =>
+      StatefulNavigationShell.maybeOf(this)?.widget;
   double get maxWidth => media.size.width;
   double get maxHeight => media.size.height;
 

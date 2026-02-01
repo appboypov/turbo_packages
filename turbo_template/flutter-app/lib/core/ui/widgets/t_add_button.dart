@@ -4,7 +4,8 @@ import 'package:turbo_flutter_template/core/state/manage-state/extensions/contex
 import 'package:turbo_flutter_template/core/ux/globals/g_vibrate.dart';
 
 class TAddButton extends StatelessWidget {
-  const TAddButton({Key? key, required this.onPressed, required this.text}) : super(key: key);
+  const TAddButton({Key? key, required this.onPressed, required this.text})
+    : super(key: key);
 
   final VoidCallback onPressed;
   final String text;

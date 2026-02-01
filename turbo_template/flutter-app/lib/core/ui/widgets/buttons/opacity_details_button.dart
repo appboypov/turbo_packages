@@ -32,14 +32,18 @@ class OpacityDetailsButtonState extends State<OpacityDetailsButton>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: _scaleDuration, vsync: this);
-    _scaleAnimation = Tween<double>(begin: 1.0, end: Spacings.opacityDisabled).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeIn,
-        reverseCurve: Curves.elasticOut,
-      ),
+    _animationController = AnimationController(
+      duration: _scaleDuration,
+      vsync: this,
     );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: Spacings.opacityDisabled)
+        .animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeIn,
+            reverseCurve: Curves.elasticOut,
+          ),
+        );
   }
 
   @override
@@ -78,7 +82,10 @@ class OpacityDetailsButtonState extends State<OpacityDetailsButton>
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: widget.minSize, minHeight: widget.minSize),
+        constraints: BoxConstraints(
+          minWidth: widget.minSize,
+          minHeight: widget.minSize,
+        ),
         child: Padding(
           padding: widget.padding,
           child: FadeTransition(opacity: _scaleAnimation, child: widget.child),

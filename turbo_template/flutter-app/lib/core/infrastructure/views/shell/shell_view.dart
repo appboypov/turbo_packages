@@ -18,7 +18,8 @@ class ShellView extends StatelessWidget {
   });
 
   final StatefulNavigationShell statefulNavigationShell;
-  final Map<TContextualPosition, TContextualPosition> contextualPositionOverrides;
+  final Map<TContextualPosition, TContextualPosition>
+  contextualPositionOverrides;
 
   @override
   Widget build(BuildContext context) => TViewBuilder<ShellViewModel>(

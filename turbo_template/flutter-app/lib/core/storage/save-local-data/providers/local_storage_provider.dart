@@ -13,9 +13,15 @@ class LocalStorageProvider extends StatelessWidget {
 }
 
 class LocalStorageBuilder extends StatelessWidget {
-  const LocalStorageBuilder({required this.builder, super.key, this.child, this.listenableBuilder});
+  const LocalStorageBuilder({
+    required this.builder,
+    super.key,
+    this.child,
+    this.listenableBuilder,
+  });
 
-  final Listenable? Function(LocalStorageService localStorageService)? listenableBuilder;
+  final Listenable? Function(LocalStorageService localStorageService)?
+  listenableBuilder;
   final Widget Function(
     BuildContext context,
     LocalStorageService localStorageService,
@@ -28,7 +34,8 @@ class LocalStorageBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final localStorageService = context.read<LocalStorageService>();
     return ListenableBuilder(
-      listenable: listenableBuilder?.call(localStorageService) ?? localStorageService,
+      listenable:
+          listenableBuilder?.call(localStorageService) ?? localStorageService,
       builder: (context, child) => builder(context, localStorageService, child),
       child: child,
     );
@@ -43,7 +50,8 @@ class LocalStorageProviderBuilder extends StatelessWidget {
     this.listenableBuilder,
   });
 
-  final Listenable? Function(LocalStorageService localStorageService)? listenableBuilder;
+  final Listenable? Function(LocalStorageService localStorageService)?
+  listenableBuilder;
   final Widget Function(
     BuildContext context,
     LocalStorageService localStorageService,
@@ -55,8 +63,11 @@ class LocalStorageProviderBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LocalStorageProvider(
     child: Builder(
-      builder: (context) =>
-          LocalStorageBuilder(builder: builder, child: child, listenableBuilder: listenableBuilder),
+      builder: (context) => LocalStorageBuilder(
+        builder: builder,
+        child: child,
+        listenableBuilder: listenableBuilder,
+      ),
     ),
   );
 }

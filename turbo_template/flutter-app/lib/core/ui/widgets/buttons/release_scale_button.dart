@@ -41,7 +41,10 @@ class ReleaseScaleButtonState extends State<ReleaseScaleButton>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: _scaleDuration, vsync: this);
+    _animationController = AnimationController(
+      duration: _scaleDuration,
+      vsync: this,
+    );
     _scaleAnimation = Tween<double>(begin: 1.0, end: widget.tweenEnd).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -88,7 +91,10 @@ class ReleaseScaleButtonState extends State<ReleaseScaleButton>
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: widget.minSize, minHeight: widget.minSize),
+        constraints: BoxConstraints(
+          minWidth: widget.minSize,
+          minHeight: widget.minSize,
+        ),
         child: Padding(
           padding: widget.padding,
           child: ScaleTransition(scale: _scaleAnimation, child: widget.child),

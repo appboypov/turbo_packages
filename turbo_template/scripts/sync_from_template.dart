@@ -53,10 +53,12 @@ void main(List<String> arguments) async {
 
     // Find project root (current directory should have turbo_template_config.yaml)
     final projectRoot = Directory.current;
-    final projectConfigFile = File(p.join(projectRoot.path, ConfigReader.configFileName));
+    final projectConfigFile =
+        File(p.join(projectRoot.path, ConfigReader.configFileName));
 
     if (!await projectConfigFile.exists()) {
-      stderr.writeln('Error: ${ConfigReader.configFileName} not found in current directory.');
+      stderr.writeln(
+          'Error: ${ConfigReader.configFileName} not found in current directory.');
       stderr.writeln('Make sure you are running this from your project root.');
       exit(1);
     }
@@ -71,7 +73,9 @@ void main(List<String> arguments) async {
     // Determine template directory
     final templatePath = templateOverride ?? projectConfig.templatePath;
     final templateDir = Directory(
-      p.isAbsolute(templatePath) ? templatePath : p.join(projectRoot.path, templatePath),
+      p.isAbsolute(templatePath)
+          ? templatePath
+          : p.join(projectRoot.path, templatePath),
     );
 
     // For downstream sync, we need a reference to the original template
@@ -80,7 +84,8 @@ void main(List<String> arguments) async {
     // or specified via --template flag
 
     if (!await templateDir.exists()) {
-      stderr.writeln('Error: Template directory not found: ${templateDir.path}');
+      stderr
+          .writeln('Error: Template directory not found: ${templateDir.path}');
       stderr.writeln('Use --template <path> to specify the template location.');
       exit(1);
     }
@@ -92,9 +97,11 @@ void main(List<String> arguments) async {
     }
 
     // Load template configuration
-    final templateConfigFile = File(p.join(templateDir.path, ConfigReader.configFileName));
+    final templateConfigFile =
+        File(p.join(templateDir.path, ConfigReader.configFileName));
     if (!await templateConfigFile.exists()) {
-      stderr.writeln('Error: Template config not found: ${templateConfigFile.path}');
+      stderr.writeln(
+          'Error: Template config not found: ${templateConfigFile.path}');
       exit(1);
     }
 
@@ -121,12 +128,12 @@ void main(List<String> arguments) async {
     );
 
     // Filter excluded files
-    final filesToSync = changedFiles
-        .where((f) => !SyncUtils.shouldExcludeFile(f))
-        .toList();
+    final filesToSync =
+        changedFiles.where((f) => !SyncUtils.shouldExcludeFile(f)).toList();
 
     // Build replacement map
-    final replacements = SyncUtils.buildReplacementMap(templateConfig, projectConfig);
+    final replacements =
+        SyncUtils.buildReplacementMap(templateConfig, projectConfig);
 
     // Display sync information
     stdout.writeln('Sync from template:');
@@ -135,8 +142,10 @@ void main(List<String> arguments) async {
     stdout.writeln('');
 
     if (lastSync != null) {
-      final shortLastSync = await GitUtils.getShortHash(templateDir, lastSync) ?? lastSync;
-      final shortHead = await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
+      final shortLastSync =
+          await GitUtils.getShortHash(templateDir, lastSync) ?? lastSync;
+      final shortHead =
+          await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
       final commitCount = await GitUtils.getCommitCount(
         templateDir,
         fromCommit: lastSync,
@@ -146,7 +155,8 @@ void main(List<String> arguments) async {
       stdout.writeln('  Current:   $shortHead');
       stdout.writeln('  Commits:   $commitCount new commits');
     } else {
-      final shortHead = await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
+      final shortHead =
+          await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
       stdout.writeln('  First sync (copying all tracked files)');
       stdout.writeln('  Current:   $shortHead');
     }
@@ -232,7 +242,8 @@ void main(List<String> arguments) async {
     stdout.writeln('  Files skipped: $filesSkipped');
 
     if (updateSuccess) {
-      final shortHead = await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
+      final shortHead =
+          await GitUtils.getShortHash(templateDir, currentHead) ?? currentHead;
       stdout.writeln('  last_commit_sync updated to: $shortHead');
     } else {
       stderr.writeln('  Warning: Failed to update last_commit_sync');
@@ -255,7 +266,8 @@ void _printUsage(ArgParser parser) {
   stdout.writeln('Usage: dart run scripts/sync_from_template.dart [options]');
   stdout.writeln('');
   stdout.writeln('Syncs changed files from the template to your project.');
-  stdout.writeln('Template default values are replaced with your project values.');
+  stdout.writeln(
+      'Template default values are replaced with your project values.');
   stdout.writeln('');
   stdout.writeln('Options:');
   stdout.writeln(parser.usage);
@@ -268,5 +280,6 @@ void _printUsage(ArgParser parser) {
   stdout.writeln('  dart run scripts/sync_from_template.dart --verbose');
   stdout.writeln('');
   stdout.writeln('  # Sync from a specific template location');
-  stdout.writeln('  dart run scripts/sync_from_template.dart --template ../turbo_template');
+  stdout.writeln(
+      '  dart run scripts/sync_from_template.dart --template ../turbo_template');
 }

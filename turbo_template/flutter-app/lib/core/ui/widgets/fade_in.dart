@@ -18,7 +18,8 @@ class FadeIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AnimatedSwitcher(
     duration: duration,
-    transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+    transitionBuilder: (child, animation) =>
+        FadeTransition(opacity: animation, child: child),
     child: fadeIn ? fadeInChild : fadeOutChild ?? const SizedBox.shrink(),
   );
 }

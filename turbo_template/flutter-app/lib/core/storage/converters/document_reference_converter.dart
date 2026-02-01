@@ -3,7 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
 
-class DocumentReferenceConverter implements JsonConverter<DocumentReference, DocumentReference> {
+class DocumentReferenceConverter
+    implements JsonConverter<DocumentReference, DocumentReference> {
   const DocumentReferenceConverter();
 
   @override

@@ -9,8 +9,8 @@ class TErrorLabel extends StatelessWidget {
     required this.errorTextStyle,
     this.padding,
     super.key,
-  }) : _errorText = errorText,
-       _shouldValidate = shouldValidate;
+  })  : _errorText = errorText,
+        _shouldValidate = shouldValidate;
 
   final String? _errorText;
   final bool _shouldValidate;
@@ -19,15 +19,17 @@ class TErrorLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => VerticalShrink(
-    alignment: Alignment.bottomCenter,
-    fadeDuration: TurboFormsDefaults.animationDurationHalf,
-    sizeDuration: TurboFormsDefaults.animationDurationHalf,
-    show: _shouldValidate && (_errorText?.isNotEmpty == true),
-    child: Padding(
-      padding: padding ?? TurboFormsDefaults.defaultErrorPadding,
-      child: Row(
-        children: [Flexible(child: Text(_errorText ?? '', style: errorTextStyle))],
-      ),
-    ),
-  );
+        alignment: Alignment.bottomCenter,
+        fadeDuration: TurboFormsDefaults.animationDurationHalf,
+        sizeDuration: TurboFormsDefaults.animationDurationHalf,
+        show: _shouldValidate && (_errorText?.isNotEmpty == true),
+        child: Padding(
+          padding: padding ?? TurboFormsDefaults.defaultErrorPadding,
+          child: Row(
+            children: [
+              Flexible(child: Text(_errorText ?? '', style: errorTextStyle))
+            ],
+          ),
+        ),
+      );
 }

@@ -16,6 +16,10 @@ class TAnimatedSize extends StatelessWidget {
   final Curve curve;
 
   @override
-  Widget build(BuildContext context) =>
-      AnimatedSize(duration: duration, alignment: alignment, curve: curve, child: child);
+  Widget build(BuildContext context) => AnimatedSize(
+    duration: duration,
+    alignment: alignment,
+    curve: curve,
+    child: child,
+  );
 }

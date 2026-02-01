@@ -82,7 +82,8 @@ VALUE "ProductName", "my_app" "\\0"
       });
 
       test('does NOT replace partial matches with suffix', () {
-        const input = "import 'package:turbo_flutter_template_utils/main.dart';";
+        const input =
+            "import 'package:turbo_flutter_template_utils/main.dart';";
 
         // This SHOULD be replaced because it's a valid package name replacement
         // The import would become my_app_utils which is correct behavior
@@ -129,7 +130,8 @@ VALUE "ProductName", "my_app" "\\0"
       });
 
       test('includes AndroidManifest.xml', () {
-        expect(PackageNameReplacer.filePatterns, contains('AndroidManifest.xml'));
+        expect(
+            PackageNameReplacer.filePatterns, contains('AndroidManifest.xml'));
       });
 
       test('targets seven file patterns', () {

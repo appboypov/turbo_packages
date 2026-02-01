@@ -36,26 +36,34 @@ class TTextInputRenderer extends StatelessWidget {
                   decoration: const ShadDecoration(
                     border: ShadBorder(
                       top: ShadBorderSide(width: 0, color: Colors.transparent),
-                      right: ShadBorderSide(width: 0, color: Colors.transparent),
-                      bottom: ShadBorderSide(width: 0, color: Colors.transparent),
+                      right:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
+                      bottom:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
                       left: ShadBorderSide(width: 0, color: Colors.transparent),
                     ),
                     focusedBorder: ShadBorder(
                       top: ShadBorderSide(width: 0, color: Colors.transparent),
-                      right: ShadBorderSide(width: 0, color: Colors.transparent),
-                      bottom: ShadBorderSide(width: 0, color: Colors.transparent),
+                      right:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
+                      bottom:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
                       left: ShadBorderSide(width: 0, color: Colors.transparent),
                     ),
                     secondaryBorder: ShadBorder(
                       top: ShadBorderSide(width: 0, color: Colors.transparent),
-                      right: ShadBorderSide(width: 0, color: Colors.transparent),
-                      bottom: ShadBorderSide(width: 0, color: Colors.transparent),
+                      right:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
+                      bottom:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
                       left: ShadBorderSide(width: 0, color: Colors.transparent),
                     ),
                     secondaryFocusedBorder: ShadBorder(
                       top: ShadBorderSide(width: 0, color: Colors.transparent),
-                      right: ShadBorderSide(width: 0, color: Colors.transparent),
-                      bottom: ShadBorderSide(width: 0, color: Colors.transparent),
+                      right:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
+                      bottom:
+                          ShadBorderSide(width: 0, color: Colors.transparent),
                       left: ShadBorderSide(width: 0, color: Colors.transparent),
                     ),
                   ),

@@ -9,9 +9,9 @@ import 'renderers/t_text_input_renderer.dart';
 
 // <SUBJECT_2026_0130_23_04>
 typedef TInteractiveFormWidgetBuilder = Widget Function(
-    BuildContext context,
-    TInteractiveFormController controller,
-    );
+  BuildContext context,
+  TInteractiveFormController controller,
+);
 // </SUBJECT_2026_0130_23_04>
 
 // #FEEDBACK #TODO regarding `{{ SUBJECT_2026_0130_23_04 }}` | put this inside its own file

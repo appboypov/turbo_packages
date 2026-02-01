@@ -59,7 +59,8 @@ extension IntExtension on int {
   }
 
   /// Converts 20240101 format
-  DateTime get asDateTime => DateTime(this ~/ 10000, this ~/ 100 % 100, this % 100);
+  DateTime get asDateTime =>
+      DateTime(this ~/ 10000, this ~/ 100 % 100, this % 100);
 
   bool get isNotFound => this == -1;
 
@@ -132,7 +133,8 @@ extension IntExtension on int {
         return 1;
       default:
         throw const UnexpectedStateException(
-          reason: 'nextFocusMaxFocusTaskCount should never return anything below 1 or above 3',
+          reason:
+              'nextFocusMaxFocusTaskCount should never return anything below 1 or above 3',
         );
     }
   }

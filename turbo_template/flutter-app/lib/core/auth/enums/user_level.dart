@@ -26,7 +26,8 @@ enum UserLevel {
   premium,
   admin;
 
-  UserLevel highest(UserLevel userLevel) => index > userLevel.index ? this : userLevel;
+  UserLevel highest(UserLevel userLevel) =>
+      index > userLevel.index ? this : userLevel;
 
   bool get isUnknown => this == unknown;
   bool get isAdmin => this == admin;

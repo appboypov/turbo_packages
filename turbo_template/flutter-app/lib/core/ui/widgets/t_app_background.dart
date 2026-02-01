@@ -19,13 +19,34 @@ class TAppBackground extends StatelessWidget {
 
     // Define anchor points and sizes (as fractions of width/height)
     final anchors = [
-      Offset(width * 0.08, topPadding + availableHeight * 0.10), // House 1: topLeft
-      Offset(width * 0.50, topPadding + availableHeight * 0.13), // House 2: topCenter
-      Offset(width * 0.85, topPadding + availableHeight * 0.08), // House 3: topRight
-      Offset(width * 0.50, topPadding + availableHeight * 0.55), // House 4: center
-      Offset(width * 0.15, topPadding + availableHeight * 0.80), // House 5: bottomLeft
-      Offset(width * 0.50, topPadding + availableHeight * 0.90), // House 6: bottomCenter
-      Offset(width * 0.85, topPadding + availableHeight * 0.80), // House 7: bottomRight
+      Offset(
+        width * 0.08,
+        topPadding + availableHeight * 0.10,
+      ), // House 1: topLeft
+      Offset(
+        width * 0.50,
+        topPadding + availableHeight * 0.13,
+      ), // House 2: topCenter
+      Offset(
+        width * 0.85,
+        topPadding + availableHeight * 0.08,
+      ), // House 3: topRight
+      Offset(
+        width * 0.50,
+        topPadding + availableHeight * 0.55,
+      ), // House 4: center
+      Offset(
+        width * 0.15,
+        topPadding + availableHeight * 0.80,
+      ), // House 5: bottomLeft
+      Offset(
+        width * 0.50,
+        topPadding + availableHeight * 0.90,
+      ), // House 6: bottomCenter
+      Offset(
+        width * 0.85,
+        topPadding + availableHeight * 0.80,
+      ), // House 7: bottomRight
     ];
     final heights = [
       availableHeight * 0.18, // House 1

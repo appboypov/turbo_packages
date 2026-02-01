@@ -13,7 +13,8 @@ class LanguageService with Turbolytics {
   }
 
   static LanguageService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(LanguageService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(LanguageService.new);
 
   LocalStorageService get _localStorageService => LocalStorageService.locate;
 
@@ -25,13 +26,19 @@ class LanguageService with Turbolytics {
       log.debug('Loading language: $savedLanguage');
 
       if (!_localStorageService.hasStoredLanguage) {
-        log.debug('First launch detected. Saving detected language: $savedLanguage');
+        log.debug(
+          'First launch detected. Saving detected language: $savedLanguage',
+        );
         await _localStorageService.updateLanguage(language: savedLanguage);
       }
 
       _language.update(savedLanguage);
     } catch (error, stackTrace) {
-      log.error('$error caught while initializing language', error: error, stackTrace: stackTrace);
+      log.error(
+        '$error caught while initializing language',
+        error: error,
+        stackTrace: stackTrace,
+      );
     } finally {
       log.debug('Language service is ready');
       _isReady.complete();
@@ -39,7 +46,9 @@ class LanguageService with Turbolytics {
   }
 
   final Completer _isReady = Completer();
-  late final _language = TNotifier<TSupportedLanguage>(TSupportedLanguage.defaultValue);
+  late final _language = TNotifier<TSupportedLanguage>(
+    TSupportedLanguage.defaultValue,
+  );
 
   Future get isReady => _isReady.future;
   String get languageCode => _language.value.languageCode;

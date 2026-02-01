@@ -6,5 +6,6 @@ class TMaxWidth extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => SizedBox(width: double.infinity, child: child);
+  Widget build(BuildContext context) =>
+      SizedBox(width: double.infinity, child: child);
 }

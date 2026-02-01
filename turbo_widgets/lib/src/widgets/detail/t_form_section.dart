@@ -156,7 +156,8 @@ class _TFormSectionDefaults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final configsMap = (formConfig as dynamic).formFieldConfigs as Map<Enum, TFormFieldConfig>;
+    final configsMap =
+        (formConfig as dynamic).formFieldConfigs as Map<Enum, TFormFieldConfig>;
     final configs = configsMap.values.toList();
 
     return Column(

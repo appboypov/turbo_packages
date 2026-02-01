@@ -55,11 +55,12 @@ class TEmptyPlaceholder extends StatelessWidget {
   ///   onActionPressed: () => doSomething(),
   /// )
   /// ```
-  factory TEmptyPlaceholder.inboxItems({required Strings strings}) => TEmptyPlaceholder(
-    title: strings.inbox,
-    subtitle: strings.emptyPlaceholderNothingHere,
-    iconData: Icons.inbox_rounded,
-  );
+  factory TEmptyPlaceholder.inboxItems({required Strings strings}) =>
+      TEmptyPlaceholder(
+        title: strings.inbox,
+        subtitle: strings.emptyPlaceholderNothingHere,
+        iconData: Icons.inbox_rounded,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +77,23 @@ class TEmptyPlaceholder extends StatelessWidget {
             const TGap.app(multiplier: 0.5),
           ] else if (imageAsset != null) ...[
             // Display image from asset
-            TImage(image: TImageSvg(imageLocation: imageAsset!, height: 120, width: 120)),
+            TImage(
+              image: TImageSvg(
+                imageLocation: imageAsset!,
+                height: 120,
+                width: 120,
+              ),
+            ),
             const TGap.app(multiplier: 0.5),
           ],
 
           // Title
-          Text(title, maxLines: 2, textAlign: TextAlign.center, style: context.texts.h4),
+          Text(
+            title,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: context.texts.h4,
+          ),
 
           if (hasSubtitle) ...[
             const TGap(8),
@@ -101,7 +113,10 @@ class TEmptyPlaceholder extends StatelessWidget {
               Semantics(
                 identifier: actionSemanticIdentifier,
                 button: true,
-                child: TAddButton(onPressed: onActionPressed!, text: actionLabel!),
+                child: TAddButton(
+                  onPressed: onActionPressed!,
+                  text: actionLabel!,
+                ),
               )
             else
               TAddButton(onPressed: onActionPressed!, text: actionLabel!),

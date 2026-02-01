@@ -8,11 +8,14 @@ class RegisterForm extends TFormConfig {
   static RegisterForm get locate => GetIt.I.get();
   static void registerFactory() => GetIt.I.registerFactory(RegisterForm.new);
 
-  TFormFieldConfig<String> get email => formFieldConfig(_RegisterFormField.email);
-  TFormFieldConfig<String> get password => formFieldConfig(_RegisterFormField.password);
+  TFormFieldConfig<String> get email =>
+      formFieldConfig(_RegisterFormField.email);
+  TFormFieldConfig<String> get password =>
+      formFieldConfig(_RegisterFormField.password);
   TFormFieldConfig<String> get confirmPassword =>
       formFieldConfig(_RegisterFormField.confirmPassword);
-  TFormFieldConfig<bool> get agreePrivacy => formFieldConfig(_RegisterFormField.agreePrivacy);
+  TFormFieldConfig<bool> get agreePrivacy =>
+      formFieldConfig(_RegisterFormField.agreePrivacy);
 
   @override
   late final Map<Enum, TFormFieldConfig> formFieldConfigs = {
@@ -41,7 +44,9 @@ class RegisterForm extends TFormConfig {
       fieldType: TFieldType.textInput,
       obscureText: true,
       valueValidator: kValueValidatorsMultiple([
-        kValueValidatorsRequired(errorText: () => 'Please confirm your password'),
+        kValueValidatorsRequired(
+          errorText: () => 'Please confirm your password',
+        ),
         kValueValidatorsEquals(
           otherValue: () => password.cValue,
           errorText: () => 'Passwords do not match',

@@ -130,10 +130,12 @@ class _MarkdownPreview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ...previewLines.map((line) => _MarkdownLine(
-                  line: line,
-                  theme: theme,
-                ),),
+            ...previewLines.map(
+              (line) => _MarkdownLine(
+                line: line,
+                theme: theme,
+              ),
+            ),
             if (hasMore) _MarkdownMoreIndicator(theme: theme),
           ],
         ),

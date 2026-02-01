@@ -14,7 +14,8 @@ import 'package:turbo_flutter_template/core/ui/services/badge_service.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, LogoutManagement {
+class HomeViewModel extends TViewModel
+    with Turbolytics, SlidableManagement, LogoutManagement {
   HomeViewModel({
     required BadgeService badgeService,
     required LazyLocatorDef<HomeRouter> homeRouter,

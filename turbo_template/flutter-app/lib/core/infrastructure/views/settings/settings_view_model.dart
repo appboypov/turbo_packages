@@ -12,7 +12,8 @@ class SettingsViewModel extends TViewModel with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static SettingsViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(SettingsViewModel.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(SettingsViewModel.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

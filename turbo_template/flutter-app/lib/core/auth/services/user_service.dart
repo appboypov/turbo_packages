@@ -34,25 +34,29 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  DateTime? get acceptedPrivacyAndTermsAt => doc.value?.acceptedPrivacyAndTermsAt;
+  DateTime? get acceptedPrivacyAndTermsAt =>
+      doc.value?.acceptedPrivacyAndTermsAt;
   String? get email => doc.value?.email;
   ValueListenable<UserDto?> get userDto => doc;
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
-  Future<TurboResponse> createUser({required CreateDocDef<UserDto> doc}) async =>
-      createDoc(doc: doc);
+  Future<TurboResponse> createUser({
+    required CreateDocDef<UserDto> doc,
+  }) async => createDoc(doc: doc);
 
   Future<TurboResponse> updateAcceptedPrivacyAndTermsAt({
     required DateTime acceptedPrivacyAndTermsAt,
   }) async {
     return updateDoc(
       id: id!,
-      doc: (current, vars) =>
-          current.copyWith(acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt),
-      remoteUpdateRequestBuilder: (doc) =>
-          UpdateUserDtoRequest(acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt),
+      doc: (current, vars) => current.copyWith(
+        acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt,
+      ),
+      remoteUpdateRequestBuilder: (doc) => UpdateUserDtoRequest(
+        acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt,
+      ),
     );
   }
 
@@ -66,8 +70,10 @@ class UserService extends TDocumentService<UserDto, UsersApi> with Turbolytics {
 
     return updateDoc(
       id: id!,
-      doc: (current, vars) => current.copyWith(lastChangelogVersionRead: version),
-      remoteUpdateRequestBuilder: (doc) => UpdateUserDtoRequest(lastChangelogVersionRead: version),
+      doc: (current, vars) =>
+          current.copyWith(lastChangelogVersionRead: version),
+      remoteUpdateRequestBuilder: (doc) =>
+          UpdateUserDtoRequest(lastChangelogVersionRead: version),
     );
   }
 }

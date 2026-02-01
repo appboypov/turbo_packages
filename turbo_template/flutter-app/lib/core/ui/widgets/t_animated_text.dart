@@ -59,10 +59,18 @@ class TAnimatedText extends StatelessWidget {
       layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
         return Stack(
           alignment: alignment,
-          children: <Widget>[...previousChildren, if (currentChild != null) currentChild],
+          children: <Widget>[
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
         );
       },
-      child: Text(text, key: ValueKey<String>(text), style: style, textAlign: textAlign),
+      child: Text(
+        text,
+        key: ValueKey<String>(text),
+        style: style,
+        textAlign: textAlign,
+      ),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: curve),

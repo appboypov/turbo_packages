@@ -25,7 +25,10 @@ class TEnsureVisible extends StatefulWidget {
   }) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (shouldScroll?.call() ?? true) {
-        final shouldScrollAgain = await _ensureVisible(context, alignment: alignment);
+        final shouldScrollAgain = await _ensureVisible(
+          context,
+          alignment: alignment,
+        );
         if (shouldScrollAgain) {
           await Future.delayed(TDurations.animation);
           await _ensureVisible(context, alignment: alignment);
@@ -34,7 +37,10 @@ class TEnsureVisible extends StatefulWidget {
     });
   }
 
-  static Future<bool> _ensureVisible(BuildContext context, {required double alignment}) async {
+  static Future<bool> _ensureVisible(
+    BuildContext context, {
+    required double alignment,
+  }) async {
     try {
       final position = Scrollable.of(context).position;
       final oldMaxExtent = position.maxScrollExtent;
@@ -78,7 +84,10 @@ class _TEnsureVisibleState extends State<TEnsureVisible> {
   }
 
   Future<void> _ensureVisible() async {
-    TEnsureVisible.ensure(widget.context ?? context, shouldScroll: _shouldScroll);
+    TEnsureVisible.ensure(
+      widget.context ?? context,
+      shouldScroll: _shouldScroll,
+    );
   }
 
   bool _shouldScroll() => mounted && widget.focusNode.hasFocus;
@@ -124,7 +133,10 @@ class _TEnsureVisibleNullableState extends State<TEnsureVisibleNullable> {
 
   Future<void> _ensureVisible() async {
     if (mounted && (widget.focusNode?.hasFocus ?? false)) {
-      Future.delayed(TDurations.animation, () => Scrollable.ensureVisible(context));
+      Future.delayed(
+        TDurations.animation,
+        () => Scrollable.ensureVisible(context),
+      );
     }
   }
 

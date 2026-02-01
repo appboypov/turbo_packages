@@ -24,7 +24,8 @@ class TContextualAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final titleStyle = theme.textTheme.large.copyWith(fontWeight: FontWeight.w600);
+    final titleStyle =
+        theme.textTheme.large.copyWith(fontWeight: FontWeight.w600);
 
     return Material(
       color: Colors.transparent,

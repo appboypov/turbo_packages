@@ -63,7 +63,8 @@ abstract class TContextualButtonsServiceInterface extends ChangeNotifier
 
   /// Updates the base configuration using an updater function.
   void updateWith(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
+    TContextualButtonsConfig Function(TContextualButtonsConfig current)
+        updater, {
     bool doNotifyListeners = true,
   });
 
@@ -74,7 +75,8 @@ abstract class TContextualButtonsServiceInterface extends ChangeNotifier
   ///
   /// [positionsToAnimate] specifies which positions to animate (defaults to all).
   Future<void> updateContextualButtons(
-    TContextualButtonsConfig Function(TContextualButtonsConfig current) updater, {
+    TContextualButtonsConfig Function(TContextualButtonsConfig current)
+        updater, {
     bool doNotifyListeners = true,
     bool animated = true,
     Set<TContextualPosition>? positionsToAnimate,

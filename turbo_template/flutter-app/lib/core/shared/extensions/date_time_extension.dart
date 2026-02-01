@@ -7,7 +7,8 @@ import 'package:turbo_flutter_template/core/ui/enums/date_format.dart';
 
 abstract class DateTimeUtils {
   static DateTime latestOf(DateTime a, DateTime b) => a.isAfter(b) ? a : b;
-  static DateTime earliestOf(DateTime? a, DateTime b) => a == null || b.isBefore(a) ? b : a;
+  static DateTime earliestOf(DateTime? a, DateTime b) =>
+      a == null || b.isBefore(a) ? b : a;
 }
 
 extension DateTimeExtension on DateTime {
@@ -48,7 +49,9 @@ extension DateTimeExtension on DateTime {
   DateTime get asUpcomingBirthday {
     final now = gNow;
     final birthday = DateTime(now.year, month, day);
-    return birthday.isBefore(now) ? DateTime(now.year + 1, month, day) : birthday;
+    return birthday.isBefore(now)
+        ? DateTime(now.year + 1, month, day)
+        : birthday;
   }
 
   bool isMoreThanHoursAgo(int hours) {
@@ -59,26 +62,50 @@ extension DateTimeExtension on DateTime {
   String get upToMinuteId => '$year$month$day$hour$minute';
 
   DateTime get asStartOfDay => DateTime(year, month, day, 0, 0, 0, 0, 0);
-  DateTime get asStartOfWeek => subtract(Duration(days: weekday - 1)).asStartOfDay;
+  DateTime get asStartOfWeek =>
+      subtract(Duration(days: weekday - 1)).asStartOfDay;
   DateTime get asEndOfDay => DateTime(year, month, day, 23, 59, 59, 999, 999);
 
   Timestamp get asTimeStamp => Timestamp.fromDate(this);
 
   DateTimeRange get weekRange {
     final monday = subtract(Duration(days: weekday - 1));
-    final startOfMonday = DateTime(monday.year, monday.month, monday.day, 0, 0, 0, 0, 0);
-    final endOfSunday = DateTime(monday.year, monday.month, monday.day + 6, 23, 59, 59, 999, 999);
+    final startOfMonday = DateTime(
+      monday.year,
+      monday.month,
+      monday.day,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
+    final endOfSunday = DateTime(
+      monday.year,
+      monday.month,
+      monday.day + 6,
+      23,
+      59,
+      59,
+      999,
+      999,
+    );
     return DateTimeRange(start: startOfMonday, end: endOfSunday);
   }
 
-  bool isBetween(DateTime start, DateTime end) => isAfter(start) && isBefore(end);
+  bool isBetween(DateTime start, DateTime end) =>
+      isAfter(start) && isBefore(end);
 
   bool isWithin(DateTimeRange range) => isBetween(range.start, range.end);
 
   CurrentWeekDto get currentWeekDto {
     final year = this.year;
     final pWeekRange = weekRange;
-    return CurrentWeekDto(year: year, weekStart: pWeekRange.start, weekEnd: pWeekRange.end);
+    return CurrentWeekDto(
+      year: year,
+      weekStart: pWeekRange.start,
+      weekEnd: pWeekRange.end,
+    );
   }
 
   DateTime get nextDay => add(const Duration(days: 1));

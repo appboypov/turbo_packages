@@ -81,7 +81,10 @@ class TSnackbar extends StatelessWidget {
                   Expanded(child: column),
                   TButton(
                     onPressed: onPressed,
-                    child: ShadBadge(child: Text(pOnPressedText), onPressed: onPressed),
+                    child: ShadBadge(
+                      child: Text(pOnPressedText),
+                      onPressed: onPressed,
+                    ),
                   ),
                 ],
               )

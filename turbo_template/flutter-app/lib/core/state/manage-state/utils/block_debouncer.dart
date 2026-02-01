@@ -25,7 +25,8 @@ import 'mutex.dart';
 /// debouncer.dispose();
 /// ```
 class BlockDebouncer with Turbolytics {
-  BlockDebouncer({required Duration duration}) : _debouncer = Debouncer(duration: duration);
+  BlockDebouncer({required Duration duration})
+    : _debouncer = Debouncer(duration: duration);
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\

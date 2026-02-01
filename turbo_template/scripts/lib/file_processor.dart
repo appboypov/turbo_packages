@@ -250,7 +250,8 @@ class FileProcessor {
 
       if (fileModified) {
         filesModified++;
-        onProgress?.call('Modified: ${p.relative(file.path, from: templateRoot.path)}');
+        onProgress?.call(
+            'Modified: ${p.relative(file.path, from: templateRoot.path)}');
       }
     }
 
@@ -277,7 +278,8 @@ class FileProcessor {
     // Skip files that start with a dot (hidden files except specific ones)
     final basename = p.basename(relativePath);
     if (basename.startsWith('.') &&
-        !{'.firebaserc', '.gitignore', '.env', '.env.example'}.contains(basename)) {
+        !{'.firebaserc', '.gitignore', '.env', '.env.example'}
+            .contains(basename)) {
       return true;
     }
 

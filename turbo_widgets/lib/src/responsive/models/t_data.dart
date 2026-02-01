@@ -31,13 +31,14 @@ class TData {
     TOrientation? orientation,
     TDeviceType? deviceType,
     MediaQueryData? media,
-  }) => TData(
-    currentWidth: currentWidth ?? this.currentWidth,
-    currentHeight: currentHeight ?? this.currentHeight,
-    orientation: orientation ?? this.orientation,
-    deviceType: deviceType ?? this.deviceType,
-    media: media ?? this.media,
-  );
+  }) =>
+      TData(
+        currentWidth: currentWidth ?? this.currentWidth,
+        currentHeight: currentHeight ?? this.currentHeight,
+        orientation: orientation ?? this.orientation,
+        deviceType: deviceType ?? this.deviceType,
+        media: media ?? this.media,
+      );
 
   @override
   bool operator ==(Object other) =>

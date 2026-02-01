@@ -6,7 +6,11 @@ import 'package:flutter/widgets.dart';
 class MultiListenableBuilder extends StatefulWidget {
   const MultiListenableBuilder({
     required List<Listenable> listenables,
-    required Widget Function(BuildContext context, List<Listenable> listenables, Widget? child)
+    required Widget Function(
+      BuildContext context,
+      List<Listenable> listenables,
+      Widget? child,
+    )
     builder,
     Widget? child,
     Key? key,
@@ -17,7 +21,12 @@ class MultiListenableBuilder extends StatefulWidget {
 
   final Widget? _child;
   final List<Listenable> _listenables;
-  final Widget Function(BuildContext context, List<Listenable> listenables, Widget? child) _builder;
+  final Widget Function(
+    BuildContext context,
+    List<Listenable> listenables,
+    Widget? child,
+  )
+  _builder;
 
   @override
   MultiListenableBuilderState createState() => MultiListenableBuilderState();
@@ -53,7 +62,8 @@ class MultiListenableBuilderState extends State<MultiListenableBuilder> {
   }
 
   @override
-  Widget build(BuildContext context) => widget._builder(context, _listenables, widget._child);
+  Widget build(BuildContext context) =>
+      widget._builder(context, _listenables, widget._child);
 
   @override
   void dispose() {

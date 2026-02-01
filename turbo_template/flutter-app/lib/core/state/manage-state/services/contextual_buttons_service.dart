@@ -29,7 +29,8 @@ class ContextualButtonsService extends TContextualButtonsService
   final TNavigationTabServiceInterface<NavigationTab> _navigationTabService;
   final BaseRouterService _baseRouterService = BaseRouterService.locate;
 
-  TNavigationTabServiceInterface<NavigationTab> get navigationTabService => _navigationTabService;
+  TNavigationTabServiceInterface<NavigationTab> get navigationTabService =>
+      _navigationTabService;
 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
@@ -166,10 +167,11 @@ class ContextualButtonsService extends TContextualButtonsService
     List<ContextualButtonEntry> entries, {
     required TDeviceType deviceType,
   }) {
-    final entriesByPosition = <TContextualPosition, List<ContextualButtonEntry>>{
-      for (final position in TContextualPosition.values)
-        position: <ContextualButtonEntry>[],
-    };
+    final entriesByPosition =
+        <TContextualPosition, List<ContextualButtonEntry>>{
+          for (final position in TContextualPosition.values)
+            position: <ContextualButtonEntry>[],
+        };
 
     for (final entry in entries) {
       entriesByPosition[entry.position]!.add(entry);
@@ -237,7 +239,8 @@ class ContextualButtonsService extends TContextualButtonsService
     final widgetKey = ValueKey('${position.name}-${entryKeys.join("-")}');
     final actions = entries.map((entry) => entry.config).toList();
     final buttonMap = <String, TButtonConfig>{
-      for (var i = 0; i < entries.length; i++) _entryKey(entries[i], i): entries[i].config,
+      for (var i = 0; i < entries.length; i++)
+        _entryKey(entries[i], i): entries[i].config,
     };
     final selectedIndex = entries.indexWhere((entry) => entry.config.isActive);
     final selectedKey = selectedIndex >= 0

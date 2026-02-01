@@ -66,7 +66,8 @@ class UserDto extends TWriteableId {
   final DateTime? welcomeEmailSent;
 
   static const fromJsonFactory = _$UserDtoFromJson;
-  factory UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
+  factory UserDto.fromJson(Map<String, dynamic> json) =>
+      _$UserDtoFromJson(json);
   static const toJsonFactory = _$UserDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$UserDtoToJson(this);
@@ -91,11 +92,13 @@ class UserDto extends TWriteableId {
       id: id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      acceptedPrivacyAndTermsAt: acceptedPrivacyAndTermsAt ?? this.acceptedPrivacyAndTermsAt,
+      acceptedPrivacyAndTermsAt:
+          acceptedPrivacyAndTermsAt ?? this.acceptedPrivacyAndTermsAt,
       email: email ?? this.email,
       tags: tags ?? this.tags,
       userLevel: userLevel ?? this.userLevel,
-      lastChangelogVersionRead: lastChangelogVersionRead ?? this.lastChangelogVersionRead,
+      lastChangelogVersionRead:
+          lastChangelogVersionRead ?? this.lastChangelogVersionRead,
       emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
       welcomeEmailSent: welcomeEmailSent ?? this.welcomeEmailSent,
     );

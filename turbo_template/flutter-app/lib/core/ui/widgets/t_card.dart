@@ -30,7 +30,10 @@ class TCard extends StatelessWidget {
     required BuildContext context,
     Key? key,
     Widget? child,
-    EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    EdgeInsets padding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 16,
+    ),
     BorderRadius? borderRadius,
     double? height,
     String? title,
@@ -137,7 +140,10 @@ class TCard extends StatelessWidget {
                                     ),
                                   if (description != null)
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 4, bottom: 12),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        bottom: 12,
+                                      ),
                                       child: Text(
                                         description!,
                                         style: context.texts.muted.copyWith(),
@@ -149,7 +155,8 @@ class TCard extends StatelessWidget {
                           ],
                         ),
                         if (((title != null && title!.isNotEmpty) ||
-                                (description != null && description!.isNotEmpty)) &&
+                                (description != null &&
+                                    description!.isNotEmpty)) &&
                             (children.isNotEmpty || child != null))
                           ...[],
                       ],

@@ -23,10 +23,16 @@ class TProgressBar extends StatelessWidget {
     final availableWidth = maxWidth ?? context.maxWidth - 40;
     const appBarDistance = 96;
     const progressBarDistance = appBarDistance + kToolbarHeight;
-    final percentage = 1 - (scrolledPixels.clamp(0, progressBarDistance) / progressBarDistance);
+    final percentage =
+        1 -
+        (scrolledPixels.clamp(0, progressBarDistance) / progressBarDistance);
 
     return Container(
-      margin: EdgeInsets.only(top: percentage * 0, left: percentage * 20, right: percentage * 20),
+      margin: EdgeInsets.only(
+        top: percentage * 0,
+        left: percentage * 20,
+        right: percentage * 20,
+      ),
       height: 24,
       // Container with fixed width for background
       width: availableWidth,
@@ -34,10 +40,22 @@ class TProgressBar extends StatelessWidget {
         color: context.colors.card,
         boxShadow: context.decorations.shadowBottomNavigation,
         border: Border(
-          left: BorderSide(color: context.colors.cardBorder, width: percentage * 1),
-          right: BorderSide(color: context.colors.cardBorder, width: percentage * 1),
-          top: BorderSide(color: context.colors.cardBorder, width: percentage * 1),
-          bottom: BorderSide(color: context.colors.cardBorder, width: 0.5 + 0.5 * percentage),
+          left: BorderSide(
+            color: context.colors.cardBorder,
+            width: percentage * 1,
+          ),
+          right: BorderSide(
+            color: context.colors.cardBorder,
+            width: percentage * 1,
+          ),
+          top: BorderSide(
+            color: context.colors.cardBorder,
+            width: percentage * 1,
+          ),
+          bottom: BorderSide(
+            color: context.colors.cardBorder,
+            width: 0.5 + 0.5 * percentage,
+          ),
         ),
         borderRadius: BorderRadius.circular(percentage * 10),
       ),
@@ -47,10 +65,14 @@ class TProgressBar extends StatelessWidget {
           // Progress indicator that grows from left
           AnimatedContainer(
             duration: TDurations.animation,
-            width: progressModel.progressPercentage * (availableWidth + (40 * (1 - percentage))),
+            width:
+                progressModel.progressPercentage *
+                (availableWidth + (40 * (1 - percentage))),
             height: 24,
             decoration: BoxDecoration(
-              gradient: TGradient.topCenter(colors: context.colors.primaryButtonGradient),
+              gradient: TGradient.topCenter(
+                colors: context.colors.primaryButtonGradient,
+              ),
               borderRadius: BorderRadius.circular(percentage * 10),
             ),
           ),

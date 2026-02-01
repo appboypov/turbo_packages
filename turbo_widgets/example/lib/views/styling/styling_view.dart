@@ -22,9 +22,8 @@ const List<String> _categoryImageUrls = [
   'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
 ];
 
-final List<ImageProvider> _categoryImages = _categoryImageUrls
-    .map((url) => NetworkImage(url))
-    .toList();
+final List<ImageProvider> _categoryImages =
+    _categoryImageUrls.map((url) => NetworkImage(url)).toList();
 
 const List<IconData> _categoryIcons = [
   LucideIcons.palette,
@@ -64,7 +63,8 @@ class StylingView extends StatelessWidget {
                   builder: (context, isPlaygroundExpanded, _) {
                     return TCollapsibleSection(
                       title: 'Component Playground',
-                      subtitle: 'Create and test widgets with responsive preview',
+                      subtitle:
+                          'Create and test widgets with responsive preview',
                       isExpanded: isPlaygroundExpanded,
                       onToggle: model.togglePlayground,
                       child: TPlayground<TPlaygroundParameterModel>(
@@ -126,9 +126,11 @@ class StylingView extends StatelessWidget {
                             title: 'Basic - All Positions',
                             config: TContextualButtonsConfig(
                               top: (_) => const [_ShowcaseBar(label: 'Top')],
-                              bottom: (_) => const [_ShowcaseBar(label: 'Bottom')],
+                              bottom: (_) =>
+                                  const [_ShowcaseBar(label: 'Bottom')],
                               left: (_) => const [_ShowcaseBar(label: 'Left')],
-                              right: (_) => const [_ShowcaseBar(label: 'Right')],
+                              right: (_) =>
+                                  const [_ShowcaseBar(label: 'Right')],
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -136,7 +138,9 @@ class StylingView extends StatelessWidget {
                             title: 'Position Filter - Bottom Only',
                             config: TContextualButtonsConfig(
                               allowFilter: TContextualAllowFilter.bottom,
-                              top: (_) => const [_ShowcaseBar(label: 'Filtered to Bottom')],
+                              top: (_) => const [
+                                _ShowcaseBar(label: 'Filtered to Bottom')
+                              ],
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -492,7 +496,8 @@ class _TViewBuilderShowcase extends StatelessWidget {
               contextualButtonsService: useCustomService
                   ? TContextualButtonsService(
                       TContextualButtonsConfig(
-                        bottom: (_) => const [_ShowcaseBar(label: 'Custom Service')],
+                        bottom: (_) =>
+                            const [_ShowcaseBar(label: 'Custom Service')],
                       ),
                     )
                   : null,

@@ -51,7 +51,10 @@ class EmojiTitle extends StatelessWidget {
     offset: const Offset(0, 2),
     child: TAutoSizeText(
       minFontSize: 18,
-      '$title'.butWhen(emoji != null, (cValue) => '${emoji.toString()}  $cValue'),
+      '$title'.butWhen(
+        emoji != null,
+        (cValue) => '${emoji.toString()}  $cValue',
+      ),
       style: switch (type) {
         EmojiTitleType.scaffoldTitle => context.texts.h2,
         EmojiTitleType.h1 => context.texts.h1,

@@ -14,7 +14,8 @@ abstract final class TurboWidgetsDefaults {
   static const Duration throttle = Duration(milliseconds: 100);
   static const Duration debounce = Duration(milliseconds: 300);
 
-  static const String instructions = '''We are working on a new widget in the Component Playground.
+  static const String instructions =
+      '''We are working on a new widget in the Component Playground.
 
 ## Role
 Flutter Widget Developer
@@ -141,7 +142,8 @@ Requirements:
 - Add the widget(s) to the TPlayground's childBuilder, replacing the placeholder content.
 ''';
 
-  static const String solidifyInstructions = '''Solidify the widget from the Component Playground.
+  static const String solidifyInstructions =
+      '''Solidify the widget from the Component Playground.
 
 Context:
 We are working in the Component Playground.
@@ -201,7 +203,8 @@ ALWAYS apply these widget rules and knowledge when creating or modifying widgets
 Task:
 Add the widget from the playground to the project following conventions, add it to your components/styling page catalog, and clear the canvas.''';
 
-  static const String clearCanvasInstructions = '''Clear the Component Playground canvas.
+  static const String clearCanvasInstructions =
+      '''Clear the Component Playground canvas.
 
 Context:
 We are working in the Component Playground.

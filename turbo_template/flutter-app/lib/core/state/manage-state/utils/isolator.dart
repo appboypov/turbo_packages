@@ -66,7 +66,8 @@ class TIsolator<I, O> with Turbolytics {
   }
 
   /// Logs a message with the given task ID.
-  void _log(String taskId, String message) => log.debug('TIsolator[$taskId]: $message');
+  void _log(String taskId, String message) =>
+      log.debug('TIsolator[$taskId]: $message');
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
@@ -129,7 +130,8 @@ class TIsolator<I, O> with Turbolytics {
   /// Throws a TimeoutException if the computation doesn't complete within the specified timeout.
   Future<O> run({
     required I input,
-    required FutureOr<O> Function(I input, void Function(dynamic)? sendProgress) computation,
+    required FutureOr<O> Function(I input, void Function(dynamic)? sendProgress)
+    computation,
     void Function(dynamic progress)? onProgress,
     String? debugLabel,
     Duration? timeoutDuration = const Duration(seconds: 30),
@@ -163,8 +165,13 @@ class TIsolator<I, O> with Turbolytics {
     if (timeoutDuration != null && timeoutDuration.inMilliseconds > 0) {
       timeoutTimer = Timer(timeoutDuration, () {
         if (!completer.isCompleted) {
-          _log(taskId, 'Computation timed out after ${timeoutDuration.inSeconds} seconds');
-          completer.completeError(TimeoutException('Computation timed out', timeoutDuration));
+          _log(
+            taskId,
+            'Computation timed out after ${timeoutDuration.inSeconds} seconds',
+          );
+          completer.completeError(
+            TimeoutException('Computation timed out', timeoutDuration),
+          );
           _cleanupResources(taskId, progressReceivePort, progressSubscription);
         }
       });
@@ -180,7 +187,11 @@ class TIsolator<I, O> with Turbolytics {
       );
 
       // Run the computation using Flutter's compute function
-      final result = await compute(_computeRunner<I, O>, payload, debugLabel: debugLabel);
+      final result = await compute(
+        _computeRunner<I, O>,
+        payload,
+        debugLabel: debugLabel,
+      );
 
       if (!completer.isCompleted) {
         _log(taskId, 'Computation completed successfully');
@@ -196,7 +207,11 @@ class TIsolator<I, O> with Turbolytics {
       timeoutTimer?.cancel();
 
       // Clean up resources
-      await _cleanupResources(taskId, progressReceivePort, progressSubscription);
+      await _cleanupResources(
+        taskId,
+        progressReceivePort,
+        progressSubscription,
+      );
     }
 
     return completer.future;
@@ -208,7 +223,10 @@ class TIsolator<I, O> with Turbolytics {
   /// provide a way to cancel computations), but it cleans up tracking resources
   /// and completes any pending futures.
   void cancelAll() {
-    _log('all', 'Cancelling all computations (${_activeComputations.length} active)');
+    _log(
+      'all',
+      'Cancelling all computations (${_activeComputations.length} active)',
+    );
     for (final completer in _activeComputations.values) {
       if (!completer.isCompleted) {
         completer.complete();
@@ -252,7 +270,8 @@ class _ComputePayload<I, O> {
   final String taskId;
 
   /// The computation function to execute.
-  final FutureOr<O> Function(I input, void Function(dynamic)? sendProgress) computation;
+  final FutureOr<O> Function(I input, void Function(dynamic)? sendProgress)
+  computation;
 
   /// Optional send port for reporting progress.
   final SendPort? progressPort;

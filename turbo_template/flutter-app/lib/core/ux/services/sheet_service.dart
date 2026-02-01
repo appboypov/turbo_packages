@@ -42,5 +42,6 @@ class SheetService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static SheetService get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(() => SheetService());
+  static void registerFactory() =>
+      GetIt.I.registerFactory(() => SheetService());
 }

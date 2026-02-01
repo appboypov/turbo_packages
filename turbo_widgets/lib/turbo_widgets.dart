@@ -1,6 +1,7 @@
 library turbo_widgets;
 
-export 'package:device_frame_plus/device_frame_plus.dart' show DeviceInfo, Devices;
+export 'package:device_frame_plus/device_frame_plus.dart'
+    show DeviceInfo, Devices;
 
 export 'src/abstracts/t_contextual_buttons_service_interface.dart';
 export 'src/abstracts/t_navigation_tab_service_interface.dart';

@@ -13,7 +13,8 @@ class ToastService with Turbolytics {
   static ToastService Function() get lazyLocate =>
       () => GetIt.I.get();
   static ToastService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(ToastService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(ToastService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -37,7 +38,9 @@ class ToastService with Turbolytics {
     }
 
     // Add extra time for longer messages (roughly 150ms per 10 characters)
-    final extraDuration = Duration(milliseconds: ((totalLength - 40) / 10).ceil() * 150);
+    final extraDuration = Duration(
+      milliseconds: ((totalLength - 40) / 10).ceil() * 150,
+    );
     final calculatedDuration = TDurations.toastDefault + extraDuration;
 
     // Cap at maximum of 6 seconds to avoid overly long displays
@@ -46,17 +49,20 @@ class ToastService with Turbolytics {
         : calculatedDuration;
   }
 
-  Future<void> showSomethingWentWrongToast({required BuildContext context}) async => showToast(
+  Future<void> showSomethingWentWrongToast({
+    required BuildContext context,
+  }) async => showToast(
     context: context,
     title: context.strings.somethingWentWrong,
     subtitle: context.strings.somethingWentWrongPleaseTryAgainLater,
   );
 
-  Future<void> showUnknownErrorToast({required BuildContext context}) async => showToast(
-    context: context,
-    title: context.strings.unknownError,
-    subtitle: context.strings.anUnknownErrorOccurredPleaseTryAgainLater,
-  );
+  Future<void> showUnknownErrorToast({required BuildContext context}) async =>
+      showToast(
+        context: context,
+        title: context.strings.unknownError,
+        subtitle: context.strings.anUnknownErrorOccurredPleaseTryAgainLater,
+      );
 
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
@@ -83,7 +89,8 @@ class ToastService with Turbolytics {
 
     // Use provided duration or calculate based on message length
     final effectiveDisplayDuration =
-        displayDuration ?? calculateDisplayDuration(title: title, subtitle: subtitle);
+        displayDuration ??
+        calculateDisplayDuration(title: title, subtitle: subtitle);
 
     try {
       showTopSnackBar(

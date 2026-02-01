@@ -12,7 +12,8 @@ import 'package:turbolytics/turbolytics.dart';
 part 't_form_field_extensions.dart';
 part 't_form_field_state.dart';
 
-class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics {
+class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
+    with Turbolytics {
   TFormFieldConfig({
     FormFieldValidator<T>? valueValidator,
     List<T>? initialValues,
@@ -38,57 +39,57 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     ShadSliderController? sliderController,
     List<String> currentSuggestions = const [],
   }) : super(
-         TFormFieldState<T>(
-           valueValidator: valueValidator,
-           initialValues: initialValues,
-           items: items,
-           values: null,
-           inputFormatters: inputFormatters,
-           autoCompleteValues: autoCompleteValues,
-           initialValue: initialValue,
-           value: initialValue,
-           valuesValidator: valuesValidator,
-           isEnabled: isEnabled,
-           isReadOnly: isReadOnly,
-           isVisible: isVisible,
-           obscureText: obscureText,
-           fieldType: fieldType,
-           id: id,
-           incrementAmount: incrementAmount,
-           maxValue: maxValue,
-           minValue: minValue,
-           labelBuilder: labelBuilder,
-           errorText: null,
-           shouldValidate: false,
-           textEditingController:
-               textEditingController ??
-               ((fieldType.hasTextEditingController)
-                   ? ShadTextEditingController(text: initialValue?.toString())
-                   : null),
-           sliderController:
-               sliderController ??
-               (fieldType.hasSliderController
-                   ? ShadSliderController(initialValue: initialValue?.tAsType() ?? 0)
-                   : null),
-           timePickerController:
-               timePickerController ??
-               (fieldType.hasTimePickerController
-                   ? ShadTimePickerController(
-                       hour: initialValue?.tAsType<ShadTimeOfDay>().hour ?? 0,
-                       minute: initialValue?.tAsType<ShadTimeOfDay>().minute ?? 0,
-                       period: initialValue?.tAsType<ShadTimeOfDay>().period,
-                       second: initialValue?.tAsType<ShadTimeOfDay>().second ?? 0,
-                     )
-                   : null),
-           selectController:
-               selectController ??
-               (fieldType.hasSelectController
-                   ? ShadSelectController<T>(initialValue: initialValues?.toSet())
-                   : null),
-           focusNode: focusNode ?? FocusNode(),
-           currentSuggestions: currentSuggestions,
-         ),
-       );
+          TFormFieldState<T>(
+            valueValidator: valueValidator,
+            initialValues: initialValues,
+            items: items,
+            values: null,
+            inputFormatters: inputFormatters,
+            autoCompleteValues: autoCompleteValues,
+            initialValue: initialValue,
+            value: initialValue,
+            valuesValidator: valuesValidator,
+            isEnabled: isEnabled,
+            isReadOnly: isReadOnly,
+            isVisible: isVisible,
+            obscureText: obscureText,
+            fieldType: fieldType,
+            id: id,
+            incrementAmount: incrementAmount,
+            maxValue: maxValue,
+            minValue: minValue,
+            labelBuilder: labelBuilder,
+            errorText: null,
+            shouldValidate: false,
+            textEditingController: textEditingController ??
+                ((fieldType.hasTextEditingController)
+                    ? ShadTextEditingController(text: initialValue?.toString())
+                    : null),
+            sliderController: sliderController ??
+                (fieldType.hasSliderController
+                    ? ShadSliderController(
+                        initialValue: initialValue?.tAsType() ?? 0)
+                    : null),
+            timePickerController: timePickerController ??
+                (fieldType.hasTimePickerController
+                    ? ShadTimePickerController(
+                        hour: initialValue?.tAsType<ShadTimeOfDay>().hour ?? 0,
+                        minute:
+                            initialValue?.tAsType<ShadTimeOfDay>().minute ?? 0,
+                        period: initialValue?.tAsType<ShadTimeOfDay>().period,
+                        second:
+                            initialValue?.tAsType<ShadTimeOfDay>().second ?? 0,
+                      )
+                    : null),
+            selectController: selectController ??
+                (fieldType.hasSelectController
+                    ? ShadSelectController<T>(
+                        initialValue: initialValues?.toSet())
+                    : null),
+            focusNode: focusNode ?? FocusNode(),
+            currentSuggestions: currentSuggestions,
+          ),
+        );
 
   @override
   void dispose() {
@@ -165,9 +166,11 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     return isValid;
   }
 
-  ShadTextEditingController? get textEditingController => value.textEditingController;
+  ShadTextEditingController? get textEditingController =>
+      value.textEditingController;
   ShadSelectController<T>? get selectController => value.selectController;
-  ShadTimePickerController? get timePickerController => value.timePickerController;
+  ShadTimePickerController? get timePickerController =>
+      value.timePickerController;
   ShadSliderController? get sliderController => value.sliderController;
   FocusNode get focusNode => value.focusNode;
   FormFieldValidator<T>? get validator => value.valueValidator;
@@ -272,8 +275,9 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
       return;
     }
     updateCurrent((cValue) {
-      final currentSuggestions =
-          autoCompleteValues?.where((element) => element.tNaked.contains(value.tNaked)).toList() ??
+      final currentSuggestions = autoCompleteValues
+              ?.where((element) => element.tNaked.contains(value.tNaked))
+              .toList() ??
           [];
       return cValue.copyWith(currentSuggestions: currentSuggestions);
     });
@@ -335,11 +339,11 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     update(value.copyWith(values: current(values)));
   }
 
-  void addValue(T newValue) =>
-      updateCurrentValues((values) => values == null ? [newValue] : [...values, newValue]);
+  void addValue(T newValue) => updateCurrentValues(
+      (values) => values == null ? [newValue] : [...values, newValue]);
 
-  void removeValue(T valueToRemove) =>
-      updateCurrentValues((values) => values?.where((v) => v != valueToRemove).toList());
+  void removeValue(T valueToRemove) => updateCurrentValues(
+      (values) => values?.where((v) => v != valueToRemove).toList());
 
   void updateInitialValue(T? newValue) {
     update(value.copyWith(initialValue: newValue, value: newValue));
@@ -349,7 +353,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
       }
     }
     _tryValidate();
-    log.info('Set initialValue to $newValue for $fieldType with id: ${value.id}!');
+    log.info(
+        'Set initialValue to $newValue for $fieldType with id: ${value.id}!');
   }
 
   void updateInitialValues(List<T>? newValues) {
@@ -360,7 +365,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
       }
     }
     _tryValidate();
-    log.info('Set initialValues to $newValues for $fieldType with id: ${value.id}!');
+    log.info(
+        'Set initialValues to $newValues for $fieldType with id: ${value.id}!');
   }
 
   void updateItems(List<T>? newItems) {
@@ -376,7 +382,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
     } else {
       _resetShouldValidate();
     }
-    log.info('Set isReadOnly to $newValue for $fieldType with id: ${value.id}!');
+    log.info(
+        'Set isReadOnly to $newValue for $fieldType with id: ${value.id}!');
   }
 
   void updateIsVisible(bool newValue) {
@@ -402,12 +409,14 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>> with Turbolytics
   void updateInputFormatters(List<TextInputFormatter>? newValue) {
     update(value.copyWith(inputFormatters: newValue));
     _tryValidate();
-    log.info('Set inputFormatters to $newValue for $fieldType with id: ${value.id}!');
+    log.info(
+        'Set inputFormatters to $newValue for $fieldType with id: ${value.id}!');
   }
 
   void updateObscureText(bool newValue) {
     update(value.copyWith(obscureText: newValue));
     _tryValidate();
-    log.info('Set obscureText to $newValue for $fieldType with id: ${value.id}!');
+    log.info(
+        'Set obscureText to $newValue for $fieldType with id: ${value.id}!');
   }
 }

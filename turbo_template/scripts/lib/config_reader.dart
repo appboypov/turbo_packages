@@ -112,15 +112,22 @@ class ConfigReader {
     }
 
     return TemplateConfig(
-      packageName: app['package_name']?.toString() ?? TemplateDefaults.packageName,
-      organization: app['organization']?.toString() ?? TemplateDefaults.organization,
-      description: app['description']?.toString() ?? TemplateDefaults.description,
+      packageName:
+          app['package_name']?.toString() ?? TemplateDefaults.packageName,
+      organization:
+          app['organization']?.toString() ?? TemplateDefaults.organization,
+      description:
+          app['description']?.toString() ?? TemplateDefaults.description,
       appName: app['app_name']?.toString() ?? TemplateDefaults.appName,
-      privacyPolicyUrl: urls['privacy_policy']?.toString() ?? TemplateDefaults.privacyPolicyUrl,
-      termsOfServiceUrl: urls['terms_of_service']?.toString() ?? TemplateDefaults.termsOfServiceUrl,
+      privacyPolicyUrl: urls['privacy_policy']?.toString() ??
+          TemplateDefaults.privacyPolicyUrl,
+      termsOfServiceUrl: urls['terms_of_service']?.toString() ??
+          TemplateDefaults.termsOfServiceUrl,
       supportUrl: urls['support']?.toString() ?? TemplateDefaults.supportUrl,
-      prodProjectId: firebase['prod_project_id']?.toString() ?? TemplateDefaults.prodProjectId,
-      stagingProjectId: firebase['staging_project_id']?.toString() ?? TemplateDefaults.stagingProjectId,
+      prodProjectId: firebase['prod_project_id']?.toString() ??
+          TemplateDefaults.prodProjectId,
+      stagingProjectId: firebase['staging_project_id']?.toString() ??
+          TemplateDefaults.stagingProjectId,
       templatePath: sync['template_path']?.toString() ?? 'flutter-app',
       lastCommitSync: _parseNullableString(sync['last_commit_sync']),
       syncUpwards: syncUpwardsList,

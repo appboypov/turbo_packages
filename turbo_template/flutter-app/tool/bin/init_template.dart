@@ -48,7 +48,8 @@ void main(List<String> arguments) async {
 
     if (!await _isFlutterProject(projectRoot)) {
       stderr.writeln('Error: Must be run from the tool directory');
-      stderr.writeln('Usage: cd flutter-app/tool && dart run tool:init_template ...');
+      stderr.writeln(
+          'Usage: cd flutter-app/tool && dart run tool:init_template ...');
       exit(1);
     }
 
@@ -76,9 +77,11 @@ void main(List<String> arguments) async {
     if (name == null || org == null) {
       stderr.writeln('Error: --name and --org are required');
       if (fileConfig == null) {
-        stderr.writeln('Tip: Create a template.yaml config file or provide CLI arguments');
+        stderr.writeln(
+            'Tip: Create a template.yaml config file or provide CLI arguments');
       } else {
-        stderr.writeln('Tip: Ensure template.yaml has name and organization fields');
+        stderr.writeln(
+            'Tip: Ensure template.yaml has name and organization fields');
       }
       _printUsage(parser);
       exit(1);
@@ -132,8 +135,8 @@ void main(List<String> arguments) async {
         );
         for (final fileInfo in entry.value) {
           final lineNums = fileInfo.lines.map((l) => l.lineNumber).join(', ');
-          stdout
-              .writeln('  - ${p.relative(fileInfo.filePath, from: projectRoot.path)} [L$lineNums]');
+          stdout.writeln(
+              '  - ${p.relative(fileInfo.filePath, from: projectRoot.path)} [L$lineNums]');
         }
       }
 
@@ -166,19 +169,24 @@ void main(List<String> arguments) async {
       stdout.writeln('Results:');
       for (final result in initResult.results) {
         final status = result.hasError ? '✗' : '✓';
-        final detail = result.hasError ? result.error : '${result.filesModified} files modified';
+        final detail = result.hasError
+            ? result.error
+            : '${result.filesModified} files modified';
         stdout.writeln('  $status ${result.name}: $detail');
       }
 
-      stdout.writeln('\nTotal: ${initResult.totalFilesModified} files modified');
+      stdout
+          .writeln('\nTotal: ${initResult.totalFilesModified} files modified');
       stdout.writeln('\nNext steps:');
       stdout.writeln('  1. Run: make get');
       stdout.writeln('  2. Run: make analyze');
-      stdout.writeln('  3. Run: make firebase-init (configure Firebase project)');
+      stdout
+          .writeln('  3. Run: make firebase-init (configure Firebase project)');
       stdout.writeln('  4. Run: flutter run');
       stdout.writeln('');
       stdout.writeln('Manual setup required:');
-      stdout.writeln('  • iOS/macOS: Update DEVELOPMENT_TEAM in Xcode project settings');
+      stdout.writeln(
+          '  • iOS/macOS: Update DEVELOPMENT_TEAM in Xcode project settings');
       stdout.writeln('  • Android: Create signing keys for release builds');
       stdout.writeln('  • Web: Update favicon and icons in web/icons/');
     }
@@ -202,11 +210,13 @@ void _printConfiguration({
   required String? cliDescription,
 }) {
   stdout.writeln('Configuration:');
-  stdout.writeln('  Package name:  $name ${_source(cliName, fileConfig?['name'])}');
+  stdout.writeln(
+      '  Package name:  $name ${_source(cliName, fileConfig?['name'])}');
   stdout.writeln('  Bundle ID:     $bundleId (derived)');
   stdout.writeln('  Display name:  $displayName (derived)');
   stdout.writeln('  App name:      $appName (derived)');
-  stdout.writeln('  Organization:  $org ${_source(cliOrg, fileConfig?['organization'])}');
+  stdout.writeln(
+      '  Organization:  $org ${_source(cliOrg, fileConfig?['organization'])}');
   stdout.writeln(
     '  Description:   $description ${_source(cliDescription, fileConfig?['description'])}',
   );
@@ -224,7 +234,8 @@ void _printUsage(ArgParser parser) {
   stdout.writeln('');
   stdout.writeln('Initializes the Flutter template with your project details.');
   stdout.writeln('');
-  stdout.writeln('Values are loaded from template.yaml and can be overridden with CLI arguments.');
+  stdout.writeln(
+      'Values are loaded from template.yaml and can be overridden with CLI arguments.');
   stdout.writeln('');
   stdout.writeln('Options:');
   stdout.writeln(parser.usage);

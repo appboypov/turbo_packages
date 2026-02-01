@@ -57,6 +57,9 @@ class TIconValueRow extends StatelessWidget {
     if (ignoreButton) {
       return iconRow;
     }
-    return GestureDetector(onTap: () => onPressed(iconValueModel.value), child: iconRow);
+    return GestureDetector(
+      onTap: () => onPressed(iconValueModel.value),
+      child: iconRow,
+    );
   }
 }

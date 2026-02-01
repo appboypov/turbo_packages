@@ -18,33 +18,42 @@ class TTools {
     double bottomLimit = 0.50,
     double upperLimit = 1,
     double speed = 1.0,
-  }) => value
-      .scaledPerWidth(currentWidth: currentWidth, widthInDesign: widthInDesign, speed: speed)
-      .clamp(value * bottomLimit, value * upperLimit);
+  }) =>
+      value
+          .scaledPerWidth(
+              currentWidth: currentWidth,
+              widthInDesign: widthInDesign,
+              speed: speed)
+          .clamp(value * bottomLimit, value * upperLimit);
 
   double scaledPerHeight(
     double value, {
     double bottomLimit = 0.50,
     double upperLimit = 1.00,
     double speed = 1.0,
-  }) => value
-      .scaledPerHeight(currentHeight: currentHeight, heightInDesign: heightInDesign, speed: speed)
-      .clamp(value * bottomLimit, value * upperLimit);
+  }) =>
+      value
+          .scaledPerHeight(
+              currentHeight: currentHeight,
+              heightInDesign: heightInDesign,
+              speed: speed)
+          .clamp(value * bottomLimit, value * upperLimit);
 
   double scaled(
     double value, {
     double bottomLimit = 0.50,
     double upperLimit = 1.00,
     double speed = 1.00,
-  }) => value
-      .scaledPerWidthAndHeight(
-        currentHeight: currentHeight,
-        currentWidth: currentWidth,
-        widthInDesign: widthInDesign,
-        heightInDesign: heightInDesign,
-        speed: speed,
-      )
-      .clamp(value * bottomLimit, value * upperLimit);
+  }) =>
+      value
+          .scaledPerWidthAndHeight(
+            currentHeight: currentHeight,
+            currentWidth: currentWidth,
+            widthInDesign: widthInDesign,
+            heightInDesign: heightInDesign,
+            speed: speed,
+          )
+          .clamp(value * bottomLimit, value * upperLimit);
 
   @override
   bool operator ==(Object other) =>
@@ -64,9 +73,9 @@ class TTools {
       heightInDesign.hashCode;
 
   TTools copyWith({double? currentWidth, double? currentHeight}) => TTools(
-    currentWidth: currentWidth ?? this.currentWidth,
-    currentHeight: currentHeight ?? this.currentHeight,
-    widthInDesign: widthInDesign,
-    heightInDesign: heightInDesign,
-  );
+        currentWidth: currentWidth ?? this.currentWidth,
+        currentHeight: currentHeight ?? this.currentHeight,
+        widthInDesign: widthInDesign,
+        heightInDesign: heightInDesign,
+      );
 }

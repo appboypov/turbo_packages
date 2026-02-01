@@ -46,7 +46,9 @@ class HomeRouter extends BaseNavigation {
 
   void goStylingView({StatefulNavigationShell? statefulNavigationShell}) {
     if (statefulNavigationShell != null) {
-      StylingRouter.locate.goStylingView(statefulNavigationShell: statefulNavigationShell);
+      StylingRouter.locate.goStylingView(
+        statefulNavigationShell: statefulNavigationShell,
+      );
     } else {
       StylingRouter.locate.goStylingView();
     }

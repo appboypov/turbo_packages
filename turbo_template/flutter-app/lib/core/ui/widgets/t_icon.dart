@@ -48,7 +48,10 @@ class TIconContainer extends StatelessWidget {
     this.borderColor,
     this.boxShadow,
     this.iconColor,
-  }) : assert(iconData != null || icon != null, 'Either iconData or icon must be provided'),
+  }) : assert(
+         iconData != null || icon != null,
+         'Either iconData or icon must be provided',
+       ),
        super(key: key);
 
   final IconData? iconData;
@@ -86,13 +89,17 @@ class TIconContainer extends StatelessWidget {
         break;
       case TIconDecoration.background:
         backgroundColor = this.backgroundColor ?? context.colors.background;
-        backgroundGradient = gradient == null ? null : TGradient.topCenter(colors: gradient!);
+        backgroundGradient = gradient == null
+            ? null
+            : TGradient.topCenter(colors: gradient!);
         boxShadow = this.boxShadow ?? context.decorations.outerShadow;
         border = null;
         break;
       case TIconDecoration.border:
         backgroundColor = this.backgroundColor;
-        backgroundGradient = gradient == null ? null : TGradient.topCenter(colors: gradient!);
+        backgroundGradient = gradient == null
+            ? null
+            : TGradient.topCenter(colors: gradient!);
         boxShadow = null;
         border = Border.all(
           color: borderColor ?? context.colors.focus,
@@ -102,7 +109,9 @@ class TIconContainer extends StatelessWidget {
         break;
       case TIconDecoration.borderWithBackground:
         backgroundColor = this.backgroundColor ?? context.colors.background;
-        backgroundGradient = gradient == null ? null : TGradient.topCenter(colors: gradient!);
+        backgroundGradient = gradient == null
+            ? null
+            : TGradient.topCenter(colors: gradient!);
         boxShadow = null;
         border = Border.all(
           color: borderColor ?? context.colors.focus,
@@ -122,7 +131,9 @@ class TIconContainer extends StatelessWidget {
     final hasLabel = label != null;
     final width = hasLabel ? null : height;
     final iconSize = height * 0.4;
-    final borderRadius = this.borderRadius ?? BorderRadius.circular(TSizes.smallCardButtonRadius);
+    final borderRadius =
+        this.borderRadius ??
+        BorderRadius.circular(TSizes.smallCardButtonRadius);
 
     final icon =
         this.icon ??
@@ -133,7 +144,8 @@ class TIconContainer extends StatelessWidget {
               iconColor ??
               (hasLabel
                   ? context.colors.icon
-                  : backgroundColor?.onColor ?? backgroundGradient?.colors.onColor),
+                  : backgroundColor?.onColor ??
+                        backgroundGradient?.colors.onColor),
         );
     return Container(
       height: height,
@@ -159,7 +171,9 @@ class TIconContainer extends StatelessWidget {
                 Text(
                   '${label!}',
                   style: context.texts.button.copyWith(
-                    color: backgroundColor?.onColor ?? backgroundGradient?.colors.onColor,
+                    color:
+                        backgroundColor?.onColor ??
+                        backgroundGradient?.colors.onColor,
                     height: 1,
                   ),
                 ),
@@ -171,12 +185,18 @@ class TIconContainer extends StatelessWidget {
 }
 
 class TIconSmall extends StatelessWidget {
-  const TIconSmall(this.iconData, {Key? key, this.iconSize = IconSize.small, this.color})
-    : super(key: key);
+  const TIconSmall(
+    this.iconData, {
+    Key? key,
+    this.iconSize = IconSize.small,
+    this.color,
+  }) : super(key: key);
 
-  const TIconSmall.small(this.iconData, {super.key, this.color}) : iconSize = IconSize.small;
+  const TIconSmall.small(this.iconData, {super.key, this.color})
+    : iconSize = IconSize.small;
 
-  const TIconSmall.xSmall(this.iconData, {super.key, this.color}) : iconSize = IconSize.xSmall;
+  const TIconSmall.xSmall(this.iconData, {super.key, this.color})
+    : iconSize = IconSize.xSmall;
 
   final IconData iconData;
   final IconSize iconSize;

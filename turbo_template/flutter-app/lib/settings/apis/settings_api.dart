@@ -8,7 +8,8 @@ class SettingsApi extends TurboApi<SettingsDto> {
   SettingsApi()
     : super(
         firestoreCollection: FirestoreCollection.settings,
-        path: (firestoreCollection) => firestoreCollection.path(userId: gUserId),
+        path: (firestoreCollection) =>
+            firestoreCollection.path(userId: gUserId),
       );
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -24,7 +25,8 @@ class SettingsApi extends TurboApi<SettingsDto> {
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  Future<bool> hasSettings({required String userId}) async => await docExists(id: userId);
+  Future<bool> hasSettings({required String userId}) async =>
+      await docExists(id: userId);
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\

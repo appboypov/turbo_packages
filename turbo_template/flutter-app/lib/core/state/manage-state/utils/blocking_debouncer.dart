@@ -1,7 +1,8 @@
 import 'debouncer.dart';
 
 class BlockingDebouncer {
-  BlockingDebouncer({required Duration duration}) : _debouncer = Debouncer(duration: duration);
+  BlockingDebouncer({required Duration duration})
+    : _debouncer = Debouncer(duration: duration);
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\

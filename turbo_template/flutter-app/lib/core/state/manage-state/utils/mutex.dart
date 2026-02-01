@@ -5,7 +5,9 @@ import 'dart:ui';
 class Mutex {
   final _completerQueue = Queue<Completer>();
 
-  FutureOr<T> lockAndRun<T>({required FutureOr<T> Function(VoidCallback unlock) run}) async {
+  FutureOr<T> lockAndRun<T>({
+    required FutureOr<T> Function(VoidCallback unlock) run,
+  }) async {
     final completer = Completer();
     _completerQueue.add(completer);
     if (_completerQueue.first != completer) {

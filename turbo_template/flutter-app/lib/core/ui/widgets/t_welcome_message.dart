@@ -55,7 +55,10 @@ class TWelcomeMessage extends StatelessWidget {
           description: title,
           color: context.colors.card.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(24),
-          border: ShadBorder.all(color: context.colors.border.asSoftText, width: 2),
+          border: ShadBorder.all(
+            color: context.colors.border.asSoftText,
+            width: 2,
+          ),
           shadows: [
             BoxShadow(
               color: context.colors.border.asSoftText.withValues(alpha: 0.25),
@@ -71,11 +74,21 @@ class TWelcomeMessage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (iconData != null)
-                    TMargin.right(child: Icon(iconData, size: 48, color: context.colors.icon))
+                    TMargin.right(
+                      child: Icon(
+                        iconData,
+                        size: 48,
+                        color: context.colors.icon,
+                      ),
+                    )
                   else if (imageAsset != null)
                     TMargin.right(
                       child: TImage(
-                        image: TImageSvg(imageLocation: imageAsset!, height: 105, width: 105),
+                        image: TImageSvg(
+                          imageLocation: imageAsset!,
+                          height: 105,
+                          width: 105,
+                        ),
                       ),
                     ),
                   Expanded(
@@ -106,7 +119,10 @@ class TWelcomeMessage extends StatelessWidget {
               ),
               if (onActionPressed != null && actionLabel != null)
                 TMargin.top(
-                  child: ShadButton.outline(onPressed: onActionPressed!, child: Text(actionLabel!)),
+                  child: ShadButton.outline(
+                    onPressed: onActionPressed!,
+                    child: Text(actionLabel!),
+                  ),
                 ),
             ],
           ),

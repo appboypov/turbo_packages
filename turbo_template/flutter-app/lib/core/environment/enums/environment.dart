@@ -47,7 +47,8 @@ abstract class Environment {
   /// Overrides the current configuration.
   ///
   /// Used primarily for testing to force a specific configuration.
-  static void configOverride<T extends TAppConfig>({required T config}) => _configOverride = config;
+  static void configOverride<T extends TAppConfig>({required T config}) =>
+      _configOverride = config;
 
   /// The current application configuration.
   ///
@@ -158,7 +159,9 @@ enum EnvironmentType {
           EnvironmentType.prod => DefaultFirebaseOptions.macos,
         };
       default:
-        throw UnsupportedError('DefaultFirebaseOptions are not supported for this platform.');
+        throw UnsupportedError(
+          'DefaultFirebaseOptions are not supported for this platform.',
+        );
     }
   }
 }

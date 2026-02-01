@@ -20,12 +20,22 @@ class EmulatorConfig {
   static const _defaultHost = '127.0.0.1';
 
   static const _authPort = int.fromEnvironment('AUTH_PORT', defaultValue: 9099);
-  static const _firestorePort = int.fromEnvironment('FIRESTORE_PORT', defaultValue: 8080);
-  static const _functionsPort = int.fromEnvironment('FUNCTIONS_PORT', defaultValue: 5001);
-  static const _storagePort = int.fromEnvironment('STORAGE_PORT', defaultValue: 9199);
+  static const _firestorePort = int.fromEnvironment(
+    'FIRESTORE_PORT',
+    defaultValue: 8080,
+  );
+  static const _functionsPort = int.fromEnvironment(
+    'FUNCTIONS_PORT',
+    defaultValue: 5001,
+  );
+  static const _storagePort = int.fromEnvironment(
+    'STORAGE_PORT',
+    defaultValue: 9199,
+  );
 
   /// Whether emulators should be used for the current environment.
-  static bool get _shouldUseEmulators => Environment.isEmulators || Environment.isDemo;
+  static bool get _shouldUseEmulators =>
+      Environment.isEmulators || Environment.isDemo;
 
   /// Configures Firebase emulators if running in emulator or demo environment.
   ///
@@ -33,7 +43,9 @@ class EmulatorConfig {
   static Future<void> tryConfigureEmulators() async {
     final log = TLog(location: 'EmulatorConfig');
     log.info('Checking if emulators should be configured...');
-    log.info('Debug mode: $kDebugMode, Emulators enabled: $_shouldUseEmulators');
+    log.info(
+      'Debug mode: $kDebugMode, Emulators enabled: $_shouldUseEmulators',
+    );
 
     if (kDebugMode && _shouldUseEmulators) {
       log.info('Configuring emulators...');
@@ -49,7 +61,9 @@ class EmulatorConfig {
         log.info('Using host for mobile: $host');
 
         if (host == _defaultHost) {
-          log.warning('Using default IP ($_defaultHost) which may not work on mobile devices.');
+          log.warning(
+            'Using default IP ($_defaultHost) which may not work on mobile devices.',
+          );
           log.warning(
             'Run with: flutter run --dart-define=ip=YOUR_IP --dart-define=env=emulators',
           );
@@ -87,7 +101,11 @@ class EmulatorConfig {
 
         log.info('All emulators configured successfully!');
       } catch (error, stackTrace) {
-        log.error('Error configuring emulators!', error: error, stackTrace: stackTrace);
+        log.error(
+          'Error configuring emulators!',
+          error: error,
+          stackTrace: stackTrace,
+        );
       }
     } else {
       log.info('Emulators not configured. Using production Firebase services.');

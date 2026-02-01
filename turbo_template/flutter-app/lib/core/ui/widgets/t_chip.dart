@@ -20,7 +20,11 @@ class TChip extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           text,
-          style: context.texts.mono.copyWith(height: 1, fontSize: 10, fontWeight: FontWeight.bold),
+          style: context.texts.mono.copyWith(
+            height: 1,
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(width: 12),
       ],

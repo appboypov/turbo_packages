@@ -71,16 +71,20 @@ class TFancyCard extends StatelessWidget {
           context.decorations.topLeftTransparantCardGradient,
         TFancyCardBackground.topCenterTransparantGradient =>
           context.decorations.topCenterTransparantCardGradient,
-        TFancyCardBackground.redGradient => context.decorations.primaryButtonGradient,
-        TFancyCardBackground.blueGradient => context.decorations.secondaryButtonGradient,
+        TFancyCardBackground.redGradient =>
+          context.decorations.primaryButtonGradient,
+        TFancyCardBackground.blueGradient =>
+          context.decorations.secondaryButtonGradient,
         TFancyCardBackground.transparant => null,
-        TFancyCardBackground.topLeftColorGradient => context.decorations.topLeftColorCardGradient,
+        TFancyCardBackground.topLeftColorGradient =>
+          context.decorations.topLeftColorCardGradient,
         TFancyCardBackground.topCenterColorGradient =>
           context.decorations.topCenterColorCardGradient,
         TFancyCardBackground.appBackground => null,
       },
       border: switch (border) {
-        TFancyCardBorder.transparantLight => context.decorations.transparantLightBorder,
+        TFancyCardBorder.transparantLight =>
+          context.decorations.transparantLightBorder,
         TFancyCardBorder.solidLight => context.decorations.solidLightBorder,
         TFancyCardBorder.dark => context.decorations.darkBorder,
         TFancyCardBorder.selected => context.decorations.selectedBorder,
@@ -144,16 +148,20 @@ class TFancyAnimatedCard extends StatelessWidget {
           context.decorations.topLeftTransparantCardGradient,
         TFancyCardBackground.topCenterTransparantGradient =>
           context.decorations.topCenterTransparantCardGradient,
-        TFancyCardBackground.redGradient => context.decorations.primaryButtonGradient,
-        TFancyCardBackground.blueGradient => context.decorations.secondaryButtonGradient,
+        TFancyCardBackground.redGradient =>
+          context.decorations.primaryButtonGradient,
+        TFancyCardBackground.blueGradient =>
+          context.decorations.secondaryButtonGradient,
         TFancyCardBackground.transparant => null,
-        TFancyCardBackground.topLeftColorGradient => context.decorations.topLeftColorCardGradient,
+        TFancyCardBackground.topLeftColorGradient =>
+          context.decorations.topLeftColorCardGradient,
         TFancyCardBackground.topCenterColorGradient =>
           context.decorations.topCenterColorCardGradient,
         TFancyCardBackground.appBackground => null,
       },
       border: switch (border) {
-        TFancyCardBorder.transparantLight => context.decorations.transparantLightBorder,
+        TFancyCardBorder.transparantLight =>
+          context.decorations.transparantLightBorder,
         TFancyCardBorder.solidLight => context.decorations.solidLightBorder,
         TFancyCardBorder.dark => context.decorations.darkBorder,
         TFancyCardBorder.selected => context.decorations.selectedBorder,

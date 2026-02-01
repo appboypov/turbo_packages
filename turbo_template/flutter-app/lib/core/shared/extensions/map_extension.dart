@@ -8,7 +8,8 @@ import '../../auth/enums/user_level.dart';
 extension MapExtension on Map {
   UserLevel get userLevel {
     final String? rawCustomUserLevel =
-        this[TKeys.userLevel] ?? (this[TKeys.activeEntitlements] as List?)?.firstOrNull;
+        this[TKeys.userLevel] ??
+        (this[TKeys.activeEntitlements] as List?)?.firstOrNull;
     final customUserLevel = UserLevel.values.firstWhereOrNull(
       (element) => element.name == rawCustomUserLevel?.toLowerCase(),
     );

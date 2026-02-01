@@ -16,45 +16,45 @@ class PlaygroundView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<PlaygroundViewModel>(
-        builder: (context, model, isInitialised, child) {
-          if (!isInitialised) return TWidgets.nothing;
+    builder: (context, model, isInitialised, child) {
+      if (!isInitialised) return TWidgets.nothing;
 
-          return TScaffold(
-            child: TSliverBody(
-              isEmpty: false,
-              appBar: TSliverAppBar(
-                title: context.strings.playground,
-                emoji: Emoji.testTube,
-                onBackPressed: ({required BuildContext context}) {
-                  if (context.canPop()) {
-                    context.pop();
-                  }
-                },
-              ),
-              children: [
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverToBoxAdapter(
-                    child: TPlayground<TPlaygroundParameterModel>(
-                      parametersBuilder: () =>
-                          const TPlaygroundParameterModel.empty(),
-                      initialIsDarkMode: context.themeMode.isDark,
-                      childBuilder: (context, params) {
-                        final theme = ShadTheme.of(context);
-                        return Center(
-                          child: Text(
-                            'Add your component here',
-                            style: theme.textTheme.muted,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+      return TScaffold(
+        child: TSliverBody(
+          isEmpty: false,
+          appBar: TSliverAppBar(
+            title: context.strings.playground,
+            emoji: Emoji.testTube,
+            onBackPressed: ({required BuildContext context}) {
+              if (context.canPop()) {
+                context.pop();
+              }
+            },
+          ),
+          children: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: TPlayground<TPlaygroundParameterModel>(
+                  parametersBuilder: () =>
+                      const TPlaygroundParameterModel.empty(),
+                  initialIsDarkMode: context.themeMode.isDark,
+                  childBuilder: (context, params) {
+                    final theme = ShadTheme.of(context);
+                    return Center(
+                      child: Text(
+                        'Add your component here',
+                        style: theme.textTheme.muted,
+                      ),
+                    );
+                  },
                 ),
-              ],
+              ),
             ),
-          );
-        },
-        viewModelBuilder: () => PlaygroundViewModel.locate,
+          ],
+        ),
       );
+    },
+    viewModelBuilder: () => PlaygroundViewModel.locate,
+  );
 }

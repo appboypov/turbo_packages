@@ -173,7 +173,8 @@ class TBusyService {
 
   /// Returns an instance of [TBusyService] and sets the default [TBusyType] if provided.
   static TBusyService instance({
-    @Deprecated('Use BusyService.initialise instead') TBusyType? defaultBusyType,
+    @Deprecated('Use BusyService.initialise instead')
+    TBusyType? defaultBusyType,
   }) {
     if (defaultBusyType != null) {
       _busyTypeDefault = defaultBusyType;

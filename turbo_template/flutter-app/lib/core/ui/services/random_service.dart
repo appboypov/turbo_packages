@@ -7,18 +7,24 @@ class RandomService {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   /// Returns a new instance of RandomService from the GetIt service locator.
-  static RandomService get locateFactory => GetIt.I.get(instanceName: 'randomService#factory');
+  static RandomService get locateFactory =>
+      GetIt.I.get(instanceName: 'randomService#factory');
 
   /// Registers a factory for RandomService with the GetIt service locator.
-  static void registerFactory() =>
-      GetIt.I.registerFactory(RandomService.new, instanceName: 'randomService#factory');
+  static void registerFactory() => GetIt.I.registerFactory(
+    RandomService.new,
+    instanceName: 'randomService#factory',
+  );
 
   /// Returns the singleton instance of RandomService from the GetIt service locator.
-  static RandomService get locateSingleton => GetIt.I.get(instanceName: 'randomService#singleton');
+  static RandomService get locateSingleton =>
+      GetIt.I.get(instanceName: 'randomService#singleton');
 
   /// Registers a lazy singleton for RandomService with the GetIt service locator.
-  static void registerLazySingleton() =>
-      GetIt.I.registerLazySingleton(RandomService.new, instanceName: 'randomService#singleton');
+  static void registerLazySingleton() => GetIt.I.registerLazySingleton(
+    RandomService.new,
+    instanceName: 'randomService#singleton',
+  );
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 

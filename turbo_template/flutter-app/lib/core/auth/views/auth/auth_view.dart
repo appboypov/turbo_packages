@@ -77,16 +77,25 @@ class AuthView extends StatelessWidget {
                             title: authViewMode.isForgotPassword
                                 ? context.strings.forgotPassword
                                 : switch (authViewMode) {
-                                    AuthViewMode.login => context.strings.welcome,
-                                    AuthViewMode.register => context.strings.welcome,
-                                    AuthViewMode.forgotPassword => context.strings.welcomeBack,
+                                    AuthViewMode.login =>
+                                      context.strings.welcome,
+                                    AuthViewMode.register =>
+                                      context.strings.welcome,
+                                    AuthViewMode.forgotPassword =>
+                                      context.strings.welcomeBack,
                                   },
                             description: switch (authViewMode) {
-                              AuthViewMode.login => context.strings.pleaseLogInToContinue,
-                              AuthViewMode.register => context.strings.pleaseRegisterToContinue,
-                              AuthViewMode.forgotPassword => context.strings.pleaseEnterYourEmail,
+                              AuthViewMode.login =>
+                                context.strings.pleaseLogInToContinue,
+                              AuthViewMode.register =>
+                                context.strings.pleaseRegisterToContinue,
+                              AuthViewMode.forgotPassword =>
+                                context.strings.pleaseEnterYourEmail,
                             },
-                            trailing: const SizedBox(height: 32, child: TLogo()),
+                            trailing: const SizedBox(
+                              height: 32,
+                              child: TLogo(),
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -96,7 +105,8 @@ class AuthView extends StatelessWidget {
                                     excluding: false,
                                     child: TFormField<String>(
                                       formFieldConfig: model.emailField,
-                                      errorTextStyle: context.texts.smallDestructive,
+                                      errorTextStyle:
+                                          context.texts.smallDestructive,
                                       label: TIconLabel.forFormField(
                                         icon: IconCollection.email,
                                         context: context,
@@ -104,23 +114,33 @@ class AuthView extends StatelessWidget {
                                       ),
                                       disabledOpacity: TSizes.opacityDisabled,
                                       animationDuration: TDurations.animation,
-                                      builder: (context, config, child) => Semantics(
-                                        identifier: 'email_field',
-                                        label: context.strings.emailInputFieldLabel,
-                                        textField: true,
-                                        child: ShadInput(
-                                          placeholder: Text(
-                                            context.strings.emailHint,
-                                            overflow: TextOverflow.ellipsis,
+                                      builder: (context, config, child) =>
+                                          Semantics(
+                                            identifier: 'email_field',
+                                            label: context
+                                                .strings
+                                                .emailInputFieldLabel,
+                                            textField: true,
+                                            child: ShadInput(
+                                              placeholder: Text(
+                                                context.strings.emailHint,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              leading: const TIconSmall(
+                                                Icons.email_rounded,
+                                              ),
+                                              focusNode:
+                                                  model.emailField.focusNode,
+                                              onSubmitted: (value) =>
+                                                  model.onEmailSubmitted(
+                                                    context: context,
+                                                  ),
+                                              controller:
+                                                  config.textEditingController,
+                                              onChanged: (value) => config
+                                                  .silentUpdateValue(value),
+                                            ),
                                           ),
-                                          leading: const TIconSmall(Icons.email_rounded),
-                                          focusNode: model.emailField.focusNode,
-                                          onSubmitted: (value) =>
-                                              model.onEmailSubmitted(context: context),
-                                          controller: config.textEditingController,
-                                          onChanged: (value) => config.silentUpdateValue(value),
-                                        ),
-                                      ),
                                     ),
                                   ),
                                 ),
@@ -131,20 +151,26 @@ class AuthView extends StatelessWidget {
                                     child: TFocusOrder(
                                       order: 2,
                                       child: ExcludeFocus(
-                                        excluding: authViewMode.isForgotPassword,
+                                        excluding:
+                                            authViewMode.isForgotPassword,
                                         child: TFormField<String>(
                                           formFieldConfig: model.passwordField,
-                                          errorTextStyle: context.texts.smallDestructive,
+                                          errorTextStyle:
+                                              context.texts.smallDestructive,
                                           label: TIconLabel.forFormField(
                                             icon: IconCollection.password,
                                             context: context,
                                             text: context.strings.password,
                                           ),
-                                          disabledOpacity: TSizes.opacityDisabled,
-                                          animationDuration: TDurations.animation,
+                                          disabledOpacity:
+                                              TSizes.opacityDisabled,
+                                          animationDuration:
+                                              TDurations.animation,
                                           builder: (context, config, child) => Semantics(
                                             identifier: 'password_field',
-                                            label: context.strings.passwordInputFieldLabel,
+                                            label: context
+                                                .strings
+                                                .passwordInputFieldLabel,
                                             textField: true,
                                             obscured: true,
                                             child: ShadInput(
@@ -153,36 +179,51 @@ class AuthView extends StatelessWidget {
                                                 context.strings.hiddenPass,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
-                                              leading: const TIconSmall(Icons.lock_rounded),
-                                              focusNode: model.passwordField.focusNode,
-                                              onSubmitted: (value) => model.onPasswordSubmitted(
-                                                value: value,
-                                                context: context,
+                                              leading: const TIconSmall(
+                                                Icons.lock_rounded,
                                               ),
-                                              controller: config.textEditingController,
-                                              onChanged: (value) => config.silentUpdateValue(value),
+                                              focusNode:
+                                                  model.passwordField.focusNode,
+                                              onSubmitted: (value) =>
+                                                  model.onPasswordSubmitted(
+                                                    value: value,
+                                                    context: context,
+                                                  ),
+                                              controller:
+                                                  config.textEditingController,
+                                              onChanged: (value) => config
+                                                  .silentUpdateValue(value),
                                               trailing: AnimatedSwitcher(
                                                 duration: TDurations.animation,
                                                 child: authViewMode.isLogin
                                                     ? ExcludeFocus(
                                                         excluding: true,
                                                         child: ShadButton.ghost(
-                                                          onPressed: model.onForgotPasswordPressed,
+                                                          onPressed: model
+                                                              .onForgotPasswordPressed,
                                                           height: 16,
                                                           decoration: ShadDecoration(
                                                             border: ShadBorder(
-                                                              radius: BorderRadius.circular(4),
+                                                              radius:
+                                                                  BorderRadius.circular(
+                                                                    4,
+                                                                  ),
                                                             ),
                                                           ),
-                                                          padding: const EdgeInsets.symmetric(
-                                                            vertical: 0,
-                                                            horizontal: 8,
-                                                          ),
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 0,
+                                                                horizontal: 8,
+                                                              ),
                                                           child: Text(
-                                                            context.strings.forgotPassword,
+                                                            context
+                                                                .strings
+                                                                .forgotPassword,
                                                             style: TextStyle(
                                                               fontSize: 12,
-                                                              color: context.colors.icon,
+                                                              color: context
+                                                                  .colors
+                                                                  .icon,
                                                             ),
                                                           ),
                                                         ),
@@ -196,85 +237,146 @@ class AuthView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                TAnimatedGap(!authViewMode.isLogin ? TSizes.elementGap : 0),
+                                TAnimatedGap(
+                                  !authViewMode.isLogin ? TSizes.elementGap : 0,
+                                ),
                                 VerticalShrink(
                                   show: authViewMode.isRegister,
-                                  hideChild: const ExcludeFocus(child: Offstage()),
+                                  hideChild: const ExcludeFocus(
+                                    child: Offstage(),
+                                  ),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(bottom: TSizes.elementGap),
+                                    padding: const EdgeInsets.only(
+                                      bottom: TSizes.elementGap,
+                                    ),
                                     child: Column(
                                       children: [
                                         TFocusOrder(
-                                          order: authViewMode.isRegister ? 3 : null,
+                                          order: authViewMode.isRegister
+                                              ? 3
+                                              : null,
                                           child: ExcludeFocus(
                                             excluding: !authViewMode.isRegister,
                                             child: TFormField(
-                                              formFieldConfig: model.confirmPasswordField,
-                                              errorTextStyle: context.texts.smallDestructive,
+                                              formFieldConfig:
+                                                  model.confirmPasswordField,
+                                              errorTextStyle: context
+                                                  .texts
+                                                  .smallDestructive,
                                               label: TIconLabel.forFormField(
-                                                icon: IconCollection.confirmPassword,
+                                                icon: IconCollection
+                                                    .confirmPassword,
                                                 context: context,
-                                                text: context.strings.confirmYourPassword,
+                                                text: context
+                                                    .strings
+                                                    .confirmYourPassword,
                                               ),
-                                              disabledOpacity: TSizes.opacityDisabled,
-                                              animationDuration: TDurations.animation,
-                                              builder: (context, config, child) => Semantics(
-                                                identifier: 'confirm_password_field',
-                                                label: context.strings.confirmYourPassword,
-                                                textField: true,
-                                                obscured: true,
-                                                child: ShadInput(
-                                                  obscureText: true,
-                                                  focusNode: model.confirmPasswordField.focusNode,
-                                                  placeholder: Text(context.strings.hiddenPass),
-                                                  leading: const TIconSmall(Icons.lock_rounded),
-                                                  onSubmitted: model.onConfirmPasswordSubmitted,
-                                                  controller: config.textEditingController,
-                                                  onChanged: (value) {
-                                                    config.silentUpdateValue(value);
-                                                    model.onConfirmPasswordChanged(value);
-                                                  },
-                                                ),
-                                              ),
+                                              disabledOpacity:
+                                                  TSizes.opacityDisabled,
+                                              animationDuration:
+                                                  TDurations.animation,
+                                              builder:
+                                                  (
+                                                    context,
+                                                    config,
+                                                    child,
+                                                  ) => Semantics(
+                                                    identifier:
+                                                        'confirm_password_field',
+                                                    label: context
+                                                        .strings
+                                                        .confirmYourPassword,
+                                                    textField: true,
+                                                    obscured: true,
+                                                    child: ShadInput(
+                                                      obscureText: true,
+                                                      focusNode: model
+                                                          .confirmPasswordField
+                                                          .focusNode,
+                                                      placeholder: Text(
+                                                        context
+                                                            .strings
+                                                            .hiddenPass,
+                                                      ),
+                                                      leading: const TIconSmall(
+                                                        Icons.lock_rounded,
+                                                      ),
+                                                      onSubmitted: model
+                                                          .onConfirmPasswordSubmitted,
+                                                      controller: config
+                                                          .textEditingController,
+                                                      onChanged: (value) {
+                                                        config
+                                                            .silentUpdateValue(
+                                                              value,
+                                                            );
+                                                        model
+                                                            .onConfirmPasswordChanged(
+                                                              value,
+                                                            );
+                                                      },
+                                                    ),
+                                                  ),
                                             ),
                                           ),
                                         ),
                                         ValueListenableBuilder<bool>(
-                                          valueListenable: model.showAgreeToPrivacyCheckBox,
+                                          valueListenable:
+                                              model.showAgreeToPrivacyCheckBox,
                                           builder:
                                               (
                                                 context,
                                                 showAgreeToPrivacyCheckBox,
                                                 child,
                                               ) => VerticalShrink(
-                                                alignment: Alignment.bottomCenter,
-                                                show: showAgreeToPrivacyCheckBox,
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                show:
+                                                    showAgreeToPrivacyCheckBox,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.only(
-                                                    top: TSizes.elementGap,
-                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                        top: TSizes.elementGap,
+                                                      ),
                                                   child: TFormField<bool>(
-                                                    formFieldConfig: model.agreePrivacyField,
-                                                    errorTextStyle: context.texts.smallDestructive,
-                                                    disabledOpacity: TSizes.opacityDisabled,
-                                                    animationDuration: TDurations.animation,
+                                                    formFieldConfig:
+                                                        model.agreePrivacyField,
+                                                    errorTextStyle: context
+                                                        .texts
+                                                        .smallDestructive,
+                                                    disabledOpacity:
+                                                        TSizes.opacityDisabled,
+                                                    animationDuration:
+                                                        TDurations.animation,
                                                     builder: (context, config, child) => Semantics(
-                                                      identifier: 'agree_privacy_checkbox',
-                                                      label: context.strings.privacyPolicy,
+                                                      identifier:
+                                                          'agree_privacy_checkbox',
+                                                      label: context
+                                                          .strings
+                                                          .privacyPolicy,
                                                       button: true,
                                                       child: ShadCheckbox(
-                                                        value: config.cValue ?? false,
+                                                        value:
+                                                            config.cValue ??
+                                                            false,
                                                         onChanged: (value) =>
-                                                            config.silentUpdateValue(value),
+                                                            config
+                                                                .silentUpdateValue(
+                                                                  value,
+                                                                ),
                                                         label: AcceptPrivacyText(
-                                                          onPrivacyPolicyTap: () =>
-                                                              model.onPrivacyPolicyPressed(
-                                                                context: context,
-                                                              ),
-                                                          onTermsOfServiceTap: () =>
-                                                              model.onTermsOfServicePressed(
-                                                                context: context,
-                                                              ),
+                                                          onPrivacyPolicyTap:
+                                                              () => model
+                                                                  .onPrivacyPolicyPressed(
+                                                                    context:
+                                                                        context,
+                                                                  ),
+                                                          onTermsOfServiceTap:
+                                                              () => model
+                                                                  .onTermsOfServicePressed(
+                                                                    context:
+                                                                        context,
+                                                                  ),
                                                         ),
                                                       ),
                                                     ),
@@ -289,14 +391,21 @@ class AuthView extends StatelessWidget {
                                 const Gap(8),
                                 Column(
                                   children: [
-                                    TAnimatedGap(authViewMode.isLogin ? TSizes.elementGap : 0),
+                                    TAnimatedGap(
+                                      authViewMode.isLogin
+                                          ? TSizes.elementGap
+                                          : 0,
+                                    ),
                                     VerticalShrink(
                                       show: authViewMode.isForgotPassword,
-                                      hideChild: const ExcludeFocus(child: Offstage()),
+                                      hideChild: const ExcludeFocus(
+                                        child: Offstage(),
+                                      ),
                                       child: TFocusOrder(
                                         order: 3,
                                         child: ExcludeFocus(
-                                          excluding: !authViewMode.isForgotPassword,
+                                          excluding:
+                                              !authViewMode.isForgotPassword,
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                               bottom: TSizes.elementGap,
@@ -305,17 +414,22 @@ class AuthView extends StatelessWidget {
                                               children: [
                                                 Expanded(
                                                   child: Semantics(
-                                                    identifier: 'send_reset_password_button',
+                                                    identifier:
+                                                        'send_reset_password_button',
                                                     label: context.strings.send,
                                                     button: true,
                                                     child: ShadButton(
-                                                      child: Text(context.strings.send),
-                                                      onPressed: withMediumHaptic(
-                                                        () => model.onForgotPasswordSendPressed(
-                                                          context: context,
-                                                        ),
+                                                      child: Text(
+                                                        context.strings.send,
                                                       ),
-                                                      focusNode: model.sendForgotPasswordFocusNode,
+                                                      onPressed: withMediumHaptic(
+                                                        () => model
+                                                            .onForgotPasswordSendPressed(
+                                                              context: context,
+                                                            ),
+                                                      ),
+                                                      focusNode: model
+                                                          .sendForgotPasswordFocusNode,
                                                     ),
                                                   ),
                                                 ),
@@ -327,7 +441,9 @@ class AuthView extends StatelessWidget {
                                     ),
                                     VerticalShrink(
                                       show: !authViewMode.isRegister,
-                                      hideChild: const ExcludeFocus(child: Offstage()),
+                                      hideChild: const ExcludeFocus(
+                                        child: Offstage(),
+                                      ),
                                       child: TFocusOrder(
                                         order: 3,
                                         child: ExcludeFocus(
@@ -336,35 +452,48 @@ class AuthView extends StatelessWidget {
                                             children: [
                                               Semantics(
                                                 identifier: 'login_button',
-                                                label: context.strings.loginButtonLabel,
+                                                label: context
+                                                    .strings
+                                                    .loginButtonLabel,
                                                 button: true,
                                                 child: ShadButton(
                                                   width: double.infinity,
-                                                  child: Text(context.strings.login),
+                                                  child: Text(
+                                                    context.strings.login,
+                                                  ),
                                                   onPressed: withMediumHaptic(
                                                     () => model.onLoginPressed(
-                                                      authViewMode: authViewMode,
+                                                      authViewMode:
+                                                          authViewMode,
                                                       context: context,
                                                     ),
                                                   ),
-                                                  focusNode: model.loginButtonFocusNode,
+                                                  focusNode: model
+                                                      .loginButtonFocusNode,
                                                 ),
                                               ).butWhen(
                                                 authViewMode.isForgotPassword,
                                                 (cValue) => ShadButton.ghost(
                                                   width: double.infinity,
-                                                  child: Text(context.strings.back),
-                                                  onPressed: () => model.onLoginPressed(
-                                                    authViewMode: authViewMode,
-                                                    context: context,
+                                                  child: Text(
+                                                    context.strings.back,
                                                   ),
-                                                  focusNode: model.loginButtonFocusNode,
+                                                  onPressed: () =>
+                                                      model.onLoginPressed(
+                                                        authViewMode:
+                                                            authViewMode,
+                                                        context: context,
+                                                      ),
+                                                  focusNode: model
+                                                      .loginButtonFocusNode,
                                                 ),
                                               ),
                                               Gap(switch (authViewMode) {
-                                                AuthViewMode.login => TSizes.elementGap,
+                                                AuthViewMode.login =>
+                                                  TSizes.elementGap,
                                                 AuthViewMode.register => 0,
-                                                AuthViewMode.forgotPassword => 0,
+                                                AuthViewMode.forgotPassword =>
+                                                  0,
                                               }),
                                             ],
                                           ),
@@ -373,35 +502,50 @@ class AuthView extends StatelessWidget {
                                     ),
                                     VerticalShrink(
                                       show: !authViewMode.isForgotPassword,
-                                      hideChild: const ExcludeFocus(child: Offstage()),
+                                      hideChild: const ExcludeFocus(
+                                        child: Offstage(),
+                                      ),
                                       child: TFocusOrder(
                                         order: 4,
                                         child: ExcludeFocus(
-                                          excluding: authViewMode.isForgotPassword,
+                                          excluding:
+                                              authViewMode.isForgotPassword,
                                           child:
                                               Semantics(
                                                 identifier: 'register_button',
-                                                label: context.strings.registerButtonLabel,
+                                                label: context
+                                                    .strings
+                                                    .registerButtonLabel,
                                                 button: true,
                                                 child: ShadButton.ghost(
                                                   width: double.infinity,
-                                                  child: Text(context.strings.register),
-                                                  focusNode: model.registerButtonFocusNode,
-                                                  onPressed: () => model.onRegisterPressed(
-                                                    authViewMode: authViewMode,
-                                                    context: context,
+                                                  child: Text(
+                                                    context.strings.register,
                                                   ),
+                                                  focusNode: model
+                                                      .registerButtonFocusNode,
+                                                  onPressed: () =>
+                                                      model.onRegisterPressed(
+                                                        authViewMode:
+                                                            authViewMode,
+                                                        context: context,
+                                                      ),
                                                 ),
                                               ).butWhen(
                                                 authViewMode.isRegister,
                                                 (cValue) => ShadButton(
                                                   width: double.infinity,
-                                                  child: Text(context.strings.register),
-                                                  focusNode: model.registerButtonFocusNode,
-                                                  onPressed: () => model.onRegisterPressed(
-                                                    authViewMode: authViewMode,
-                                                    context: context,
+                                                  child: Text(
+                                                    context.strings.register,
                                                   ),
+                                                  focusNode: model
+                                                      .registerButtonFocusNode,
+                                                  onPressed: () =>
+                                                      model.onRegisterPressed(
+                                                        authViewMode:
+                                                            authViewMode,
+                                                        context: context,
+                                                      ),
                                                 ),
                                               ),
                                         ),
@@ -412,7 +556,9 @@ class AuthView extends StatelessWidget {
                                 VerticalShrink(
                                   show: authViewMode.isRegister,
                                   alignment: Alignment.bottomCenter,
-                                  hideChild: const ExcludeFocus(child: Offstage()),
+                                  hideChild: const ExcludeFocus(
+                                    child: Offstage(),
+                                  ),
                                   child: TMargin.only(
                                     top: TSizes.elementGap,
                                     child: TFocusOrder(
@@ -421,15 +567,18 @@ class AuthView extends StatelessWidget {
                                         excluding: !authViewMode.isRegister,
                                         child: Semantics(
                                           identifier: 'login_link_button',
-                                          label: context.strings.switchToLoginLabel,
+                                          label: context
+                                              .strings
+                                              .switchToLoginLabel,
                                           button: true,
                                           child: ShadButton.ghost(
                                             width: double.infinity,
                                             child: Text(context.strings.login),
-                                            onPressed: () => model.onLoginPressed(
-                                              authViewMode: authViewMode,
-                                              context: context,
-                                            ),
+                                            onPressed: () =>
+                                                model.onLoginPressed(
+                                                  authViewMode: authViewMode,
+                                                  context: context,
+                                                ),
                                           ),
                                         ),
                                       ),

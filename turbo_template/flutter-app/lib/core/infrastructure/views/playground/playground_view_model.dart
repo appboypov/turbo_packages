@@ -10,7 +10,8 @@ class PlaygroundViewModel extends TViewModel with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static PlaygroundViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(PlaygroundViewModel.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(PlaygroundViewModel.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

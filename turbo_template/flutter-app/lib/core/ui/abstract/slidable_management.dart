@@ -44,5 +44,6 @@ mixin SlidableManagement<T> on TViewModel<T> {
     id,
   ).openEndActionPane(duration: TDurations.animation, curve: Curves.decelerate);
 
-  Future<void> closeSlidable(Object id) async => await slidableController(id).close();
+  Future<void> closeSlidable(Object id) async =>
+      await slidableController(id).close();
 }

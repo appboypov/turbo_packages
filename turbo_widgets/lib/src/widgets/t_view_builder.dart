@@ -112,7 +112,8 @@ class TViewBuilder<T extends TBaseViewModel> extends StatefulWidget {
   State<TViewBuilder<T>> createState() => _TViewBuilderState<T>();
 }
 
-class _TViewBuilderState<T extends TBaseViewModel> extends State<TViewBuilder<T>> {
+class _TViewBuilderState<T extends TBaseViewModel>
+    extends State<TViewBuilder<T>> {
   final Object _owner = Object();
   TContextualButtonsConfig? _lastPushedConfig;
   bool _hasPushed = false;

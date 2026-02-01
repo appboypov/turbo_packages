@@ -9,7 +9,8 @@ class VibrateService with Turbolytics {
   }
 
   static VibrateService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(VibrateService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(VibrateService.new);
 
   Future<void> initialise() async {
     try {

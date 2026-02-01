@@ -142,7 +142,8 @@ class TPlaygroundParameterModel {
   }
 
   /// Updates a single date range value.
-  TPlaygroundParameterModel updateDateRange(String key, ShadDateTimeRange value) {
+  TPlaygroundParameterModel updateDateRange(
+      String key, ShadDateTimeRange value) {
     return copyWith(dateRanges: {...dateRanges, key: value});
   }
 

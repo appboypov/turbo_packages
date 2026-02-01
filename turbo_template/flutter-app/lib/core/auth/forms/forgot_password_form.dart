@@ -6,9 +6,11 @@ enum _ForgotPasswordFormField { email }
 
 class ForgotPasswordForm extends TFormConfig {
   static ForgotPasswordForm get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(ForgotPasswordForm.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(ForgotPasswordForm.new);
 
-  TFormFieldConfig<String> get email => formFieldConfig(_ForgotPasswordFormField.email);
+  TFormFieldConfig<String> get email =>
+      formFieldConfig(_ForgotPasswordFormField.email);
 
   @override
   late final Map<Enum, TFormFieldConfig> formFieldConfigs = {

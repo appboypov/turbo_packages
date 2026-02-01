@@ -15,7 +15,9 @@ extension BoxConstraintsExtension on BoxConstraints {
       return TOrientation.square;
     }
 
-    return maxHeight > maxWidth ? TOrientation.portrait : TOrientation.landscape;
+    return maxHeight > maxWidth
+        ? TOrientation.portrait
+        : TOrientation.landscape;
   }
 
   TDeviceType deviceType({required TBreakpointConfig breakpointConfig}) {

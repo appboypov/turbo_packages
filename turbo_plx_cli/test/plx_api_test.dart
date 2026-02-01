@@ -62,7 +62,8 @@ void main() {
     group('get', () {
       group('GIVEN path to existing file', () {
         group('WHEN get is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto',
+              () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.get,
               path: 'test.md',
@@ -240,7 +241,8 @@ void main() {
     group('create', () {
       group('GIVEN valid path and content', () {
         group('WHEN create is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto',
+              () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.create,
               path: 'new-file.md',
@@ -292,7 +294,8 @@ void main() {
     group('update', () {
       group('GIVEN valid path and content', () {
         group('WHEN update is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto', () async {
+          test('THEN returns TurboResponse.success with FileEntryDto',
+              () async {
             mockClient.responseToReturn = const WatchEventDto(
               event: WatchEventType.modify,
               path: 'existing.md',

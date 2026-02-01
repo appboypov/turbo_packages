@@ -50,10 +50,11 @@ Future<void> demonstrateAsyncOperations() async {
 
   // Chain operations
   print('\nChaining operations...');
-  final chained = await successResponse.andThen((value) async => TurboResponse<int>.success(
-        result: value.length,
-        title: 'Length',
-      ));
+  final chained =
+      await successResponse.andThen((value) async => TurboResponse<int>.success(
+            result: value.length,
+            title: 'Length',
+          ));
   print('Chained result: ${chained.result}');
 }
 

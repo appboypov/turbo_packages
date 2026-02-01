@@ -5,7 +5,8 @@ extension IterableExtensionExtension<T> on Iterable<T> {
 }
 
 extension IterableIntExtension on Iterable<double> {
-  double get sum => fold(0, (previousValue, element) => previousValue + element);
+  double get sum =>
+      fold(0, (previousValue, element) => previousValue + element);
 }
 
 extension IterableExtension<T> on Iterable<T> {

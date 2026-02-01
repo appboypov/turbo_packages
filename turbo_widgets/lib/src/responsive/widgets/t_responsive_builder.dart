@@ -21,8 +21,7 @@ class TResponsiveBuilder extends StatelessWidget {
     BoxConstraints constraints,
     TTools tools,
     TData data,
-  )
-  builder;
+  ) builder;
 
   final Widget? child;
   final TBreakpointConfig breakpointConfig;
@@ -32,29 +31,30 @@ class TResponsiveBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, constraints) {
-      final media = mediaQueryData ?? MediaQuery.of(context);
-      final tools = TTools(
-        currentWidth: constraints.maxWidth,
-        currentHeight: constraints.maxHeight,
-        widthInDesign: widthInDesign,
-        heightInDesign: heightInDesign,
-      );
-      final data = TData(
-        currentWidth: constraints.maxWidth,
-        currentHeight: constraints.maxHeight,
-        orientation: constraints.orientation,
-        deviceType: constraints.deviceType(breakpointConfig: breakpointConfig),
-        media: media,
-      );
-      final builtWidget = builder(context, child, constraints, tools, data);
+        builder: (context, constraints) {
+          final media = mediaQueryData ?? MediaQuery.of(context);
+          final tools = TTools(
+            currentWidth: constraints.maxWidth,
+            currentHeight: constraints.maxHeight,
+            widthInDesign: widthInDesign,
+            heightInDesign: heightInDesign,
+          );
+          final data = TData(
+            currentWidth: constraints.maxWidth,
+            currentHeight: constraints.maxHeight,
+            orientation: constraints.orientation,
+            deviceType:
+                constraints.deviceType(breakpointConfig: breakpointConfig),
+            media: media,
+          );
+          final builtWidget = builder(context, child, constraints, tools, data);
 
-      // Wrap the result in a SizedBox to avoid intrinsic dimension calculations.
-      return SizedBox(
-        width: constraints.maxWidth,
-        height: constraints.maxHeight,
-        child: builtWidget,
+          // Wrap the result in a SizedBox to avoid intrinsic dimension calculations.
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: builtWidget,
+          );
+        },
       );
-    },
-  );
 }

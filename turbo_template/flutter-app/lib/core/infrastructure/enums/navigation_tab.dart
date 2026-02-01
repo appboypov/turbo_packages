@@ -22,7 +22,9 @@ enum NavigationTab {
     return ListPosition.middle;
   }
 
-  static List<NavigationTab> navigationTabs({required TDeviceType deviceType}) => values;
+  static List<NavigationTab> navigationTabs({
+    required TDeviceType deviceType,
+  }) => values;
 
   static const defaultValue = NavigationTab.home;
 

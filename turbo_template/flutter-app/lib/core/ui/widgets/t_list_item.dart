@@ -53,8 +53,16 @@ class TListItem extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Flexible(child: Text(title, style: context.texts.list.copyWith(height: 1))),
-                      if (trailingTitle != null) ...[const SizedBox(width: 8), trailingTitle!],
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: context.texts.list.copyWith(height: 1),
+                        ),
+                      ),
+                      if (trailingTitle != null) ...[
+                        const SizedBox(width: 8),
+                        trailingTitle!,
+                      ],
                     ],
                   ),
                 )
@@ -80,14 +88,19 @@ class TListItem extends StatelessWidget {
         if (onTrailingArrowPressed != null) ...[
           ShadIconButton.outline(
             onPressed: withSelectionHaptic(onTrailingArrowPressed),
-            icon: const Icon(Icons.arrow_forward_rounded, size: TSizes.iconSizeX0p75),
+            icon: const Icon(
+              Icons.arrow_forward_rounded,
+              size: TSizes.iconSizeX0p75,
+            ),
             width: 32,
             height: 32,
           ),
         ],
       ],
     );
-    return onPressed == null ? row : TButton.opacity(child: row, onPressed: onPressed);
+    return onPressed == null
+        ? row
+        : TButton.opacity(child: row, onPressed: onPressed);
   }
 }
 
@@ -103,5 +116,6 @@ class TListItemAvatar extends TListItem {
   final CircleAvatar avatar;
 
   @override
-  Widget build(BuildContext context) => TListItem(title: title, leading: [avatar]);
+  Widget build(BuildContext context) =>
+      TListItem(title: title, leading: [avatar]);
 }

@@ -47,7 +47,11 @@ class ShakeGestureService with Turbolytics {
         _isOnCooldown = false;
       });
     } catch (error, stackTrace) {
-      log.error('Error during shake detection', error: error, stackTrace: stackTrace);
+      log.error(
+        'Error during shake detection',
+        error: error,
+        stackTrace: stackTrace,
+      );
       _isOnCooldown = false;
     }
   }

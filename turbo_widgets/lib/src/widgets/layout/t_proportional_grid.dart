@@ -83,7 +83,8 @@ class _SlideFlowDelegate extends FlowDelegate {
       Offset position = current.position;
       if (previousLayout != null && animation.value < 1.0) {
         final previous = _findResult(previousLayout!, i) ?? current;
-        position = Offset.lerp(previous.position, current.position, animation.value)!;
+        position =
+            Offset.lerp(previous.position, current.position, animation.value)!;
       }
 
       context.paintChild(
@@ -103,11 +104,13 @@ class _SlideFlowDelegate extends FlowDelegate {
     }
 
     final previous = _findResult(previousLayout!, i) ?? current;
-    final interpolatedSize = Size.lerp(previous.size, current.size, animation.value)!;
+    final interpolatedSize =
+        Size.lerp(previous.size, current.size, animation.value)!;
     return BoxConstraints.tight(interpolatedSize);
   }
 
-  ProportionalLayoutResult? _findResult(List<ProportionalLayoutResult> results, int index) {
+  ProportionalLayoutResult? _findResult(
+      List<ProportionalLayoutResult> results, int index) {
     for (final r in results) {
       if (r.index == index) return r;
     }
@@ -172,7 +175,8 @@ class TProportionalGrid extends StatefulWidget {
   State<TProportionalGrid> createState() => _TProportionalGridState();
 }
 
-class _TProportionalGridState extends State<TProportionalGrid> with SingleTickerProviderStateMixin {
+class _TProportionalGridState extends State<TProportionalGrid>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -234,7 +238,8 @@ class _TProportionalGridState extends State<TProportionalGrid> with SingleTicker
     }
   }
 
-  bool _hasLayoutChanged(Size availableSize, List<double> sizes, double spacing) {
+  bool _hasLayoutChanged(
+      Size availableSize, List<double> sizes, double spacing) {
     if (_currentLayout == null) return true;
     if (_lastSize != availableSize) return true;
     if (_lastSpacing != spacing) return true;
@@ -245,7 +250,8 @@ class _TProportionalGridState extends State<TProportionalGrid> with SingleTicker
     return false;
   }
 
-  void _updateLayoutImmediate(Size availableSize, List<double> sizes, double spacing) {
+  void _updateLayoutImmediate(
+      Size availableSize, List<double> sizes, double spacing) {
     final newLayout = ProportionalLayoutCalculator.calculate(
       sizes: sizes,
       availableSize: availableSize,
@@ -259,7 +265,8 @@ class _TProportionalGridState extends State<TProportionalGrid> with SingleTicker
     _lastSpacing = spacing;
   }
 
-  void _onLayoutChangedSlide(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedSlide(
+      Size availableSize, List<double> sizes, double spacing) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
@@ -271,7 +278,8 @@ class _TProportionalGridState extends State<TProportionalGrid> with SingleTicker
     }
   }
 
-  void _onLayoutChangedDebounced(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedDebounced(
+      Size availableSize, List<double> sizes, double spacing) {
     _debounceTimer?.cancel();
 
     if (!_isWaitingForStability) {
@@ -291,7 +299,8 @@ class _TProportionalGridState extends State<TProportionalGrid> with SingleTicker
     });
   }
 
-  void _onLayoutChangedNone(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedNone(
+      Size availableSize, List<double> sizes, double spacing) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
@@ -379,7 +388,8 @@ class _ProportionalGridAnimatedContent extends StatelessWidget {
               animation: animation,
             )
           : _StaticFlowDelegate(layout: currentLayout),
-      children: items.map((item) => RepaintBoundary(child: item.child)).toList(),
+      children:
+          items.map((item) => RepaintBoundary(child: item.child)).toList(),
     );
 
     return switch (animationType) {

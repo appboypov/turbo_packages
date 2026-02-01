@@ -42,11 +42,14 @@ class DialogService with Turbolytics {
 
   Future<void> _silentReset(TFormFieldConfig formFieldConfig) async {
     await TDurations.animation.asFuture;
-    WidgetsBinding.instance.addPostFrameCallback((_) => formFieldConfig.silentReset());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => formFieldConfig.silentReset(),
+    );
   }
 
-  void _requestFocus(TFormFieldConfig<String> formFieldConfig) =>
-      WidgetsBinding.instance.addPostFrameCallback((_) => formFieldConfig.requestFocus());
+  void _requestFocus(TFormFieldConfig<String> formFieldConfig) => WidgetsBinding
+      .instance
+      .addPostFrameCallback((_) => formFieldConfig.requestFocus());
 
   Future<bool?> showCustomDialog({
     BuildContext? context,
@@ -126,7 +129,9 @@ class DialogService with Turbolytics {
                 radius: radius,
                 shadows: shadows,
                 removeBorderRadiusWhenTiny: removeBorderRadiusWhenTiny,
-                description: message == null ? null : Text(message, style: context.texts.muted),
+                description: message == null
+                    ? null
+                    : Text(message, style: context.texts.muted),
                 crossAxisAlignment: crossAxisAlignment,
                 actionsAxis: actionsAxis,
                 actionsMainAxisAlignment: actionsMainAxisAlignment,
@@ -144,7 +149,11 @@ class DialogService with Turbolytics {
                     top: 16,
                     right: 16,
                     left: 16,
-                    child: Icon(Icons.close_rounded, size: 20, color: context.colors.icon),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 20,
+                      color: context.colors.icon,
+                    ),
                   ),
                   onPressed: onClosePressed ?? () => pContext.pop(),
                 ),
@@ -222,7 +231,9 @@ class DialogService with Turbolytics {
     );
   }
 
-  Future<void> showSomethingWentWrongDialog({required BuildContext? context}) async {
+  Future<void> showSomethingWentWrongDialog({
+    required BuildContext? context,
+  }) async {
     final strings = context?.strings ?? gStrings;
     await showOkDialog(
       context: context,

@@ -64,7 +64,8 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
   TViewModelBuilderState<T> createState() => TViewModelBuilderState<T>();
 }
 
-class TViewModelBuilderState<T extends TBaseViewModel> extends State<TViewModelBuilder<T>> {
+class TViewModelBuilderState<T extends TBaseViewModel>
+    extends State<TViewModelBuilder<T>> {
   /// The current [TBaseViewModel].
   late final T _viewModel;
 

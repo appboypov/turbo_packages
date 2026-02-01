@@ -7,7 +7,11 @@ part 'current_week_dto.g.dart';
 
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class CurrentWeekDto {
-  const CurrentWeekDto({required this.year, required this.weekStart, required this.weekEnd});
+  const CurrentWeekDto({
+    required this.year,
+    required this.weekStart,
+    required this.weekEnd,
+  });
 
   final int year;
   @TimestampConverter()
@@ -16,7 +20,8 @@ class CurrentWeekDto {
   final DateTime weekEnd;
 
   static const fromJsonFactory = _$CurrentWeekDtoFromJson;
-  factory CurrentWeekDto.fromJson(Map<String, dynamic> json) => _$CurrentWeekDtoFromJson(json);
+  factory CurrentWeekDto.fromJson(Map<String, dynamic> json) =>
+      _$CurrentWeekDtoFromJson(json);
   static const toJsonFactory = _$CurrentWeekDtoToJson;
   Map<String, dynamic> toJson() => _$CurrentWeekDtoToJson(this);
 
@@ -32,7 +37,8 @@ extension CurrentWeekDtoExtension on CurrentWeekDto {
     required BuildContext context,
   }) {
     final strings = context.strings;
-    final weekDifference = weekStart.difference(currentWeek.weekStart).inDays ~/ 7;
+    final weekDifference =
+        weekStart.difference(currentWeek.weekStart).inDays ~/ 7;
 
     if (weekDifference == 0) return strings.thisWeek;
     if (weekDifference == -1) return strings.lastWeek;

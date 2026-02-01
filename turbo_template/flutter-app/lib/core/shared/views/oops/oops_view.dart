@@ -21,7 +21,9 @@ class OopsView extends StatelessWidget {
             child: Center(
               child: TEmptyPlaceholder(
                 title: context.strings.oopsSomethingWentWrong,
-                subtitle: context.strings.weEncounteredAnUnexpectedErrorPleaseTryAgainOrContact,
+                subtitle: context
+                    .strings
+                    .weEncounteredAnUnexpectedErrorPleaseTryAgainOrContact,
                 iconData: Icons.error_outline_rounded,
                 actionLabel: context.strings.logout,
                 onActionPressed: () => model.onLogoutPressed(context: context),

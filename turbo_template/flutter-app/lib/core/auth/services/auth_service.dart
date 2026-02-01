@@ -80,7 +80,8 @@ class AuthService extends SyncService<User?>
             }
             if (_lastUser != null) {
               throw UnexpectedStateException(
-                reason: 'User was unexpectedly logged out. _hasLoggedOut: $_hasLoggedOut',
+                reason:
+                    'User was unexpectedly logged out. _hasLoggedOut: $_hasLoggedOut',
               );
             }
           }
@@ -171,7 +172,9 @@ class AuthService extends SyncService<User?>
       try {
         if (_didManageUserLevel.isCompleted) return;
         log.debug('Getting claims user level..');
-        log.debug('Environment: ${Environment.current}, isEmulators: ${Environment.isEmulators}');
+        log.debug(
+          'Environment: ${Environment.current}, isEmulators: ${Environment.isEmulators}',
+        );
         log.debug('User ID: ${user.uid}');
         // In emulator/mobile scenarios, services may not be ready immediately at app start.
         if (Environment.isEmulators &&
@@ -201,7 +204,8 @@ class AuthService extends SyncService<User?>
       } catch (error, stackTrace) {
         // Retry on transient errors; internal-error can occur in both emulator and production
         if (error is FirebaseAuthException &&
-            (error.code == 'network-request-failed' || error.code == 'internal-error') &&
+            (error.code == 'network-request-failed' ||
+                error.code == 'internal-error') &&
             _claimsRetryCount < 3) {
           _claimsRetryCount += 1;
           log.warning(
@@ -308,7 +312,8 @@ class AuthService extends SyncService<User?>
       final currentUser = _firebaseAuth.currentUser;
       if (currentUser == null) {
         throw const UnexpectedNullException(
-          reason: 'currentUser should not be null when trying to link phone auth credential.',
+          reason:
+              'currentUser should not be null when trying to link phone auth credential.',
         );
       }
       await currentUser.linkWithCredential(authCredential);
@@ -328,7 +333,6 @@ class AuthService extends SyncService<User?>
 
   Future<void> _onLogout({required BuildContext context}) async {
     try {
-
       if (context.mounted) {
         try {
           Phoenix.rebirth(context);
@@ -340,7 +344,9 @@ class AuthService extends SyncService<User?>
           );
         }
       } else {
-        log.warning('Context was null or unmounted before Phoenix.rebirth could be called.');
+        log.warning(
+          'Context was null or unmounted before Phoenix.rebirth could be called.',
+        );
       }
     } catch (error, stackTrace) {
       log.error(
@@ -400,7 +406,8 @@ class AuthService extends SyncService<User?>
       final user = _firebaseAuth.currentUser;
       if (user == null) {
         throw const UnexpectedNullException(
-          reason: 'user should not be null when trying to send verify email email.',
+          reason:
+              'user should not be null when trying to send verify email email.',
         );
       }
       await user.sendEmailVerification();

@@ -91,7 +91,10 @@ class TSliverScrollView extends HookWidget {
       slivers: [
         if (appBar != null) appBar!,
         if (appBarFooter != null)
-          SliverPinnedHeader(key: const Key('appBarFooter'), child: appBarFooter!.call(showBorder)),
+          SliverPinnedHeader(
+            key: const Key('appBarFooter'),
+            child: appBarFooter!.call(showBorder),
+          ),
         if (appBar != null)
           SliverPinnedHeader(
             key: const Key('appBarBorder'),
@@ -101,11 +104,18 @@ class TSliverScrollView extends HookWidget {
             ),
           ),
         if (slivers != null && !showEmptyPlaceholder) ...slivers!,
-        if (child != null && !showEmptyPlaceholder) SliverToBoxAdapter(child: child),
+        if (child != null && !showEmptyPlaceholder)
+          SliverToBoxAdapter(child: child),
         if (children != null && !showEmptyPlaceholder)
-          MultiSliver(children: children!, pushPinnedChildren: pushPinnedChildren),
+          MultiSliver(
+            children: children!,
+            pushPinnedChildren: pushPinnedChildren,
+          ),
         if (showEmptyPlaceholder)
-          SliverFillRemaining(hasScrollBody: false, child: emptyPlaceholder!(context)),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: emptyPlaceholder!(context),
+          ),
       ],
     );
     return switch (context.data.deviceType) {

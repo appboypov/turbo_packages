@@ -20,7 +20,8 @@ class TBottomNavigation extends StatelessWidget {
 
   final NavigationTab currentNavigationTab;
   final List<NavigationTab> navigationTabs;
-  final void Function(NavigationTab navigationTab, BuildContext context) onNavigationTap;
+  final void Function(NavigationTab navigationTab, BuildContext context)
+  onNavigationTap;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -29,9 +30,14 @@ class TBottomNavigation extends StatelessWidget {
       boxShadow: context.decorations.outerOnCardShadow,
       gradient: TGradient.topCenter(
         stops: const [0.0, 0.65],
-        colors: [context.colors.cardMidground, context.colors.card.withValues(alpha: 0.75)],
+        colors: [
+          context.colors.cardMidground,
+          context.colors.card.withValues(alpha: 0.75),
+        ],
       ),
-      border: Border(top: BorderSide(color: context.colors.cardBorder, width: 1)),
+      border: Border(
+        top: BorderSide(color: context.colors.cardBorder, width: 1),
+      ),
     ),
     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     child: Row(
@@ -55,7 +61,9 @@ class TBottomNavigation extends StatelessWidget {
                             TThemeMode.dark =>
                               isActive || isHovered
                                   ? context.colors.primary.onColor
-                                  : context.colors.card.onColor.withValues(alpha: 0.5),
+                                  : context.colors.card.onColor.withValues(
+                                      alpha: 0.5,
+                                    ),
                             TThemeMode.light => context.colors.primary,
                           },
                         ),
@@ -72,7 +80,8 @@ class TBottomNavigation extends StatelessWidget {
                                   TThemeMode.dark =>
                                     isActive || isHovered
                                         ? context.colors.primary.onColor
-                                        : context.colors.card.onColor.withValues(alpha: 0.5),
+                                        : context.colors.card.onColor
+                                              .withValues(alpha: 0.5),
                                   TThemeMode.light => context.colors.primary,
                                 },
                                 fontWeight: FontWeight.bold,

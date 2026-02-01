@@ -45,9 +45,14 @@ class TSection extends StatelessWidget {
       bottom: bottomSectionGap,
       left:
           leftMargin ??
-          (context.data.deviceType.isMobile ? TSizes.appPadding : TSizes.appPadding / 2),
+          (context.data.deviceType.isMobile
+              ? TSizes.appPadding
+              : TSizes.appPadding / 2),
       right:
-          rightMargin ?? (context.data.deviceType.isMobile ? TSizes.appPadding : TSizes.appPadding),
+          rightMargin ??
+          (context.data.deviceType.isMobile
+              ? TSizes.appPadding
+              : TSizes.appPadding),
       child: TColumn(
         spacing: 0,
         children: [

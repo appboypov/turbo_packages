@@ -7,7 +7,8 @@ import 'package:turbolytics/turbolytics.dart';
 
 class ThemeService with Turbolytics {
   static ThemeService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(ThemeService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(ThemeService.new);
 
   final _localStorageService = LocalStorageService.locate;
 

@@ -20,7 +20,8 @@ class MeasureSize extends SingleChildRenderObjectWidget {
   final OnWidgetSizeChange onChange;
 
   @override
-  RenderObject createRenderObject(BuildContext context) => _MeasureSizeRenderObject(onChange);
+  RenderObject createRenderObject(BuildContext context) =>
+      _MeasureSizeRenderObject(onChange);
 }
 
 class _MeasureSizeRenderObject extends RenderProxyBox {
@@ -94,7 +95,8 @@ class TButtonRaw extends StatefulWidget {
   State<TButtonRaw> createState() => _TButtonRawState();
 }
 
-class _TButtonRawState extends State<TButtonRaw> with SingleTickerProviderStateMixin {
+class _TButtonRawState extends State<TButtonRaw>
+    with SingleTickerProviderStateMixin {
   Size? _childSize;
 
   late final AnimationController _scaleController;
@@ -106,7 +108,10 @@ class _TButtonRawState extends State<TButtonRaw> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _scaleController = AnimationController(duration: widget.duration, vsync: this);
+    _scaleController = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scaleEnd).animate(
       CurvedAnimation(
@@ -116,13 +121,14 @@ class _TButtonRawState extends State<TButtonRaw> with SingleTickerProviderStateM
       ),
     );
 
-    _opacityAnimation = Tween<double>(begin: 1.0, end: widget.opacityEnd).animate(
-      CurvedAnimation(
-        parent: _scaleController,
-        curve: widget.curve,
-        reverseCurve: widget.reverseCurve,
-      ),
-    );
+    _opacityAnimation = Tween<double>(begin: 1.0, end: widget.opacityEnd)
+        .animate(
+          CurvedAnimation(
+            parent: _scaleController,
+            curve: widget.curve,
+            reverseCurve: widget.reverseCurve,
+          ),
+        );
   }
 
   @override
@@ -176,8 +182,10 @@ class _TButtonRawState extends State<TButtonRaw> with SingleTickerProviderStateM
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: !widget.isEnabled,
     child: Listener(
-      onPointerDown: (_) => _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
-      onPointerUp: (_) => _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
+      onPointerDown: (_) =>
+          _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
+      onPointerUp: (_) =>
+          _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
       onPointerCancel: _handlePointerCancel,
       child: TConstraints(
         minHeight: widget.height ?? widget.minHeight ?? 0,
@@ -235,12 +243,21 @@ class _TButtonRawState extends State<TButtonRaw> with SingleTickerProviderStateM
                     final minScaleHeight = _childSize!.height > 0
                         ? (_childSize!.height - 4) / _childSize!.height
                         : 1.0;
-                    final minAllowedScale = math.max(minScaleWidth, minScaleHeight);
-                    effectiveScale = math.max(_scaleAnimation.value, minAllowedScale);
+                    final minAllowedScale = math.max(
+                      minScaleWidth,
+                      minScaleHeight,
+                    );
+                    effectiveScale = math.max(
+                      _scaleAnimation.value,
+                      minAllowedScale,
+                    );
                   }
                   return Transform.scale(
                     scale: effectiveScale,
-                    child: Opacity(opacity: _opacityAnimation.value, child: child),
+                    child: Opacity(
+                      opacity: _opacityAnimation.value,
+                      child: child,
+                    ),
                   );
                 },
                 child: THoverable(

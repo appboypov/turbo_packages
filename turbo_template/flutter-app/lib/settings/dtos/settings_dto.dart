@@ -44,7 +44,8 @@ class SettingsDto extends TWriteableId {
 
   @override
   Map<String, dynamic> toJson() => _$SettingsDtoToJson(this);
-  factory SettingsDto.fromJson(Map<String, dynamic> json) => _$SettingsDtoFromJson(json);
+  factory SettingsDto.fromJson(Map<String, dynamic> json) =>
+      _$SettingsDtoFromJson(json);
   static const fromJsonFactory = _$SettingsDtoFromJson;
   static const toJsonFactory = _$SettingsDtoToJson;
 
@@ -57,21 +58,27 @@ class SettingsDto extends TWriteableId {
     updatedAt: gNow,
     id: userId ?? id,
     userId: userId ?? this.userId,
-    skippedVerifyEmailDate: skippedVerifyEmailDate ?? this.skippedVerifyEmailDate,
-    verifyEmailSnoozeCount: verifyEmailSnoozeCount ?? this.verifyEmailSnoozeCount,
+    skippedVerifyEmailDate:
+        skippedVerifyEmailDate ?? this.skippedVerifyEmailDate,
+    verifyEmailSnoozeCount:
+        verifyEmailSnoozeCount ?? this.verifyEmailSnoozeCount,
   );
 }
 
 extension SettingsDtoExtension on SettingsDto {
-  UpdateSettingsDtoRequest get asUpdateSkippedVerifyEmailDateRequest => UpdateSettingsDtoRequest(
-    skippedVerifyEmailDate: skippedVerifyEmailDate,
-    verifyEmailSnoozeCount: verifyEmailSnoozeCount,
-  );
+  UpdateSettingsDtoRequest get asUpdateSkippedVerifyEmailDateRequest =>
+      UpdateSettingsDtoRequest(
+        skippedVerifyEmailDate: skippedVerifyEmailDate,
+        verifyEmailSnoozeCount: verifyEmailSnoozeCount,
+      );
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class UpdateSettingsDtoRequest extends TWriteable {
-  UpdateSettingsDtoRequest({this.skippedVerifyEmailDate, this.verifyEmailSnoozeCount});
+  UpdateSettingsDtoRequest({
+    this.skippedVerifyEmailDate,
+    this.verifyEmailSnoozeCount,
+  });
 
   @TimestampConverter()
   final DateTime? skippedVerifyEmailDate;

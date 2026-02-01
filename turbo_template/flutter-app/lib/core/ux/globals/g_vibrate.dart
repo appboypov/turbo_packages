@@ -27,4 +27,5 @@ void gVibrateRigid() => VibrateService.locate.vibrate(HapticsType.rigid);
 void gVibrateSoft() => VibrateService.locate.vibrate(HapticsType.soft);
 
 /// Indicates that a UI element's values are changing.
-void gVibrateSelection() => VibrateService.locate.vibrate(HapticsType.selection);
+void gVibrateSelection() =>
+    VibrateService.locate.vibrate(HapticsType.selection);

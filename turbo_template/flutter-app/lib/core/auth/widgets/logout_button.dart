@@ -4,8 +4,11 @@ import 'package:turbo_flutter_template/core/state/manage-state/extensions/contex
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/context_def.dart';
 
 class LogoutButton extends StatelessWidget {
-  const LogoutButton({Key? key, required this.onPressed, this.padding = EdgeInsets.zero})
-    : super(key: key);
+  const LogoutButton({
+    Key? key,
+    required this.onPressed,
+    this.padding = EdgeInsets.zero,
+  }) : super(key: key);
 
   final NamedContextDef onPressed;
   final EdgeInsets padding;

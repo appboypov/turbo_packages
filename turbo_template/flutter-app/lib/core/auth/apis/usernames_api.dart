@@ -40,7 +40,8 @@ class UsernamesApi extends TurboApi<UsernameDto> with Turbolytics {
             'Users can only have 1 username',
             error: UnexpectedResultException(
               result: result,
-              reason: 'User can only have 1 username, ids: ${result.map((e) => e.id).toList()}',
+              reason:
+                  'User can only have 1 username, ids: ${result.map((e) => e.id).toList()}',
             ),
             stackTrace: StackTrace.current,
           );
@@ -59,7 +60,10 @@ class UsernamesApi extends TurboApi<UsernameDto> with Turbolytics {
     }
   }
 
-  Future<bool> usernameIsAvailable({required String username, required String userId}) async {
+  Future<bool> usernameIsAvailable({
+    required String username,
+    required String userId,
+  }) async {
     try {
       // Normalize the username to ensure consistency with how it's stored
       final normalizedUsername = username.naked;
@@ -85,11 +89,16 @@ class UsernamesApi extends TurboApi<UsernameDto> with Turbolytics {
   Future<bool> isMe({required String username, required String userId}) async {
     // Normalize the username to ensure consistency
     final normalizedUsername = username.naked;
-    log.debug('Checking if username "$normalizedUsername" belongs to userId: $userId');
+    log.debug(
+      'Checking if username "$normalizedUsername" belongs to userId: $userId',
+    );
 
     return (await getByIdWithConverter(
       id: normalizedUsername,
-    )).when(success: (response) => response.result.userId == userId, fail: (response) => false);
+    )).when(
+      success: (response) => response.result.userId == userId,
+      fail: (response) => false,
+    );
   }
 
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
@@ -111,7 +120,10 @@ class UsernamesApi extends TurboApi<UsernameDto> with Turbolytics {
           if (transaction == null) {
             await deleteDoc(id: oldUsername.id);
           } else {
-            final response = await deleteDoc(id: oldUsername.id, transaction: transaction);
+            final response = await deleteDoc(
+              id: oldUsername.id,
+              transaction: transaction,
+            );
             response.throwWhenFail();
           }
         }
@@ -135,7 +147,9 @@ class UsernamesApi extends TurboApi<UsernameDto> with Turbolytics {
     // Normalize username to ensure consistency
     final normalizedUsername = username.naked;
 
-    log.debug('Creating username document for "$normalizedUsername" with userId: $userId');
+    log.debug(
+      'Creating username document for "$normalizedUsername" with userId: $userId',
+    );
 
     return createDoc(
       id: normalizedUsername,

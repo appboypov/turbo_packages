@@ -42,8 +42,8 @@ melos:
       description: Run dart analyze
 
     format:
-      run: dart format --set-exit-if-changed .
-      description: Check formatting
+      run: dart format .
+      description: Format code
 
     test:
       run: bash "$MELOS_ROOT_PATH/tool/test_with_coverage.sh"

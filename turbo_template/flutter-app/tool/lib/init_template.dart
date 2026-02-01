@@ -206,7 +206,8 @@ class InitResult {
     return InitResult._(success: false, error: error);
   }
 
-  int get totalFilesModified => results.fold(0, (sum, r) => sum + r.filesModified);
+  int get totalFilesModified =>
+      results.fold(0, (sum, r) => sum + r.filesModified);
 }
 
 /// Result of a dry run.

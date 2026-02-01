@@ -12,7 +12,8 @@ class OopsViewModel extends TViewModel with Turbolytics, LogoutManagement {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static OopsViewModel get locate => GetIt.I.get();
-  static void registerFactory() => GetIt.I.registerFactory(() => OopsViewModel());
+  static void registerFactory() =>
+      GetIt.I.registerFactory(() => OopsViewModel());
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\

@@ -5,17 +5,24 @@ class ShadTextEditingControllerBox {
   final Map<Object, ShadTextEditingController> _box = {};
 
   ShadTextEditingController get(Object key, {String? initialValue}) {
-    return _box.putIfAbsent(key.toString(), () => ShadTextEditingController(text: initialValue));
+    return _box.putIfAbsent(
+      key.toString(),
+      () => ShadTextEditingController(text: initialValue),
+    );
   }
 
   bool exists(Object key) => _box.containsKey(key.toString());
 
   void update({required Object key, required String value}) {
-    _box.putIfAbsent(key.toString(), () => ShadTextEditingController())..text = value;
+    _box.putIfAbsent(key.toString(), () => ShadTextEditingController())
+      ..text = value;
   }
 
   String value(Object key) {
-    final value = _box.putIfAbsent(key.toString(), () => ShadTextEditingController()).value.text;
+    final value = _box
+        .putIfAbsent(key.toString(), () => ShadTextEditingController())
+        .value
+        .text;
     return value;
   }
 

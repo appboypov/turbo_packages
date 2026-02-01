@@ -32,7 +32,8 @@ class FirstVetoView extends StatelessWidget {
     return TViewModelBuilder<FirstVetoViewModel>(
       builder: (context, model, isInitialised, child) => MediaQuery(
         data: model.media.copyWith(
-          textScaler: TextScaler.linear(model.textScaler.scale(1.0).clamp(1, 1.35)),
+          textScaler:
+              TextScaler.linear(model.textScaler.scale(1.0).clamp(1, 1.35)),
         ),
         child: Scaffold(
           appBar: AppBar(

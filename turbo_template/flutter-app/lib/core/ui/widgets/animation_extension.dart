@@ -22,7 +22,13 @@ extension AnimationExtension on Widget {
     double? target,
   }) => RepaintBoundary(child: this)
       .animate(target: target)
-      .slideY(curve: curve, begin: begin, end: 0, duration: duration, delay: delay);
+      .slideY(
+        curve: curve,
+        begin: begin,
+        end: 0,
+        duration: duration,
+        delay: delay,
+      );
 
   Widget slideDownWithFade({
     Duration duration = TDurations.animation,
@@ -35,7 +41,13 @@ extension AnimationExtension on Widget {
     AnimationController? animationController,
   }) => RepaintBoundary(child: this)
       .animate(target: target, key: key, controller: animationController)
-      .slideY(curve: curve, begin: begin, end: end, duration: duration, delay: delay)
+      .slideY(
+        curve: curve,
+        begin: begin,
+        end: end,
+        duration: duration,
+        delay: delay,
+      )
       .fadeIn();
 
   Widget slideBottomUpWithFade({
@@ -54,7 +66,13 @@ extension AnimationExtension on Widget {
     }
     return RepaintBoundary(child: this)
         .animate(target: target, key: key, controller: animationController)
-        .slideY(curve: curve, begin: begin, end: end, duration: duration, delay: delay)
+        .slideY(
+          curve: curve,
+          begin: begin,
+          end: end,
+          duration: duration,
+          delay: delay,
+        )
         .fadeIn();
   }
 
@@ -91,7 +109,13 @@ extension AnimationExtension on Widget {
     double? target,
   }) => RepaintBoundary(child: this)
       .animate(target: target)
-      .slideY(curve: curve, begin: begin, end: end, duration: duration, delay: delay)
+      .slideY(
+        curve: curve,
+        begin: begin,
+        end: end,
+        duration: duration,
+        delay: delay,
+      )
       .fadeOut();
 
   Widget slideOutLeftWithFade({
@@ -104,7 +128,13 @@ extension AnimationExtension on Widget {
     double? target,
   }) => RepaintBoundary(child: this)
       .animate(target: target)
-      .slideX(curve: curve, begin: begin, end: end, duration: duration, delay: delay)
+      .slideX(
+        curve: curve,
+        begin: begin,
+        end: end,
+        duration: duration,
+        delay: delay,
+      )
       .fadeOut();
 
   Widget slideInRightWithFade({
@@ -117,7 +147,13 @@ extension AnimationExtension on Widget {
     double? target,
   }) => RepaintBoundary(child: this)
       .animate(target: target, key: key)
-      .slideX(curve: curve, begin: begin, end: 0, duration: duration, delay: delay)
+      .slideX(
+        curve: curve,
+        begin: begin,
+        end: 0,
+        duration: duration,
+        delay: delay,
+      )
       .fadeIn();
 
   Widget slideInLeftWithFade({
@@ -130,7 +166,13 @@ extension AnimationExtension on Widget {
     double? target,
   }) => RepaintBoundary(child: this)
       .animate(target: target, key: key)
-      .slideX(curve: curve, begin: begin, end: 0, duration: duration, delay: delay)
+      .slideX(
+        curve: curve,
+        begin: begin,
+        end: 0,
+        duration: duration,
+        delay: delay,
+      )
       .fadeIn();
 
   Widget slideInRightOutLeftWithFade({
@@ -153,6 +195,11 @@ extension AnimationExtension on Widget {
       )
       .fadeIn()
       .then()
-      .slideX(curve: curve, begin: slideOutBegin, end: slideOutEnd, duration: duration)
+      .slideX(
+        curve: curve,
+        begin: slideOutBegin,
+        end: slideOutEnd,
+        duration: duration,
+      )
       .fadeOut();
 }

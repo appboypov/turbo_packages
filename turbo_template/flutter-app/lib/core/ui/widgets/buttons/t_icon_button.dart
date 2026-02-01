@@ -21,7 +21,10 @@ class TIconButton extends StatelessWidget {
     this.borderColor,
     this.boxShadow = const [],
     this.iconColor,
-  }) : assert(iconData != null || icon != null, 'Either iconData or icon must be provided'),
+  }) : assert(
+         iconData != null || icon != null,
+         'Either iconData or icon must be provided',
+       ),
        super(key: key);
 
   final EdgeInsets margin;

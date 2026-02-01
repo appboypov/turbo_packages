@@ -5,7 +5,8 @@ void main() {
   group('BundleIdReplacer', () {
     group('string replacement logic', () {
       test('replaces bundle ID in project.pbxproj', () {
-        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
+        const input =
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate;';
         const expected = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp;';
 
         final result = input.replaceAll(
@@ -16,8 +17,10 @@ void main() {
       });
 
       test('replaces bundle ID with RunnerTests suffix', () {
-        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate.RunnerTests;';
-        const expected = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp.RunnerTests;';
+        const input =
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate.RunnerTests;';
+        const expected =
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp.RunnerTests;';
 
         final result = input.replaceAll(
           BundleIdReplacer.oldValue,
@@ -27,7 +30,8 @@ void main() {
       });
 
       test('replaces in AppInfo.xcconfig', () {
-        const input = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate';
+        const input =
+            'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.turboFlutterTemplate';
         const expected = 'PRODUCT_BUNDLE_IDENTIFIER = app.apewpew.myApp';
 
         final result = input.replaceAll(

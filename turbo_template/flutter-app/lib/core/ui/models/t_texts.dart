@@ -1,7 +1,11 @@
 part of '../widgets/t_provider.dart';
 
 class TTexts {
-  const TTexts({required this.colors, required this.sizes, required this.theme});
+  const TTexts({
+    required this.colors,
+    required this.sizes,
+    required this.theme,
+  });
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
@@ -28,16 +32,20 @@ class TTexts {
   TextStyle get h2 => textTheme.h2;
   TextStyle get h3 => textTheme.h3;
   TextStyle get h4 => textTheme.h4;
-  TextStyle get h5 => textTheme.h4.copyWithCurrent(fontSize: (cValue) => cValue * 0.9);
-  TextStyle get h6 => textTheme.h4.copyWithCurrent(fontSize: (cValue) => cValue * 0.8);
+  TextStyle get h5 =>
+      textTheme.h4.copyWithCurrent(fontSize: (cValue) => cValue * 0.9);
+  TextStyle get h6 =>
+      textTheme.h4.copyWithCurrent(fontSize: (cValue) => cValue * 0.8);
   TextStyle get large => textTheme.large;
   TextStyle get lead => textTheme.lead;
   TextStyle get list => textTheme.list;
   TextStyle get muted => textTheme.muted;
-  TextStyle get xMuted => textTheme.muted.copyWithCurrent(fontSize: (cValue) => cValue * 0.9);
+  TextStyle get xMuted =>
+      textTheme.muted.copyWithCurrent(fontSize: (cValue) => cValue * 0.9);
   TextStyle get p => textTheme.p;
   TextStyle get small => textTheme.small;
-  TextStyle get smallDestructive => textTheme.small.copyWith(color: colors.destructive);
+  TextStyle get smallDestructive =>
+      textTheme.small.copyWith(color: colors.destructive);
   TextStyle get table => textTheme.table;
 
   // Use Cases

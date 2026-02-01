@@ -9,7 +9,9 @@ mixin FirebaseAuthExceptionHandler {
   }) {
     log.debug('Starting to handle FirebaseAuthException');
     log.error('FirebaseAuthException code: ${firebaseAuthException.code}');
-    log.error('FirebaseAuthException message: ${firebaseAuthException.message}');
+    log.error(
+      'FirebaseAuthException message: ${firebaseAuthException.message}',
+    );
 
     return switch (firebaseAuthException.code) {
       'invalid-credential' => const TurboResponse.failAsBool(
@@ -21,10 +23,11 @@ mixin FirebaseAuthExceptionHandler {
         message:
             'Unable to connect to the authentication service. Please check your internet connection.',
       ),
-      'account-exists-with-different-credential' => const TurboResponse.failAsBool(
-        title: 'Account already in use',
-        message: 'An account already exists with this email address.',
-      ),
+      'account-exists-with-different-credential' =>
+        const TurboResponse.failAsBool(
+          title: 'Account already in use',
+          message: 'An account already exists with this email address.',
+        ),
       'operation-not-allowed' => const TurboResponse.failAsBool(
         title: 'Operation not allowed',
         message: 'This type of account is not enabled. Please try again.',

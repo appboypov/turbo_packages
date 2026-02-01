@@ -85,7 +85,8 @@ class PlxApi {
     }
   }
 
-  Future<TurboResponse<FileEntryDto>> create(String path, String content) async {
+  Future<TurboResponse<FileEntryDto>> create(
+      String path, String content) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(
@@ -120,7 +121,8 @@ class PlxApi {
     }
   }
 
-  Future<TurboResponse<FileEntryDto>> update(String path, String content) async {
+  Future<TurboResponse<FileEntryDto>> update(
+      String path, String content) async {
     try {
       final response = await _plxClient.sendRequest(
         WatchEventDto(

@@ -48,8 +48,12 @@ class MyAppView extends StatelessWidget {
                 scaffoldBackgroundColor: backgroundColor,
                 iconTheme: IconThemeData(color: foregroundColor),
                 colorScheme: switch (turboThemeMode) {
-                  TThemeMode.dark => ColorScheme.dark(onSurface: backgroundColor),
-                  TThemeMode.light => ColorScheme.light(onSurface: backgroundColor),
+                  TThemeMode.dark => ColorScheme.dark(
+                    onSurface: backgroundColor,
+                  ),
+                  TThemeMode.light => ColorScheme.light(
+                    onSurface: backgroundColor,
+                  ),
                 },
               );
             },
@@ -83,7 +87,9 @@ class MyAppView extends StatelessWidget {
                     context,
                   ) => Unfocusable(
                     child: MediaQuery(
-                      data: context.media.copyWith(textScaler: TextScaler.noScaling),
+                      data: context.media.copyWith(
+                        textScaler: TextScaler.noScaling,
+                      ),
                       child: Overlay(
                         initialEntries: [
                           OverlayEntry(
@@ -91,32 +97,49 @@ class MyAppView extends StatelessWidget {
                               return ValueListenableBuilderX2<TBusyModel, bool>(
                                 valueListenable: model.busyListenable,
                                 valueListenable2: model.hasInternetConnection,
-                                builder: (context, busyModel, hasInternetConnection, _) {
-                                  return Stack(
-                                    fit: StackFit.expand,
-                                    alignment: AlignmentDirectional.center,
-                                    children: [
-                                      Positioned.fill(
-                                        child: Container(color: context.colors.background),
-                                      ),
-                                      Positioned.fill(
-                                        child: AnimatedOpacity(
-                                          duration: TDurations.animation,
-                                          opacity: busyModel.isBusy ? Spacings.opacityDisabled : 1,
-                                          child: IgnorePointer(
-                                            ignoring: busyModel.isBusy || !hasInternetConnection,
-                                            child: ShakeGesture(
-                                              onShake: () =>
-                                                  model.onShakeDetected(context: context),
-                                              child: child!,
+                                builder:
+                                    (
+                                      context,
+                                      busyModel,
+                                      hasInternetConnection,
+                                      _,
+                                    ) {
+                                      return Stack(
+                                        fit: StackFit.expand,
+                                        alignment: AlignmentDirectional.center,
+                                        children: [
+                                          Positioned.fill(
+                                            child: Container(
+                                              color: context.colors.background,
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      IsBusyIcon(busyModel: busyModel, height: 112),
-                                    ],
-                                  );
-                                },
+                                          Positioned.fill(
+                                            child: AnimatedOpacity(
+                                              duration: TDurations.animation,
+                                              opacity: busyModel.isBusy
+                                                  ? Spacings.opacityDisabled
+                                                  : 1,
+                                              child: IgnorePointer(
+                                                ignoring:
+                                                    busyModel.isBusy ||
+                                                    !hasInternetConnection,
+                                                child: ShakeGesture(
+                                                  onShake: () =>
+                                                      model.onShakeDetected(
+                                                        context: context,
+                                                      ),
+                                                  child: child!,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          IsBusyIcon(
+                                            busyModel: busyModel,
+                                            height: 112,
+                                          ),
+                                        ],
+                                      );
+                                    },
                               );
                             },
                           ),

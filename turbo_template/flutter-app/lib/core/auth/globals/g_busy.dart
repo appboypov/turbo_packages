@@ -2,7 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 
 TBusyModel get gBusyModel => TBusyService.instance().isBusyListenable.value;
-ValueListenable<TBusyModel> get gIsBusyListenable => TBusyService.instance().isBusyListenable;
+ValueListenable<TBusyModel> get gIsBusyListenable =>
+    TBusyService.instance().isBusyListenable;
 bool get gIsBusy => TBusyService.instance().isBusy;
 void gSetIdle() => gSetBusy(isBusy: false);
 

@@ -55,7 +55,11 @@ class TAnimatedGapState extends AnimatedWidgetBaseState<TAnimatedGap> {
 
     if (widget.color != null) {
       _color =
-          visitor(_color, widget.color, (dynamic value) => ColorTween(begin: value as Color))
+          visitor(
+                _color,
+                widget.color,
+                (dynamic value) => ColorTween(begin: value as Color),
+              )
               as ColorTween?;
     }
   }
@@ -119,7 +123,9 @@ class _RawGap extends LeafRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('mainAxisExtent', mainAxisExtent));
-    properties.add(DoubleProperty('crossAxisExtent', crossAxisExtent, defaultValue: 0));
+    properties.add(
+      DoubleProperty('crossAxisExtent', crossAxisExtent, defaultValue: 0),
+    );
     properties.add(ColorProperty('color', color));
     properties.add(EnumProperty<Axis>('fallbackDirection', fallbackDirection));
   }
@@ -183,22 +189,34 @@ class _RenderGap extends RenderBox {
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return _computeIntrinsicExtent(Axis.horizontal, () => super.computeMinIntrinsicWidth(height))!;
+    return _computeIntrinsicExtent(
+      Axis.horizontal,
+      () => super.computeMinIntrinsicWidth(height),
+    )!;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return _computeIntrinsicExtent(Axis.horizontal, () => super.computeMaxIntrinsicWidth(height))!;
+    return _computeIntrinsicExtent(
+      Axis.horizontal,
+      () => super.computeMaxIntrinsicWidth(height),
+    )!;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    return _computeIntrinsicExtent(Axis.vertical, () => super.computeMinIntrinsicHeight(width))!;
+    return _computeIntrinsicExtent(
+      Axis.vertical,
+      () => super.computeMinIntrinsicHeight(width),
+    )!;
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    return _computeIntrinsicExtent(Axis.vertical, () => super.computeMaxIntrinsicHeight(width))!;
+    return _computeIntrinsicExtent(
+      Axis.vertical,
+      () => super.computeMaxIntrinsicHeight(width),
+    )!;
   }
 
   double? _computeIntrinsicExtent(Axis axis, double Function() compute) {

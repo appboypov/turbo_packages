@@ -32,7 +32,9 @@ class TFancyIconContainer extends StatelessWidget {
       width: size,
       height: size,
       borderColor: borderColor,
-      color: bgColor ?? context.colors.primary.withReactiveHover(isHovered: isHovered),
+      color:
+          bgColor ??
+          context.colors.primary.withReactiveHover(isHovered: isHovered),
       iconData: iconData,
     ),
     TThemeMode.light => Builder(
@@ -44,7 +46,10 @@ class TFancyIconContainer extends StatelessWidget {
           height: size ?? TColorContainerType.icon.height,
           decoration: BoxDecoration(
             color: color.withReactiveHover(isHovered: isHovered),
-            border: Border.all(color: borderColor ?? context.colors.border, width: 1),
+            border: Border.all(
+              color: borderColor ?? context.colors.border,
+              width: 1,
+            ),
             borderRadius: borderRadius,
           ),
         );

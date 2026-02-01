@@ -14,7 +14,8 @@ class VersionComparatorService with Turbolytics {
   static VersionComparatorService get locate => GetIt.I.get();
 
   /// Registers a factory for [VersionComparatorService] with the GetIt service locator.
-  static void registerFactory() => GetIt.I.registerFactory(VersionComparatorService.new);
+  static void registerFactory() =>
+      GetIt.I.registerFactory(VersionComparatorService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -39,7 +40,10 @@ class VersionComparatorService with Turbolytics {
   /// isNewerVersion(currentVersion: '1.2.3', lastReadVersion: '1.2.3') == false
   /// isNewerVersion(currentVersion: '1.2.0', lastReadVersion: '1.2.1') == false
   /// ```
-  bool isNewerVersion({required String currentVersion, String? lastReadVersion}) {
+  bool isNewerVersion({
+    required String currentVersion,
+    String? lastReadVersion,
+  }) {
     if (lastReadVersion == null) return true;
 
     final current = currentVersion.split('.');

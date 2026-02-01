@@ -25,11 +25,15 @@ extension ObjectExtension on Object {
     };
   }
 
-  T butWhenLightMode<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenTheme<T>(context, light: value);
+  T butWhenLightMode<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenTheme<T>(context, light: value);
 
-  T butWhenDarkMode<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenTheme<T>(context, dark: value);
+  T butWhenDarkMode<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenTheme<T>(context, dark: value);
 
   T whenDevice<T extends Object>(
     BuildContext context, {
@@ -45,20 +49,30 @@ extension ObjectExtension on Object {
     };
   }
 
-  T butWhenMobile<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenDevice<T>(context, mobile: value);
+  T butWhenMobile<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenDevice<T>(context, mobile: value);
 
-  T butWhenNotMobile<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenDevice<T>(context, tablet: value, desktop: value);
+  T butWhenNotMobile<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenDevice<T>(context, tablet: value, desktop: value);
 
-  T butWhenTablet<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenDevice<T>(context, tablet: value);
+  T butWhenTablet<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenDevice<T>(context, tablet: value);
 
-  T butWhenDesktop<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenDevice<T>(context, desktop: value);
+  T butWhenDesktop<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenDevice<T>(context, desktop: value);
 
-  T butWhenNotDesktop<T extends Object>(BuildContext context, UpdateCurrentDef<T> value) =>
-      whenDevice<T>(context, mobile: value, tablet: value);
+  T butWhenNotDesktop<T extends Object>(
+    BuildContext context,
+    UpdateCurrentDef<T> value,
+  ) => whenDevice<T>(context, mobile: value, tablet: value);
 
   T whenListPosition<T extends Object>({
     required ListPosition position,

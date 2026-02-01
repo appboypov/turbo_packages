@@ -58,7 +58,11 @@ mixin LogoutManagement on TViewModel {
         } catch (error, stackTrace) {
           TLog(
             location: 'LogoutMixin',
-          ).error('$error caught while logging out', error: error, stackTrace: stackTrace);
+          ).error(
+            '$error caught while logging out',
+            error: error,
+            stackTrace: stackTrace,
+          );
         } finally {
           gSetIdle();
         }

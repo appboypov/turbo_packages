@@ -20,7 +20,10 @@ class UserProfileDto extends TWriteableId {
     required this.email,
   });
 
-  factory UserProfileDto.defaultValue({required String userId, required String username}) {
+  factory UserProfileDto.defaultValue({
+    required String userId,
+    required String username,
+  }) {
     final now = gNow;
     return UserProfileDto(
       id: userId,
@@ -55,7 +58,8 @@ class UserProfileDto extends TWriteableId {
   final DateTime updatedAt;
 
   static const fromJsonFactory = _$UserProfileDtoFromJson;
-  factory UserProfileDto.fromJson(Map<String, dynamic> json) => _$UserProfileDtoFromJson(json);
+  factory UserProfileDto.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileDtoFromJson(json);
   static const toJsonFactory = _$UserProfileDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$UserProfileDtoToJson(this);

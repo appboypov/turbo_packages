@@ -11,8 +11,10 @@ void main() {
     test('empty fail error should be TurboException', () {
       const response = TurboResponse<dynamic>.failAsBool();
       expect(response.error, isA<TurboException>());
-      expect(response.error.toString(),
-          equals('TurboException: Operation failed'),);
+      expect(
+        response.error.toString(),
+        equals('TurboException: Operation failed'),
+      );
     });
 
     test('empty success result should equal another empty success', () {
@@ -41,7 +43,9 @@ void main() {
     test('empty fail error should have descriptive message', () {
       const response = TurboResponse<dynamic>.failAsBool();
       expect(
-          (response.error as TurboException).error, equals('Operation failed'),);
+        (response.error as TurboException).error,
+        equals('Operation failed'),
+      );
     });
   });
 }

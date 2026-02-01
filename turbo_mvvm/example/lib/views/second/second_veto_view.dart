@@ -8,7 +8,7 @@ class SecondVetoView extends StatelessWidget {
   const SecondVetoView({
     required SecondVetoViewArguments secondVetoViewArguments,
     super.key,
-  })  : _secondVetoViewArguments = secondVetoViewArguments;
+  }) : _secondVetoViewArguments = secondVetoViewArguments;
 
   static const String route = 'second-veto-view';
 

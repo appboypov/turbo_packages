@@ -252,7 +252,6 @@ void main() {
 
         await client.dispose();
       });
-
     });
 
     group('Events Stream', () {

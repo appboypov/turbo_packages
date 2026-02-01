@@ -5,7 +5,12 @@ class BusyListenableBuilder extends StatelessWidget {
   const BusyListenableBuilder({super.key, required this.builder, this.child});
 
   final Widget? child;
-  final Widget Function(BuildContext context, TBusyModel busyModel, Widget? child) builder;
+  final Widget Function(
+    BuildContext context,
+    TBusyModel busyModel,
+    Widget? child,
+  )
+  builder;
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(

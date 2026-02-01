@@ -49,7 +49,10 @@ extension DateTimeFormatExtension on DateTime {
     }
   }
 
-  String parseDateFormat({required DateFormat dateFormat, required Strings strings}) {
+  String parseDateFormat({
+    required DateFormat dateFormat,
+    required Strings strings,
+  }) {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     switch (dateFormat) {
       case DateFormat.MMDDYYYY:

@@ -10,5 +10,6 @@ enum BoxKey {
   didSee,
   lastEnvironment;
 
-  String genId({required Object? id, String? userId}) => '$userId-${id?.toString()}-$this';
+  String genId({required Object? id, String? userId}) =>
+      '$userId-${id?.toString()}-$this';
 }

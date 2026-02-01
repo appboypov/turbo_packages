@@ -28,7 +28,8 @@ class UsernameDto extends TWriteableId {
   final String userId;
 
   static const fromJsonFactory = _$UsernameDtoFromJson;
-  factory UsernameDto.fromJson(Map<String, dynamic> json) => _$UsernameDtoFromJson(json);
+  factory UsernameDto.fromJson(Map<String, dynamic> json) =>
+      _$UsernameDtoFromJson(json);
   static const toJsonFactory = _$UsernameDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$UsernameDtoToJson(this);

@@ -48,7 +48,8 @@ abstract final class TurboWidgetsDevices {
 
   /// Returns available devices for the given screen type.
   static List<DeviceInfo> devicesForScreenType(
-      TurboWidgetsScreenTypes screenType,) {
+    TurboWidgetsScreenTypes screenType,
+  ) {
     switch (screenType) {
       case TurboWidgetsScreenTypes.mobile:
         return mobileDevices;

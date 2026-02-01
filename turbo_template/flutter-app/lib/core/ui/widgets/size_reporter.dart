@@ -3,8 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/debouncer.dart';
 
 class SizeReporter extends SingleChildRenderObjectWidget {
-  const SizeReporter({Key? key, required Widget child, required this.onSizeChanged})
-    : super(key: key, child: child);
+  const SizeReporter({
+    Key? key,
+    required Widget child,
+    required this.onSizeChanged,
+  }) : super(key: key, child: child);
   final void Function(Size size) onSizeChanged;
 
   @override
@@ -12,7 +15,10 @@ class SizeReporter extends SingleChildRenderObjectWidget {
       _SizeReporterRenderObject(onSizeChanged);
 
   @override
-  void updateRenderObject(BuildContext context, covariant _SizeReporterRenderObject renderObject) {
+  void updateRenderObject(
+    BuildContext context,
+    covariant _SizeReporterRenderObject renderObject,
+  ) {
     renderObject.onSizeChanged = onSizeChanged;
   }
 }

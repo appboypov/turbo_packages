@@ -12,7 +12,8 @@ class ActiveItemsBuilder<T> extends StatefulWidget {
   }) : initialActiveItems = initialActiveItems.toSet();
 
   final Set<T> initialActiveItems;
-  final Widget Function(BuildContext context, CRUD<T> crud, Widget? child) builder;
+  final Widget Function(BuildContext context, CRUD<T> crud, Widget? child)
+  builder;
   final void Function(T item, bool isActive, Set<T> activeItems)? onItemChanged;
   final Widget? child;
 
@@ -25,7 +26,10 @@ class _ActiveItemsBuilderState<T> extends State<ActiveItemsBuilder<T>> {
 
   @override
   void initState() {
-    _activeItems = TNotifier<Set<T>>(widget.initialActiveItems, forceUpdate: true);
+    _activeItems = TNotifier<Set<T>>(
+      widget.initialActiveItems,
+      forceUpdate: true,
+    );
     super.initState();
   }
 

@@ -22,7 +22,10 @@ class TGradientContainer extends StatelessWidget {
     this.child,
     this.focusNode,
     required this.background,
-  }) : assert(child != null || text != null, 'Either child or text must be provided'),
+  }) : assert(
+         child != null || text != null,
+         'Either child or text must be provided',
+       ),
        super(key: key);
 
   final Widget? leading;
@@ -65,9 +68,16 @@ class TGradientContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (leading != null) leading!,
-                if (iconData != null) ...[Icon(iconData, size: 16), const Gap(6)],
+                if (iconData != null) ...[
+                  Icon(iconData, size: 16),
+                  const Gap(6),
+                ],
                 Flexible(
-                  child: Text(text!, style: context.texts.button, textAlign: TextAlign.center),
+                  child: Text(
+                    text!,
+                    style: context.texts.button,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),

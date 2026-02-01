@@ -16,50 +16,50 @@ class TCardSelectionRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final card in config.cards)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: GestureDetector(
-                onTap: () {
-                  card.onTap();
-                  controller.onInteraction();
-                  controller.nextStep();
-                },
-                child: ShadCard(
-                  width: double.infinity,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (card.icon != null)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Icon(card.icon, size: 20),
-                        ),
-                      if (card.svgPath != null)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: SvgPicture.asset(
-                            card.svgPath!,
-                            width: 20,
-                            height: 20,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final card in config.cards)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: GestureDetector(
+                  onTap: () {
+                    card.onTap();
+                    controller.onInteraction();
+                    controller.nextStep();
+                  },
+                  child: ShadCard(
+                    width: double.infinity,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (card.icon != null)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Icon(card.icon, size: 20),
                           ),
-                        ),
-                      Text(card.title),
-                    ],
+                        if (card.svgPath != null)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: SvgPicture.asset(
+                              card.svgPath!,
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
+                        Text(card.title),
+                      ],
+                    ),
+                    border: card.isSelected()
+                        ? ShadBorder.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          )
+                        : null,
                   ),
-                  border: card.isSelected()
-                      ? ShadBorder.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        )
-                      : null,
                 ),
               ),
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
 }

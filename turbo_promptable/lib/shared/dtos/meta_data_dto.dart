@@ -10,7 +10,8 @@ class MetaDataDto {
   final String? description;
 
   static const fromJsonFactory = _$MetaDataDtoFromJson;
-  factory MetaDataDto.fromJson(Map<String, dynamic> json) => _$MetaDataDtoFromJson(json);
+  factory MetaDataDto.fromJson(Map<String, dynamic> json) =>
+      _$MetaDataDtoFromJson(json);
   static const toJsonFactory = _$MetaDataDtoToJson;
   Map<String, dynamic> toJson() => _$MetaDataDtoToJson(this);
 

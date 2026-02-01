@@ -128,74 +128,74 @@ class StylingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<StylingViewModel>(
-        builder: (context, model, isInitialised, child) {
-          if (!isInitialised) {
-            return const SizedBox.shrink();
-          }
+    builder: (context, model, isInitialised, child) {
+      if (!isInitialised) {
+        return const SizedBox.shrink();
+      }
 
-          return TScaffold(
-            child: TSliverBody(
-              appBar: const TSliverAppBar(
-                title: 'Styling',
-                emoji: Emoji.paintbrush,
-                onBackPressed: null,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TCategoryHeader(
-                      title: _categoryHeaderTitle,
-                      description: _categoryHeaderDescription,
-                      backgroundImage: _categoryImages.first,
-                    ),
-                    const SizedBox(height: 16),
-                    TCategorySection(
-                      title: 'Featured categories',
-                      caption: 'Horizontal list with show-all expansion',
-                      itemCount: _categoryTitles.length,
-                      maxItems: 6,
-                      maxLines: 2,
-                      itemBuilder: (context, index) => SizedBox(
-                        width: 200,
-                        child: TCategoryCard(
-                          title: _categoryTitles[index],
-                          icon: _categoryIcons[index % _categoryIcons.length],
-                          backgroundImage: _backgroundForIndex(index),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TCategorySection(
-                      title: 'All categories',
-                      caption: 'Grid layout for larger lists',
-                      layout: TCategorySectionLayout.grid,
-                      gridCrossAxisCount: 2,
-                      gridChildAspectRatio: 1.6,
-                      itemCount: _categoryTitles.length,
-                      itemBuilder: (context, index) => TCategoryCard(
-                        title: _categoryTitles[index],
-                        icon: _categoryIcons[index % _categoryIcons.length],
-                        backgroundImage: _backgroundForIndex(index),
-                        onPressed: () {},
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const _TCollectionWidgetsShowcase(),
-                    const SizedBox(height: 32),
-                    _TEntityDetailWidgetsShowcase(
-                      model: model,
-                    ),
-                  ],
+      return TScaffold(
+        child: TSliverBody(
+          appBar: const TSliverAppBar(
+            title: 'Styling',
+            emoji: Emoji.paintbrush,
+            onBackPressed: null,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TCategoryHeader(
+                  title: _categoryHeaderTitle,
+                  description: _categoryHeaderDescription,
+                  backgroundImage: _categoryImages.first,
                 ),
-              ),
+                const SizedBox(height: 16),
+                TCategorySection(
+                  title: 'Featured categories',
+                  caption: 'Horizontal list with show-all expansion',
+                  itemCount: _categoryTitles.length,
+                  maxItems: 6,
+                  maxLines: 2,
+                  itemBuilder: (context, index) => SizedBox(
+                    width: 200,
+                    child: TCategoryCard(
+                      title: _categoryTitles[index],
+                      icon: _categoryIcons[index % _categoryIcons.length],
+                      backgroundImage: _backgroundForIndex(index),
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TCategorySection(
+                  title: 'All categories',
+                  caption: 'Grid layout for larger lists',
+                  layout: TCategorySectionLayout.grid,
+                  gridCrossAxisCount: 2,
+                  gridChildAspectRatio: 1.6,
+                  itemCount: _categoryTitles.length,
+                  itemBuilder: (context, index) => TCategoryCard(
+                    title: _categoryTitles[index],
+                    icon: _categoryIcons[index % _categoryIcons.length],
+                    backgroundImage: _backgroundForIndex(index),
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const _TCollectionWidgetsShowcase(),
+                const SizedBox(height: 32),
+                _TEntityDetailWidgetsShowcase(
+                  model: model,
+                ),
+              ],
             ),
-          );
-        },
-        viewModelBuilder: () => StylingViewModel.locate,
+          ),
+        ),
       );
+    },
+    viewModelBuilder: () => StylingViewModel.locate,
+  );
 }
 
 class _TCollectionWidgetsShowcase extends StatefulWidget {
@@ -354,7 +354,8 @@ class _TEntityDetailWidgetsShowcase extends StatelessWidget {
                       child: Text(item.toString()),
                     );
                   },
-                  selectedOptionBuilder: (context, value) => Text(value.toString()),
+                  selectedOptionBuilder: (context, value) =>
+                      Text(value.toString()),
                 ),
                 theme: theme,
               ),

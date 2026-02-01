@@ -23,7 +23,8 @@ class TTabHeader<T> extends StatefulWidget {
   final List<T> items;
   final Widget Function(T item) tabBuilder;
   final Widget Function(T item) activeTabBuilder;
-  final double Function(T item, double maxWidth, int itemCount)? tabWidthBuilder;
+  final double Function(T item, double maxWidth, int itemCount)?
+  tabWidthBuilder;
   final void Function(T item)? onTabChanged;
   final double tabHeight;
 
@@ -44,7 +45,8 @@ class _TTabHeaderState<T> extends State<TTabHeader<T>> {
       final Map<T, double> widthMap = {};
       for (final item in widget.items) {
         widthMap[item] =
-            widget.tabWidthBuilder?.call(item, maxWidth, widget.items.length) ?? itemMaxWidth;
+            widget.tabWidthBuilder?.call(item, maxWidth, widget.items.length) ??
+            itemMaxWidth;
       }
       final sizedBox = SizedBox(
         height: widget.tabHeight,
@@ -60,8 +62,12 @@ class _TTabHeaderState<T> extends State<TTabHeader<T>> {
 
             final opacity = 1 - ((animationValue % 0.5) * 2);
             final tabWidth = widthMap[item]!;
-            final rawLeftOffset = (itemMaxWidth * animationValue) + (itemMaxWidth - tabWidth) / 2;
-            final double leftOffset = rawLeftOffset.clamp(0, maxWidth - tabWidth);
+            final rawLeftOffset =
+                (itemMaxWidth * animationValue) + (itemMaxWidth - tabWidth) / 2;
+            final double leftOffset = rawLeftOffset.clamp(
+              0,
+              maxWidth - tabWidth,
+            );
 
             return Stack(
               clipBehavior: Clip.none,
@@ -83,7 +89,8 @@ class _TTabHeaderState<T> extends State<TTabHeader<T>> {
                             },
                             child: Center(
                               child: SizedBox(
-                                width: widthMap[item]! - (TSizes.borderWidth * 2),
+                                width:
+                                    widthMap[item]! - (TSizes.borderWidth * 2),
                                 child: widget.tabBuilder(item),
                               ),
                             ),
@@ -110,7 +117,8 @@ class _TTabHeaderState<T> extends State<TTabHeader<T>> {
                               .activeTabBuilder(item)
                               .animate(
                                 key: ValueKey(item),
-                                onPlay: (controller) => controller.forward(from: 0),
+                                onPlay: (controller) =>
+                                    controller.forward(from: 0),
                               )
                               .shake(
                                 hz: 1,
@@ -131,8 +139,9 @@ class _TTabHeaderState<T> extends State<TTabHeader<T>> {
     },
   );
 
-  void _onItemChanged(item) => WidgetsBinding.instance.addPostFrameCallback((_) {
-    _lastItem = item;
-    widget.onTabChanged?.call(item);
-  });
+  void _onItemChanged(item) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _lastItem = item;
+        widget.onTabChanged?.call(item);
+      });
 }

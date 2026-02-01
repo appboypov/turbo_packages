@@ -32,7 +32,10 @@ void main() {
       ''', () {
         // Arrange
         const config = TContextualButtonsConfig(
-          hiddenPositions: {TContextualPosition.top, TContextualPosition.bottom},
+          hiddenPositions: {
+            TContextualPosition.top,
+            TContextualPosition.bottom
+          },
         );
 
         // Act
@@ -195,7 +198,10 @@ void main() {
         // Act
         service.updateWith(
           (current) => current.copyWith(
-            hiddenPositions: {...current.hiddenPositions, TContextualPosition.bottom},
+            hiddenPositions: {
+              ...current.hiddenPositions,
+              TContextualPosition.bottom
+            },
           ),
         );
 
@@ -339,7 +345,10 @@ void main() {
         // Arrange
         final service = TContextualButtonsService(
           const TContextualButtonsConfig(
-            hiddenPositions: {TContextualPosition.top, TContextualPosition.bottom},
+            hiddenPositions: {
+              TContextualPosition.top,
+              TContextualPosition.bottom
+            },
           ),
         );
 

@@ -84,7 +84,9 @@ class ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6>
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   @override
-  void didUpdateWidget(ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget) {
+  void didUpdateWidget(
+    ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget,
+  ) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.valueListenable != widget.valueListenable) {

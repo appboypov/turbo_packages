@@ -35,8 +35,10 @@ class BadgeService with Turbolytics {
   /// Registers [BadgeService] as a lazy singleton in the GetIt service locator.
   ///
   /// Ensures proper disposal when the service is no longer needed.
-  static void registerLazySingleton() =>
-      GetIt.I.registerLazySingleton(BadgeService.new, dispose: (param) => param.dispose());
+  static void registerLazySingleton() => GetIt.I.registerLazySingleton(
+    BadgeService.new,
+    dispose: (param) => param.dispose(),
+  );
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
 
@@ -132,13 +134,16 @@ class BadgeService with Turbolytics {
       await _localStorageService.isReady;
       final currentVersion = Environment.currentVersion;
       if (currentVersion == null) {
-        log.warning('Environment.currentVersion is null, cannot check for unread release notes');
+        log.warning(
+          'Environment.currentVersion is null, cannot check for unread release notes',
+        );
         _hasUnreadChangelog.update(false);
         return;
       }
 
       final localVersion = _localStorageService.lastChangelogVersionRead;
-      final remoteVersion = _userService.userDto.value?.lastChangelogVersionRead;
+      final remoteVersion =
+          _userService.userDto.value?.lastChangelogVersionRead;
 
       log.debug('Current app version: $currentVersion');
       log.debug('Local lastChangelogVersionRead: $localVersion');

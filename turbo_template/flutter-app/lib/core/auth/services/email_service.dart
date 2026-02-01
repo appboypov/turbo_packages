@@ -34,7 +34,10 @@ class EmailService with Turbolytics, FirebaseAuthExceptionHandler {
     } on FirebaseAuthException catch (error) {
       final code = error.code;
       log.warning('Unable to login user! Reason: $code.');
-      return tryHandleFirebaseAuthException(firebaseAuthException: error, log: log);
+      return tryHandleFirebaseAuthException(
+        firebaseAuthException: error,
+        log: log,
+      );
     } catch (error, stackTrace) {
       log.error(
         'Unknown exception caught while trying to login.',
@@ -72,7 +75,10 @@ class EmailService with Turbolytics, FirebaseAuthExceptionHandler {
     } on FirebaseAuthException catch (error) {
       final code = error.code;
       log.warning('Unable to register user! Reason: $code.');
-      return tryHandleFirebaseAuthException(firebaseAuthException: error, log: log);
+      return tryHandleFirebaseAuthException(
+        firebaseAuthException: error,
+        log: log,
+      );
     } catch (error, stackTrace) {
       log.error(
         'Unknown exception caught while trying to register.',

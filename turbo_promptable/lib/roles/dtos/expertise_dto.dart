@@ -22,7 +22,8 @@ class ExpertiseDto extends TurboPromptable {
   final String experience;
 
   static const fromJsonFactory = _$ExpertiseDtoFromJson;
-  factory ExpertiseDto.fromJson(Map<String, dynamic> json) => _$ExpertiseDtoFromJson(json);
+  factory ExpertiseDto.fromJson(Map<String, dynamic> json) =>
+      _$ExpertiseDtoFromJson(json);
   static const toJsonFactory = _$ExpertiseDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$ExpertiseDtoToJson(this);

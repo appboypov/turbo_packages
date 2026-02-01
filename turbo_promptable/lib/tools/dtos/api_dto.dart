@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_promptable/turbo_promptable.dart';
 
-
 part 'api_dto.g.dart';
 
 /// Represents an HTTP/REST API tool.

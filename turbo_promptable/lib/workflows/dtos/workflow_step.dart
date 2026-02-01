@@ -13,7 +13,10 @@ part 'workflow_step.g.dart';
 /// optional input/output types, guard rails for validation, and a
 /// specific step type that categorizes the action.
 @JsonSerializable(
-    includeIfNull: true, explicitToJson: true, genericArgumentFactories: true,)
+  includeIfNull: true,
+  explicitToJson: true,
+  genericArgumentFactories: true,
+)
 class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
   /// Creates a [WorkflowStep] with the given properties.
   WorkflowStep({
@@ -69,5 +72,6 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
   }
 
   @override
-  String toString() => 'WorkflowStep{workflowStepType: $workflowStepType, guardRails: $guardRails, input: $input, output: $output}';
+  String toString() =>
+      'WorkflowStep{workflowStepType: $workflowStepType, guardRails: $guardRails, input: $input, output: $output}';
 }

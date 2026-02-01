@@ -25,7 +25,7 @@ analyze:
 ## format: Format all packages
 format:
 	@if [ -n "$(package)" ]; then \
-		cd $(package) && dart format --set-exit-if-changed .; \
+		cd $(package) && dart format .; \
 	else \
 		melos format; \
 	fi

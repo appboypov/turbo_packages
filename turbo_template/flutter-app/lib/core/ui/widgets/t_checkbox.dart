@@ -34,7 +34,8 @@ class TCheckBox extends StatelessWidget {
   final Duration animationDuration;
   final EdgeInsets? hitBoxPadding;
   final EdgeInsets? innerPadding;
-  final void Function(SelectedState selectedState, BuildContext context)? onPressed;
+  final void Function(SelectedState selectedState, BuildContext context)?
+  onPressed;
   final SelectedState selectedState;
   final double size;
   final Color? color;
@@ -54,7 +55,10 @@ class TCheckBox extends StatelessWidget {
               width: size,
               decoration: BoxDecoration(
                 border: isActive
-                    ? Border.all(color: context.colors.border, width: TSizes.borderWidth)
+                    ? Border.all(
+                        color: context.colors.border,
+                        width: TSizes.borderWidth,
+                      )
                     : Border.all(
                         color: context.colors.primary.butWhenLightMode(
                           context,
@@ -88,11 +92,17 @@ class TCheckBox extends StatelessWidget {
                         SelectedState.deselected => null,
                         SelectedState.selected => SvgPicture.asset(
                           Assets.svgs.check.path,
-                          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(
+                            selectedColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
                         SelectedState.excluded => SvgPicture.asset(
                           Assets.svgs.hyphen.path,
-                          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(
+                            selectedColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       },
                   curve: isActive ? checkedCurve : uncheckedCurve,

@@ -50,7 +50,9 @@ class TContextualBottomNavigation extends StatelessWidget {
                       },
                     ),
                     showLabel: showLabels,
-                    variant: entry.key == selectedKey ? activeVariant : inactiveVariant,
+                    variant: entry.key == selectedKey
+                        ? activeVariant
+                        : inactiveVariant,
                   ),
                 ),
               ),

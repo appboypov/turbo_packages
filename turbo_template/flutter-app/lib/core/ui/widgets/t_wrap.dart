@@ -46,25 +46,35 @@ class TWrap<T> extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final rawMinChildWidth = minChildWidth + spacing;
-      final biggestChildCount = ((constraints.maxWidth + spacing) / rawMinChildWidth).floor();
+      final biggestChildCount =
+          ((constraints.maxWidth + spacing) / rawMinChildWidth).floor();
       final childCount = min(biggestChildCount, maxChildPerRow);
-      final rawChildWidth = (constraints.maxWidth - (spacing * (childCount - 1))) / childCount;
+      final rawChildWidth =
+          (constraints.maxWidth - (spacing * (childCount - 1))) / childCount;
       final childWidth = biggestChildCount > maxChildPerRow
           ? min(rawChildWidth, expandedWidth)
           : rawChildWidth;
       final wrapChildren = [
-        if (leadingBuilder != null) leadingBuilder!(constraints, spacing, childWidth, context),
+        if (leadingBuilder != null)
+          leadingBuilder!(constraints, spacing, childWidth, context),
         for (final child in children)
           childBuilder(child, constraints, spacing, childWidth, context),
       ];
       if (wrapChildren.isEmpty && emptyPlaceholderBuilder != null) {
-        return SizedBox(width: constraints.maxWidth, child: emptyPlaceholderBuilder!(context));
+        return SizedBox(
+          width: constraints.maxWidth,
+          child: emptyPlaceholderBuilder!(context),
+        );
       }
 
       // Wrap the result in a SizedBox with explicit width to avoid intrinsic dimension issues
       return SizedBox(
         width: constraints.maxWidth,
-        child: Wrap(runSpacing: spacing, spacing: spacing, children: wrapChildren),
+        child: Wrap(
+          runSpacing: spacing,
+          spacing: spacing,
+          children: wrapChildren,
+        ),
       );
     },
   );

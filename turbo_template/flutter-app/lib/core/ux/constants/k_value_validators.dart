@@ -1,18 +1,21 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-FormFieldValidator kValueValidatorsMultiple(List<FormFieldValidator> validators) =>
-    (valueCandidate) {
-      for (final validator in validators) {
-        final validatorResult = validator.call(valueCandidate);
-        if (validatorResult != null) {
-          return validatorResult;
-        }
-      }
-      return null;
-    };
+FormFieldValidator kValueValidatorsMultiple(
+  List<FormFieldValidator> validators,
+) => (valueCandidate) {
+  for (final validator in validators) {
+    final validatorResult = validator.call(valueCandidate);
+    if (validatorResult != null) {
+      return validatorResult;
+    }
+  }
+  return null;
+};
 
-FormFieldValidator<T> kValueValidatorsIsTrue<T>({required String Function() errorText}) {
+FormFieldValidator<T> kValueValidatorsIsTrue<T>({
+  required String Function() errorText,
+}) {
   return (T? valueCandidate) {
     if (valueCandidate is bool && valueCandidate) {
       return null;
@@ -21,7 +24,9 @@ FormFieldValidator<T> kValueValidatorsIsTrue<T>({required String Function() erro
   };
 }
 
-FormFieldValidator<T> kValueValidatorsRequired<T>({required String Function() errorText}) {
+FormFieldValidator<T> kValueValidatorsRequired<T>({
+  required String Function() errorText,
+}) {
   return (T? valueCandidate) {
     if (valueCandidate == null ||
         (valueCandidate is String && valueCandidate.trim().isEmpty) ||
@@ -33,7 +38,9 @@ FormFieldValidator<T> kValueValidatorsRequired<T>({required String Function() er
   };
 }
 
-FormFieldValidator<T> kValueValidatorsEmail<T>({required String Function() errorText}) {
+FormFieldValidator<T> kValueValidatorsEmail<T>({
+  required String Function() errorText,
+}) {
   return (T? valueCandidate) {
     if (valueCandidate is! String) {
       return errorText();

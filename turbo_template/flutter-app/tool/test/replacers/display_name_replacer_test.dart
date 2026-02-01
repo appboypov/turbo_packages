@@ -104,7 +104,8 @@ void main() {
       });
 
       test('includes AndroidManifest.xml', () {
-        expect(DisplayNameReplacer.filePatterns, contains('AndroidManifest.xml'));
+        expect(
+            DisplayNameReplacer.filePatterns, contains('AndroidManifest.xml'));
       });
 
       test('targets four file patterns', () {
@@ -125,8 +126,10 @@ void main() {
       });
 
       test('replaces apple-mobile-web-app-title in index.html', () {
-        const input = '<meta name="apple-mobile-web-app-title" content="Turbo Flutter Template">';
-        const expected = '<meta name="apple-mobile-web-app-title" content="My App">';
+        const input =
+            '<meta name="apple-mobile-web-app-title" content="Turbo Flutter Template">';
+        const expected =
+            '<meta name="apple-mobile-web-app-title" content="My App">';
 
         final result = input.replaceAll(
           DisplayNameReplacer.oldValue,

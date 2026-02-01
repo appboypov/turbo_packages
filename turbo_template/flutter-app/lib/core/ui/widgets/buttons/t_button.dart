@@ -142,7 +142,10 @@ class _TButtonState extends State<TButton> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _scaleController = AnimationController(duration: widget.duration, vsync: this);
+    _scaleController = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scaleEnd).animate(
       CurvedAnimation(
@@ -152,13 +155,14 @@ class _TButtonState extends State<TButton> with SingleTickerProviderStateMixin {
       ),
     );
 
-    _opacityAnimation = Tween<double>(begin: 1.0, end: widget.opacityEnd).animate(
-      CurvedAnimation(
-        parent: _scaleController,
-        curve: widget.curve,
-        reverseCurve: widget.reverseCurve,
-      ),
-    );
+    _opacityAnimation = Tween<double>(begin: 1.0, end: widget.opacityEnd)
+        .animate(
+          CurvedAnimation(
+            parent: _scaleController,
+            curve: widget.curve,
+            reverseCurve: widget.reverseCurve,
+          ),
+        );
   }
 
   @override
@@ -218,8 +222,10 @@ class _TButtonState extends State<TButton> with SingleTickerProviderStateMixin {
     final rButton = IgnorePointer(
       ignoring: !widget.isEnabled,
       child: Listener(
-        onPointerDown: (_) => _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
-        onPointerUp: (_) => _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
+        onPointerDown: (_) =>
+            _handleTapDown(TapDownDetails(kind: PointerDeviceKind.touch)),
+        onPointerUp: (_) =>
+            _handleTapUp(TapUpDetails(kind: PointerDeviceKind.touch)),
         onPointerCancel: _handlePointerCancel,
         child: TConstraints(
           minHeight: widget.height ?? widget.minHeight ?? 0,
@@ -277,12 +283,21 @@ class _TButtonState extends State<TButton> with SingleTickerProviderStateMixin {
                       final minScaleHeight = _childSize!.height > 0
                           ? (_childSize!.height - 4) / _childSize!.height
                           : 1.0;
-                      final minAllowedScale = math.max(minScaleWidth, minScaleHeight);
-                      effectiveScale = math.max(_scaleAnimation.value, minAllowedScale);
+                      final minAllowedScale = math.max(
+                        minScaleWidth,
+                        minScaleHeight,
+                      );
+                      effectiveScale = math.max(
+                        _scaleAnimation.value,
+                        minAllowedScale,
+                      );
                     }
                     return Transform.scale(
                       scale: effectiveScale,
-                      child: Opacity(opacity: _opacityAnimation.value, child: child),
+                      child: Opacity(
+                        opacity: _opacityAnimation.value,
+                        child: child,
+                      ),
                     );
                   },
                   child: THoverable(

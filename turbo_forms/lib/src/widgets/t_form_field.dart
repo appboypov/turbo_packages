@@ -37,30 +37,30 @@ class TFormField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
-    listenable: formFieldConfig,
-    builder: (context, listenableChild) {
-      return StatelessTFormField(
-        horizontalPadding: horizontalPadding,
-        label: label,
-        description: description,
-        descriptionStyle: descriptionStyle,
-        labelTrailing: labelTrailing,
-        errorPadding: errorPadding,
-        errorText: formFieldConfig.errorText,
-        shouldValidate: formFieldConfig.shouldValidate,
-        isEnabled: formFieldConfig.isEnabled,
-        isReadOnly: formFieldConfig.isReadOnly,
-        errorTextStyle: errorTextStyle,
-        disabledOpacity: disabledOpacity,
-        animationDuration: animationDuration,
-        formFieldContent: TFormFieldBuilder(
-          fieldConfig: formFieldConfig,
-          builder: builder,
-          child: child,
-        ),
+        listenable: formFieldConfig,
+        builder: (context, listenableChild) {
+          return StatelessTFormField(
+            horizontalPadding: horizontalPadding,
+            label: label,
+            description: description,
+            descriptionStyle: descriptionStyle,
+            labelTrailing: labelTrailing,
+            errorPadding: errorPadding,
+            errorText: formFieldConfig.errorText,
+            shouldValidate: formFieldConfig.shouldValidate,
+            isEnabled: formFieldConfig.isEnabled,
+            isReadOnly: formFieldConfig.isReadOnly,
+            errorTextStyle: errorTextStyle,
+            disabledOpacity: disabledOpacity,
+            animationDuration: animationDuration,
+            formFieldContent: TFormFieldBuilder(
+              fieldConfig: formFieldConfig,
+              builder: builder,
+              child: child,
+            ),
+          );
+        },
       );
-    },
-  );
 }
 
 class StatelessTFormField extends StatelessWidget {
@@ -113,7 +113,8 @@ class StatelessTFormField extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (horizontalPadding != null) SizedBox(width: horizontalPadding),
+                  if (horizontalPadding != null)
+                    SizedBox(width: horizontalPadding),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -129,11 +130,13 @@ class StatelessTFormField extends StatelessWidget {
                     ),
                   ),
                   if (labelTrailing != null) ...[
-                    if (label != null || subLabel != null) const SizedBox(width: 8),
+                    if (label != null || subLabel != null)
+                      const SizedBox(width: 8),
                     labelTrailing!,
                     const SizedBox(width: 8),
                   ],
-                  if (horizontalPadding != null) SizedBox(width: horizontalPadding),
+                  if (horizontalPadding != null)
+                    SizedBox(width: horizontalPadding),
                 ],
               ),
               const SizedBox(height: 6),

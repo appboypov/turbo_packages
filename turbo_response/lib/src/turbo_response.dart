@@ -477,7 +477,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
   /// );
   /// ```
   FutureOr<R?> whenSuccess<R>(
-          FutureOr<R> Function(Success<T> response) success,) async =>
+    FutureOr<R> Function(Success<T> response) success,
+  ) async =>
       isSuccess ? await success(this as Success<T>) : null;
 
   /// Handles a failed response, returning a value.
@@ -524,7 +525,8 @@ extension TurboResponseX<T> on TurboResponse<T> {
   /// );
   /// ```
   FutureOr<TurboResponse<R>> mapSuccess<R>(
-          FutureOr<R> Function(T value) transform,) async =>
+    FutureOr<R> Function(T value) transform,
+  ) async =>
       switch (this) {
         Success<T>(result: final value, title: final t, message: final m) =>
           Success<R>(result: await transform(value), title: t, message: m),

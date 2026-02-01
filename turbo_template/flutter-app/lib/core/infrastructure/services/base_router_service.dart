@@ -21,7 +21,8 @@ class BaseRouterService with Turbolytics {
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
 
   static BaseRouterService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(BaseRouterService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(BaseRouterService.new);
 
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
@@ -46,9 +47,10 @@ class BaseRouterService with Turbolytics {
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
-  static final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
-    debugLabel: 'root',
-  );
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>(
+        debugLabel: 'root',
+      );
 
   String _currentRoute = '';
   bool didInitialLocation = false;
@@ -126,7 +128,8 @@ class RouteArguments extends ViewArguments {
   final String? id;
 
   static const fromJsonFactory = _$RouteArgumentsFromJson;
-  factory RouteArguments.fromJson(Map<String, dynamic> json) => _$RouteArgumentsFromJson(json);
+  factory RouteArguments.fromJson(Map<String, dynamic> json) =>
+      _$RouteArgumentsFromJson(json);
   static const toJsonFactory = _$RouteArgumentsToJson;
   @override
   Map<String, dynamic> toJson() => _$RouteArgumentsToJson(this);

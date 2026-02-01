@@ -4,7 +4,8 @@ import 'package:turbolytics/turbolytics.dart';
 
 class OverlayService with Turbolytics {
   static OverlayService get locate => GetIt.I.get();
-  static void registerLazySingleton() => GetIt.I.registerLazySingleton(OverlayService.new);
+  static void registerLazySingleton() =>
+      GetIt.I.registerLazySingleton(OverlayService.new);
 
   void showRandomConfetti({required BuildContext? context}) {
     log.debug('showRandomConfetti called');

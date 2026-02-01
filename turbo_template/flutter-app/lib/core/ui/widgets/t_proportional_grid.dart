@@ -24,7 +24,11 @@ class _StaticFlowDelegate extends FlowDelegate {
 
       context.paintChild(
         i,
-        transform: Matrix4.translationValues(result.position.dx, result.position.dy, 0),
+        transform: Matrix4.translationValues(
+          result.position.dx,
+          result.position.dy,
+          0,
+        ),
       );
     }
   }
@@ -79,7 +83,11 @@ class _SlideFlowDelegate extends FlowDelegate {
       Offset position = current.position;
       if (previousLayout != null && animation.value < 1.0) {
         final previous = _findResult(previousLayout!, i) ?? current;
-        position = Offset.lerp(previous.position, current.position, animation.value)!;
+        position = Offset.lerp(
+          previous.position,
+          current.position,
+          animation.value,
+        )!;
       }
 
       context.paintChild(
@@ -99,11 +107,18 @@ class _SlideFlowDelegate extends FlowDelegate {
     }
 
     final previous = _findResult(previousLayout!, i) ?? current;
-    final interpolatedSize = Size.lerp(previous.size, current.size, animation.value)!;
+    final interpolatedSize = Size.lerp(
+      previous.size,
+      current.size,
+      animation.value,
+    )!;
     return BoxConstraints.tight(interpolatedSize);
   }
 
-  ProportionalLayoutResult? _findResult(List<ProportionalLayoutResult> results, int index) {
+  ProportionalLayoutResult? _findResult(
+    List<ProportionalLayoutResult> results,
+    int index,
+  ) {
     for (final r in results) {
       if (r.index == index) return r;
     }
@@ -232,7 +247,11 @@ class _TProportionalGridState extends State<TProportionalGrid>
     }
   }
 
-  bool _hasLayoutChanged(Size availableSize, List<double> sizes, double spacing) {
+  bool _hasLayoutChanged(
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (_currentLayout == null) return true;
     if (_lastSize != availableSize) return true;
     if (_lastSpacing != spacing) return true;
@@ -243,7 +262,11 @@ class _TProportionalGridState extends State<TProportionalGrid>
     return false;
   }
 
-  void _updateLayoutImmediate(Size availableSize, List<double> sizes, double spacing) {
+  void _updateLayoutImmediate(
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     final newLayout = ProportionalLayoutCalculator.calculate(
       sizes: sizes,
       availableSize: availableSize,
@@ -258,7 +281,11 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   // For slide animation: immediate update with animation
-  void _onLayoutChangedSlide(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedSlide(
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
@@ -271,7 +298,11 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   // For fade/scale animation: debounced with transition
-  void _onLayoutChangedDebounced(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedDebounced(
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     _debounceTimer?.cancel();
 
     if (!_isWaitingForStability) {
@@ -292,7 +323,11 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   // For none animation: immediate update, no animation
-  void _onLayoutChangedNone(Size availableSize, List<double> sizes, double spacing) {
+  void _onLayoutChangedNone(
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
@@ -368,13 +403,13 @@ class _TProportionalGridState extends State<TProportionalGrid>
     return switch (widget.animation) {
       TProportionalGridAnimation.slide => flow,
       TProportionalGridAnimation.fade => FadeTransition(
-          opacity: _animation,
-          child: flow,
-        ),
+        opacity: _animation,
+        child: flow,
+      ),
       TProportionalGridAnimation.scale => ScaleTransition(
-          scale: _animation,
-          child: flow,
-        ),
+        scale: _animation,
+        child: flow,
+      ),
       TProportionalGridAnimation.none => flow,
     };
   }

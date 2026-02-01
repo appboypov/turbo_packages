@@ -8,7 +8,10 @@ class AnalyticsImplementation implements TAnalyticsInterface {
   final _analytics = FirebaseAnalytics.instance;
 
   @override
-  Future<void> logEvent({required String name, Map<String, Object>? parameters}) async {
+  Future<void> logEvent({
+    required String name,
+    Map<String, Object>? parameters,
+  }) async {
     await _analytics.logEvent(
       name: name,
       parameters: parameters,
@@ -21,7 +24,10 @@ class AnalyticsImplementation implements TAnalyticsInterface {
   }
 
   @override
-  Future<void> setCurrentScreen({required String name, String? screenClassOverride}) async {
+  Future<void> setCurrentScreen({
+    required String name,
+    String? screenClassOverride,
+  }) async {
     await _analytics.logScreenView(
       screenName: name,
       screenClass: screenClassOverride,
@@ -34,7 +40,10 @@ class AnalyticsImplementation implements TAnalyticsInterface {
   }
 
   @override
-  Future<void> setUserProperty({required String name, required String? value}) async {
+  Future<void> setUserProperty({
+    required String name,
+    required String? value,
+  }) async {
     await _analytics.setUserProperty(name: name, value: value);
   }
 }

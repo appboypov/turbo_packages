@@ -13,5 +13,6 @@ class BooleanBuilder extends StatelessWidget {
   final Widget Function(BuildContext context) onFalse;
 
   @override
-  Widget build(BuildContext context) => condition ? onTrue(context) : onFalse(context);
+  Widget build(BuildContext context) =>
+      condition ? onTrue(context) : onFalse(context);
 }

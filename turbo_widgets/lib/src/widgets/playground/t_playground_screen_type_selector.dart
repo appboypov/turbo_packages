@@ -121,8 +121,10 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
               height: 36,
               padding: EdgeInsets.zero,
               onPressed: onToggleDarkMode,
-              child: Icon(isDarkMode ? LucideIcons.moon : LucideIcons.sun,
-                  size: 16,),
+              child: Icon(
+                isDarkMode ? LucideIcons.moon : LucideIcons.sun,
+                size: 16,
+              ),
             ),
             const SizedBox(width: 8),
             ShadButton.raw(

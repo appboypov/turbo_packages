@@ -12,12 +12,14 @@ import 'package:turbolytics/turbolytics.dart';
 
 void main() {
   runZonedGuarded(
-        () async {
+    () async {
       WidgetsFlutterBinding.ensureInitialized();
 
       try {
         if (Firebase.apps.isEmpty) {
-          await Firebase.initializeApp(options: Environment.current.firebaseOptions);
+          await Firebase.initializeApp(
+            options: Environment.current.firebaseOptions,
+          );
         }
       } on FirebaseException catch (e) {
         if (e.code == 'duplicate-app') {
@@ -49,10 +51,14 @@ void main() {
       LocatorService.locate.registerInitialDependencies();
       runApp(Phoenix(child: const MyAppView()));
     },
-        (error, stack) {
+    (error, stack) {
       TLog(
         location: 'Zoned',
-      ).error('Unhandled exception caught: ${error.toString()}', error: error, stackTrace: stack);
+      ).error(
+        'Unhandled exception caught: ${error.toString()}',
+        error: error,
+        stackTrace: stack,
+      );
     },
   );
   return;

@@ -31,7 +31,8 @@ class TColorButton extends StatelessWidget {
     onPressed: onPressed,
     hoverBuilder: (context, isHovered, child) => TColorContainer(
       borderRadius: borderRadius,
-      color: color?.withReactiveHover(isHovered: isHovered) ?? context.colors.icon,
+      color:
+          color?.withReactiveHover(isHovered: isHovered) ?? context.colors.icon,
       iconData: iconData,
       text: label,
       iconTextColor: (themeMode, theme) => context.colors.background.onColor,

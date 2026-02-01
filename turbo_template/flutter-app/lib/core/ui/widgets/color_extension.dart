@@ -11,11 +11,14 @@ extension BadgeColorExtensions on Color {
     final inv = 1.0 - opacity;
     return Color.fromARGB(
       0xFF,
-      (((background.r * 255.0).round() & 0xff) * inv + ((r * 255.0).round() & 0xff) * opacity)
+      (((background.r * 255.0).round() & 0xff) * inv +
+              ((r * 255.0).round() & 0xff) * opacity)
           .round(),
-      (((background.g * 255.0).round() & 0xff) * inv + ((g * 255.0).round() & 0xff) * opacity)
+      (((background.g * 255.0).round() & 0xff) * inv +
+              ((g * 255.0).round() & 0xff) * opacity)
           .round(),
-      (((background.b * 255.0).round() & 0xff) * inv + ((b * 255.0).round() & 0xff) * opacity)
+      (((background.b * 255.0).round() & 0xff) * inv +
+              ((b * 255.0).round() & 0xff) * opacity)
           .round(),
     );
   }
@@ -23,10 +26,12 @@ extension BadgeColorExtensions on Color {
   /// Opaque badge background: your base color at 12% opacity over [surface].
   ///
   /// Defaults to a dark surface (#121212), but you can pass any surface.
-  Color badgeBackground({Color surface = const Color(0xFF121212)}) => _compositeOn(surface, 0.2);
+  Color badgeBackground({Color surface = const Color(0xFF121212)}) =>
+      _compositeOn(surface, 0.2);
 
   /// Opaque badge border: your base color at 64% opacity over [surface].
-  Color badgeBorder({Color surface = const Color(0xFF121212)}) => _compositeOn(surface, 0.64);
+  Color badgeBorder({Color surface = const Color(0xFF121212)}) =>
+      _compositeOn(surface, 0.64);
 
   /// The “on-badge” paint: exactly your base color.
   Color get badgeForeground => asSoftText;
@@ -44,7 +49,9 @@ extension MeshGradientPointListExtension on List<MeshGradientPoint> {
     // Calculate the average brightness of all colors in the list
     double totalBrightness = 0;
     for (final point in this) {
-      final brightness = material.ThemeData.estimateBrightnessForColor(point.color);
+      final brightness = material.ThemeData.estimateBrightnessForColor(
+        point.color,
+      );
       totalBrightness += brightness == material.Brightness.light ? 1 : 0;
     }
 
@@ -70,7 +77,9 @@ extension MeshGradientPointListExtension on List<MeshGradientPoint> {
 
     for (final point in this) {
       final HSLColor hsl = HSLColor.fromColor(point.color);
-      final brightness = material.ThemeData.estimateBrightnessForColor(point.color);
+      final brightness = material.ThemeData.estimateBrightnessForColor(
+        point.color,
+      );
 
       totalBrightness += brightness == material.Brightness.light ? 1 : 0;
       totalHue += hsl.hue;
@@ -87,7 +96,10 @@ extension MeshGradientPointListExtension on List<MeshGradientPoint> {
       return HSLColor.fromAHSL(
         1.0,
         averageHue,
-        min(0.4, averageSaturation * 0.5), // Keep saturation low for better contrast
+        min(
+          0.4,
+          averageSaturation * 0.5,
+        ), // Keep saturation low for better contrast
         0.1, // Start very dark (near black)
       ).toColor();
     } else {
@@ -95,7 +107,10 @@ extension MeshGradientPointListExtension on List<MeshGradientPoint> {
       return HSLColor.fromAHSL(
         1.0,
         averageHue,
-        min(0.2, averageSaturation * 0.3), // Keep saturation very low for better contrast
+        min(
+          0.2,
+          averageSaturation * 0.3,
+        ), // Keep saturation very low for better contrast
         0.95, // Start very light (near white)
       ).toColor();
     }
@@ -141,7 +156,8 @@ extension ColorExtension on Color {
   ///
   /// Useful for determining text color that will be readable on this background.
   Color get onColorBlackWhite =>
-      material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light
+      material.ThemeData.estimateBrightnessForColor(this) ==
+          material.Brightness.light
       ? Colors.black
       : Colors.white;
 
@@ -157,14 +173,18 @@ extension ColorExtension on Color {
   Color get onColor {
     final HSLColor hsl = HSLColor.fromColor(this);
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       // For light backgrounds, start with black and add a hint of the background's hue
       return HSLColor.fromAHSL(
         1.0,
         hsl.hue,
-        min(0.4, hsl.saturation * 0.5), // Keep saturation low for better contrast
+        min(
+          0.4,
+          hsl.saturation * 0.5,
+        ), // Keep saturation low for better contrast
         0.1, // Start very dark (near black)
       ).toColor();
     } else {
@@ -172,7 +192,10 @@ extension ColorExtension on Color {
       return HSLColor.fromAHSL(
         1.0,
         hsl.hue,
-        min(0.2, hsl.saturation * 0.3), // Keep saturation very low for better contrast
+        min(
+          0.2,
+          hsl.saturation * 0.3,
+        ), // Keep saturation very low for better contrast
         1, // Start very light (near white)
       ).toColor();
     }
@@ -188,7 +211,8 @@ extension ColorExtension on Color {
   Color get asSoftBackground {
     final HSLColor hsl = HSLColor.fromColor(this);
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       // For light themes, create a very light, low-saturation background
@@ -219,7 +243,8 @@ extension ColorExtension on Color {
   Color get asSoftBorder {
     final HSLColor hsl = HSLColor.fromColor(this);
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       // For light themes, create a visible but soft border
@@ -249,7 +274,8 @@ extension ColorExtension on Color {
   Color get asSoftText {
     final HSLColor hsl = HSLColor.fromColor(this);
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       // For light themes, create a darker, more saturated text color
@@ -280,9 +306,27 @@ extension ColorExtension on Color {
     if (amount > 100) return Colors.white;
     final Color color = Color.fromARGB(
       (a * 255.0).round() & 0xff,
-      max(0, min(255, ((r * 255.0).round() & 0xff) - (255 * -(amount / 100)).round())),
-      max(0, min(255, ((g * 255.0).round() & 0xff) - (255 * -(amount / 100)).round())),
-      max(0, min(255, ((b * 255.0).round() & 0xff) - (255 * -(amount / 100)).round())),
+      max(
+        0,
+        min(
+          255,
+          ((r * 255.0).round() & 0xff) - (255 * -(amount / 100)).round(),
+        ),
+      ),
+      max(
+        0,
+        min(
+          255,
+          ((g * 255.0).round() & 0xff) - (255 * -(amount / 100)).round(),
+        ),
+      ),
+      max(
+        0,
+        min(
+          255,
+          ((b * 255.0).round() & 0xff) - (255 * -(amount / 100)).round(),
+        ),
+      ),
     );
     // if (kDebugMode) {
     //   print('Brightened color: 0x${color.value.toRadixString(16).toUpperCase().padLeft(8, '0')}');
@@ -305,7 +349,9 @@ extension ColorExtension on Color {
     final HSLColor hsl = this == const Color(0xFF000000)
         ? HSLColor.fromColor(this).withSaturation(0)
         : HSLColor.fromColor(this);
-    final Color color = hsl.withLightness(min(1, max(0, hsl.lightness + amount / 100))).toColor();
+    final Color color = hsl
+        .withLightness(min(1, max(0, hsl.lightness + amount / 100)))
+        .toColor();
     // if (kDebugMode) {
     //   print('[$tag] Lightened color: 0x${color.value.toRadixString(16).toUpperCase().padLeft(8, '0')}');
     // }
@@ -321,7 +367,9 @@ extension ColorExtension on Color {
     if (amount <= 0) return this;
     if (amount > 100) return Colors.black;
     final HSLColor hsl = HSLColor.fromColor(this);
-    final Color color = hsl.withLightness(min(1, max(0, hsl.lightness - amount / 100))).toColor();
+    final Color color = hsl
+        .withLightness(min(1, max(0, hsl.lightness - amount / 100)))
+        .toColor();
     // if (kDebugMode) {
     //   print('[$tag] Darkened color: 0x${color.value.toRadixString(16).toUpperCase().padLeft(8, '0')}');
     // }
@@ -333,14 +381,16 @@ extension ColorExtension on Color {
   /// ```dart
   /// final buttonColor = Colors.blue.withReactiveHover(isHovered: isHovering);
   /// ```
-  Color withReactiveHover({required bool isHovered}) => isHovered ? onHover : this;
+  Color withReactiveHover({required bool isHovered}) =>
+      isHovered ? onHover : this;
 
   /// Returns a slightly darker or lighter version of this color suitable for backgrounds.
   ///
   /// Adjusts based on the color's brightness to maintain visual hierarchy.
   Color get onBackground {
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       return darken(2);
@@ -365,7 +415,8 @@ extension ColorExtension on Color {
   /// ```
   Color get onHover {
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       return darken(4);
@@ -398,7 +449,8 @@ extension ColorExtension on Color {
   }) {
     // Adjust opacity based on color brightness for balanced shadows
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     // Darker colors need lower opacity to avoid heavy shadows
     final double adjustedOpacity = isLight ? opacity : opacity * 0.7;
@@ -422,7 +474,8 @@ extension ColorExtension on Color {
   Color get asDarkBackground {
     final HSLColor hsl = HSLColor.fromColor(this);
     final bool isLight =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.light;
 
     if (isLight) {
       // For light colors, create a very dark background with a subtle tint
@@ -479,15 +532,22 @@ extension ColorExtension on Color {
 
     // Check if the color is already light enough for light mode
     final bool isDark =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.dark;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.dark;
 
     if (!isDark) {
       // If the color is already light, make minor adjustments to ensure it works on white
       return HSLColor.fromAHSL(
         hsl.alpha,
         hsl.hue,
-        min(1.0, hsl.saturation * 1.2), // Slightly increase saturation for visibility
-        max(0.3, min(0.7, hsl.lightness)), // Ensure lightness is in a good range for light mode
+        min(
+          1.0,
+          hsl.saturation * 1.2,
+        ), // Slightly increase saturation for visibility
+        max(
+          0.3,
+          min(0.7, hsl.lightness),
+        ), // Ensure lightness is in a good range for light mode
       ).toColor();
     }
 
@@ -512,10 +572,18 @@ extension ColorExtension on Color {
       saturationMultiplier = 1.2;
     }
 
-    final double newSaturation = min(1.0, hsl.saturation * saturationMultiplier);
+    final double newSaturation = min(
+      1.0,
+      hsl.saturation * saturationMultiplier,
+    );
 
     // 4. Create the light mode color
-    return HSLColor.fromAHSL(hsl.alpha, hsl.hue, newSaturation, newLightness).toColor();
+    return HSLColor.fromAHSL(
+      hsl.alpha,
+      hsl.hue,
+      newSaturation,
+      newLightness,
+    ).toColor();
   }
 
   /// Converts a color designed for dark mode to one that looks good on a specific background color.
@@ -533,17 +601,22 @@ extension ColorExtension on Color {
   ///   contrastLevel: 0.7,
   /// );
   /// ```
-  Color asLightModeColorWithContext(Color backgroundColor, {double contrastLevel = 0.5}) {
+  Color asLightModeColorWithContext(
+    Color backgroundColor, {
+    double contrastLevel = 0.5,
+  }) {
     final HSLColor hsl = HSLColor.fromColor(this);
     final HSLColor bgHsl = HSLColor.fromColor(backgroundColor);
 
     // Determine if the background is light or dark
     final bool isBgLight =
-        material.ThemeData.estimateBrightnessForColor(backgroundColor) == material.Brightness.light;
+        material.ThemeData.estimateBrightnessForColor(backgroundColor) ==
+        material.Brightness.light;
 
     // Check if the color is already appropriate for the background
     final bool isColorDark =
-        material.ThemeData.estimateBrightnessForColor(this) == material.Brightness.dark;
+        material.ThemeData.estimateBrightnessForColor(this) ==
+        material.Brightness.dark;
 
     // If the color and background have opposite brightness, they might already have good contrast
     if (isColorDark == !isBgLight) {
@@ -585,7 +658,8 @@ extension ColorExtension on Color {
     // If background is desaturated, we can keep more of the original saturation
     double saturationMultiplier = 1.0;
     if (bgHsl.saturation > 0.5) {
-      saturationMultiplier = 0.8; // Reduce saturation on highly saturated backgrounds
+      saturationMultiplier =
+          0.8; // Reduce saturation on highly saturated backgrounds
     } else if (bgHsl.saturation < 0.2) {
       saturationMultiplier = 1.2; // Boost saturation on desaturated backgrounds
     }
@@ -654,9 +728,15 @@ extension ColorListExtension on List<Color> {
   ///   contrastLevel: 0.6,
   /// );
   /// ```
-  List<Color> asLightModeColorsWithContext(Color backgroundColor, {double contrastLevel = 0.5}) {
+  List<Color> asLightModeColorsWithContext(
+    Color backgroundColor, {
+    double contrastLevel = 0.5,
+  }) {
     return map(
-      (color) => color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+      (color) => color.asLightModeColorWithContext(
+        backgroundColor,
+        contrastLevel: contrastLevel,
+      ),
     ).toList();
   }
 
@@ -666,7 +746,8 @@ extension ColorListExtension on List<Color> {
   }
 
   /// Returns either the original colors or their hover variants based on the hover state.
-  List<Color> withReactiveHover({required bool isHovered}) => isHovered ? hovered : this;
+  List<Color> withReactiveHover({required bool isHovered}) =>
+      isHovered ? hovered : this;
 
   /// Returns the appropriate text color (black or white) for the gradient
   /// based on the average brightness of the colors in the list.
@@ -718,7 +799,10 @@ extension ColorListExtension on List<Color> {
       return HSLColor.fromAHSL(
         1.0,
         averageHue,
-        min(0.4, averageSaturation * 0.5), // Keep saturation low for better contrast
+        min(
+          0.4,
+          averageSaturation * 0.5,
+        ), // Keep saturation low for better contrast
         0.1, // Start very dark (near black)
       ).toColor();
     } else {
@@ -726,7 +810,10 @@ extension ColorListExtension on List<Color> {
       return HSLColor.fromAHSL(
         1.0,
         averageHue,
-        min(0.2, averageSaturation * 0.3), // Keep saturation very low for better contrast
+        min(
+          0.2,
+          averageSaturation * 0.3,
+        ), // Keep saturation very low for better contrast
         0.95, // Start very light (near white)
       ).toColor();
     }
@@ -740,7 +827,9 @@ extension GradientExtension on Gradient {
     if (this is LinearGradient) {
       final LinearGradient linearGradient = this as LinearGradient;
       return LinearGradient(
-        colors: linearGradient.colors.map((color) => color.brighten(amount)).toList(),
+        colors: linearGradient.colors
+            .map((color) => color.brighten(amount))
+            .toList(),
         stops: linearGradient.stops,
         begin: linearGradient.begin,
         end: linearGradient.end,
@@ -750,7 +839,9 @@ extension GradientExtension on Gradient {
     } else if (this is RadialGradient) {
       final RadialGradient radialGradient = this as RadialGradient;
       return RadialGradient(
-        colors: radialGradient.colors.map((color) => color.brighten(amount)).toList(),
+        colors: radialGradient.colors
+            .map((color) => color.brighten(amount))
+            .toList(),
         stops: radialGradient.stops,
         center: radialGradient.center,
         focal: radialGradient.focal,
@@ -762,7 +853,9 @@ extension GradientExtension on Gradient {
     } else if (this is SweepGradient) {
       final SweepGradient sweepGradient = this as SweepGradient;
       return SweepGradient(
-        colors: sweepGradient.colors.map((color) => color.brighten(amount)).toList(),
+        colors: sweepGradient.colors
+            .map((color) => color.brighten(amount))
+            .toList(),
         stops: sweepGradient.stops,
         center: sweepGradient.center,
         startAngle: sweepGradient.startAngle,
@@ -780,7 +873,9 @@ extension GradientExtension on Gradient {
     if (this is LinearGradient) {
       final LinearGradient linearGradient = this as LinearGradient;
       return LinearGradient(
-        colors: linearGradient.colors.map((color) => color.lighten(amount)).toList(),
+        colors: linearGradient.colors
+            .map((color) => color.lighten(amount))
+            .toList(),
         stops: linearGradient.stops,
         begin: linearGradient.begin,
         end: linearGradient.end,
@@ -790,7 +885,9 @@ extension GradientExtension on Gradient {
     } else if (this is RadialGradient) {
       final RadialGradient radialGradient = this as RadialGradient;
       return RadialGradient(
-        colors: radialGradient.colors.map((color) => color.lighten(amount)).toList(),
+        colors: radialGradient.colors
+            .map((color) => color.lighten(amount))
+            .toList(),
         stops: radialGradient.stops,
         center: radialGradient.center,
         focal: radialGradient.focal,
@@ -802,7 +899,9 @@ extension GradientExtension on Gradient {
     } else if (this is SweepGradient) {
       final SweepGradient sweepGradient = this as SweepGradient;
       return SweepGradient(
-        colors: sweepGradient.colors.map((color) => color.lighten(amount)).toList(),
+        colors: sweepGradient.colors
+            .map((color) => color.lighten(amount))
+            .toList(),
         stops: sweepGradient.stops,
         center: sweepGradient.center,
         startAngle: sweepGradient.startAngle,
@@ -820,7 +919,9 @@ extension GradientExtension on Gradient {
     if (this is LinearGradient) {
       final LinearGradient linearGradient = this as LinearGradient;
       return LinearGradient(
-        colors: linearGradient.colors.map((color) => color.darken(amount)).toList(),
+        colors: linearGradient.colors
+            .map((color) => color.darken(amount))
+            .toList(),
         stops: linearGradient.stops,
         begin: linearGradient.begin,
         end: linearGradient.end,
@@ -830,7 +931,9 @@ extension GradientExtension on Gradient {
     } else if (this is RadialGradient) {
       final RadialGradient radialGradient = this as RadialGradient;
       return RadialGradient(
-        colors: radialGradient.colors.map((color) => color.darken(amount)).toList(),
+        colors: radialGradient.colors
+            .map((color) => color.darken(amount))
+            .toList(),
         stops: radialGradient.stops,
         center: radialGradient.center,
         focal: radialGradient.focal,
@@ -842,7 +945,9 @@ extension GradientExtension on Gradient {
     } else if (this is SweepGradient) {
       final SweepGradient sweepGradient = this as SweepGradient;
       return SweepGradient(
-        colors: sweepGradient.colors.map((color) => color.darken(amount)).toList(),
+        colors: sweepGradient.colors
+            .map((color) => color.darken(amount))
+            .toList(),
         stops: sweepGradient.stops,
         center: sweepGradient.center,
         startAngle: sweepGradient.startAngle,
@@ -864,7 +969,9 @@ extension GradientExtension on Gradient {
     if (this is LinearGradient) {
       final LinearGradient linearGradient = this as LinearGradient;
       return LinearGradient(
-        colors: linearGradient.colors.map((color) => color.asLightModeColor).toList(),
+        colors: linearGradient.colors
+            .map((color) => color.asLightModeColor)
+            .toList(),
         stops: linearGradient.stops,
         begin: linearGradient.begin,
         end: linearGradient.end,
@@ -874,7 +981,9 @@ extension GradientExtension on Gradient {
     } else if (this is RadialGradient) {
       final RadialGradient radialGradient = this as RadialGradient;
       return RadialGradient(
-        colors: radialGradient.colors.map((color) => color.asLightModeColor).toList(),
+        colors: radialGradient.colors
+            .map((color) => color.asLightModeColor)
+            .toList(),
         stops: radialGradient.stops,
         center: radialGradient.center,
         focal: radialGradient.focal,
@@ -886,7 +995,9 @@ extension GradientExtension on Gradient {
     } else if (this is SweepGradient) {
       final SweepGradient sweepGradient = this as SweepGradient;
       return SweepGradient(
-        colors: sweepGradient.colors.map((color) => color.asLightModeColor).toList(),
+        colors: sweepGradient.colors
+            .map((color) => color.asLightModeColor)
+            .toList(),
         stops: sweepGradient.stops,
         center: sweepGradient.center,
         startAngle: sweepGradient.startAngle,
@@ -906,14 +1017,19 @@ extension GradientExtension on Gradient {
   ///
   /// @param backgroundColor The background color that the resulting gradient will be displayed on
   /// @param contrastLevel Optional parameter to control the contrast level (0.0-1.0), defaults to 0.5
-  Gradient asLightModeGradientWithContext(Color backgroundColor, {double contrastLevel = 0.5}) {
+  Gradient asLightModeGradientWithContext(
+    Color backgroundColor, {
+    double contrastLevel = 0.5,
+  }) {
     if (this is LinearGradient) {
       final LinearGradient linearGradient = this as LinearGradient;
       return LinearGradient(
         colors: linearGradient.colors
             .map(
-              (color) =>
-                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+              (color) => color.asLightModeColorWithContext(
+                backgroundColor,
+                contrastLevel: contrastLevel,
+              ),
             )
             .toList(),
         stops: linearGradient.stops,
@@ -927,8 +1043,10 @@ extension GradientExtension on Gradient {
       return RadialGradient(
         colors: radialGradient.colors
             .map(
-              (color) =>
-                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+              (color) => color.asLightModeColorWithContext(
+                backgroundColor,
+                contrastLevel: contrastLevel,
+              ),
             )
             .toList(),
         stops: radialGradient.stops,
@@ -944,8 +1062,10 @@ extension GradientExtension on Gradient {
       return SweepGradient(
         colors: sweepGradient.colors
             .map(
-              (color) =>
-                  color.asLightModeColorWithContext(backgroundColor, contrastLevel: contrastLevel),
+              (color) => color.asLightModeColorWithContext(
+                backgroundColor,
+                contrastLevel: contrastLevel,
+              ),
             )
             .toList(),
         stops: sweepGradient.stops,
@@ -971,7 +1091,8 @@ extension GradientExtension on Gradient {
       final List<Color> enhancedColors = linearGradient.colors.map((color) {
         final HSLColor hsl = HSLColor.fromColor(color);
         final bool isDark =
-            material.ThemeData.estimateBrightnessForColor(color) == material.Brightness.dark;
+            material.ThemeData.estimateBrightnessForColor(color) ==
+            material.Brightness.dark;
 
         // Adjust hue slightly to create a more vibrant effect
         final double hueShift = isDark ? 2.0 : -2.0;
@@ -989,8 +1110,14 @@ extension GradientExtension on Gradient {
       }).toList();
 
       // Slightly shift the gradient direction for a dynamic feel
-      final Alignment adjustedBegin = _shiftAlignment(linearGradient.begin as Alignment, 0.02);
-      final Alignment adjustedEnd = _shiftAlignment(linearGradient.end as Alignment, 0.02);
+      final Alignment adjustedBegin = _shiftAlignment(
+        linearGradient.begin as Alignment,
+        0.02,
+      );
+      final Alignment adjustedEnd = _shiftAlignment(
+        linearGradient.end as Alignment,
+        0.02,
+      );
 
       return LinearGradient(
         colors: enhancedColors,
@@ -1007,7 +1134,8 @@ extension GradientExtension on Gradient {
       final List<Color> enhancedColors = radialGradient.colors.map((color) {
         final HSLColor hsl = HSLColor.fromColor(color);
         final bool isDark =
-            material.ThemeData.estimateBrightnessForColor(color) == material.Brightness.dark;
+            material.ThemeData.estimateBrightnessForColor(color) ==
+            material.Brightness.dark;
 
         // For radial gradients, we want a slightly different effect
         final double saturationAdjust = isDark ? -0.03 : 0.1;
@@ -1039,7 +1167,8 @@ extension GradientExtension on Gradient {
       final List<Color> enhancedColors = sweepGradient.colors.map((color) {
         final HSLColor hsl = HSLColor.fromColor(color);
         final bool isDark =
-            material.ThemeData.estimateBrightnessForColor(color) == material.Brightness.dark;
+            material.ThemeData.estimateBrightnessForColor(color) ==
+            material.Brightness.dark;
 
         // For sweep gradients, create a more pronounced effect
         final double hueShift = isDark ? 3.0 : -3.0;

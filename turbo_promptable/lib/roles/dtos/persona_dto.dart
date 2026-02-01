@@ -58,5 +58,6 @@ class PersonaDto extends TurboPromptable {
   }
 
   @override
-  String toString() => 'PersonaDto{achievements: $achievements, preferences: $preferences, resume: $resume, values: $values, background: $background, communicationStyle: $communicationStyle, nickname: $nickname}';
+  String toString() =>
+      'PersonaDto{achievements: $achievements, preferences: $preferences, resume: $resume, values: $values, background: $background, communicationStyle: $communicationStyle, nickname: $nickname}';
 }

@@ -49,10 +49,15 @@ enum TThemeMode {
     final buttonTheme = (TThemeMode themeMode) => ShadButtonTheme(
       decoration: ShadDecoration(
         border: ShadBorder(radius: BorderRadius.circular(12)),
-        focusedBorder: ShadBorder(radius: BorderRadius.circular(TSizes.buttonBorderRadius.x(0.6))),
+        focusedBorder: ShadBorder(
+          radius: BorderRadius.circular(TSizes.buttonBorderRadius.x(0.6)),
+        ),
       ),
     );
-    const h1LargeTheme = TextStyle(fontWeight: FontWeight.w900, fontFamily: FontFamily.nunito);
+    const h1LargeTheme = TextStyle(
+      fontWeight: FontWeight.w900,
+      fontFamily: FontFamily.nunito,
+    );
 
     final dialogTheme = (TThemeMode themeMode) => ShadDialogTheme(
       removeBorderRadiusWhenTiny: false,
@@ -72,7 +77,10 @@ enum TThemeMode {
     );
 
     const hTheme = TextStyle(letterSpacing: 2, fontFamily: FontFamily.nunito);
-    const h34Theme = TextStyle(fontFamily: FontFamily.nunito, fontWeight: FontWeight.w800);
+    const h34Theme = TextStyle(
+      fontFamily: FontFamily.nunito,
+      fontWeight: FontWeight.w800,
+    );
     final mutedTheme = (TThemeMode themeMode) => TextStyle(
       color: switch (themeMode) {
         TThemeMode.dark => TColors.subtitleDark,
@@ -91,7 +99,10 @@ enum TThemeMode {
       },
     );
 
-    const largeTheme = TextStyle(fontWeight: FontWeight.bold, fontFamily: FontFamily.nunito);
+    const largeTheme = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontFamily: FontFamily.nunito,
+    );
 
     const listTheme = TextStyle(
       fontWeight: FontWeight.w800,
@@ -118,7 +129,9 @@ enum TThemeMode {
       ),
     );
     final selectTheme = ShadSelectTheme(
-      decoration: ShadDecoration(border: ShadBorder(radius: BorderRadius.circular(6))),
+      decoration: ShadDecoration(
+        border: ShadBorder(radius: BorderRadius.circular(6)),
+      ),
     );
     final optionTheme = (TThemeMode themeMode) => ShadOptionTheme(
       hoveredBackgroundColor: switch (themeMode) {
@@ -191,7 +204,9 @@ enum TThemeMode {
           brightness: Brightness.dark,
           disableSecondaryBorder: true,
           popoverTheme: ShadPopoverTheme(
-            decoration: ShadDecoration(border: ShadBorder.all(radius: BorderRadius.circular(16))),
+            decoration: ShadDecoration(
+              border: ShadBorder.all(radius: BorderRadius.circular(16)),
+            ),
           ),
           cardTheme: cardTheme(TThemeMode.dark),
           checkboxTheme: checkboxTheme,
@@ -357,7 +372,8 @@ class CustomColorScheme extends ShadColorScheme {
       accent: accent ?? this.accent,
       accentForeground: accentForeground ?? this.accentForeground,
       destructive: destructive ?? this.destructive,
-      destructiveForeground: destructiveForeground ?? this.destructiveForeground,
+      destructiveForeground:
+          destructiveForeground ?? this.destructiveForeground,
       border: border ?? this.border,
       input: input ?? this.input,
       ring: ring ?? this.ring,

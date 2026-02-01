@@ -26,8 +26,10 @@ class ConfigLoader {
 
     return {
       if (yaml['name'] != null) 'name': yaml['name'].toString(),
-      if (yaml['organization'] != null) 'organization': yaml['organization'].toString(),
-      if (yaml['description'] != null) 'description': yaml['description'].toString(),
+      if (yaml['organization'] != null)
+        'organization': yaml['organization'].toString(),
+      if (yaml['description'] != null)
+        'description': yaml['description'].toString(),
     };
   }
 
@@ -43,7 +45,9 @@ class ConfigLoader {
     return {
       'name': cliName ?? fileConfig?['name'],
       'organization': cliOrg ?? fileConfig?['organization'],
-      'description': cliDescription ?? fileConfig?['description'] ?? 'A Flutter application.',
+      'description': cliDescription ??
+          fileConfig?['description'] ??
+          'A Flutter application.',
     };
   }
 }

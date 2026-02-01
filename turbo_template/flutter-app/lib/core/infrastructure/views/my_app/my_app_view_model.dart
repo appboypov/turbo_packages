@@ -95,7 +95,9 @@ class MyAppViewModel extends TViewModel with Turbolytics {
     // Firebase is initialized in main.dart before runApp
     // Only initialize if not already done (e.g., during Phoenix.rebirth)
     if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(options: Environment.current.firebaseOptions);
+      await Firebase.initializeApp(
+        options: Environment.current.firebaseOptions,
+      );
     }
 
     await EmulatorConfig.tryConfigureEmulators();
@@ -129,10 +131,14 @@ class MyAppViewModel extends TViewModel with Turbolytics {
   LazyLocatorDef<ToastService> get lazyToastService =>
       () => ToastService.locate;
   GoRouter get coreRouter => baseRouterService.coreRouter;
-  ValueListenable<TBusyModel> get busyListenable => busyService.isBusyListenable;
-  ValueListenable<TSupportedLanguage> get language => _languageService().language;
-  ValueListenable<TThemeMode> get themeMode => _themeService().themeModeListenable;
-  ValueListenable<bool> get hasInternetConnection => _connectionService().hasInternetConnection;
+  ValueListenable<TBusyModel> get busyListenable =>
+      busyService.isBusyListenable;
+  ValueListenable<TSupportedLanguage> get language =>
+      _languageService().language;
+  ValueListenable<TThemeMode> get themeMode =>
+      _themeService().themeModeListenable;
+  ValueListenable<bool> get hasInternetConnection =>
+      _connectionService().hasInternetConnection;
 
   // 🏗 HELPERS ------------------------------------------------------------------------------- \\
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
@@ -154,12 +160,16 @@ class MyAppViewModel extends TViewModel with Turbolytics {
         'Environment changed from $lastEnvironment to $currentEnvironment. Signing out user.',
       );
       // Update before logout; logout triggers GetIt.reset and disposes services.
-      await localStorageService.updateLastEnvironment(environment: currentEnvironment);
+      await localStorageService.updateLastEnvironment(
+        environment: currentEnvironment,
+      );
       await FirebaseAuth.instance.signOut();
       return;
     }
 
-    await localStorageService.updateLastEnvironment(environment: currentEnvironment);
+    await localStorageService.updateLastEnvironment(
+      environment: currentEnvironment,
+    );
   }
 
   Future<void> _trySetCurrentVersion() async {

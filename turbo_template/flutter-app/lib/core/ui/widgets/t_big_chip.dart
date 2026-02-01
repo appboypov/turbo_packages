@@ -72,7 +72,10 @@ class TBigChip extends StatelessWidget {
                         child: SvgPicture.asset(
                           height: iconHeight,
                           const $AssetsSvgsGen().check.path,
-                          colorFilter: ColorFilter.mode(color.onColor, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(
+                            color.onColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ),

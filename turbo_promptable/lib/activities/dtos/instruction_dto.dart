@@ -14,7 +14,8 @@ class InstructionDto extends TurboPromptable {
   /// Creates an [InstructionDto] with the given properties.
 
   static const fromJsonFactory = _$InstructionDtoFromJson;
-  factory InstructionDto.fromJson(Map<String, dynamic> json) => _$InstructionDtoFromJson(json);
+  factory InstructionDto.fromJson(Map<String, dynamic> json) =>
+      _$InstructionDtoFromJson(json);
   static const toJsonFactory = _$InstructionDtoToJson;
   @override
   Map<String, dynamic> toJson() => _$InstructionDtoToJson(this);

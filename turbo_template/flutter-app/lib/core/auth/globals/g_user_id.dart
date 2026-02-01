@@ -15,7 +15,9 @@ String get gForceUserId => gAuthUser!.uid;
 String gUserIdNotNull({required String when}) {
   final userId = gAuthUser?.uid;
   if (userId == null) {
-    throw UnexpectedNullException(reason: 'userId should not be null when $when.');
+    throw UnexpectedNullException(
+      reason: 'userId should not be null when $when.',
+    );
   }
   return userId;
 }

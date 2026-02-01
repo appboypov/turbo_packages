@@ -132,7 +132,11 @@ class LocatorService with Turbolytics {
 
       log.info('Service reset completed successfully.');
     } catch (error, stackTrace) {
-      log.error('Failed to reset services', error: error, stackTrace: stackTrace);
+      log.error(
+        'Failed to reset services',
+        error: error,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
   }

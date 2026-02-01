@@ -64,7 +64,9 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
         tooltip: 'Go home',
         icon: Icons.home_rounded,
         onPressed: onHomePressed,
-        isActive: contextualButtonsService.navigationTabService.activeTab.value == NavigationTab.home,
+        isActive:
+            contextualButtonsService.navigationTabService.activeTab.value ==
+            NavigationTab.home,
       ),
       position: TContextualPosition.bottom,
     ),
@@ -75,7 +77,9 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
         tooltip: 'Open styling',
         icon: Icons.palette_rounded,
         onPressed: onStylingPressed,
-        isActive: contextualButtonsService.navigationTabService.activeTab.value == NavigationTab.styling,
+        isActive:
+            contextualButtonsService.navigationTabService.activeTab.value ==
+            NavigationTab.styling,
       ),
       position: TContextualPosition.bottom,
     ),

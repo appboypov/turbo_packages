@@ -54,5 +54,6 @@ class RepoDto extends TurboPromptable {
   }
 
   @override
-  String toString() => 'RepoDto{url: $url, projectKey: $projectKey, projectManagementUrl: $projectManagementUrl, readMe: $readMe, architecture: $architecture, instructions: $instructions}';
+  String toString() =>
+      'RepoDto{url: $url, projectKey: $projectKey, projectManagementUrl: $projectManagementUrl, readMe: $readMe, architecture: $architecture, instructions: $instructions}';
 }
