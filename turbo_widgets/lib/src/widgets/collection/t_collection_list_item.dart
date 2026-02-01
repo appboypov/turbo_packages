@@ -31,8 +31,9 @@ class TCollectionListItem extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(borderRadius),
-        mouseCursor:
-            isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        mouseCursor: isEnabled
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           constraints: const BoxConstraints(minHeight: 48),

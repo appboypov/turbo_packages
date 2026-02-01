@@ -28,8 +28,9 @@ abstract class TAnalyticsInterface {
 }
 
 class IndividualUsage {
-  late final Turbolytics turbolytics =
-      Turbolytics.create(location: runtimeType.toString());
+  late final Turbolytics turbolytics = Turbolytics.create(
+    location: runtimeType.toString(),
+  );
   late final TLog log = TLog(location: runtimeType.toString());
   late final TAnalyticsService analyticsService = TAnalyticsService();
 }

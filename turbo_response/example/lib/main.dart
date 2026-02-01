@@ -50,11 +50,10 @@ Future<void> demonstrateAsyncOperations() async {
 
   // Chain operations
   print('\nChaining operations...');
-  final chained =
-      await successResponse.andThen((value) async => TurboResponse<int>.success(
-            result: value.length,
-            title: 'Length',
-          ));
+  final chained = await successResponse.andThen(
+    (value) async =>
+        TurboResponse<int>.success(result: value.length, title: 'Length'),
+  );
   print('Chained result: ${chained.result}');
 }
 
@@ -178,9 +177,7 @@ Future<void> demonstrateRecovery() async {
   print('  Preserved title: ${recovered.title}');
 
   // Map fail
-  final mappedFail = await failResponse.mapFail(
-    (error) => 'Wrapped: $error',
-  );
+  final mappedFail = await failResponse.mapFail((error) => 'Wrapped: $error');
   print('Mapped fail error: ${mappedFail.error}');
 }
 

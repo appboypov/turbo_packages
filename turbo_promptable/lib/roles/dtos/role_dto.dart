@@ -34,9 +34,8 @@ class RoleDto extends TurboPromptable {
   RoleDto copyWith({
     PersonaDto? persona,
     ExpertiseDto? expertise,
-  }) =>
-      RoleDto(
-        persona: persona ?? this.persona,
-        expertise: expertise ?? this.expertise,
-      );
+  }) => RoleDto(
+    persona: persona ?? this.persona,
+    expertise: expertise ?? this.expertise,
+  );
 }

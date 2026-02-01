@@ -33,14 +33,14 @@ class ExampleDTO extends TWriteable {
 
   @override
   Map<String, dynamic> toJson() => {
-        "thisIsAString": thisIsAString,
-        "thisIsANumber": thisIsANumber,
-        "thisIsABoolean": thisIsABoolean,
-      };
+    "thisIsAString": thisIsAString,
+    "thisIsANumber": thisIsANumber,
+    "thisIsABoolean": thisIsABoolean,
+  };
 
   factory ExampleDTO.fromJson(Map<String, dynamic> json) => ExampleDTO(
-        thisIsAString: json["thisIsAString"] as String,
-        thisIsANumber: json["thisIsANumber"] as double,
-        thisIsABoolean: json["thisIsABoolean"] as bool,
-      );
+    thisIsAString: json["thisIsAString"] as String,
+    thisIsANumber: json["thisIsANumber"] as double,
+    thisIsABoolean: json["thisIsABoolean"] as bool,
+  );
 }

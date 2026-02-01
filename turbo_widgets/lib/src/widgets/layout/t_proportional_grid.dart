@@ -83,8 +83,11 @@ class _SlideFlowDelegate extends FlowDelegate {
       Offset position = current.position;
       if (previousLayout != null && animation.value < 1.0) {
         final previous = _findResult(previousLayout!, i) ?? current;
-        position =
-            Offset.lerp(previous.position, current.position, animation.value)!;
+        position = Offset.lerp(
+          previous.position,
+          current.position,
+          animation.value,
+        )!;
       }
 
       context.paintChild(
@@ -104,8 +107,11 @@ class _SlideFlowDelegate extends FlowDelegate {
     }
 
     final previous = _findResult(previousLayout!, i) ?? current;
-    final interpolatedSize =
-        Size.lerp(previous.size, current.size, animation.value)!;
+    final interpolatedSize = Size.lerp(
+      previous.size,
+      current.size,
+      animation.value,
+    )!;
     return BoxConstraints.tight(interpolatedSize);
   }
 
@@ -405,20 +411,21 @@ class _ProportionalGridAnimatedContent extends StatelessWidget {
               animation: animation,
             )
           : _StaticFlowDelegate(layout: currentLayout),
-      children:
-          items.map((item) => RepaintBoundary(child: item.child)).toList(),
+      children: items
+          .map((item) => RepaintBoundary(child: item.child))
+          .toList(),
     );
 
     return switch (animationType) {
       TProportionalGridAnimation.slide => flow,
       TProportionalGridAnimation.fade => FadeTransition(
-          opacity: animation,
-          child: flow,
-        ),
+        opacity: animation,
+        child: flow,
+      ),
       TProportionalGridAnimation.scale => ScaleTransition(
-          scale: animation,
-          child: flow,
-        ),
+        scale: animation,
+        child: flow,
+      ),
       TProportionalGridAnimation.none => flow,
     };
   }

@@ -267,8 +267,9 @@ final class TurboFirestorePermissionDeniedException
 
   @override
   String toString() {
-    final buffer =
-        StringBuffer('TurboFirestorePermissionDeniedException: $message');
+    final buffer = StringBuffer(
+      'TurboFirestorePermissionDeniedException: $message',
+    );
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');
@@ -418,8 +419,9 @@ final class TurboFirestoreAlreadyExistsException extends TFirestoreException {
 
   @override
   String toString() {
-    final buffer =
-        StringBuffer('TurboFirestoreAlreadyExistsException: $message');
+    final buffer = StringBuffer(
+      'TurboFirestoreAlreadyExistsException: $message',
+    );
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');
@@ -520,8 +522,9 @@ final class TurboFirestoreDeadlineExceededException
 
   @override
   String toString() {
-    final buffer =
-        StringBuffer('TurboFirestoreDeadlineExceededException: $message');
+    final buffer = StringBuffer(
+      'TurboFirestoreDeadlineExceededException: $message',
+    );
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');

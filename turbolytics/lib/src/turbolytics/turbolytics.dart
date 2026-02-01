@@ -30,10 +30,9 @@ mixin Turbolytics<D extends TAnalytics> {
   // Used to create an instance of Turbolytics when using a mixin is not possible or breaks a const constructor.
   static Turbolytics<T> create<T extends TAnalytics>({
     required String location,
-  }) =>
-      _Turbolytics<T>(
-        location: location,
-      );
+  }) => _Turbolytics<T>(
+    location: location,
+  );
 
   /// Used to handle events in the proper order that they are sent.
   static final TEventBus _eventBus = TEventBus();

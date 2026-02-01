@@ -129,20 +129,20 @@ class TFirestoreApi<T> {
     bool isCollectionGroup = false,
     bool tryAddLocalDocumentReference = false,
     GetOptions? getOptions,
-  })  : _firebaseFirestore = firebaseFirestore,
-        _collectionPath = collectionPath,
-        _toJson = toJson,
-        _fromJson = fromJson,
-        _fromJsonError = fromJsonError,
-        _tryAddLocalId = tryAddLocalId,
-        _log = logger ?? TFirestoreLogger(),
-        _createdAtFieldName = createdAtFieldName,
-        _updatedAtFieldName = updatedAtFieldName,
-        _idFieldName = idFieldName,
-        _documentReferenceFieldName = documentReferenceFieldName,
-        _isCollectionGroup = isCollectionGroup,
-        _tryAddLocalDocumentReference = tryAddLocalDocumentReference,
-        _getOptions = getOptions;
+  }) : _firebaseFirestore = firebaseFirestore,
+       _collectionPath = collectionPath,
+       _toJson = toJson,
+       _fromJson = fromJson,
+       _fromJsonError = fromJsonError,
+       _tryAddLocalId = tryAddLocalId,
+       _log = logger ?? TFirestoreLogger(),
+       _createdAtFieldName = createdAtFieldName,
+       _updatedAtFieldName = updatedAtFieldName,
+       _idFieldName = idFieldName,
+       _documentReferenceFieldName = documentReferenceFieldName,
+       _isCollectionGroup = isCollectionGroup,
+       _tryAddLocalDocumentReference = tryAddLocalDocumentReference,
+       _getOptions = getOptions;
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
@@ -222,9 +222,10 @@ class TFirestoreApi<T> {
   /// Returns a new instance of [V] with basic variables filled in.
   V turboVars<V extends TApiVars>() {
     return TApiVars(
-      id: genId,
-      now: DateTime.now(),
-    ) as V;
+          id: genId,
+          now: DateTime.now(),
+        )
+        as V;
   }
 
   /// Helper method to fetch a [WriteBatch] from [_firebaseFirestore]..
@@ -251,8 +252,10 @@ class TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final docRef =
-        getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
+    final docRef = getDocRefById(
+      id: id,
+      collectionPathOverride: collectionPathOverride,
+    );
     _log.debug(
       message: 'Checking if document exists..',
       sensitiveData: TSensitiveData(
@@ -389,17 +392,16 @@ class TFirestoreApi<T> {
     }
   }
 
-// 🪄 MUTATORS ------------------------------------------------------------------------------ \\
+  // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   /// Helper method to run a [Transaction] from [_firebaseFirestore]..
   Future<E> runTransaction<E>(
     TransactionHandler<E> transactionHandler, {
     Duration timeout = const Duration(seconds: 30),
     int maxAttempts = 5,
-  }) =>
-      _firebaseFirestore.runTransaction(
-        transactionHandler,
-        timeout: timeout,
-        maxAttempts: maxAttempts,
-      );
+  }) => _firebaseFirestore.runTransaction(
+    transactionHandler,
+    timeout: timeout,
+    maxAttempts: maxAttempts,
+  );
 }

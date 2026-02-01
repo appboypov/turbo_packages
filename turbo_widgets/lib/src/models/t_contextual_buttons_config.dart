@@ -3,9 +3,10 @@ import 'package:turbo_widgets/src/enums/t_contextual_allow_filter.dart';
 import 'package:turbo_widgets/src/enums/t_contextual_position.dart';
 
 /// Callback that builds a list of widgets for a contextual position.
-typedef TContextualPositionWidgetsBuilder = List<Widget> Function(
-  BuildContext context,
-);
+typedef TContextualPositionWidgetsBuilder =
+    List<Widget> Function(
+      BuildContext context,
+    );
 
 /// Default empty position builder.
 List<Widget> _emptyPosition(BuildContext _) => const [];
@@ -119,16 +120,16 @@ class TContextualButtonsConfig {
 
   @override
   int get hashCode => Object.hash(
-        top,
-        bottom,
-        left,
-        right,
-        allowFilter,
-        Object.hashAll(positionOverrides.entries),
-        Object.hashAll(hiddenPositions),
-        animationDuration,
-        animationCurve,
-      );
+    top,
+    bottom,
+    left,
+    right,
+    allowFilter,
+    Object.hashAll(positionOverrides.entries),
+    Object.hashAll(hiddenPositions),
+    animationDuration,
+    animationCurve,
+  );
 
   static bool _setEquals<T>(Set<T> a, Set<T> b) {
     if (identical(a, b)) return true;

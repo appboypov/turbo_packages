@@ -8,7 +8,8 @@ enum AuthStep {
   createHousehold,
   createUsernameDoc,
   createProfileDoc,
-  verifyEmail;
+  verifyEmail
+  ;
 
   static const first = createUserDoc;
 

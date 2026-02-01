@@ -6,7 +6,8 @@ import 'package:turbo_flutter_template/core/ui/widgets/color_extension.dart';
 enum SelectedState {
   deselected,
   selected,
-  excluded;
+  excluded
+  ;
 
   SelectedState get next {
     switch (this) {

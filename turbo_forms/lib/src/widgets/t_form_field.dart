@@ -37,30 +37,30 @@ class TFormField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
-        listenable: formFieldConfig,
-        builder: (context, listenableChild) {
-          return StatelessTFormField(
-            horizontalPadding: horizontalPadding,
-            label: label,
-            description: description,
-            descriptionStyle: descriptionStyle,
-            labelTrailing: labelTrailing,
-            errorPadding: errorPadding,
-            errorText: formFieldConfig.errorText,
-            shouldValidate: formFieldConfig.shouldValidate,
-            isEnabled: formFieldConfig.isEnabled,
-            isReadOnly: formFieldConfig.isReadOnly,
-            errorTextStyle: errorTextStyle,
-            disabledOpacity: disabledOpacity,
-            animationDuration: animationDuration,
-            formFieldContent: TFormFieldBuilder(
-              fieldConfig: formFieldConfig,
-              builder: builder,
-              child: child,
-            ),
-          );
-        },
+    listenable: formFieldConfig,
+    builder: (context, listenableChild) {
+      return StatelessTFormField(
+        horizontalPadding: horizontalPadding,
+        label: label,
+        description: description,
+        descriptionStyle: descriptionStyle,
+        labelTrailing: labelTrailing,
+        errorPadding: errorPadding,
+        errorText: formFieldConfig.errorText,
+        shouldValidate: formFieldConfig.shouldValidate,
+        isEnabled: formFieldConfig.isEnabled,
+        isReadOnly: formFieldConfig.isReadOnly,
+        errorTextStyle: errorTextStyle,
+        disabledOpacity: disabledOpacity,
+        animationDuration: animationDuration,
+        formFieldContent: TFormFieldBuilder(
+          fieldConfig: formFieldConfig,
+          builder: builder,
+          child: child,
+        ),
       );
+    },
+  );
 }
 
 class StatelessTFormField extends StatelessWidget {

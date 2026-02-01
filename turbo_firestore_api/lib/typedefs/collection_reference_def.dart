@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 ///   .where('status', isEqualTo: 'active')
 ///   .orderBy('name');
 /// ```
-typedef CollectionReferenceDef<T> = Query<T> Function(
-  Query<T> collectionReference,
-);
+typedef CollectionReferenceDef<T> =
+    Query<T> Function(
+      Query<T> collectionReference,
+    );

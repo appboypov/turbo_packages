@@ -78,7 +78,8 @@ class _TContextualButtonsAnimated extends StatefulWidget {
 }
 
 class _TContextualButtonsAnimatedState
-    extends State<_TContextualButtonsAnimated> with TickerProviderStateMixin {
+    extends State<_TContextualButtonsAnimated>
+    with TickerProviderStateMixin {
   /// Per-widget animation controllers, keyed by widget identity key.
   final Map<Object, AnimationController> _widgetControllers = {};
 
@@ -122,8 +123,8 @@ class _TContextualButtonsAnimatedState
   }
 
   Duration get _halfDuration => Duration(
-        milliseconds: widget.config.animationDuration.inMilliseconds ~/ 2,
-      );
+    milliseconds: widget.config.animationDuration.inMilliseconds ~/ 2,
+  );
 
   void _enqueueAnimation(Map<TContextualPosition, List<Widget>> newContent) {
     _pendingQueue.add(newContent);
@@ -568,8 +569,9 @@ class _TPositionContent extends StatelessWidget {
       }
     }
 
-    final orderedChildren =
-        _reverseStack ? children.reversed.toList() : children;
+    final orderedChildren = _reverseStack
+        ? children.reversed.toList()
+        : children;
 
     return Semantics(
       container: true,

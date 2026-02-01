@@ -6,8 +6,8 @@ class TAnalytic {
     required String subject,
     required TAnalyticsType type,
     this.parameters,
-  })  : _subject = subject,
-        _type = type;
+  }) : _subject = subject,
+       _type = type;
 
   final String _subject;
   final TAnalyticsType _type;
@@ -32,9 +32,9 @@ class CustomAnalytic extends TAnalytic {
     required String name,
     super.parameters,
   }) : super(
-          subject: name,
-          type: TAnalyticsType.none,
-        );
+         subject: name,
+         type: TAnalyticsType.none,
+       );
 
   @override
   String get name => _subject;

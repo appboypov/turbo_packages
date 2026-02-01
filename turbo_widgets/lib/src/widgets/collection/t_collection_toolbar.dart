@@ -170,8 +170,9 @@ class _TCollectionLayoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadButton.raw(
-      variant:
-          isSelected ? ShadButtonVariant.primary : ShadButtonVariant.outline,
+      variant: isSelected
+          ? ShadButtonVariant.primary
+          : ShadButtonVariant.outline,
       size: ShadButtonSize.sm,
       width: 36,
       height: 36,

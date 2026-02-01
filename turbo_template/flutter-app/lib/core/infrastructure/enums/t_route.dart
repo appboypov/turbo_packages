@@ -19,7 +19,8 @@ enum TRoute {
   styling,
   playground,
   settings,
-  oops;
+  oops
+  ;
 
   bool get isRootPath => switch (this) {
     TRoute.shell => false,

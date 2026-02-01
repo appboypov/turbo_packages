@@ -9,7 +9,8 @@ enum DateFormat {
   DDMYYYY,
   YYYYMMDD,
   DDMMMYYYY,
-  DDMMYYYY;
+  DDMMYYYY
+  ;
 
   static const defaultValue = DateFormat.MMDDYYYY;
 

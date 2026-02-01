@@ -58,7 +58,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
   /// [listAll] retrieve all documents
   Future<TurboResponse<List<Map<String, dynamic>>>> listByQuery({
     required CollectionReferenceDef<Map<String, dynamic>>
-        collectionReferenceQuery,
+    collectionReferenceQuery,
     required String whereDescription,
   }) async {
     try {
@@ -69,14 +69,14 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           whereDescription: whereDescription,
         ),
       );
-      final result = (await collectionReferenceQuery(
-        listCollectionReference(),
-      ).get(_getOptions))
-          .docs
-          .map(
-            (e) => e.data(),
-          )
-          .toList();
+      final result =
+          (await collectionReferenceQuery(
+                listCollectionReference(),
+              ).get(_getOptions)).docs
+              .map(
+                (e) => e.data(),
+              )
+              .toList();
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
@@ -154,10 +154,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
       );
       final result = (await collectionReferenceQuery(
         listCollectionReferenceWithConverter(),
-      ).get(_getOptions))
-          .docs
-          .map((e) => e.data())
-          .toList();
+      ).get(_getOptions)).docs.map((e) => e.data()).toList();
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
@@ -221,8 +218,7 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           path: _collectionPath(),
         ),
       );
-      final result = (await listCollectionReference().get(_getOptions))
-          .docs
+      final result = (await listCollectionReference().get(_getOptions)).docs
           .map(
             (e) => e.data(),
           )
@@ -289,11 +285,9 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           path: _collectionPath(),
         ),
       );
-      final result =
-          (await listCollectionReferenceWithConverter().get(_getOptions))
-              .docs
-              .map((e) => e.data())
-              .toList();
+      final result = (await listCollectionReferenceWithConverter().get(
+        _getOptions,
+      )).docs.map((e) => e.data()).toList();
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
@@ -353,55 +347,56 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
             ? _firebaseFirestore.collectionGroup(_collectionPath())
             : _firebaseFirestore.collection(_collectionPath()))
         .withConverter<Map<String, dynamic>>(
-      fromFirestore: (snapshot, _) {
-        final data = snapshot.data() ?? {};
-        try {
-          return data
-              .tryAddLocalId<String, dynamic>(
-                snapshot.id,
-                idFieldName: _idFieldName,
-                tryAddLocalId: _tryAddLocalId,
-              )
-              .tryAddLocalDocumentReference<String, dynamic>(
-                snapshot.reference,
-                referenceFieldName: _documentReferenceFieldName,
-                tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data() ?? {};
+            try {
+              return data
+                  .tryAddLocalId<String, dynamic>(
+                    snapshot.id,
+                    idFieldName: _idFieldName,
+                    tryAddLocalId: _tryAddLocalId,
+                  )
+                  .tryAddLocalDocumentReference<String, dynamic>(
+                    snapshot.reference,
+                    referenceFieldName: _documentReferenceFieldName,
+                    tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
+                  );
+            } catch (error) {
+              _log.error(
+                message:
+                    'Unexpected error caught while adding local id and document reference',
+                sensitiveData: TSensitiveData(
+                  path: _collectionPath(),
+                  id: snapshot.id,
+                  data: data,
+                ),
               );
-        } catch (error) {
-          _log.error(
-            message:
-                'Unexpected error caught while adding local id and document reference',
-            sensitiveData: TSensitiveData(
-              path: _collectionPath(),
-              id: snapshot.id,
-              data: data,
-            ),
-          );
-          rethrow;
-        }
-      },
-      toFirestore: (data, _) {
-        try {
-          return data
-              .tryRemoveLocalId<String, dynamic>(
-                idFieldName: _idFieldName,
-                tryRemoveLocalId: _tryAddLocalId,
-              )
-              .tryRemoveLocalDocumentReference<String, dynamic>(
-                referenceFieldName: _documentReferenceFieldName,
-                tryRemoveLocalDocumentReference: _tryAddLocalDocumentReference,
+              rethrow;
+            }
+          },
+          toFirestore: (data, _) {
+            try {
+              return data
+                  .tryRemoveLocalId<String, dynamic>(
+                    idFieldName: _idFieldName,
+                    tryRemoveLocalId: _tryAddLocalId,
+                  )
+                  .tryRemoveLocalDocumentReference<String, dynamic>(
+                    referenceFieldName: _documentReferenceFieldName,
+                    tryRemoveLocalDocumentReference:
+                        _tryAddLocalDocumentReference,
+                  );
+            } catch (error) {
+              _log.error(
+                message: 'Could not find collection',
+                sensitiveData: TSensitiveData(
+                  path: _collectionPath(),
+                ),
               );
-        } catch (error) {
-          _log.error(
-            message: 'Could not find collection',
-            sensitiveData: TSensitiveData(
-              path: _collectionPath(),
-            ),
-          );
-          rethrow;
-        }
-      },
-    );
+              rethrow;
+            }
+          },
+        );
   }
 
   /// Gets a collection reference with type conversion
@@ -438,96 +433,99 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
             ? _firebaseFirestore.collectionGroup(_collectionPath())
             : _firebaseFirestore.collection(_collectionPath()))
         .withConverter<T>(
-      fromFirestore: (snapshot, _) {
-        final data = snapshot.data() ?? {};
-        try {
-          return _fromJson!(
-            data
-                .tryAddLocalId<String, dynamic>(
-                  snapshot.id,
-                  idFieldName: _idFieldName,
-                  tryAddLocalId: _tryAddLocalId,
-                )
-                .tryAddLocalDocumentReference<String, dynamic>(
-                  snapshot.reference,
-                  referenceFieldName: _documentReferenceFieldName,
-                  tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
-                ),
-          );
-        } catch (error, stackTrace) {
-          _log.error(
-            message:
-                'Unexpected error caught while adding local id and document reference',
-            sensitiveData: TSensitiveData(
-              path: _collectionPath(),
-              id: snapshot.id,
-              data: data,
-            ),
-            stackTrace: stackTrace,
-            error: InvalidJsonException(
-              id: snapshot.id,
-              path: snapshot.reference.path,
-              api: runtimeType.toString(),
-              data: data,
-            ),
-          );
-          _log.debug(
-            message: 'Returning error response..',
-            sensitiveData: null,
-          );
-          try {
-            return _fromJsonError!(
-              data
-                  .tryAddLocalId<String, dynamic>(
-                    snapshot.id,
-                    idFieldName: _idFieldName,
-                    tryAddLocalId: _tryAddLocalId,
-                  )
-                  .tryAddLocalDocumentReference<String, dynamic>(
-                    snapshot.reference,
-                    referenceFieldName: _documentReferenceFieldName,
-                    tryAddLocalDocumentReference: _tryAddLocalDocumentReference,
-                  ),
-            );
-          } catch (error, stackTrace) {
-            _log.error(
-              message:
-                  'Unexpected error caught while adding local id and document reference',
-              sensitiveData: TSensitiveData(
-                path: _collectionPath(),
-                id: snapshot.id,
-                data: data,
-              ),
-              error: error,
-              stackTrace: stackTrace,
-            );
-          }
-          rethrow;
-        }
-      },
-      toFirestore: (data, _) {
-        try {
-          return _toJson!(data)
-              .tryRemoveLocalId<String, dynamic>(
-                idFieldName: _idFieldName,
-                tryRemoveLocalId: _tryAddLocalId,
-              )
-              .tryRemoveLocalDocumentReference<String, dynamic>(
-                referenceFieldName: _documentReferenceFieldName,
-                tryRemoveLocalDocumentReference: _tryAddLocalDocumentReference,
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data() ?? {};
+            try {
+              return _fromJson!(
+                data
+                    .tryAddLocalId<String, dynamic>(
+                      snapshot.id,
+                      idFieldName: _idFieldName,
+                      tryAddLocalId: _tryAddLocalId,
+                    )
+                    .tryAddLocalDocumentReference<String, dynamic>(
+                      snapshot.reference,
+                      referenceFieldName: _documentReferenceFieldName,
+                      tryAddLocalDocumentReference:
+                          _tryAddLocalDocumentReference,
+                    ),
               );
-        } catch (error) {
-          _log.error(
-            message:
-                'Unexpected error caught while removing local id and document reference',
-            sensitiveData: TSensitiveData(
-              path: _collectionPath(),
-              data: data,
-            ),
-          );
-          rethrow;
-        }
-      },
-    );
+            } catch (error, stackTrace) {
+              _log.error(
+                message:
+                    'Unexpected error caught while adding local id and document reference',
+                sensitiveData: TSensitiveData(
+                  path: _collectionPath(),
+                  id: snapshot.id,
+                  data: data,
+                ),
+                stackTrace: stackTrace,
+                error: InvalidJsonException(
+                  id: snapshot.id,
+                  path: snapshot.reference.path,
+                  api: runtimeType.toString(),
+                  data: data,
+                ),
+              );
+              _log.debug(
+                message: 'Returning error response..',
+                sensitiveData: null,
+              );
+              try {
+                return _fromJsonError!(
+                  data
+                      .tryAddLocalId<String, dynamic>(
+                        snapshot.id,
+                        idFieldName: _idFieldName,
+                        tryAddLocalId: _tryAddLocalId,
+                      )
+                      .tryAddLocalDocumentReference<String, dynamic>(
+                        snapshot.reference,
+                        referenceFieldName: _documentReferenceFieldName,
+                        tryAddLocalDocumentReference:
+                            _tryAddLocalDocumentReference,
+                      ),
+                );
+              } catch (error, stackTrace) {
+                _log.error(
+                  message:
+                      'Unexpected error caught while adding local id and document reference',
+                  sensitiveData: TSensitiveData(
+                    path: _collectionPath(),
+                    id: snapshot.id,
+                    data: data,
+                  ),
+                  error: error,
+                  stackTrace: stackTrace,
+                );
+              }
+              rethrow;
+            }
+          },
+          toFirestore: (data, _) {
+            try {
+              return _toJson!(data)
+                  .tryRemoveLocalId<String, dynamic>(
+                    idFieldName: _idFieldName,
+                    tryRemoveLocalId: _tryAddLocalId,
+                  )
+                  .tryRemoveLocalDocumentReference<String, dynamic>(
+                    referenceFieldName: _documentReferenceFieldName,
+                    tryRemoveLocalDocumentReference:
+                        _tryAddLocalDocumentReference,
+                  );
+            } catch (error) {
+              _log.error(
+                message:
+                    'Unexpected error caught while removing local id and document reference',
+                sensitiveData: TSensitiveData(
+                  path: _collectionPath(),
+                  data: data,
+                ),
+              );
+              rethrow;
+            }
+          },
+        );
   }
 }

@@ -7,7 +7,8 @@ enum SupportedPlatform {
   macos,
   windows,
   linux,
-  web;
+  web
+  ;
 
   /// Returns the current platform the application is running on.
   static SupportedPlatform get current {

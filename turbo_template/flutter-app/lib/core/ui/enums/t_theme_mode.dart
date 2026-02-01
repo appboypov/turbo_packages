@@ -8,7 +8,8 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 
 enum TThemeMode {
   dark,
-  light;
+  light
+  ;
 
   bool get isDark => this == TThemeMode.dark;
   bool get isLight => this == TThemeMode.light;

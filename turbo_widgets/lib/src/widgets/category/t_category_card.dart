@@ -37,12 +37,14 @@ class TCategoryCard extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(borderRadius),
-          mouseCursor:
-              isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+          mouseCursor: isEnabled
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
           hoverColor: theme.colorScheme.muted.withValues(alpha: 0.2),
           focusColor: theme.colorScheme.muted.withValues(alpha: 0.2),
-          splashColor:
-              theme.colorScheme.primaryForeground.withValues(alpha: 0.12),
+          splashColor: theme.colorScheme.primaryForeground.withValues(
+            alpha: 0.12,
+          ),
           child: Stack(
             children: [
               Positioned.fill(

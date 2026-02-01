@@ -16,15 +16,15 @@ class TCalendarRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ShadCalendar(
-        selected: config.selected,
-        fromMonth: config.minDate,
-        toMonth: config.maxDate,
-        onChanged: (date) {
-          if (date != null) {
-            config.onDateSelected(date);
-            controller.onInteraction();
-            controller.nextStep();
-          }
-        },
-      );
+    selected: config.selected,
+    fromMonth: config.minDate,
+    toMonth: config.maxDate,
+    onChanged: (date) {
+      if (date != null) {
+        config.onDateSelected(date);
+        controller.onInteraction();
+        controller.nextStep();
+      }
+    },
+  );
 }

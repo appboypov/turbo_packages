@@ -10,12 +10,12 @@ void main() {
 
 class VetoUnitTest extends UnitTest {
   VetoUnitTest()
-      : super(
-          description: 'Tests all features of the veto package',
-          features: [
-            HasErrorFeature(),
-            IsBusyFeature(),
-            IsInitialisedFeature(),
-          ],
-        );
+    : super(
+        description: 'Tests all features of the veto package',
+        features: [
+          HasErrorFeature(),
+          IsBusyFeature(),
+          IsInitialisedFeature(),
+        ],
+      );
 }

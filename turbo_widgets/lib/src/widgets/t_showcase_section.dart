@@ -74,8 +74,10 @@ class _TShowcaseSectionState extends State<TShowcaseSection> {
                   ),
                   borderRadius: BorderRadius.circular(32),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
                 child: Row(
                   children: [
                     const SizedBox(width: 32),

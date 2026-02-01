@@ -21,15 +21,15 @@ class TPlaygroundParameterModel {
 
   /// Creates an empty model with no parameters.
   const TPlaygroundParameterModel.empty()
-      : strings = const {},
-        textAreas = const {},
-        ints = const {},
-        doubles = const {},
-        bools = const {},
-        dateTimes = const {},
-        dateRanges = const {},
-        times = const {},
-        selects = const {};
+    : strings = const {},
+      textAreas = const {},
+      ints = const {},
+      doubles = const {},
+      bools = const {},
+      dateTimes = const {},
+      dateRanges = const {},
+      times = const {},
+      selects = const {};
 
   /// String parameters displayed as single-line text inputs (ShadInput).
   final Map<String, String> strings;
@@ -159,7 +159,10 @@ class TPlaygroundParameterModel {
     final existing = selects[key];
     if (existing == null) return this;
     return copyWith(
-      selects: {...selects, key: existing.copyWith(value: value)},
+      selects: {
+        ...selects,
+        key: existing.copyWith(value: value),
+      },
     );
   }
 
@@ -180,16 +183,16 @@ class TPlaygroundParameterModel {
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(strings.entries),
-        Object.hashAll(textAreas.entries),
-        Object.hashAll(ints.entries),
-        Object.hashAll(doubles.entries),
-        Object.hashAll(bools.entries),
-        Object.hashAll(dateTimes.entries),
-        Object.hashAll(dateRanges.entries),
-        Object.hashAll(times.entries),
-        Object.hashAll(selects.entries),
-      );
+    Object.hashAll(strings.entries),
+    Object.hashAll(textAreas.entries),
+    Object.hashAll(ints.entries),
+    Object.hashAll(doubles.entries),
+    Object.hashAll(bools.entries),
+    Object.hashAll(dateTimes.entries),
+    Object.hashAll(dateRanges.entries),
+    Object.hashAll(times.entries),
+    Object.hashAll(selects.entries),
+  );
 
   static bool _mapEquals<K, V>(Map<K, V> a, Map<K, V> b) {
     if (identical(a, b)) return true;

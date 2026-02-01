@@ -47,7 +47,8 @@ enum TTimestampType {
   ///
   /// Use this when timestamp tracking is not needed or when you want
   /// to manage timestamps manually
-  none;
+  none
+  ;
 
   /// Adds the appropriate timestamps to a map based on the timestamp type
   ///

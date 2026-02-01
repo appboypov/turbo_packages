@@ -170,36 +170,38 @@ void main() {
       });
 
       test(
-          'GIVEN PlxClient WHEN connect is called with valid directory THEN isConnected is true',
-          () async {
-        final client = PlxClient(plxExecutable: 'echo');
+        'GIVEN PlxClient WHEN connect is called with valid directory THEN isConnected is true',
+        () async {
+          final client = PlxClient(plxExecutable: 'echo');
 
-        try {
-          await client.connect('/tmp');
-          expect(client.isConnected, isTrue);
-          expect(client.workingDirectory, equals('/tmp'));
-        } finally {
-          await client.disconnect();
-          await client.dispose();
-        }
-      });
+          try {
+            await client.connect('/tmp');
+            expect(client.isConnected, isTrue);
+            expect(client.workingDirectory, equals('/tmp'));
+          } finally {
+            await client.disconnect();
+            await client.dispose();
+          }
+        },
+      );
 
       test(
-          'GIVEN connected PlxClient WHEN disconnect is called THEN isConnected is false',
-          () async {
-        final client = PlxClient(plxExecutable: 'echo');
+        'GIVEN connected PlxClient WHEN disconnect is called THEN isConnected is false',
+        () async {
+          final client = PlxClient(plxExecutable: 'echo');
 
-        try {
-          await client.connect('/tmp');
-          expect(client.isConnected, isTrue);
+          try {
+            await client.connect('/tmp');
+            expect(client.isConnected, isTrue);
 
-          await client.disconnect();
-          expect(client.isConnected, isFalse);
-          expect(client.workingDirectory, isNull);
-        } finally {
-          await client.dispose();
-        }
-      });
+            await client.disconnect();
+            expect(client.isConnected, isFalse);
+            expect(client.workingDirectory, isNull);
+          } finally {
+            await client.dispose();
+          }
+        },
+      );
 
       test('connect throws StateError when already connected', () async {
         final client = PlxClient(plxExecutable: 'echo');
@@ -221,37 +223,39 @@ void main() {
 
     group('Request/Response', () {
       test(
-          'GIVEN disconnected PlxClient WHEN sendRequest is called THEN throws StateError',
-          () async {
-        final client = PlxClient();
+        'GIVEN disconnected PlxClient WHEN sendRequest is called THEN throws StateError',
+        () async {
+          final client = PlxClient();
 
-        expect(
-          () => client.sendRequest(
-            const WatchEventDto(
-              event: WatchEventType.get,
-              path: 'test.md',
+          expect(
+            () => client.sendRequest(
+              const WatchEventDto(
+                event: WatchEventType.get,
+                path: 'test.md',
+              ),
             ),
-          ),
-          throwsA(isA<StateError>()),
-        );
+            throwsA(isA<StateError>()),
+          );
 
-        await client.dispose();
-      });
+          await client.dispose();
+        },
+      );
 
       test(
-          'GIVEN connected PlxClient WHEN sendRequest is called with no id THEN generated id is used',
-          () async {
-        final client = PlxClient();
+        'GIVEN connected PlxClient WHEN sendRequest is called with no id THEN generated id is used',
+        () async {
+          final client = PlxClient();
 
-        const request = WatchEventDto(
-          event: WatchEventType.get,
-          path: 'test.md',
-        );
+          const request = WatchEventDto(
+            event: WatchEventType.get,
+            path: 'test.md',
+          );
 
-        expect(request.id, isNull);
+          expect(request.id, isNull);
 
-        await client.dispose();
-      });
+          await client.dispose();
+        },
+      );
     });
 
     group('Events Stream', () {

@@ -2,7 +2,8 @@ import 'dart:ui';
 
 enum TSupportedLanguage {
   nl,
-  en;
+  en
+  ;
 
   static const defaultValue = TSupportedLanguage.en;
 

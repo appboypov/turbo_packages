@@ -1,5 +1,1 @@
-enum MountedStatus {
-  mounted,
-  unmounted,
-  unknown,
-}
+enum MountedStatus { mounted, unmounted, unknown }

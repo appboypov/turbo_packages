@@ -24,7 +24,8 @@ enum UserLevel {
   free,
   friend,
   premium,
-  admin;
+  admin
+  ;
 
   UserLevel highest(UserLevel userLevel) =>
       index > userLevel.index ? this : userLevel;

@@ -8,7 +8,8 @@ import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
 enum IconSize {
   xSmall,
   small,
-  medium;
+  medium
+  ;
 
   double get size {
     switch (this) {
@@ -27,7 +28,8 @@ enum TIconDecoration {
   background,
   border,
   borderWithBackground,
-  transparant;
+  transparant
+  ;
 
   bool get isBorder => this == TIconDecoration.border;
 }

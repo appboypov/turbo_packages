@@ -35,10 +35,9 @@ class ExpertiseDto extends TurboPromptable {
     String? field,
     String? specialization,
     String? experience,
-  }) =>
-      ExpertiseDto(
-        field: field ?? this.field,
-        specialization: specialization ?? this.specialization,
-        experience: experience ?? this.experience,
-      );
+  }) => ExpertiseDto(
+    field: field ?? this.field,
+    specialization: specialization ?? this.specialization,
+    experience: experience ?? this.experience,
+  );
 }

@@ -59,8 +59,11 @@ class TEventBus {
                 '[EventBus] Combined events stream caught an error!';
             debugPrint(message);
             await Turbolytics._crashReportsInterface?.log(message);
-            await Turbolytics._crashReportsInterface
-                ?.recordError(error, stackTrace, fatal: true);
+            await Turbolytics._crashReportsInterface?.recordError(
+              error,
+              stackTrace,
+              fatal: true,
+            );
           },
           onDone: () async {
             const message = '[EventBus] Combined events stream is done!';
@@ -78,8 +81,11 @@ class TEventBus {
                 '[EventBus] CrashReports events stream caught an error!';
             debugPrint(message);
             await Turbolytics._crashReportsInterface?.log(message);
-            await Turbolytics._crashReportsInterface
-                ?.recordError(error, stackTrace, fatal: true);
+            await Turbolytics._crashReportsInterface?.recordError(
+              error,
+              stackTrace,
+              fatal: true,
+            );
           },
           onDone: () async {
             const message = '[EventBus] CrashReports events stream is done!';
@@ -96,8 +102,11 @@ class TEventBus {
                 '[EventBus] Analytics events stream caught an error!';
             debugPrint(message);
             await Turbolytics._crashReportsInterface?.log(message);
-            await Turbolytics._crashReportsInterface
-                ?.recordError(error, stackTrace, fatal: true);
+            await Turbolytics._crashReportsInterface?.recordError(
+              error,
+              stackTrace,
+              fatal: true,
+            );
           },
           onDone: () async {
             const message = '[EventBus] Analytics events stream is done!';

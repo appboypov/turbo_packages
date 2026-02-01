@@ -29,17 +29,16 @@ mixin TBusyServiceManagement {
     Duration? timeoutDuration,
     VoidCallback? onTimeout,
     dynamic payload,
-  }) =>
-      _busyService.setBusy(
-        isBusy,
-        busyTitle: busyTitle,
-        busyMessage: busyMessage,
-        minBusyDuration: minBusyDuration,
-        busyType: busyType,
-        timeoutDuration: timeoutDuration,
-        onTimeout: onTimeout,
-        payload: payload,
-      );
+  }) => _busyService.setBusy(
+    isBusy,
+    busyTitle: busyTitle,
+    busyMessage: busyMessage,
+    minBusyDuration: minBusyDuration,
+    busyType: busyType,
+    timeoutDuration: timeoutDuration,
+    onTimeout: onTimeout,
+    payload: payload,
+  );
 
   /// Sets the busy state to idle.
   void setIdle() => _busyService.setBusy(false);

@@ -21,14 +21,13 @@ class TButtonConfig {
     String? label,
     String? tooltip,
     bool? isActive,
-  }) =>
-      TButtonConfig(
-        onPressed: onPressed ?? this.onPressed,
-        icon: icon ?? this.icon,
-        label: label ?? this.label,
-        tooltip: tooltip ?? this.tooltip,
-        isActive: isActive ?? this.isActive,
-      );
+  }) => TButtonConfig(
+    onPressed: onPressed ?? this.onPressed,
+    icon: icon ?? this.icon,
+    label: label ?? this.label,
+    tooltip: tooltip ?? this.tooltip,
+    isActive: isActive ?? this.isActive,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -43,10 +42,10 @@ class TButtonConfig {
 
   @override
   int get hashCode => Object.hash(
-        onPressed,
-        icon,
-        label,
-        tooltip,
-        isActive,
-      );
+    onPressed,
+    icon,
+    label,
+    tooltip,
+    isActive,
+  );
 }

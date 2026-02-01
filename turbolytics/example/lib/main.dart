@@ -24,9 +24,7 @@ class MyApp extends StatelessWidget with Turbolytics {
     log.warning('Starting app..');
     return MaterialApp(
       title: 'Turbolytics Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData(primarySwatch: Colors.red),
       home: MyHomePage(title: 'Turbolytics Demo Home Page'),
     );
   }
@@ -52,11 +50,14 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     widget.log.info('Test the individual logger one two three');
-    widget.turbolytics.log
-        .info('Test the individual turbolytics one two three');
+    widget.turbolytics.log.info(
+      'Test the individual turbolytics one two three',
+    );
     widget.turbolytics.analytics.service.changed(subject: 'nothing');
-    widget.turbolytics.analytics.service
-        .userProperty(property: 'this', value: 'is_so_cool');
+    widget.turbolytics.analytics.service.userProperty(
+      property: 'this',
+      value: 'is_so_cool',
+    );
     analytics.viewPage();
     super.initState();
   }
@@ -64,18 +65,14 @@ class _MyHomePageState extends State<MyHomePage>
   void _incrementCounter() {
     log.info('Pressing increment button..');
     analytics.service.tapped(subject: 'button');
-    setState(
-      () {
-        _counter++;
-        log.info('The counter: $_counter');
-        analytics.service.incremented(
-          subject: analytics.counterButton,
-          parameters: {
-            'time': DateTime.now(),
-          },
-        );
-      },
-    );
+    setState(() {
+      _counter++;
+      log.info('The counter: $_counter');
+      analytics.service.incremented(
+        subject: analytics.counterButton,
+        parameters: {'time': DateTime.now()},
+      );
+    });
   }
 
   @override
@@ -94,9 +91,7 @@ class _MyHomePageState extends State<MyHomePage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,

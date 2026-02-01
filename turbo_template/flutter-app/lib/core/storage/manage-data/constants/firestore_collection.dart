@@ -8,7 +8,8 @@ enum FirestoreCollection {
   users,
   userProfiles,
   usernames,
-  settings;
+  settings
+  ;
 
   bool get tryAddLocalDocumentReference {
     switch (this) {

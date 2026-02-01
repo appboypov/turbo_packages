@@ -90,8 +90,8 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
         message: 'Checking if writeable is valid..',
         sensitiveData: null,
       );
-      final TurboResponse<DocumentReference>? invalidResponse =
-          writeable.validate();
+      final TurboResponse<DocumentReference>? invalidResponse = writeable
+          .validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -144,14 +144,15 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
                 collectionPathOverride: collectionPathOverride,
               )
             : _firebaseFirestore
-                .collection(collectionPathOverride ?? _collectionPath())
-                .doc();
+                  .collection(collectionPathOverride ?? _collectionPath())
+                  .doc();
         _log.debug(
           message: 'Creating JSON..',
           sensitiveData: null,
         );
         final json = writeable.toJson();
-        final writeableAsJson = (merge || mergeFields != null) &&
+        final writeableAsJson =
+            (merge || mergeFields != null) &&
                 (await documentReference.get(_getOptions)).exists
             ? updateTimeStampType.add(
                 json,
@@ -295,7 +296,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
   /// - [createDoc] for single document operations
   /// - [TWriteBatchWithReference] for batch result structure
   Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
-      createDocInBatch({
+  createDocInBatch({
     required TWriteable writeable,
     String? id,
     WriteBatch? writeBatch,
@@ -313,7 +314,7 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
     );
     try {
       final TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>?
-          invalidResponse = writeable.validate();
+      invalidResponse = writeable.validate();
       if (invalidResponse != null && invalidResponse.isFail) {
         _log.warning(
           message: 'TWriteable was invalid!',
@@ -341,11 +342,12 @@ extension TFirestoreCreateApi<T> on TFirestoreApi {
               collectionPathOverride: collectionPathOverride,
             )
           : _firebaseFirestore
-              .collection(collectionPathOverride ?? _collectionPath())
-              .doc();
+                .collection(collectionPathOverride ?? _collectionPath())
+                .doc();
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final json = writeable.toJson();
-      final writeableAsJson = (merge || mergeFields != null) &&
+      final writeableAsJson =
+          (merge || mergeFields != null) &&
               (await documentReference.get(_getOptions)).exists
           ? updateTimeStampType.add(
               json,

@@ -146,10 +146,7 @@ class _CupertinoButtonHijackedState extends State<_CupertinoButtonHijacked>
                     child: widget.child,
                   ),
                 )
-              : FadeTransition(
-                  opacity: _opacityAnimation,
-                  child: widget.child,
-                ),
+              : FadeTransition(opacity: _opacityAnimation, child: widget.child),
         ),
       ),
     );

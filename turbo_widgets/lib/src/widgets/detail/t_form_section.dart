@@ -191,35 +191,35 @@ class _TFormSectionField extends StatelessWidget {
       builder: (context, fieldConfig, child) {
         return switch (fieldConfig.fieldType) {
           TFieldType.checkbox => ShadCheckbox(
-              value: fieldConfig.cValue as bool? ?? false,
-              onChanged: (value) => fieldConfig.silentUpdateValue(value),
-            ),
+            value: fieldConfig.cValue as bool? ?? false,
+            onChanged: (value) => fieldConfig.silentUpdateValue(value),
+          ),
           TFieldType.select || TFieldType.selectMulti => ShadSelect(
-              placeholder: const Text('Select'),
-              focusNode: fieldConfig.focusNode,
-              onChanged: fieldConfig.silentUpdateValue,
-              controller: fieldConfig.selectController,
-              enabled: fieldConfig.isEnabled && !fieldConfig.isReadOnly,
-              itemCount: fieldConfig.items?.length ?? 0,
-              optionsBuilder: (context, index) {
-                final item = fieldConfig.items![index];
-                return ShadOption(
-                  value: item,
-                  child: Text(item.toString()),
-                );
-              },
-              selectedOptionBuilder: (context, value) => Text(value.toString()),
-            ),
+            placeholder: const Text('Select'),
+            focusNode: fieldConfig.focusNode,
+            onChanged: fieldConfig.silentUpdateValue,
+            controller: fieldConfig.selectController,
+            enabled: fieldConfig.isEnabled && !fieldConfig.isReadOnly,
+            itemCount: fieldConfig.items?.length ?? 0,
+            optionsBuilder: (context, index) {
+              final item = fieldConfig.items![index];
+              return ShadOption(
+                value: item,
+                child: Text(item.toString()),
+              );
+            },
+            selectedOptionBuilder: (context, value) => Text(value.toString()),
+          ),
           _ => ShadInput(
-              controller: fieldConfig.textEditingController,
-              focusNode: fieldConfig.focusNode,
-              initialValue: fieldConfig.initialValue?.toString(),
-              readOnly: fieldConfig.isReadOnly,
-              enabled: fieldConfig.isEnabled && !fieldConfig.isReadOnly,
-              minLines: fieldConfig.fieldType == TFieldType.textArea ? 3 : 1,
-              maxLines: fieldConfig.fieldType == TFieldType.textArea ? 6 : 1,
-              onChanged: (value) => fieldConfig.silentUpdateValue(value),
-            ),
+            controller: fieldConfig.textEditingController,
+            focusNode: fieldConfig.focusNode,
+            initialValue: fieldConfig.initialValue?.toString(),
+            readOnly: fieldConfig.isReadOnly,
+            enabled: fieldConfig.isEnabled && !fieldConfig.isReadOnly,
+            minLines: fieldConfig.fieldType == TFieldType.textArea ? 3 : 1,
+            maxLines: fieldConfig.fieldType == TFieldType.textArea ? 6 : 1,
+            onChanged: (value) => fieldConfig.silentUpdateValue(value),
+          ),
         };
       },
     );

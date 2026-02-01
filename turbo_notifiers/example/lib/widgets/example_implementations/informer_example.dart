@@ -6,10 +6,7 @@ import '../examples/feature_example.dart';
 import '../examples/method_example.dart';
 
 class TNotifierExample extends StatefulWidget {
-  const TNotifierExample({
-    required this.model,
-    super.key,
-  });
+  const TNotifierExample({required this.model, super.key});
 
   final HomeViewModel model;
 
@@ -19,8 +16,10 @@ class TNotifierExample extends StatefulWidget {
 
 class _TNotifierExampleState extends State<TNotifierExample> {
   final _informerUpdateController = TextEditingController();
-  final TNotifier<String?> _counterErrorText =
-      TNotifier(null, forceUpdate: false);
+  final TNotifier<String?> _counterErrorText = TNotifier(
+    null,
+    forceUpdate: false,
+  );
 
   @override
   void dispose() {
@@ -95,14 +94,14 @@ class _TNotifierExampleState extends State<TNotifierExample> {
                         valueListenable: _counterErrorText,
                         builder: (context, counterErrorText, child) =>
                             TextField(
-                          controller: _informerUpdateController,
-                          decoration: InputDecoration(
-                            errorText: counterErrorText,
-                            labelText: 'New counter value',
-                            alignLabelWithHint: true,
-                          ),
-                          onSubmitted: (value) => _tryUpdateInformer(model),
-                        ),
+                              controller: _informerUpdateController,
+                              decoration: InputDecoration(
+                                errorText: counterErrorText,
+                                labelText: 'New counter value',
+                                alignLabelWithHint: true,
+                              ),
+                              onSubmitted: (value) => _tryUpdateInformer(model),
+                            ),
                       ),
                     ),
                     const SizedBox(width: 16),

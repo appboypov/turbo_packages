@@ -26,21 +26,30 @@ class TMdFactory<T extends TWriteable> {
   List<TMdSection> buildSections({
     TMdSectionsBuilder? mdSectionsBuilder,
   }) =>
-      (mdSectionsBuilder ?? this.mdSectionsBuilder)
-          ?.call(writeable, buildFrontmatter()) ??
+      (mdSectionsBuilder ?? this.mdSectionsBuilder)?.call(
+        writeable,
+        buildFrontmatter(),
+      ) ??
       [];
 
   TMdBody buildBody({
     TMdBodyBuilder? mdBodyBuilder,
   }) =>
-      (mdBodyBuilder ?? this.mdBodyBuilder)
-          ?.call(writeable, buildFrontmatter(), buildSections()) ??
+      (mdBodyBuilder ?? this.mdBodyBuilder)?.call(
+        writeable,
+        buildFrontmatter(),
+        buildSections(),
+      ) ??
       '';
 
   TMdFile build({
     TMdFileBuilder? mdBuilder,
   }) =>
-      (mdBuilder ?? this.mdBuilder)
-          ?.call(writeable, buildFrontmatter(), buildSections(), buildBody()) ??
+      (mdBuilder ?? this.mdBuilder)?.call(
+        writeable,
+        buildFrontmatter(),
+        buildSections(),
+        buildBody(),
+      ) ??
       '';
 }

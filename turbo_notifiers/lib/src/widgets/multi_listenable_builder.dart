@@ -15,7 +15,8 @@ class MultiListenableBuilder extends StatefulWidget {
     BuildContext context,
     List<Listenable> listenables,
     Widget? child,
-  ) builder;
+  )
+  builder;
   final Widget? child;
 
   @override

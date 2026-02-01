@@ -16,7 +16,8 @@ void main() {
   late String silentMockExecutable;
 
   setUpAll(() async {
-    final pewPewPlxPath = Platform.environment['PEW_PEW_PLX_PATH'] ??
+    final pewPewPlxPath =
+        Platform.environment['PEW_PEW_PLX_PATH'] ??
         '/Users/codaveto/Repos/pew_pew_plx';
 
     final buildResult = await Process.run(
@@ -52,7 +53,8 @@ void main() {
   });
 
   tearDownAll(() async {
-    final pewPewPlxPath = Platform.environment['PEW_PEW_PLX_PATH'] ??
+    final pewPewPlxPath =
+        Platform.environment['PEW_PEW_PLX_PATH'] ??
         '/Users/codaveto/Repos/pew_pew_plx';
     final executable = File('$pewPewPlxPath/plx_test');
     if (executable.existsSync()) {

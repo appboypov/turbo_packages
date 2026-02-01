@@ -38,8 +38,11 @@ part 'before_sync_t_document_service.dart';
 /// Type Parameters:
 /// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TFirestoreApi]
-abstract class TDocumentService<T extends TWriteableId,
-        API extends TFirestoreApi<T>> extends TAuthSyncService<T?>
+abstract class TDocumentService<
+  T extends TWriteableId,
+  API extends TFirestoreApi<T>
+>
+    extends TAuthSyncService<T?>
     with Turbolytics {
   /// Creates a new [TDocumentService] instance.
   ///
@@ -156,10 +159,11 @@ abstract class TDocumentService<T extends TWriteableId,
   /// Returns a new instance of [V] with basic variables filled in.
   V turboVars<V extends TAuthVars>({String? id}) {
     return TAuthVars(
-      id: id ?? api.genId,
-      now: DateTime.now(),
-      userId: cachedUserId ?? TValues.noAuthId,
-    ) as V;
+          id: id ?? api.genId,
+          now: DateTime.now(),
+          userId: cachedUserId ?? TValues.noAuthId,
+        )
+        as V;
   }
 
   /// Function to provide initial document value.

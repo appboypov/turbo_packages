@@ -8,9 +8,9 @@ class TInteractiveFormController {
   TInteractiveFormController({
     required this.stepConfigs,
     int startingStepIndex = 0,
-  })  : _currentStepIndex = ValueNotifier<int>(startingStepIndex),
-        _backgroundVisible = ValueNotifier<bool>(true),
-        pageController = PageController(initialPage: startingStepIndex) {
+  }) : _currentStepIndex = ValueNotifier<int>(startingStepIndex),
+       _backgroundVisible = ValueNotifier<bool>(true),
+       pageController = PageController(initialPage: startingStepIndex) {
     pageController.addListener(_onScroll);
   }
 

@@ -39,59 +39,63 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     ShadSliderController? sliderController,
     List<String> currentSuggestions = const [],
   }) : super(
-          TFormFieldState<T>(
-            valueValidator: valueValidator,
-            initialValues: initialValues,
-            items: items,
-            values: null,
-            inputFormatters: inputFormatters,
-            autoCompleteValues: autoCompleteValues,
-            initialValue: initialValue,
-            value: initialValue,
-            valuesValidator: valuesValidator,
-            isEnabled: isEnabled,
-            isReadOnly: isReadOnly,
-            isVisible: isVisible,
-            obscureText: obscureText,
-            fieldType: fieldType,
-            id: id,
-            incrementAmount: incrementAmount,
-            maxValue: maxValue,
-            minValue: minValue,
-            labelBuilder: labelBuilder,
-            errorText: null,
-            shouldValidate: false,
-            textEditingController: textEditingController ??
-                ((fieldType.hasTextEditingController)
-                    ? ShadTextEditingController(text: initialValue?.toString())
-                    : null),
-            sliderController: sliderController ??
-                (fieldType.hasSliderController
-                    ? ShadSliderController(
-                        initialValue: initialValue?.tAsType() ?? 0,
-                      )
-                    : null),
-            timePickerController: timePickerController ??
-                (fieldType.hasTimePickerController
-                    ? ShadTimePickerController(
-                        hour: initialValue?.tAsType<ShadTimeOfDay>().hour ?? 0,
-                        minute:
-                            initialValue?.tAsType<ShadTimeOfDay>().minute ?? 0,
-                        period: initialValue?.tAsType<ShadTimeOfDay>().period,
-                        second:
-                            initialValue?.tAsType<ShadTimeOfDay>().second ?? 0,
-                      )
-                    : null),
-            selectController: selectController ??
-                (fieldType.hasSelectController
-                    ? ShadSelectController<T>(
-                        initialValue: initialValues?.toSet(),
-                      )
-                    : null),
-            focusNode: focusNode ?? FocusNode(),
-            currentSuggestions: currentSuggestions,
-          ),
-        );
+         TFormFieldState<T>(
+           valueValidator: valueValidator,
+           initialValues: initialValues,
+           items: items,
+           values: null,
+           inputFormatters: inputFormatters,
+           autoCompleteValues: autoCompleteValues,
+           initialValue: initialValue,
+           value: initialValue,
+           valuesValidator: valuesValidator,
+           isEnabled: isEnabled,
+           isReadOnly: isReadOnly,
+           isVisible: isVisible,
+           obscureText: obscureText,
+           fieldType: fieldType,
+           id: id,
+           incrementAmount: incrementAmount,
+           maxValue: maxValue,
+           minValue: minValue,
+           labelBuilder: labelBuilder,
+           errorText: null,
+           shouldValidate: false,
+           textEditingController:
+               textEditingController ??
+               ((fieldType.hasTextEditingController)
+                   ? ShadTextEditingController(text: initialValue?.toString())
+                   : null),
+           sliderController:
+               sliderController ??
+               (fieldType.hasSliderController
+                   ? ShadSliderController(
+                       initialValue: initialValue?.tAsType() ?? 0,
+                     )
+                   : null),
+           timePickerController:
+               timePickerController ??
+               (fieldType.hasTimePickerController
+                   ? ShadTimePickerController(
+                       hour: initialValue?.tAsType<ShadTimeOfDay>().hour ?? 0,
+                       minute:
+                           initialValue?.tAsType<ShadTimeOfDay>().minute ?? 0,
+                       period: initialValue?.tAsType<ShadTimeOfDay>().period,
+                       second:
+                           initialValue?.tAsType<ShadTimeOfDay>().second ?? 0,
+                     )
+                   : null),
+           selectController:
+               selectController ??
+               (fieldType.hasSelectController
+                   ? ShadSelectController<T>(
+                       initialValue: initialValues?.toSet(),
+                     )
+                   : null),
+           focusNode: focusNode ?? FocusNode(),
+           currentSuggestions: currentSuggestions,
+         ),
+       );
 
   @override
   void dispose() {
@@ -277,7 +281,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
       return;
     }
     updateCurrent((cValue) {
-      final currentSuggestions = autoCompleteValues
+      final currentSuggestions =
+          autoCompleteValues
               ?.where((element) => element.tNaked.contains(value.tNaked))
               .toList() ??
           [];
@@ -342,12 +347,12 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
   }
 
   void addValue(T newValue) => updateCurrentValues(
-        (values) => values == null ? [newValue] : [...values, newValue],
-      );
+    (values) => values == null ? [newValue] : [...values, newValue],
+  );
 
   void removeValue(T valueToRemove) => updateCurrentValues(
-        (values) => values?.where((v) => v != valueToRemove).toList(),
-      );
+    (values) => values?.where((v) => v != valueToRemove).toList(),
+  );
 
   void updateInitialValue(T? newValue) {
     update(value.copyWith(initialValue: newValue, value: newValue));

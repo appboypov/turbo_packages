@@ -12,7 +12,8 @@ enum Month {
   september,
   october,
   november,
-  december;
+  december
+  ;
 
   String fullName(Strings strings) {
     switch (this) {

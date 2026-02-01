@@ -6,11 +6,7 @@ import '../util/custom_button.dart';
 
 /// Holds a title and feature example widget.
 class FeatureExample extends StatefulWidget {
-  const FeatureExample({
-    required this.title,
-    required this.child,
-    super.key,
-  });
+  const FeatureExample({required this.title, required this.child, super.key});
 
   final String title;
   final Widget child;
@@ -33,8 +29,9 @@ class _FeatureExampleState extends State<FeatureExample> {
     return Container(
       margin: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
       decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.2),
-          borderRadius: BorderRadius.circular(16)),
+        color: Colors.red.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(16),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,17 +46,17 @@ class _FeatureExampleState extends State<FeatureExample> {
                 borderRadius: BorderRadius.circular(32),
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 16,
+                ),
                 child: Row(
                   children: [
                     const SizedBox(width: 32),
                     Expanded(
                       child: Text(
                         widget.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
+                        style: Theme.of(context).textTheme.headlineMedium!
                             .copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -73,11 +70,13 @@ class _FeatureExampleState extends State<FeatureExample> {
                         valueListenable: _isExpandedNotifier,
                         builder: (context, isExpanded, child) =>
                             AnimatedRotation(
-                          duration: ConstDurations.defaultAnimationDuration,
-                          turns: isExpanded ? 0.5 : 1,
-                          child: const Icon(Icons.keyboard_arrow_down,
-                              color: Colors.white),
-                        ),
+                              duration: ConstDurations.defaultAnimationDuration,
+                              turns: isExpanded ? 0.5 : 1,
+                              child: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.white,
+                              ),
+                            ),
                       ),
                     ),
                   ],
@@ -92,7 +91,7 @@ class _FeatureExampleState extends State<FeatureExample> {
               showChild: widget.child,
               alignment: Alignment.topCenter,
             ),
-          )
+          ),
         ],
       ),
     );

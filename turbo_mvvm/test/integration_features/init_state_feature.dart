@@ -7,14 +7,14 @@ import 'scenarios/rebuild_is_not_null_scenario.dart';
 
 class InitStateFeature extends IntegrationFeature {
   InitStateFeature()
-      : super(
-          description:
-              'Tests the TurboViewModelBuilder\'s proper initialisation during the initState method',
-          scenarios: [
-            ArgumentsAreTransmittedScenario(),
-            DisposableContextIsNotNullScenario(),
-            MountedIsTrueScenario(),
-            RebuildIsNotNullScenario(),
-          ],
-        );
+    : super(
+        description:
+            'Tests the TurboViewModelBuilder\'s proper initialisation during the initState method',
+        scenarios: [
+          ArgumentsAreTransmittedScenario(),
+          DisposableContextIsNotNullScenario(),
+          MountedIsTrueScenario(),
+          RebuildIsNotNullScenario(),
+        ],
+      );
 }

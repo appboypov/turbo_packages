@@ -40,15 +40,14 @@ class VerticalShrink extends StatelessWidget {
           switchOutCurve: fadeOutCurve,
           transitionBuilder: hideChild != null
               ? (child, animation) => FadeTransition(
-                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animation,
-                        curve:
-                            const Interval(0.15, 1.0, curve: Curves.easeInOut),
-                      ),
+                  opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: const Interval(0.15, 1.0, curve: Curves.easeInOut),
                     ),
-                    child: child,
-                  )
+                  ),
+                  child: child,
+                )
               : AnimatedSwitcher.defaultTransitionBuilder,
           layoutBuilder: (currentChild, previousChildren) {
             List<Widget> children = previousChildren;
@@ -57,11 +56,7 @@ class VerticalShrink extends StatelessWidget {
                 children = [currentChild];
               } else {
                 children = [
-                  Positioned(
-                    left: 0.0,
-                    right: 0.0,
-                    child: previousChildren[0],
-                  ),
+                  Positioned(left: 0.0, right: 0.0, child: previousChildren[0]),
                   currentChild,
                 ];
               }
@@ -75,11 +70,11 @@ class VerticalShrink extends StatelessWidget {
           child: show
               ? showChild
               : (hideChild ??
-                  SizedBox(
-                    key: _key,
-                    width: width ?? double.infinity,
-                    height: 0,
-                  )),
+                    SizedBox(
+                      key: _key,
+                      width: width ?? double.infinity,
+                      height: 0,
+                    )),
         ),
       ),
     );
@@ -130,11 +125,7 @@ class HorizontalShrink extends StatelessWidget {
                 children = [currentChild];
               } else {
                 children = [
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    child: previousChildren[0],
-                  ),
+                  Positioned(top: 0, bottom: 0, child: previousChildren[0]),
                   currentChild,
                 ];
               }
@@ -149,11 +140,11 @@ class HorizontalShrink extends StatelessWidget {
           child: show
               ? showChild
               : (hideChild ??
-                  SizedBox(
-                    key: _key,
-                    width: 0,
-                    height: height ?? double.infinity,
-                  )),
+                    SizedBox(
+                      key: _key,
+                      width: 0,
+                      height: height ?? double.infinity,
+                    )),
         ),
       ),
     );

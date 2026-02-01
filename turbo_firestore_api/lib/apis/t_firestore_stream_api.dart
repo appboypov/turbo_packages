@@ -131,26 +131,26 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          operationType: TOperationType.stream,
+          (Object error, StackTrace stackTrace) {
+            final exception = _createException(
+              error: error,
+              stackTrace: stackTrace,
+              path: path,
+              operationType: TOperationType.stream,
+            );
+            _log.error(
+              message: 'Error streaming collection with converter',
+              sensitiveData: TSensitiveData(
+                path: path,
+                operationType: TOperationType.stream,
+                fullPath: path,
+              ),
+              error: error,
+              stackTrace: stackTrace,
+            );
+            throw exception;
+          },
         );
-        _log.error(
-          message: 'Error streaming collection with converter',
-          sensitiveData: TSensitiveData(
-            path: path,
-            operationType: TOperationType.stream,
-            fullPath: path,
-          ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
-    );
   }
 
   /// Streams documents matching a query
@@ -188,7 +188,7 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
   /// [streamAll] unfiltered streaming
   Stream<List<Map<String, dynamic>>> streamByQuery({
     required CollectionReferenceDef<Map<String, dynamic>>?
-        collectionReferenceQuery,
+    collectionReferenceQuery,
     required String whereDescription,
   }) {
     final path = _collectionPath();
@@ -199,7 +199,8 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
         whereDescription: whereDescription,
       ),
     );
-    final query = collectionReferenceQuery?.call(listCollectionReference()) ??
+    final query =
+        collectionReferenceQuery?.call(listCollectionReference()) ??
         listCollectionReference();
     return query
         .snapshots()
@@ -207,28 +208,28 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          query: whereDescription,
-          operationType: TOperationType.stream,
+          (Object error, StackTrace stackTrace) {
+            final exception = _createException(
+              error: error,
+              stackTrace: stackTrace,
+              path: path,
+              query: whereDescription,
+              operationType: TOperationType.stream,
+            );
+            _log.error(
+              message: 'Error streaming collection by query',
+              sensitiveData: TSensitiveData(
+                path: path,
+                whereDescription: whereDescription,
+                operationType: TOperationType.stream,
+                fullPath: path,
+              ),
+              error: error,
+              stackTrace: stackTrace,
+            );
+            throw exception;
+          },
         );
-        _log.error(
-          message: 'Error streaming collection by query',
-          sensitiveData: TSensitiveData(
-            path: path,
-            whereDescription: whereDescription,
-            operationType: TOperationType.stream,
-            fullPath: path,
-          ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
-    );
   }
 
   /// Streams and converts documents matching a query
@@ -278,8 +279,10 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
         whereDescription: whereDescription,
       ),
     );
-    final query = collectionReferenceQuery
-            ?.call(listCollectionReferenceWithConverter()) ??
+    final query =
+        collectionReferenceQuery?.call(
+          listCollectionReferenceWithConverter(),
+        ) ??
         listCollectionReferenceWithConverter();
     return query
         .snapshots()
@@ -287,28 +290,28 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          query: whereDescription,
-          operationType: TOperationType.stream,
+          (Object error, StackTrace stackTrace) {
+            final exception = _createException(
+              error: error,
+              stackTrace: stackTrace,
+              path: path,
+              query: whereDescription,
+              operationType: TOperationType.stream,
+            );
+            _log.error(
+              message: 'Error streaming collection by query with converter',
+              sensitiveData: TSensitiveData(
+                path: path,
+                whereDescription: whereDescription,
+                operationType: TOperationType.stream,
+                fullPath: path,
+              ),
+              error: error,
+              stackTrace: stackTrace,
+            );
+            throw exception;
+          },
         );
-        _log.error(
-          message: 'Error streaming collection by query with converter',
-          sensitiveData: TSensitiveData(
-            path: path,
-            whereDescription: whereDescription,
-            operationType: TOperationType.stream,
-            fullPath: path,
-          ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
-    );
   }
 
   /// Streams a single document
@@ -349,8 +352,10 @@ extension TurboFirestoreStreamApi<T> on TFirestoreApi<T> {
     String? collectionPathOverride,
   }) {
     final path = collectionPathOverride ?? _collectionPath();
-    final docRef =
-        getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
+    final docRef = getDocRefById(
+      id: id,
+      collectionPathOverride: collectionPathOverride,
+    );
     _log.debug(
       message: 'Finding doc stream..',
       sensitiveData: TSensitiveData(

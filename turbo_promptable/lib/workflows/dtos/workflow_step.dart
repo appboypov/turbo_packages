@@ -50,16 +50,14 @@ class WorkflowStep<INPUT, OUTPUT> extends TurboPromptable {
     Map<String, dynamic> json,
     INPUT Function(Object? json) fromJsonINPUT,
     OUTPUT Function(Object? json) fromJsonOUTPUT,
-  ) =>
-      _$WorkflowStepFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
+  ) => _$WorkflowStepFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
 
   /// JSON serialization method for generic types.
   /// Requires converters for INPUT and OUTPUT types.
   Map<String, dynamic> toJsonWithConverters(
     Object? Function(INPUT value) toJsonINPUT,
     Object? Function(OUTPUT value) toJsonOUTPUT,
-  ) =>
-      _$WorkflowStepToJson(this, toJsonINPUT, toJsonOUTPUT);
+  ) => _$WorkflowStepToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
   Map<String, dynamic> toJson() {

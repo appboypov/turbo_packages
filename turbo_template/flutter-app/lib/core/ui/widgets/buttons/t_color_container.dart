@@ -102,7 +102,8 @@ class TColorContainer extends StatelessWidget {
 enum TColorContainerType {
   icon,
   chipButton,
-  none;
+  none
+  ;
 
   double? get height {
     switch (this) {

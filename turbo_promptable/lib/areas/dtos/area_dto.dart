@@ -31,8 +31,7 @@ class AreaDto extends TurboPromptable {
 
   AreaDto copyWith({
     List<RoleDto>? roles,
-  }) =>
-      AreaDto(
-        roles: roles ?? this.roles,
-      );
+  }) => AreaDto(
+    roles: roles ?? this.roles,
+  );
 }

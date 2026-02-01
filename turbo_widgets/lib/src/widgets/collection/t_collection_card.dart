@@ -31,8 +31,9 @@ class TCollectionCard extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(borderRadius),
-          mouseCursor:
-              isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+          mouseCursor: isEnabled
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Row(

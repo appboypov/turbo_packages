@@ -8,8 +8,11 @@ part of 't_collection_service.dart';
 /// Type Parameters:
 /// - [T] - The document type, must extend [TWriteableId]
 /// - [API] - The Firestore API type, must extend [TFirestoreApi]
-abstract class BeforeAfSyncTCollectionService<T extends TWriteableId,
-    API extends TFirestoreApi<T>> extends TCollectionService<T, API> {
+abstract class BeforeAfSyncTCollectionService<
+  T extends TWriteableId,
+  API extends TFirestoreApi<T>
+>
+    extends TCollectionService<T, API> {
   /// Creates a new [BeforeAfSyncTCollectionService] instance.
   BeforeAfSyncTCollectionService({required super.api});
 

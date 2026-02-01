@@ -121,7 +121,8 @@ enum EnvironmentType {
   staging,
 
   /// Production environment using live services.
-  prod;
+  prod
+  ;
 
   /// Gets the Firebase options configuration for this environment.
   ///

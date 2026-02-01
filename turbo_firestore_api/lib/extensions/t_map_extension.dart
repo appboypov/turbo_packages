@@ -37,10 +37,9 @@ extension TMapExtension on Map<dynamic, dynamic> {
     DocumentReference documentReference, {
     required String referenceFieldName,
     required bool tryAddLocalDocumentReference,
-  }) =>
-      tryAddLocalDocumentReference && containsKey(referenceFieldName)
-          ? this as Map<T, E>
-          : (this..[referenceFieldName] = documentReference) as Map<T, E>;
+  }) => tryAddLocalDocumentReference && containsKey(referenceFieldName)
+      ? this as Map<T, E>
+      : (this..[referenceFieldName] = documentReference) as Map<T, E>;
 
   /// This method is used to clean up local document references that were added for internal use.
   ///
@@ -65,10 +64,9 @@ extension TMapExtension on Map<dynamic, dynamic> {
   Map<T, E> tryRemoveLocalDocumentReference<T, E>({
     required String referenceFieldName,
     required bool tryRemoveLocalDocumentReference,
-  }) =>
-      tryRemoveLocalDocumentReference && containsKey(referenceFieldName)
-          ? (this..remove(referenceFieldName)) as Map<T, E>
-          : this as Map<T, E>;
+  }) => tryRemoveLocalDocumentReference && containsKey(referenceFieldName)
+      ? (this..remove(referenceFieldName)) as Map<T, E>
+      : this as Map<T, E>;
 
   /// This method is used to maintain a local ID field without storing it in the database.
   /// It's particularly useful for maintaining document IDs in DTOs and models.
@@ -97,10 +95,9 @@ extension TMapExtension on Map<dynamic, dynamic> {
     String id, {
     required String idFieldName,
     required bool tryAddLocalId,
-  }) =>
-      tryAddLocalId && containsKey(idFieldName)
-          ? this as Map<T, E>
-          : (this..[idFieldName] = id) as Map<T, E>;
+  }) => tryAddLocalId && containsKey(idFieldName)
+      ? this as Map<T, E>
+      : (this..[idFieldName] = id) as Map<T, E>;
 
   /// This method is used to clean up local ID fields that were added for internal use.
   ///
@@ -125,10 +122,9 @@ extension TMapExtension on Map<dynamic, dynamic> {
   Map<T, E> tryRemoveLocalId<T, E>({
     required String idFieldName,
     required bool tryRemoveLocalId,
-  }) =>
-      tryRemoveLocalId && containsKey(idFieldName)
-          ? (this..remove(idFieldName)) as Map<T, E>
-          : this as Map<T, E>;
+  }) => tryRemoveLocalId && containsKey(idFieldName)
+      ? (this..remove(idFieldName)) as Map<T, E>
+      : this as Map<T, E>;
 
   /// This method is used to automatically track when a document was last updated.
   /// The field name is configurable through the Firestore API setup.
@@ -197,7 +193,8 @@ extension TMapExtension on Map<dynamic, dynamic> {
   }) {
     final now = Timestamp.now();
     return (this
-      ..[createdAtFieldName] = now
-      ..[updatedAtFieldName] = now) as Map<T, E>;
+          ..[createdAtFieldName] = now
+          ..[updatedAtFieldName] = now)
+        as Map<T, E>;
   }
 }

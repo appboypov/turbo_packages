@@ -5,7 +5,8 @@ import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
 enum TRouter {
   core,
   home,
-  styling;
+  styling
+  ;
 
   NavigationTab? get navigationTab {
     switch (this) {

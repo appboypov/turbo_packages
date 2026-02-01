@@ -9,7 +9,8 @@ enum WeekDay {
   thursday,
   friday,
   saturday,
-  sunday;
+  sunday
+  ;
 
   String fullName(Strings strings) {
     switch (this) {

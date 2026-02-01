@@ -17,9 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Turbo Notifiers',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData(primarySwatch: Colors.red),
       home: const HomeView(),
     );
   }
@@ -31,27 +29,25 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewModelBuilder<HomeViewModel>(
-        builder: (context, model, isInitialised, child) {
-          return GestureDetector(
-            onTap: model.focusNode.unfocus,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Turbo Notifiers Example Project'),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 16),
-                    TNotifierExample(model: model),
-                    const SizedBox(height: kBottomNavigationBarHeight),
-                  ],
-                ),
-              ),
+    builder: (context, model, isInitialised, child) {
+      return GestureDetector(
+        onTap: model.focusNode.unfocus,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Turbo Notifiers Example Project')),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                TNotifierExample(model: model),
+                const SizedBox(height: kBottomNavigationBarHeight),
+              ],
             ),
-          );
-        },
-        viewModelBuilder: () => HomeViewModel.locate,
+          ),
+        ),
       );
+    },
+    viewModelBuilder: () => HomeViewModel.locate,
+  );
 }
 
 class HomeViewModel extends TBaseViewModel<Object?> {
@@ -82,11 +78,9 @@ class HomeViewModel extends TBaseViewModel<Object?> {
   /// Provides the current [TurboViewModelBuilderState]'s [FocusNode].
   FocusNode get focusNode => FocusScope.of(context!);
 
-  TextStyle get exampleTitleStyle =>
-      Theme.of(context!).textTheme.bodyMedium!.copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          );
+  TextStyle get exampleTitleStyle => Theme.of(
+    context!,
+  ).textTheme.bodyMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.bold);
 
   static HomeViewModel get locate => HomeViewModel();
 }

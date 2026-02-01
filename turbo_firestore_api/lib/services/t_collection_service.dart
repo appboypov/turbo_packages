@@ -59,8 +59,11 @@ part 'before_sync_t_collection_service.dart';
 /// - Automatic stream update blocking during mutations
 /// - Error handling and logging
 /// - User authentication state synchronization
-abstract class TCollectionService<T extends TWriteableId,
-        API extends TFirestoreApi<T>> extends TAuthSyncService<List<T>>
+abstract class TCollectionService<
+  T extends TWriteableId,
+  API extends TFirestoreApi<T>
+>
+    extends TAuthSyncService<List<T>>
     with Turbolytics {
   /// Creates a new [TCollectionService] instance.
   ///
@@ -158,11 +161,13 @@ abstract class TCollectionService<T extends TWriteableId,
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
   /// Returns a new instance of [V] with basic variables filled in.
-  V turboVars<V extends TAuthVars>({String? id}) => TAuthVars(
-        id: id ?? api.genId,
-        now: DateTime.now(),
-        userId: cachedUserId ?? TValues.noAuthId,
-      ) as V;
+  V turboVars<V extends TAuthVars>({String? id}) =>
+      TAuthVars(
+            id: id ?? api.genId,
+            now: DateTime.now(),
+            userId: cachedUserId ?? TValues.noAuthId,
+          )
+          as V;
 
   /// Value listenable for the document collection state.
   ValueListenable<Map<String, T>> get docsPerId => docsPerIdNotifier;
@@ -565,8 +570,7 @@ abstract class TCollectionService<T extends TWriteableId,
             id: pDoc.id,
             transaction: transaction,
             writeable: pDoc as TWriteableId,
-          ))
-              .throwWhenFail();
+          )).throwWhenFail();
         }
         return TurboResponse.success(result: pDocs);
       } else {
@@ -624,8 +628,7 @@ abstract class TCollectionService<T extends TWriteableId,
             id: pDoc.id,
             transaction: transaction,
             writeable: pDoc,
-          ))
-              .throwWhenFail();
+          )).throwWhenFail();
         }
         return TurboResponse.success(result: pDocs);
       } else {
@@ -725,8 +728,7 @@ abstract class TCollectionService<T extends TWriteableId,
           (await api.deleteDoc(
             id: id,
             transaction: transaction,
-          ))
-              .throwWhenFail();
+          )).throwWhenFail();
         }
         return const TurboResponse.successAsBool();
       } else {
@@ -790,8 +792,7 @@ abstract class TCollectionService<T extends TWriteableId,
             id: pDoc.id,
             transaction: transaction,
             merge: true,
-          ))
-              .throwWhenFail();
+          )).throwWhenFail();
         }
         return TurboResponse.success(result: pDocs);
       } else {

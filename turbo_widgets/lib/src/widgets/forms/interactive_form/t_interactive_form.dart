@@ -8,10 +8,11 @@ import 'renderers/t_card_selection_renderer.dart';
 import 'renderers/t_text_input_renderer.dart';
 
 // <SUBJECT_2026_0130_23_04>
-typedef TInteractiveFormWidgetBuilder = Widget Function(
-  BuildContext context,
-  TInteractiveFormController controller,
-);
+typedef TInteractiveFormWidgetBuilder =
+    Widget Function(
+      BuildContext context,
+      TInteractiveFormController controller,
+    );
 // </SUBJECT_2026_0130_23_04>
 
 // #FEEDBACK #TODO regarding `{{ SUBJECT_2026_0130_23_04 }}` | put this inside its own file
@@ -257,17 +258,17 @@ class _StepRenderer extends StatelessWidget {
     final stepConfig = config;
     return switch (stepConfig) {
       TTextInputStepConfig() => TTextInputRenderer(
-          config: stepConfig,
-          controller: controller,
-        ),
+        config: stepConfig,
+        controller: controller,
+      ),
       TCardSelectionStepConfig() => TCardSelectionRenderer(
-          config: stepConfig,
-          controller: controller,
-        ),
+        config: stepConfig,
+        controller: controller,
+      ),
       TCalendarStepConfig() => TCalendarRenderer(
-          config: stepConfig,
-          controller: controller,
-        ),
+        config: stepConfig,
+        controller: controller,
+      ),
     };
   }
 }

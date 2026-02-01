@@ -5,7 +5,8 @@ import 'package:turbo_widgets/turbo_widgets.dart';
 
 enum NavigationTab {
   home,
-  styling;
+  styling
+  ;
 
   int get branchIndex {
     switch (this) {

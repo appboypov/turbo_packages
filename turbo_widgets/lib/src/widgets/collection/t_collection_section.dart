@@ -25,9 +25,9 @@ class TCollectionSection extends StatelessWidget {
     this.gridChildAspectRatio = 1.0,
     this.gridMainAxisExtent,
   }) : assert(
-          gridCrossAxisCount > 0,
-          'gridCrossAxisCount must be greater than 0.',
-        );
+         gridCrossAxisCount > 0,
+         'gridCrossAxisCount must be greater than 0.',
+       );
 
   final String title;
   final String? caption;
@@ -163,24 +163,24 @@ class _TCollectionSectionBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (layout) {
       TCollectionSectionLayout.bento => _TCollectionBentoGrid(
-          items: items,
-          itemSpacing: itemSpacing,
-          itemSizeBuilder: itemSizeBuilder,
-          height: bentoHeight,
-          animation: bentoAnimation,
-        ),
+        items: items,
+        itemSpacing: itemSpacing,
+        itemSizeBuilder: itemSizeBuilder,
+        height: bentoHeight,
+        animation: bentoAnimation,
+      ),
       TCollectionSectionLayout.list => _TCollectionList(
-          items: items,
-          spacing: itemSpacing,
-        ),
+        items: items,
+        spacing: itemSpacing,
+      ),
       TCollectionSectionLayout.grid => _TCollectionGrid(
-          items: items,
-          crossAxisCount: gridCrossAxisCount,
-          crossAxisSpacing: gridCrossAxisSpacing,
-          mainAxisSpacing: gridMainAxisSpacing,
-          childAspectRatio: gridChildAspectRatio,
-          mainAxisExtent: gridMainAxisExtent,
-        ),
+        items: items,
+        crossAxisCount: gridCrossAxisCount,
+        crossAxisSpacing: gridCrossAxisSpacing,
+        mainAxisSpacing: gridMainAxisSpacing,
+        childAspectRatio: gridChildAspectRatio,
+        mainAxisExtent: gridMainAxisExtent,
+      ),
     };
   }
 }

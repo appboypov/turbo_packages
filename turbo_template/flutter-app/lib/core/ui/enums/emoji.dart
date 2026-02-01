@@ -193,7 +193,8 @@ enum Emoji {
   shoppingBag,
   broom,
   bucket,
-  construction;
+  construction
+  ;
 
   String get id => name;
 

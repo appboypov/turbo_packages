@@ -32,8 +32,7 @@ class CollectionDto extends TurboPromptable {
 
   CollectionDto copyWith({
     List<String>? items,
-  }) =>
-      CollectionDto(
-        items: items ?? this.items,
-      );
+  }) => CollectionDto(
+    items: items ?? this.items,
+  );
 }

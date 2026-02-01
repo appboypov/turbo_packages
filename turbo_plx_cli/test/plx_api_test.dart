@@ -62,30 +62,32 @@ void main() {
     group('get', () {
       group('GIVEN path to existing file', () {
         group('WHEN get is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto',
-              () async {
-            mockClient.responseToReturn = const WatchEventDto(
-              event: WatchEventType.get,
-              path: 'test.md',
-              content: 'File content',
-              lastModified: 1705766400000,
-              id: 'req-1',
-            );
+          test(
+            'THEN returns TurboResponse.success with FileEntryDto',
+            () async {
+              mockClient.responseToReturn = const WatchEventDto(
+                event: WatchEventType.get,
+                path: 'test.md',
+                content: 'File content',
+                lastModified: 1705766400000,
+                id: 'req-1',
+              );
 
-            final response = await api.get('test.md');
+              final response = await api.get('test.md');
 
-            expect(mockClient.lastRequest?.event, WatchEventType.get);
-            expect(mockClient.lastRequest?.path, 'test.md');
+              expect(mockClient.lastRequest?.event, WatchEventType.get);
+              expect(mockClient.lastRequest?.path, 'test.md');
 
-            switch (response) {
-              case Success<FileEntryDto>(:final result):
-                expect(result.path, 'test.md');
-                expect(result.content, 'File content');
-                expect(result.lastModified, 1705766400000);
-              case Fail<FileEntryDto>():
-                fail('Expected success but got fail');
-            }
-          });
+              switch (response) {
+                case Success<FileEntryDto>(:final result):
+                  expect(result.path, 'test.md');
+                  expect(result.content, 'File content');
+                  expect(result.lastModified, 1705766400000);
+                case Fail<FileEntryDto>():
+                  fail('Expected success but got fail');
+              }
+            },
+          );
         });
       });
 
@@ -132,42 +134,44 @@ void main() {
     group('list', () {
       group('GIVEN path to folder with files', () {
         group('WHEN list is called', () {
-          test('THEN returns TurboResponse.success with List<FileEntryDto>',
-              () async {
-            mockClient.responseToReturn = const WatchEventDto(
-              event: WatchEventType.list,
-              path: '.',
-              id: 'req-3',
-              files: [
-                FileEntryDto(
-                  path: 'file1.md',
-                  content: 'Content 1',
-                  lastModified: 1705766400000,
-                ),
-                FileEntryDto(
-                  path: 'file2.md',
-                  content: 'Content 2',
-                  lastModified: 1705766500000,
-                ),
-              ],
-            );
+          test(
+            'THEN returns TurboResponse.success with List<FileEntryDto>',
+            () async {
+              mockClient.responseToReturn = const WatchEventDto(
+                event: WatchEventType.list,
+                path: '.',
+                id: 'req-3',
+                files: [
+                  FileEntryDto(
+                    path: 'file1.md',
+                    content: 'Content 1',
+                    lastModified: 1705766400000,
+                  ),
+                  FileEntryDto(
+                    path: 'file2.md',
+                    content: 'Content 2',
+                    lastModified: 1705766500000,
+                  ),
+                ],
+              );
 
-            final response = await api.list('.');
+              final response = await api.list('.');
 
-            expect(mockClient.lastRequest?.event, WatchEventType.list);
-            expect(mockClient.lastRequest?.path, '.');
+              expect(mockClient.lastRequest?.event, WatchEventType.list);
+              expect(mockClient.lastRequest?.path, '.');
 
-            switch (response) {
-              case Success<List<FileEntryDto>>(:final result):
-                expect(result.length, 2);
-                expect(result[0].path, 'file1.md');
-                expect(result[0].content, 'Content 1');
-                expect(result[1].path, 'file2.md');
-                expect(result[1].content, 'Content 2');
-              case Fail<List<FileEntryDto>>():
-                fail('Expected success but got fail');
-            }
-          });
+              switch (response) {
+                case Success<List<FileEntryDto>>(:final result):
+                  expect(result.length, 2);
+                  expect(result[0].path, 'file1.md');
+                  expect(result[0].content, 'Content 1');
+                  expect(result[1].path, 'file2.md');
+                  expect(result[1].content, 'Content 2');
+                case Fail<List<FileEntryDto>>():
+                  fail('Expected success but got fail');
+              }
+            },
+          );
         });
       });
 
@@ -241,30 +245,32 @@ void main() {
     group('create', () {
       group('GIVEN valid path and content', () {
         group('WHEN create is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto',
-              () async {
-            mockClient.responseToReturn = const WatchEventDto(
-              event: WatchEventType.create,
-              path: 'new-file.md',
-              content: 'New content',
-              lastModified: 1705766400000,
-              id: 'req-7',
-            );
+          test(
+            'THEN returns TurboResponse.success with FileEntryDto',
+            () async {
+              mockClient.responseToReturn = const WatchEventDto(
+                event: WatchEventType.create,
+                path: 'new-file.md',
+                content: 'New content',
+                lastModified: 1705766400000,
+                id: 'req-7',
+              );
 
-            final response = await api.create('new-file.md', 'New content');
+              final response = await api.create('new-file.md', 'New content');
 
-            expect(mockClient.lastRequest?.event, WatchEventType.create);
-            expect(mockClient.lastRequest?.path, 'new-file.md');
-            expect(mockClient.lastRequest?.content, 'New content');
+              expect(mockClient.lastRequest?.event, WatchEventType.create);
+              expect(mockClient.lastRequest?.path, 'new-file.md');
+              expect(mockClient.lastRequest?.content, 'New content');
 
-            switch (response) {
-              case Success<FileEntryDto>(:final result):
-                expect(result.path, 'new-file.md');
-                expect(result.content, 'New content');
-              case Fail<FileEntryDto>():
-                fail('Expected success but got fail');
-            }
-          });
+              switch (response) {
+                case Success<FileEntryDto>(:final result):
+                  expect(result.path, 'new-file.md');
+                  expect(result.content, 'New content');
+                case Fail<FileEntryDto>():
+                  fail('Expected success but got fail');
+              }
+            },
+          );
         });
       });
 
@@ -294,30 +300,35 @@ void main() {
     group('update', () {
       group('GIVEN valid path and content', () {
         group('WHEN update is called', () {
-          test('THEN returns TurboResponse.success with FileEntryDto',
-              () async {
-            mockClient.responseToReturn = const WatchEventDto(
-              event: WatchEventType.modify,
-              path: 'existing.md',
-              content: 'Updated content',
-              lastModified: 1705766500000,
-              id: 'req-9',
-            );
+          test(
+            'THEN returns TurboResponse.success with FileEntryDto',
+            () async {
+              mockClient.responseToReturn = const WatchEventDto(
+                event: WatchEventType.modify,
+                path: 'existing.md',
+                content: 'Updated content',
+                lastModified: 1705766500000,
+                id: 'req-9',
+              );
 
-            final response = await api.update('existing.md', 'Updated content');
+              final response = await api.update(
+                'existing.md',
+                'Updated content',
+              );
 
-            expect(mockClient.lastRequest?.event, WatchEventType.modify);
-            expect(mockClient.lastRequest?.path, 'existing.md');
-            expect(mockClient.lastRequest?.content, 'Updated content');
+              expect(mockClient.lastRequest?.event, WatchEventType.modify);
+              expect(mockClient.lastRequest?.path, 'existing.md');
+              expect(mockClient.lastRequest?.content, 'Updated content');
 
-            switch (response) {
-              case Success<FileEntryDto>(:final result):
-                expect(result.path, 'existing.md');
-                expect(result.content, 'Updated content');
-              case Fail<FileEntryDto>():
-                fail('Expected success but got fail');
-            }
-          });
+              switch (response) {
+                case Success<FileEntryDto>(:final result):
+                  expect(result.path, 'existing.md');
+                  expect(result.content, 'Updated content');
+                case Fail<FileEntryDto>():
+                  fail('Expected success but got fail');
+              }
+            },
+          );
         });
       });
 

@@ -19,7 +19,8 @@ enum TBusyType {
   indicatorBackdrop,
 
   /// Shows the indicator with a backdrop and ignores touch events.
-  indicatorBackdropIgnorePointer;
+  indicatorBackdropIgnorePointer
+  ;
 
   /// Default value for `BusyType`.
   static const defaultValue = TBusyType.indicator;

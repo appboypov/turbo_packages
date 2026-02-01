@@ -157,14 +157,13 @@ class _TSideNavBarVertical extends StatelessWidget {
   final bool showDividers;
 
   MainAxisAlignment get _mainAxisAlignment => switch (buttonAlignment) {
-        TSideNavBarButtonAlignment.start => MainAxisAlignment.start,
-        TSideNavBarButtonAlignment.center => MainAxisAlignment.center,
-        TSideNavBarButtonAlignment.end => MainAxisAlignment.end,
-        TSideNavBarButtonAlignment.spaceBetween =>
-          MainAxisAlignment.spaceBetween,
-        TSideNavBarButtonAlignment.spaceEvenly => MainAxisAlignment.spaceEvenly,
-        TSideNavBarButtonAlignment.spaceAround => MainAxisAlignment.spaceAround,
-      };
+    TSideNavBarButtonAlignment.start => MainAxisAlignment.start,
+    TSideNavBarButtonAlignment.center => MainAxisAlignment.center,
+    TSideNavBarButtonAlignment.end => MainAxisAlignment.end,
+    TSideNavBarButtonAlignment.spaceBetween => MainAxisAlignment.spaceBetween,
+    TSideNavBarButtonAlignment.spaceEvenly => MainAxisAlignment.spaceEvenly,
+    TSideNavBarButtonAlignment.spaceAround => MainAxisAlignment.spaceAround,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -429,8 +428,9 @@ class _TSideNavBarCollapsedItemState extends State<_TSideNavBarCollapsedItem> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: widget.labelFontSize,
-                    fontWeight:
-                        widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                    fontWeight: widget.isActive
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                     color: color,
                     height: 1.2,
                   ),
@@ -519,8 +519,9 @@ class _TSideNavBarExpandedItemState extends State<_TSideNavBarExpandedItem> {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: widget.labelFontSize + 3,
-                      fontWeight:
-                          widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                      fontWeight: widget.isActive
+                          ? FontWeight.w600
+                          : FontWeight.w400,
                       color: color,
                       height: 1.2,
                     ),

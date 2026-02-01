@@ -42,8 +42,9 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final availableDevices =
-        TurboWidgetsDevices.devicesForScreenType(currentType);
+    final availableDevices = TurboWidgetsDevices.devicesForScreenType(
+      currentType,
+    );
     final isDeviceFrameMode =
         previewMode == TurboWidgetsPreviewMode.deviceFrame;
 
@@ -176,8 +177,10 @@ class TPlaygroundScreenTypeSelector extends StatelessWidget {
               child: ShadSlider(
                 min: 0.5,
                 max: isDeviceFrameMode ? 1.0 : 1.5,
-                initialValue:
-                    previewScale.clamp(0.5, isDeviceFrameMode ? 1.0 : 1.5),
+                initialValue: previewScale.clamp(
+                  0.5,
+                  isDeviceFrameMode ? 1.0 : 1.5,
+                ),
                 onChanged: onPreviewScaleChange,
               ),
             ),

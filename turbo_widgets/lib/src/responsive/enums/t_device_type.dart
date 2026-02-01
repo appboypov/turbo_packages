@@ -1,7 +1,8 @@
 enum TDeviceType {
   mobile,
   tablet,
-  desktop;
+  desktop
+  ;
 
   bool get isMobile => this == TDeviceType.mobile;
   bool get isTabletDesktop => this == TDeviceType.tablet;

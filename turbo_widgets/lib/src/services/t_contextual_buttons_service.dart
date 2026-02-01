@@ -20,7 +20,7 @@ import 'package:turbo_widgets/src/models/t_contextual_buttons_config.dart';
 /// The singleton instance can be reset for testing via [resetInstance].
 class TContextualButtonsService extends TContextualButtonsServiceInterface {
   TContextualButtonsService([TContextualButtonsConfig? initialBaseConfig])
-      : _baseConfig = initialBaseConfig ?? const TContextualButtonsConfig() {
+    : _baseConfig = initialBaseConfig ?? const TContextualButtonsConfig() {
     _recomputeValue();
   }
 
@@ -220,7 +220,7 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
   @override
   void updateWith(
     TContextualButtonsConfig Function(TContextualButtonsConfig current)
-        updater, {
+    updater, {
     bool doNotifyListeners = true,
   }) {
     final newConfig = updater(_baseConfig);
@@ -230,7 +230,7 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
   @override
   Future<void> updateContextualButtons(
     TContextualButtonsConfig Function(TContextualButtonsConfig current)
-        updater, {
+    updater, {
     bool doNotifyListeners = true,
     bool animated = true,
     Set<TContextualPosition>? positionsToAnimate,
@@ -328,7 +328,8 @@ class TContextualButtonsService extends TContextualButtonsServiceInterface {
   void _notifyListenersSafely() {
     if (_isDisposed) return;
     final phase = SchedulerBinding.instance.schedulerPhase;
-    final isBuilding = phase == SchedulerPhase.persistentCallbacks ||
+    final isBuilding =
+        phase == SchedulerPhase.persistentCallbacks ||
         phase == SchedulerPhase.midFrameMicrotasks;
     if (!isBuilding) {
       notifyListeners();

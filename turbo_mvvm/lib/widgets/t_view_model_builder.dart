@@ -9,7 +9,8 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
       T model,
       bool isInitialised,
       Widget? child,
-    ) builder,
+    )
+    builder,
     required T Function() viewModelBuilder,
     Object? Function()? argumentBuilder,
     this.isReactive = TurboMvvmDefaults.isReactive,
@@ -18,10 +19,10 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
     this.contentFadeDuration = TurboMvvmDefaults.animation,
     this.onDispose,
     Key? key,
-  })  : _builder = builder,
-        _viewModelBuilder = viewModelBuilder,
-        _argumentBuilder = argumentBuilder,
-        super(key: key);
+  }) : _builder = builder,
+       _viewModelBuilder = viewModelBuilder,
+       _argumentBuilder = argumentBuilder,
+       super(key: key);
 
   /// Child widget that will not rebuild when notifyListeners is called.
   final Widget? child;
@@ -32,7 +33,8 @@ class TViewModelBuilder<T extends TBaseViewModel> extends StatefulWidget {
     T model,
     bool isInitialised,
     Widget? child,
-  ) _builder;
+  )
+  _builder;
 
   /// Builder method that provides the [TBaseViewModel].
   final T Function() _viewModelBuilder;
@@ -123,35 +125,35 @@ class TViewModelBuilderState<T extends TBaseViewModel>
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(
-        valueListenable: _viewModel.isInitialised,
-        child: widget.child,
-        builder: (context, isInitialised, child) {
-          if (widget.isReactive) {
-            return ChangeNotifierProvider<T>.value(
-              value: _viewModel,
-              child: Consumer<T>(
-                child: child,
-                builder: (context, value, child) {
-                  return widget._builder(
-                    context,
-                    value,
-                    isInitialised,
-                    child,
-                  );
-                },
-              ),
-            );
-          }
-          return ChangeNotifierProvider<T>.value(
-            value: _viewModel,
+    valueListenable: _viewModel.isInitialised,
+    child: widget.child,
+    builder: (context, isInitialised, child) {
+      if (widget.isReactive) {
+        return ChangeNotifierProvider<T>.value(
+          value: _viewModel,
+          child: Consumer<T>(
             child: child,
-            builder: (context, child) => widget._builder(
-              context,
-              _viewModel,
-              isInitialised,
-              child,
-            ),
-          );
-        },
+            builder: (context, value, child) {
+              return widget._builder(
+                context,
+                value,
+                isInitialised,
+                child,
+              );
+            },
+          ),
+        );
+      }
+      return ChangeNotifierProvider<T>.value(
+        value: _viewModel,
+        child: child,
+        builder: (context, child) => widget._builder(
+          context,
+          _viewModel,
+          isInitialised,
+          child,
+        ),
       );
+    },
+  );
 }

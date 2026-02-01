@@ -55,8 +55,7 @@ class ContextualButtonsProvider<ROUTE extends Enum> extends InheritedWidget {
   @override
   bool updateShouldNotify(
     covariant ContextualButtonsProvider<ROUTE> oldWidget,
-  ) =>
-      contextualButtonBuilders != oldWidget.contextualButtonBuilders;
+  ) => contextualButtonBuilders != oldWidget.contextualButtonBuilders;
 }
 
 /// Device-aware button configuration.
@@ -74,16 +73,16 @@ class TViewButtonsConfig<T> {
 
   /// Button config builder for mobile devices.
   final TContextualButtonsConfig Function(BuildContext context, T model)?
-      mobile;
+  mobile;
 
   /// Button config builder for tablet devices.
   /// Falls back to [desktop] if not specified.
   final TContextualButtonsConfig Function(BuildContext context, T model)?
-      tablet;
+  tablet;
 
   /// Button config builder for desktop devices.
   final TContextualButtonsConfig Function(BuildContext context, T model)?
-      desktop;
+  desktop;
 
   /// Returns the builder for the given device type.
   /// Tablet falls back to desktop if tablet builder is not specified.

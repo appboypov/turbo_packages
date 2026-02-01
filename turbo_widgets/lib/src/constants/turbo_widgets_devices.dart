@@ -17,34 +17,34 @@ abstract final class TurboWidgetsDevices {
 
   /// All available mobile devices.
   static List<DeviceInfo> get mobileDevices => [
-        Devices.ios.iPhoneSE,
-        Devices.ios.iPhone12Mini,
-        Devices.ios.iPhone12,
-        Devices.ios.iPhone13Mini,
-        Devices.ios.iPhone13,
-        Devices.ios.iPhone13ProMax,
-        Devices.ios.iPhone14Pro,
-        Devices.android.samsungGalaxyA50,
-        Devices.android.samsungGalaxyS20,
-        Devices.android.samsungGalaxyNote20,
-        Devices.android.samsungGalaxyNote20Ultra,
-        Devices.android.onePlus8Pro,
-        Devices.android.sonyXperia1II,
-      ];
+    Devices.ios.iPhoneSE,
+    Devices.ios.iPhone12Mini,
+    Devices.ios.iPhone12,
+    Devices.ios.iPhone13Mini,
+    Devices.ios.iPhone13,
+    Devices.ios.iPhone13ProMax,
+    Devices.ios.iPhone14Pro,
+    Devices.android.samsungGalaxyA50,
+    Devices.android.samsungGalaxyS20,
+    Devices.android.samsungGalaxyNote20,
+    Devices.android.samsungGalaxyNote20Ultra,
+    Devices.android.onePlus8Pro,
+    Devices.android.sonyXperia1II,
+  ];
 
   /// All available tablet devices.
   static List<DeviceInfo> get tabletDevices => [
-        Devices.ios.iPad,
-        Devices.ios.iPadAir4,
-        Devices.ios.iPadPro11Inches,
-        Devices.ios.iPad12InchesGen2,
-        Devices.ios.iPad12InchesGen4,
-      ];
+    Devices.ios.iPad,
+    Devices.ios.iPadAir4,
+    Devices.ios.iPadPro11Inches,
+    Devices.ios.iPad12InchesGen2,
+    Devices.ios.iPad12InchesGen4,
+  ];
 
   /// All available desktop/laptop devices.
   static List<DeviceInfo> get desktopDevices => [
-        Devices.macOS.macBookPro,
-      ];
+    Devices.macOS.macBookPro,
+  ];
 
   /// Returns available devices for the given screen type.
   static List<DeviceInfo> devicesForScreenType(

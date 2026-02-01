@@ -22,8 +22,9 @@ const List<String> _categoryImageUrls = [
   'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
 ];
 
-final List<ImageProvider> _categoryImages =
-    _categoryImageUrls.map((url) => NetworkImage(url)).toList();
+final List<ImageProvider> _categoryImages = _categoryImageUrls
+    .map((url) => NetworkImage(url))
+    .toList();
 
 const List<IconData> _categoryIcons = [
   LucideIcons.palette,
@@ -47,166 +48,158 @@ class StylingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TViewBuilder<StylingViewModel>(
-        contextualButtonsBuilder: (context, model, isInitialised) =>
-            TContextualButtonsConfig(
+    contextualButtonsBuilder: (context, model, isInitialised) =>
+        TContextualButtonsConfig(
           top: (_) => const [_StylingViewTopBar()],
           bottom: (_) => const [_StylingViewBottomBar()],
         ),
-        viewModelBuilder: () => StylingViewModel.locate,
-        builder: (context, model, isInitialised, child) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isPlaygroundExpanded,
-                  builder: (context, isPlaygroundExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'Component Playground',
-                      subtitle:
-                          'Create and test widgets with responsive preview',
-                      isExpanded: isPlaygroundExpanded,
-                      onToggle: model.togglePlayground,
-                      child: TPlayground<TPlaygroundParameterModel>(
-                        parametersBuilder: () =>
-                            const TPlaygroundParameterModel.empty(),
-                        childBuilder: (context, params) {
-                          final theme = ShadTheme.of(context);
-                          return Center(
-                            child: Text(
-                              'Add your component here',
-                              style: theme.textTheme.muted,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isCategoryWidgetsShowcaseExpanded,
-                  builder: (context, isExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'Category Widgets',
-                      subtitle:
-                          'TCategoryHeader, TCategorySection, TCategoryCard',
-                      isExpanded: isExpanded,
-                      onToggle: model.toggleCategoryWidgetsShowcase,
-                      child: const _TCategoryWidgetsShowcase(),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isFeatureCardsShowcaseExpanded,
-                  builder: (context, isExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'Feature Cards',
-                      subtitle: 'Compact cards for feature highlights',
-                      isExpanded: isExpanded,
-                      onToggle: model.toggleFeatureCardsShowcase,
-                      child: const _TFeatureCardShowcase(),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isContextualButtonsShowcaseExpanded,
-                  builder: (context, isExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'TContextualButtons',
-                      subtitle:
-                          'Contextual overlay buttons with position and variation support',
-                      isExpanded: isExpanded,
-                      onToggle: model.toggleContextualButtonsShowcase,
-                      child: Column(
-                        children: [
-                          _TContextualButtonsShowcase(
-                            title: 'Basic - All Positions',
-                            config: TContextualButtonsConfig(
-                              top: (_) => const [_ShowcaseBar(label: 'Top')],
-                              bottom: (_) =>
-                                  const [_ShowcaseBar(label: 'Bottom')],
-                              left: (_) => const [_ShowcaseBar(label: 'Left')],
-                              right: (_) =>
-                                  const [_ShowcaseBar(label: 'Right')],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _TContextualButtonsShowcase(
-                            title: 'Position Filter - Bottom Only',
-                            config: TContextualButtonsConfig(
-                              allowFilter: TContextualAllowFilter.bottom,
-                              top: (_) => const [
-                                _ShowcaseBar(label: 'Filtered to Bottom')
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _TContextualButtonsShowcase(
-                            title: 'Multiple Widgets Per Position',
-                            config: TContextualButtonsConfig(
-                              bottom: (_) => const [
-                                _ShowcaseBar(label: 'First'),
-                                _ShowcaseBar(label: 'Second'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isNavigationShowcaseExpanded,
-                  builder: (context, isExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'Navigation Components',
-                      subtitle:
-                          'TBottomNavigation, TTopNavigation, TSideNavigation with TContextualButtons',
-                      isExpanded: isExpanded,
-                      onToggle: model.toggleNavigationShowcase,
-                      child: const Column(
-                        children: [
-                          Text('Todo'),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ValueListenableBuilder<bool>(
-                  valueListenable: model.isViewBuilderShowcaseExpanded,
-                  builder: (context, isExpanded, _) {
-                    return TCollapsibleSection(
-                      title: 'TViewBuilder',
-                      subtitle:
-                          'Convenience wrapper combining TContextualButtons and TBaseViewModelBuilder',
-                      isExpanded: isExpanded,
-                      onToggle: model.toggleViewBuilderShowcase,
-                      child: const Column(
-                        children: [
-                          _TViewBuilderShowcase(
-                            title: 'With Custom Service',
-                            useCustomService: true,
-                          ),
-                          SizedBox(height: 16),
-                          _TViewBuilderShowcase(
-                            title: 'With Default Singleton',
-                            useCustomService: false,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
+    viewModelBuilder: () => StylingViewModel.locate,
+    builder: (context, model, isInitialised, child) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isPlaygroundExpanded,
+              builder: (context, isPlaygroundExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'Component Playground',
+                  subtitle: 'Create and test widgets with responsive preview',
+                  isExpanded: isPlaygroundExpanded,
+                  onToggle: model.togglePlayground,
+                  child: TPlayground<TPlaygroundParameterModel>(
+                    parametersBuilder: () =>
+                        const TPlaygroundParameterModel.empty(),
+                    childBuilder: (context, params) {
+                      final theme = ShadTheme.of(context);
+                      return Center(
+                        child: Text(
+                          'Add your component here',
+                          style: theme.textTheme.muted,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
-          );
-        },
+            const SizedBox(height: 24),
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isCategoryWidgetsShowcaseExpanded,
+              builder: (context, isExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'Category Widgets',
+                  subtitle: 'TCategoryHeader, TCategorySection, TCategoryCard',
+                  isExpanded: isExpanded,
+                  onToggle: model.toggleCategoryWidgetsShowcase,
+                  child: const _TCategoryWidgetsShowcase(),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isFeatureCardsShowcaseExpanded,
+              builder: (context, isExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'Feature Cards',
+                  subtitle: 'Compact cards for feature highlights',
+                  isExpanded: isExpanded,
+                  onToggle: model.toggleFeatureCardsShowcase,
+                  child: const _TFeatureCardShowcase(),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isContextualButtonsShowcaseExpanded,
+              builder: (context, isExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'TContextualButtons',
+                  subtitle:
+                      'Contextual overlay buttons with position and variation support',
+                  isExpanded: isExpanded,
+                  onToggle: model.toggleContextualButtonsShowcase,
+                  child: Column(
+                    children: [
+                      _TContextualButtonsShowcase(
+                        title: 'Basic - All Positions',
+                        config: TContextualButtonsConfig(
+                          top: (_) => const [_ShowcaseBar(label: 'Top')],
+                          bottom: (_) => const [_ShowcaseBar(label: 'Bottom')],
+                          left: (_) => const [_ShowcaseBar(label: 'Left')],
+                          right: (_) => const [_ShowcaseBar(label: 'Right')],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _TContextualButtonsShowcase(
+                        title: 'Position Filter - Bottom Only',
+                        config: TContextualButtonsConfig(
+                          allowFilter: TContextualAllowFilter.bottom,
+                          top: (_) => const [
+                            _ShowcaseBar(label: 'Filtered to Bottom'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _TContextualButtonsShowcase(
+                        title: 'Multiple Widgets Per Position',
+                        config: TContextualButtonsConfig(
+                          bottom: (_) => const [
+                            _ShowcaseBar(label: 'First'),
+                            _ShowcaseBar(label: 'Second'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isNavigationShowcaseExpanded,
+              builder: (context, isExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'Navigation Components',
+                  subtitle:
+                      'TBottomNavigation, TTopNavigation, TSideNavigation with TContextualButtons',
+                  isExpanded: isExpanded,
+                  onToggle: model.toggleNavigationShowcase,
+                  child: const Column(children: [Text('Todo')]),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            ValueListenableBuilder<bool>(
+              valueListenable: model.isViewBuilderShowcaseExpanded,
+              builder: (context, isExpanded, _) {
+                return TCollapsibleSection(
+                  title: 'TViewBuilder',
+                  subtitle:
+                      'Convenience wrapper combining TContextualButtons and TBaseViewModelBuilder',
+                  isExpanded: isExpanded,
+                  onToggle: model.toggleViewBuilderShowcase,
+                  child: const Column(
+                    children: [
+                      _TViewBuilderShowcase(
+                        title: 'With Custom Service',
+                        useCustomService: true,
+                      ),
+                      SizedBox(height: 16),
+                      _TViewBuilderShowcase(
+                        title: 'With Default Singleton',
+                        useCustomService: false,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       );
+    },
+  );
 }
 
 class _StylingViewTopBar extends StatelessWidget {
@@ -218,9 +211,7 @@ class _StylingViewTopBar extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-      ),
+      decoration: BoxDecoration(color: theme.colorScheme.primary),
       child: Text(
         'Turbo Widgets Example',
         style: theme.textTheme.p.copyWith(
@@ -348,10 +339,7 @@ class _TContextualButtonsShowcase extends StatelessWidget {
             child: TContextualButtons(
               service: _service,
               child: Center(
-                child: Text(
-                  'Main Content',
-                  style: theme.textTheme.muted,
-                ),
+                child: Text('Main Content', style: theme.textTheme.muted),
               ),
             ),
           ),
@@ -496,8 +484,9 @@ class _TViewBuilderShowcase extends StatelessWidget {
               contextualButtonsService: useCustomService
                   ? TContextualButtonsService(
                       TContextualButtonsConfig(
-                        bottom: (_) =>
-                            const [_ShowcaseBar(label: 'Custom Service')],
+                        bottom: (_) => const [
+                          _ShowcaseBar(label: 'Custom Service'),
+                        ],
                       ),
                     )
                   : null,

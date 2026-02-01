@@ -26,11 +26,11 @@ class TCategorySection extends StatefulWidget {
     this.gridCrossAxisSpacing = 12.0,
     this.gridChildAspectRatio = 1.0,
     this.gridMainAxisExtent,
-  })  : assert(maxLines > 0, 'maxLines must be greater than 0.'),
-        assert(
-          gridCrossAxisCount > 0,
-          'gridCrossAxisCount must be greater than 0.',
-        );
+  }) : assert(maxLines > 0, 'maxLines must be greater than 0.'),
+       assert(
+         gridCrossAxisCount > 0,
+         'gridCrossAxisCount must be greater than 0.',
+       );
 
   final String title;
   final String? caption;

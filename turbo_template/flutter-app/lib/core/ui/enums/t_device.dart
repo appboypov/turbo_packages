@@ -46,7 +46,8 @@ enum TDevice {
   appleWatch42mm,
   appleWatch38mm,
   iMac,
-  macintosh128k;
+  macintosh128k
+  ;
 
   double get height {
     switch (this) {

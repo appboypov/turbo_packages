@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Holds a title and method example widget.
 class MethodExample extends StatelessWidget {
-  const MethodExample({
-    required this.title,
-    required this.child,
-    super.key,
-  });
+  const MethodExample({required this.title, required this.child, super.key});
 
   final String title;
   final Widget child;
@@ -26,10 +22,10 @@ class MethodExample extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
             child: Text(
               title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

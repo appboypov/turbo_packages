@@ -96,6 +96,6 @@ class ConstValues {
     'up',
     'away',
     'sizzle',
-    'purus'
+    'purus',
   ];
 }

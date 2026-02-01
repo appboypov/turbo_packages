@@ -63,7 +63,8 @@ class PlxApi {
         );
       }
 
-      final files = response.files
+      final files =
+          response.files
               ?.map(
                 (entry) => FileEntryDto(
                   path: entry.path,

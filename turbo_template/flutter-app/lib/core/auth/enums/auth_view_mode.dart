@@ -1,7 +1,8 @@
 enum AuthViewMode {
   login,
   register,
-  forgotPassword;
+  forgotPassword
+  ;
 
   static const defaultValue = AuthViewMode.login;
 

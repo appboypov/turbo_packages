@@ -18,7 +18,8 @@ enum TFieldType {
   textInput,
   timePicker,
   toggleGroup,
-  toggleSwitch;
+  toggleSwitch
+  ;
 
   bool get hasTimePickerController {
     switch (this) {

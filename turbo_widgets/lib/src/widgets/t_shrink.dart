@@ -41,15 +41,14 @@ class TVerticalShrink extends StatelessWidget {
           switchOutCurve: fadeOutCurve,
           transitionBuilder: hideChild != null
               ? (child, animation) => FadeTransition(
-                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animation,
-                        curve:
-                            const Interval(0.15, 1.0, curve: Curves.easeInOut),
-                      ),
+                  opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: const Interval(0.15, 1.0, curve: Curves.easeInOut),
                     ),
-                    child: child,
-                  )
+                  ),
+                  child: child,
+                )
               : AnimatedSwitcher.defaultTransitionBuilder,
           layoutBuilder: (currentChild, previousChildren) {
             return Stack(
@@ -69,11 +68,11 @@ class TVerticalShrink extends StatelessWidget {
           child: show
               ? child
               : (hideChild ??
-                  SizedBox(
-                    key: _hiddenKey,
-                    width: width ?? double.infinity,
-                    height: 0,
-                  )),
+                    SizedBox(
+                      key: _hiddenKey,
+                      width: width ?? double.infinity,
+                      height: 0,
+                    )),
         ),
       ),
     );
@@ -137,11 +136,11 @@ class THorizontalShrink extends StatelessWidget {
           child: show
               ? child
               : (hideChild ??
-                  SizedBox(
-                    key: _hiddenKey,
-                    width: 0,
-                    height: height ?? double.infinity,
-                  )),
+                    SizedBox(
+                      key: _hiddenKey,
+                      width: 0,
+                      height: height ?? double.infinity,
+                    )),
         ),
       ),
     );

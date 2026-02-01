@@ -29,39 +29,39 @@ class VerticalShrink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClipRect(
-        clipBehavior: clipBehavior,
-        child: RepaintBoundary(
-          child: AnimatedSize(
-            duration: sizeDuration,
-            curve: sizeCurve,
-            alignment: alignment,
-            child: Stack(
-              alignment: alignment,
-              children: [
-                AnimatedOpacity(
-                  opacity: show ? 1 : 0,
-                  duration: fadeDuration,
-                  curve: show ? fadeInCurve : fadeOutCurve,
-                  child: Align(
-                    alignment: alignment,
-                    heightFactor: show ? null : 0,
-                    child: child,
-                  ),
-                ),
-                if (hideChild != null)
-                  AnimatedOpacity(
-                    opacity: show ? 0 : 1,
-                    duration: fadeDuration,
-                    curve: show ? fadeInCurve : fadeOutCurve,
-                    child: Align(
-                      alignment: alignment,
-                      heightFactor: show ? 0 : null,
-                      child: hideChild,
-                    ),
-                  ),
-              ],
+    clipBehavior: clipBehavior,
+    child: RepaintBoundary(
+      child: AnimatedSize(
+        duration: sizeDuration,
+        curve: sizeCurve,
+        alignment: alignment,
+        child: Stack(
+          alignment: alignment,
+          children: [
+            AnimatedOpacity(
+              opacity: show ? 1 : 0,
+              duration: fadeDuration,
+              curve: show ? fadeInCurve : fadeOutCurve,
+              child: Align(
+                alignment: alignment,
+                heightFactor: show ? null : 0,
+                child: child,
+              ),
             ),
-          ),
+            if (hideChild != null)
+              AnimatedOpacity(
+                opacity: show ? 0 : 1,
+                duration: fadeDuration,
+                curve: show ? fadeInCurve : fadeOutCurve,
+                child: Align(
+                  alignment: alignment,
+                  heightFactor: show ? 0 : null,
+                  child: hideChild,
+                ),
+              ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }

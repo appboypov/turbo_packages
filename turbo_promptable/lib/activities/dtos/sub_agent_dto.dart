@@ -29,8 +29,7 @@ class SubAgentDto extends TurboPromptable {
 
   SubAgentDto copyWith({
     RoleDto? role,
-  }) =>
-      SubAgentDto(
-        role: role ?? this.role,
-      );
+  }) => SubAgentDto(
+    role: role ?? this.role,
+  );
 }

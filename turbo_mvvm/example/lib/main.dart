@@ -32,13 +32,12 @@ class FirstVetoView extends StatelessWidget {
     return TViewModelBuilder<FirstVetoViewModel>(
       builder: (context, model, isInitialised, child) => MediaQuery(
         data: model.media.copyWith(
-          textScaler:
-              TextScaler.linear(model.textScaler.scale(1.0).clamp(1, 1.35)),
+          textScaler: TextScaler.linear(
+            model.textScaler.scale(1.0).clamp(1, 1.35),
+          ),
         ),
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Turbo MVVM Test App'),
-          ),
+          appBar: AppBar(title: const Text('Turbo MVVM Test App')),
           body: GestureDetector(
             onTap: model.focusNode.unfocus,
             child: Stack(
@@ -50,8 +49,7 @@ class FirstVetoView extends StatelessWidget {
                       child: isInitialised
                           ? ValueListenableBuilder<bool>(
                               valueListenable: model.isBusy,
-                              builder: (context, isBusy, child) =>
-                                  AnimatedSwitcher(
+                              builder: (context, isBusy, child) => AnimatedSwitcher(
                                 duration:
                                     ConstDurations.defaultAnimationDuration,
                                 child: isBusy
@@ -62,15 +60,20 @@ class FirstVetoView extends StatelessWidget {
                                           ValueListenableBuilder<int>(
                                             valueListenable: model.busySeconds,
                                             builder:
-                                                (context, busySeconds, child) =>
-                                                    Text(
-                                              'This model is busy for another $busySeconds seconds...',
-                                              style: model
-                                                  .textTheme.titleMedium!
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
+                                                (
+                                                  context,
+                                                  busySeconds,
+                                                  child,
+                                                ) => Text(
+                                                  'This model is busy for another $busySeconds seconds...',
+                                                  style: model
+                                                      .textTheme
+                                                      .titleMedium!
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                ),
                                           ),
                                           const SizedBox(height: 16),
                                           const CircularProgressIndicator(),
@@ -78,8 +81,7 @@ class FirstVetoView extends StatelessWidget {
                                       )
                                     : ValueListenableBuilder<bool>(
                                         valueListenable: model.hasError,
-                                        builder: (context, hasError, child) =>
-                                            AnimatedContainer(
+                                        builder: (context, hasError, child) => AnimatedContainer(
                                           height: constraints.maxHeight,
                                           curve: Curves.decelerate,
                                           duration: ConstDurations
@@ -111,21 +113,23 @@ class FirstVetoView extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     'First Veto View',
-                                                    style: model.textTheme
+                                                    style: model
+                                                        .textTheme
                                                         .headlineSmall!
                                                         .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                   ),
                                                   Text(
                                                     'Made by Yyhwach_ and me',
                                                     style: model
-                                                        .textTheme.titleSmall!
+                                                        .textTheme
+                                                        .titleSmall!
                                                         .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                   ),
                                                   SizedBox(
                                                     height: model.textScaled(
@@ -134,10 +138,10 @@ class FirstVetoView extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 16,
-                                                    ),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -152,8 +156,7 @@ class FirstVetoView extends StatelessWidget {
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                style: Theme.of(
-                                                                        context)
+                                                                style: Theme.of(context)
                                                                     .textTheme
                                                                     .bodyLarge!
                                                                     .copyWith(
@@ -165,52 +168,51 @@ class FirstVetoView extends StatelessWidget {
                                                               Text(
                                                                 '${model.modelCounter}',
                                                                 style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .headlineMedium,
+                                                                  context,
+                                                                ).textTheme.headlineMedium,
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                         ValueListenableBuilder<
-                                                            int>(
+                                                          int
+                                                        >(
                                                           valueListenable: model
                                                               .valueListenableCounter,
-                                                          builder: (
-                                                            context,
-                                                            valueListenableCounter,
-                                                            child,
-                                                          ) =>
-                                                              Flexible(
-                                                            child: Column(
-                                                              children: [
-                                                                Text(
-                                                                  'ValueNotifier',
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge!
-                                                                      .copyWith(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
+                                                          builder:
+                                                              (
+                                                                context,
+                                                                valueListenableCounter,
+                                                                child,
+                                                              ) => Flexible(
+                                                                child: Column(
+                                                                  children: [
+                                                                    Text(
+                                                                      'ValueNotifier',
+                                                                      maxLines:
+                                                                          1,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: Theme.of(context)
+                                                                          .textTheme
+                                                                          .bodyLarge!
+                                                                          .copyWith(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                    ),
+                                                                    Text(
+                                                                      valueListenableCounter
+                                                                          .toString(),
+                                                                      style: Theme.of(
+                                                                        context,
+                                                                      ).textTheme.headlineMedium,
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                Text(
-                                                                  valueListenableCounter
-                                                                      .toString(),
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .headlineMedium,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )
+                                                              ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -221,9 +223,10 @@ class FirstVetoView extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -236,7 +239,8 @@ class FirstVetoView extends StatelessWidget {
                                                               Colors.red,
                                                           heroTag: '1',
                                                           child: const Icon(
-                                                              Icons.add),
+                                                            Icons.add,
+                                                          ),
                                                         ),
                                                         FloatingActionButton(
                                                           onPressed: model
@@ -245,26 +249,29 @@ class FirstVetoView extends StatelessWidget {
                                                               Colors.blue,
                                                           heroTag: '2',
                                                           child: const Icon(
-                                                              Icons.add),
+                                                            Icons.add,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 16,
+                                                        ),
                                                     child: ElevatedButton(
                                                       onPressed: model.reset,
-                                                      child:
-                                                          const Text('Reset'),
+                                                      child: const Text(
+                                                        'Reset',
+                                                      ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 16,
-                                                    ),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -277,7 +284,8 @@ class FirstVetoView extends StatelessWidget {
                                                               Colors.red,
                                                           heroTag: '3',
                                                           child: const Icon(
-                                                              Icons.remove),
+                                                            Icons.remove,
+                                                          ),
                                                         ),
                                                         FloatingActionButton(
                                                           onPressed: model
@@ -286,7 +294,8 @@ class FirstVetoView extends StatelessWidget {
                                                               Colors.blue,
                                                           heroTag: '4',
                                                           child: const Icon(
-                                                              Icons.remove),
+                                                            Icons.remove,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -294,45 +303,53 @@ class FirstVetoView extends StatelessWidget {
                                                   const SizedBox(height: 16),
                                                   ElevatedButton(
                                                     style: ButtonStyle(
-                                                        backgroundColor:
-                                                            WidgetStateProperty
-                                                                .all(Colors
-                                                                    .pink)),
+                                                      backgroundColor:
+                                                          WidgetStateProperty.all(
+                                                            Colors.pink,
+                                                          ),
+                                                    ),
                                                     onPressed:
                                                         model.pushSecondView,
                                                     child: const Text(
-                                                        'Push Arguments'),
+                                                      'Push Arguments',
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 16),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
                                                     child: Row(
                                                       children: [
                                                         ValueListenableBuilder<
-                                                            MountedStatus>(
+                                                          MountedStatus
+                                                        >(
                                                           valueListenable: model
                                                               .mountedStatus,
-                                                          builder: (context,
-                                                                  mountedStatus,
-                                                                  child) =>
-                                                              Expanded(
-                                                            child: Text(
-                                                              'Mounted: ${mountedStatus.name.capitalizeFirstLetter}',
-                                                            ),
-                                                          ),
+                                                          builder:
+                                                              (
+                                                                context,
+                                                                mountedStatus,
+                                                                child,
+                                                              ) => Expanded(
+                                                                child: Text(
+                                                                  'Mounted: ${mountedStatus.name.capitalizeFirstLetter}',
+                                                                ),
+                                                              ),
                                                         ),
                                                         ElevatedButton(
                                                           style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  WidgetStateProperty
-                                                                      .all(Colors
-                                                                          .orange)),
+                                                            backgroundColor:
+                                                                WidgetStateProperty.all(
+                                                                  Colors.orange,
+                                                                ),
+                                                          ),
                                                           onPressed: model
                                                               .updateMountedStatus,
                                                           child: const Text(
-                                                              'Check status'),
+                                                            'Check status',
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -340,35 +357,33 @@ class FirstVetoView extends StatelessWidget {
                                                   const SizedBox(height: 16),
                                                   ElevatedButton(
                                                     style: ButtonStyle(
-                                                        backgroundColor:
-                                                            WidgetStateProperty
-                                                                .all(Colors
-                                                                    .yellow)),
+                                                      backgroundColor:
+                                                          WidgetStateProperty.all(
+                                                            Colors.yellow,
+                                                          ),
+                                                    ),
                                                     onPressed:
                                                         model.triggerBusy,
                                                     child: Text(
                                                       'Trigger Busy',
                                                       style: model
-                                                          .textTheme.bodyLarge!
+                                                          .textTheme
+                                                          .bodyLarge!
                                                           .copyWith(
-                                                              color:
-                                                                  Colors.black),
+                                                            color: Colors.black,
+                                                          ),
                                                     ),
                                                   ),
                                                   const SizedBox(height: 16),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16),
-                                                    child:
-                                                        ValueListenableBuilder<
-                                                            bool>(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
+                                                    child: ValueListenableBuilder<bool>(
                                                       valueListenable:
                                                           model.hasError,
-                                                      builder: (context,
-                                                              hasError,
-                                                              child) =>
-                                                          Row(
+                                                      builder: (context, hasError, child) => Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
@@ -379,25 +394,22 @@ class FirstVetoView extends StatelessWidget {
                                                             opacity: hasError
                                                                 ? 0.3
                                                                 : 1,
-                                                            child:
-                                                                IgnorePointer(
+                                                            child: IgnorePointer(
                                                               ignoring:
                                                                   hasError,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style:
-                                                                    ButtonStyle(
+                                                              child: ElevatedButton(
+                                                                style: ButtonStyle(
                                                                   backgroundColor:
-                                                                      WidgetStateProperty
-                                                                          .all(
-                                                                    Colors
-                                                                        .black,
-                                                                  ),
+                                                                      WidgetStateProperty.all(
+                                                                        Colors
+                                                                            .black,
+                                                                      ),
                                                                 ),
                                                                 onPressed: model
                                                                     .triggerError,
                                                                 child: const Text(
-                                                                    'Trigger Error'),
+                                                                  'Trigger Error',
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -407,25 +419,22 @@ class FirstVetoView extends StatelessWidget {
                                                             opacity: !hasError
                                                                 ? 0.3
                                                                 : 1,
-                                                            child:
-                                                                IgnorePointer(
+                                                            child: IgnorePointer(
                                                               ignoring:
                                                                   !hasError,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style:
-                                                                    ButtonStyle(
+                                                              child: ElevatedButton(
+                                                                style: ButtonStyle(
                                                                   backgroundColor:
-                                                                      WidgetStateProperty
-                                                                          .all(
-                                                                    Colors
-                                                                        .black,
-                                                                  ),
+                                                                      WidgetStateProperty.all(
+                                                                        Colors
+                                                                            .black,
+                                                                      ),
                                                                 ),
                                                                 onPressed: model
                                                                     .removeError,
                                                                 child: const Text(
-                                                                    'Remove Error'),
+                                                                  'Remove Error',
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -438,12 +447,14 @@ class FirstVetoView extends StatelessWidget {
                                                         .defaultAnimationDuration,
                                                     margin:
                                                         const EdgeInsets.only(
-                                                            top: 16),
+                                                          top: 16,
+                                                        ),
                                                     decoration: BoxDecoration(
                                                       color: Colors.blueAccent,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              32),
+                                                            32,
+                                                          ),
                                                     ),
                                                     width: model.scaledWidth(
                                                       value: 200,
@@ -466,8 +477,9 @@ class FirstVetoView extends StatelessWidget {
                                                                 .textTheme
                                                                 .titleSmall!
                                                                 .copyWith(
-                                                                    color: Colors
-                                                                        .white),
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
                                                           ),
                                                         ),
                                                       ],
@@ -503,8 +515,9 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
   final ValueNotifier<int> _valueNotifierCounter = ValueNotifier(0);
   ValueListenable<int> get valueListenableCounter => _valueNotifierCounter;
 
-  final ValueNotifier<MountedStatus> _mountedStatus =
-      ValueNotifier(MountedStatus.unknown);
+  final ValueNotifier<MountedStatus> _mountedStatus = ValueNotifier(
+    MountedStatus.unknown,
+  );
   ValueListenable<MountedStatus> get mountedStatus => _mountedStatus;
 
   final ValueNotifier<int> _busySeconds = ValueNotifier(0);
@@ -580,24 +593,22 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
   }
 
   /// Updates the current mounted status to [_mountedStatus] for demonstration purposes.
-  void updateMountedStatus() => _mountedStatus.value =
-      isMounted ? MountedStatus.mounted : MountedStatus.unmounted;
+  void updateMountedStatus() => _mountedStatus.value = isMounted
+      ? MountedStatus.mounted
+      : MountedStatus.unmounted;
 
   /// Triggers the busy state for demonstration purposes.
   void triggerBusy() {
     _busySeconds.value = 3;
     setBusy(true);
-    _busyTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        _busySeconds.value--;
-        if (busySeconds.value == 0) {
-          _busyTimer!.cancel();
-          _busyTimer = null;
-          setBusy(false);
-        }
-      },
-    );
+    _busyTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _busySeconds.value--;
+      if (busySeconds.value == 0) {
+        _busyTimer!.cancel();
+        _busyTimer = null;
+        setBusy(false);
+      }
+    });
   }
 
   /// Triggers the error state for demonstration purposes.
@@ -646,8 +657,7 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
   double scaledWidth({
     required double value,
     required double originalDesignWidth,
-  }) =>
-      value * (width / originalDesignWidth);
+  }) => value * (width / originalDesignWidth);
 
   /// Provides a design scaled value based on given [value], [height] and given [originalDesignHeight].
   ///
@@ -655,8 +665,7 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
   double scaledHeight({
     required double value,
     required double originalDesignHeight,
-  }) =>
-      value * (height / originalDesignHeight);
+  }) => value * (height / originalDesignHeight);
 
   static FirstVetoViewModel get locate => FirstVetoViewModel();
 }
@@ -668,9 +677,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Turbo MVVM',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
+      theme: ThemeData(primarySwatch: Colors.green),
       home: const FirstVetoView(),
     );
   }

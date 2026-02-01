@@ -31,16 +31,14 @@ class ScriptDto<INPUT, OUTPUT> extends TurboPromptable {
     Map<String, dynamic> json,
     INPUT Function(Object? json) fromJsonINPUT,
     OUTPUT Function(Object? json) fromJsonOUTPUT,
-  ) =>
-      _$ScriptDtoFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
+  ) => _$ScriptDtoFromJson(json, fromJsonINPUT, fromJsonOUTPUT);
 
   /// JSON serialization method for generic types.
   /// Requires converters for INPUT and OUTPUT types.
   Map<String, dynamic> toJsonWithConverters(
     Object? Function(INPUT value) toJsonINPUT,
     Object? Function(OUTPUT value) toJsonOUTPUT,
-  ) =>
-      _$ScriptDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
+  ) => _$ScriptDtoToJson(this, toJsonINPUT, toJsonOUTPUT);
 
   @override
   Map<String, dynamic> toJson() {

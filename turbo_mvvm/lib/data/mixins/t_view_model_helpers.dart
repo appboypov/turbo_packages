@@ -13,9 +13,9 @@ mixin TViewModelHelpers {
   /// Adds a post-frame callback using Flutter's [SchedulerBinding].
   ///
   /// [frameCallback] The callback function to be executed.
-  void addPostFrameCallback(FrameCallback frameCallback) =>
-      _asNullable(SchedulerBinding.instance)!
-          .addPostFrameCallback(frameCallback);
+  void addPostFrameCallback(FrameCallback frameCallback) => _asNullable(
+    SchedulerBinding.instance,
+  )!.addPostFrameCallback(frameCallback);
 
   /// Helper method to explicitly specify nullability of a variable.
   ///

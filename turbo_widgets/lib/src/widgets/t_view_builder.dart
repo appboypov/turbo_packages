@@ -7,12 +7,12 @@ import 'package:turbo_widgets/src/typedefs/t_view_model_builder_def.dart';
 import 'package:turbo_widgets/src/widgets/t_contextual_buttons.dart';
 
 /// Callback that builds a contextual buttons config from a view model.
-typedef TViewContextualButtonsDef<T extends TBaseViewModel>
-    = TContextualButtonsConfig? Function(
-  BuildContext context,
-  T model,
-  bool isInitialised,
-);
+typedef TViewContextualButtonsDef<T extends TBaseViewModel> =
+    TContextualButtonsConfig? Function(
+      BuildContext context,
+      T model,
+      bool isInitialised,
+    );
 
 /// A convenience wrapper that combines [TContextualButtons] and [TViewModelBuilder]
 /// for views that need contextual actions.

@@ -15,11 +15,9 @@ class TXmlFactory<T extends TWriteable> {
 
   TXmlDocument buildDocument({
     TXmlDocumentBuilder<T>? xmlDocumentBuilder,
-  }) =>
-      (xmlDocumentBuilder ?? this.xmlDocumentBuilder)?.call(writeable) ?? {};
+  }) => (xmlDocumentBuilder ?? this.xmlDocumentBuilder)?.call(writeable) ?? {};
 
   TXmlFile build({
     TXmlBuilder<T>? xmlBuilder,
-  }) =>
-      (xmlBuilder ?? this.xmlBuilder)?.call(writeable, buildDocument()) ?? '';
+  }) => (xmlBuilder ?? this.xmlBuilder)?.call(writeable, buildDocument()) ?? '';
 }

@@ -20,9 +20,7 @@ class SecondVetoView extends StatelessWidget {
       argumentBuilder: () => _secondVetoViewArguments,
       builder: (context, model, isInitialised, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Turbo MVVM Test App'),
-          ),
+          appBar: AppBar(title: const Text('Turbo MVVM Test App')),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -35,8 +33,8 @@ class SecondVetoView extends StatelessWidget {
                     'Second Veto View',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 32),
                   ValueListenableBuilder<int>(

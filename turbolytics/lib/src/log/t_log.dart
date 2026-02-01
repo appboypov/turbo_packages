@@ -6,9 +6,9 @@ class TLog {
     String? location,
     String? tag,
     int? maxLinesStackTrace,
-  })  : _tag = tag,
-        _location = location ?? 'Log',
-        _maxLinesStackTrace = maxLinesStackTrace;
+  }) : _tag = tag,
+       _location = location ?? 'Log',
+       _maxLinesStackTrace = maxLinesStackTrace;
 
   /// Used to indicate the tag of the log, can also be specified per method.
   final String? _tag;
@@ -117,7 +117,8 @@ class TLog {
   }) {
     const logLevel = TLogLevel.analytic;
     if (level.skipLog(logLevel)) return;
-    final message = '$name${value != null ? ': $value' : ''}'
+    final message =
+        '$name${value != null ? ': $value' : ''}'
         '${parameters != null ? ': $parameters' : ''}';
     _logMessage(
       message: message,
@@ -170,7 +171,8 @@ class TLog {
     if (level.skipLog(logLevel)) return;
     StackTrace localStackTrace;
     try {
-      localStackTrace = stackTrace ??
+      localStackTrace =
+          stackTrace ??
           StackTrace.fromString(
             StackTrace.current.toString().split('\n').sublist(1).join('\n'),
           );
@@ -225,18 +227,17 @@ class TLog {
     bool addToCrashReports = true,
     bool forceRecordError = false,
     String? tag,
-  }) =>
-      this.error(
-        message,
-        location: location,
-        error: error,
-        stackTrace: stackTrace,
-        fatal: true,
-        printStack: printStack,
-        addToCrashReports: addToCrashReports,
-        forceRecordError: forceRecordError,
-        tag: tag,
-      );
+  }) => this.error(
+    message,
+    location: location,
+    error: error,
+    stackTrace: stackTrace,
+    fatal: true,
+    printStack: printStack,
+    addToCrashReports: addToCrashReports,
+    forceRecordError: forceRecordError,
+    tag: tag,
+  );
 
   // --------------- PRINTERS --------------- PRINTERS --------------- PRINTERS --------------- \\
 
@@ -255,7 +256,8 @@ class TLog {
     if (addToCrashReports) {
       _tryLogCrashReportMessage(message, logLevel, localTag);
     }
-    final localMessage = '${TLog.logTime ? '$time ' : ''}'
+    final localMessage =
+        '${TLog.logTime ? '$time ' : ''}'
         '${logLevel.iconTag} '
         '${'[${location ?? _location}]'} '
         '${localTag != null ? '[$localTag] ' : ''}'
@@ -271,12 +273,11 @@ class TLog {
     String message,
     TLogLevel logLevel,
     String? tag,
-  ) =>
-      _eventBus.tryAddCrashReport(
-        Turbolytics._crashReportsInterface?.log(
-          '${Turbolytics._crashReportType.parseLogLevel(location: _location, logLevel: logLevel)} '
-          '${tag != null ? '[$tag] ' : ''}'
-          '$message',
-        ),
-      );
+  ) => _eventBus.tryAddCrashReport(
+    Turbolytics._crashReportsInterface?.log(
+      '${Turbolytics._crashReportType.parseLogLevel(location: _location, logLevel: logLevel)} '
+      '${tag != null ? '[$tag] ' : ''}'
+      '$message',
+    ),
+  );
 }

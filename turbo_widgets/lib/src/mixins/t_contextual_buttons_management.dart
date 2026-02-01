@@ -53,7 +53,7 @@ mixin TContextualButtonsManagement {
   /// Updates the configuration using an updater function.
   void updateContextualButtonsConfig(
     TContextualButtonsConfig Function(TContextualButtonsConfig current)
-        updater, {
+    updater, {
     bool doNotifyListeners = true,
   }) {
     contextualButtonsService.updateWith(
@@ -67,7 +67,7 @@ mixin TContextualButtonsManagement {
   /// See [TContextualButtonsServiceInterface.updateContextualButtons] for details.
   Future<void> updateContextualButtonsAnimated(
     TContextualButtonsConfig Function(TContextualButtonsConfig current)
-        updater, {
+    updater, {
     bool doNotifyListeners = true,
     bool animated = true,
     Set<TContextualPosition>? positionsToAnimate,

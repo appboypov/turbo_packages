@@ -202,7 +202,9 @@ extension AnalyticsTypesHelpers on TAnalyticsType {
   CustomAnalytic toCustomAnalytic({
     required String subject,
     Map<String, Object>? parameters,
-  }) =>
-      TAnalytic(subject: subject, type: this, parameters: parameters)
-          .toCustomAnalytic;
+  }) => TAnalytic(
+    subject: subject,
+    type: this,
+    parameters: parameters,
+  ).toCustomAnalytic;
 }

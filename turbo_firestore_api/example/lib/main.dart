@@ -16,12 +16,12 @@ void main() async {
 
 class ExampleAPI extends TFirestoreApi<ExampleDTO> {
   ExampleAPI()
-      : super(
-          collectionPath: () => 'Examples',
-          firebaseFirestore: FirebaseFirestore.instance,
-          fromJson: ExampleDTO.fromJson,
-          toJson: (dto) => dto.toJson(),
-        );
+    : super(
+        collectionPath: () => 'Examples',
+        firebaseFirestore: FirebaseFirestore.instance,
+        fromJson: ExampleDTO.fromJson,
+        toJson: (dto) => dto.toJson(),
+      );
 
   Future<TurboResponse<DocumentReference>> createExample() {
     final random = Random();
@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cloud Firestore API Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const TurboFirestoreApiView(),
     );
   }

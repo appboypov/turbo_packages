@@ -16,9 +16,9 @@ class TFormFieldBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(
-        valueListenable: fieldConfig,
-        builder: (context, value, child) =>
-            builder(context, fieldConfig, this.child ?? child),
-        child: child,
-      );
+    valueListenable: fieldConfig,
+    builder: (context, value, child) =>
+        builder(context, fieldConfig, this.child ?? child),
+    child: child,
+  );
 }
