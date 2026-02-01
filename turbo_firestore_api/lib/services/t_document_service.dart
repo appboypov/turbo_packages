@@ -37,7 +37,7 @@ part 'before_sync_t_document_service.dart';
 ///
 /// Type Parameters:
 /// - [T] - The document type, must extend [TWriteableId]
-/// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
+/// - [API] - The Firestore API type, must extend [TFirestoreApi]
 abstract class TDocumentService<T extends TWriteableId,
         API extends TFirestoreApi<T>> extends TAuthSyncService<T?>
     with Turbolytics {
@@ -373,8 +373,7 @@ abstract class TDocumentService<T extends TWriteableId,
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.updateDoc(
-        writeable:
-            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable,
+        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable,
         id: id,
         transaction: transaction,
       );

@@ -30,7 +30,7 @@ class TMutex {
 
   /// Locks the mutex, runs the provided function, and releases the lock.
   ///
-  /// The provided [run] function receives an [unlock] callback that must be called
+  /// The provided [run] function receives an `unlock` callback that must be called
   /// when the operation is complete to release the lock.
   ///
   /// Parameters:

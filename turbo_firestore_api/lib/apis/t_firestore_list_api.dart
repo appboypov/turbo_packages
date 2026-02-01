@@ -57,7 +57,8 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
   /// [listByQueryWithConverter] type-safe queries
   /// [listAll] retrieve all documents
   Future<TurboResponse<List<Map<String, dynamic>>>> listByQuery({
-    required CollectionReferenceDef<Map<String, dynamic>> collectionReferenceQuery,
+    required CollectionReferenceDef<Map<String, dynamic>>
+        collectionReferenceQuery,
     required String whereDescription,
   }) async {
     try {
@@ -288,10 +289,11 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           path: _collectionPath(),
         ),
       );
-      final result = (await listCollectionReferenceWithConverter().get(_getOptions))
-          .docs
-          .map((e) => e.data())
-          .toList();
+      final result =
+          (await listCollectionReferenceWithConverter().get(_getOptions))
+              .docs
+              .map((e) => e.data())
+              .toList();
       _logResultLength(result);
       return TurboResponse.success(result: result);
     } catch (error, stackTrace) {
@@ -367,7 +369,8 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
               );
         } catch (error) {
           _log.error(
-            message: 'Unexpected error caught while adding local id and document reference',
+            message:
+                'Unexpected error caught while adding local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               id: snapshot.id,
@@ -453,7 +456,8 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
           );
         } catch (error, stackTrace) {
           _log.error(
-            message: 'Unexpected error caught while adding local id and document reference',
+            message:
+                'Unexpected error caught while adding local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               id: snapshot.id,
@@ -487,7 +491,8 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
             );
           } catch (error, stackTrace) {
             _log.error(
-              message: 'Unexpected error caught while adding local id and document reference',
+              message:
+                  'Unexpected error caught while adding local id and document reference',
               sensitiveData: TSensitiveData(
                 path: _collectionPath(),
                 id: snapshot.id,
@@ -513,7 +518,8 @@ extension TurboFirestoreListApi<T> on TFirestoreApi<T> {
               );
         } catch (error) {
           _log.error(
-            message: 'Unexpected error caught while removing local id and document reference',
+            message:
+                'Unexpected error caught while removing local id and document reference',
             sensitiveData: TSensitiveData(
               path: _collectionPath(),
               data: data,

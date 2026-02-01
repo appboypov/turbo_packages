@@ -30,6 +30,6 @@ enum TSearchTermType {
   /// Matches documents where the specified array field contains the search term
   ///
   /// Use this for searching within array fields. For example, searching for 'tag1'
-  /// in a tags field would match documents with ['tag1', 'tag2'] or ['tag1'].
+  /// in a tags field would match documents with `['tag1', 'tag2']` or `['tag1']`.
   arrayContains,
 }

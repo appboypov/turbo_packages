@@ -36,7 +36,7 @@ part 'before_sync_t_collection_service.dart';
 ///
 /// Type Parameters:
 /// - [T] - The document type, must extend [TWriteableId]
-/// - [API] - The Firestore API type, must extend [TurboFirestoreApi<T>]
+/// - [API] - The Firestore API type, must extend [TFirestoreApi]
 ///
 /// Example:
 /// ```dart
@@ -149,8 +149,7 @@ abstract class TCollectionService<T extends TWriteableId,
 
   /// Local state for documents, indexed by their IDs.
   @protected
-  final docsPerIdNotifier =
-      TNotifier<Map<String, T>>({}, forceUpdate: true);
+  final docsPerIdNotifier = TNotifier<Map<String, T>>({}, forceUpdate: true);
 
   /// Completer that resolves when the service is ready.
   final _isReady = Completer<void>();

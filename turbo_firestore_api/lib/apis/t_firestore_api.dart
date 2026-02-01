@@ -101,7 +101,7 @@ class TFirestoreApi<T> {
   /// - [tryAddLocalDocumentReference] Add document reference to local objects
   /// - [documentReferenceFieldName] Field for document reference
   /// - [getOptions] Custom options for get operations
-  /// - [hideSensitiveData] Automatically hide sensitive data in logs
+  /// - [TFirestoreLogger.showSensitiveData] Control sensitive data visibility in logs
   ///
   /// Example:
   /// ```dart
@@ -231,7 +231,8 @@ class TFirestoreApi<T> {
   WriteBatch get writeBatch => _firebaseFirestore.batch();
 
   /// The current collection
-  CollectionReference get collection => _firebaseFirestore.collection(_collectionPath());
+  CollectionReference get collection =>
+      _firebaseFirestore.collection(_collectionPath());
 
   /// A new document
   DocumentReference get doc => collection.doc();
@@ -250,7 +251,8 @@ class TFirestoreApi<T> {
       'therefore, you must specify the collectionPathOverride containing all parent collection and document ids '
       'in order to make this method work.',
     );
-    final docRef = getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
+    final docRef =
+        getDocRefById(id: id, collectionPathOverride: collectionPathOverride);
     _log.debug(
       message: 'Checking if document exists..',
       sensitiveData: TSensitiveData(

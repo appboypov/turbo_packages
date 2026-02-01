@@ -248,7 +248,8 @@ sealed class TFirestoreException implements Exception {
 }
 
 /// Exception thrown when permission is denied for a Firestore operation.
-final class TurboFirestorePermissionDeniedException extends TFirestoreException {
+final class TurboFirestorePermissionDeniedException
+    extends TFirestoreException {
   /// Creates a new permission denied exception.
   const TurboFirestorePermissionDeniedException({
     required super.message,
@@ -266,7 +267,8 @@ final class TurboFirestorePermissionDeniedException extends TFirestoreException 
 
   @override
   String toString() {
-    final buffer = StringBuffer('TurboFirestorePermissionDeniedException: $message');
+    final buffer =
+        StringBuffer('TurboFirestorePermissionDeniedException: $message');
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');
@@ -416,7 +418,8 @@ final class TurboFirestoreAlreadyExistsException extends TFirestoreException {
 
   @override
   String toString() {
-    final buffer = StringBuffer('TurboFirestoreAlreadyExistsException: $message');
+    final buffer =
+        StringBuffer('TurboFirestoreAlreadyExistsException: $message');
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');
@@ -499,7 +502,8 @@ final class TurboFirestoreCancelledException extends TFirestoreException {
 }
 
 /// Exception thrown when a deadline is exceeded.
-final class TurboFirestoreDeadlineExceededException extends TFirestoreException {
+final class TurboFirestoreDeadlineExceededException
+    extends TFirestoreException {
   /// Creates a new deadline exceeded exception.
   const TurboFirestoreDeadlineExceededException({
     required super.message,
@@ -516,7 +520,8 @@ final class TurboFirestoreDeadlineExceededException extends TFirestoreException 
 
   @override
   String toString() {
-    final buffer = StringBuffer('TurboFirestoreDeadlineExceededException: $message');
+    final buffer =
+        StringBuffer('TurboFirestoreDeadlineExceededException: $message');
     buffer.write(' (code: $code)');
     if (operationType != null) {
       buffer.write('\nOperation: $operationType');

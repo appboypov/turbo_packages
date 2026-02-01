@@ -221,7 +221,8 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
   /// See also:
   /// [deleteDoc] single document deletion
   /// [updateDocInBatch] batch updates
-  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>> deleteDocInBatch({
+  Future<TurboResponse<TWriteBatchWithReference<Map<String, dynamic>>>>
+      deleteDocInBatch({
     required String id,
     WriteBatch? writeBatch,
     String? collectionPathOverride,
@@ -250,7 +251,8 @@ extension TFirestoreDeleteApi<T> on TFirestoreApi<T> {
       );
       nullSafeWriteBatch.delete(documentReference);
       _log.info(
-        message: 'Adding delete to batch done! Returning WriteBatchWithReference..',
+        message:
+            'Adding delete to batch done! Returning WriteBatchWithReference..',
         sensitiveData: null,
       );
       return TurboResponse.success(

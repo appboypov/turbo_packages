@@ -11,18 +11,13 @@ import 'package:turbolytics/turbolytics.dart';
 ///
 /// Example:
 /// ```dart
-/// class MyLogger extends TurboFirestoreLogger {
-///   const MyLogger() : super(
-///     turboLogLevel: TurboLogLevel.info,
-///     hideInProduction: true
-///   );
-/// }
+/// final logger = TFirestoreLogger(
+///   showSensitiveData: false,
+/// );
 /// ```
 class TFirestoreLogger {
   /// Creates a logger with customizable settings.
   ///
-  /// The [turboLogLevel] determines which log messages are shown, defaulting to [TurboLogLevel.debug].
-  /// If [hideInProduction] is true, logging is disabled in release mode.
   /// Set [showSensitiveData] to false to hide sensitive data in logs.
   /// The prefix parameters customize the prefix text for each log type.
   TFirestoreLogger({
@@ -82,7 +77,6 @@ class TFirestoreLogger {
   /// The [message] is the main error description.
   /// [error] is the error object that was caught.
   /// [stackTrace] is the stack trace associated with the error.
-  /// [label] and [maxFrames] customize the stack trace output.
   /// [sensitiveData] provides additional context that will be logged if [showSensitiveData] is true.
   void error({
     Object? error,
