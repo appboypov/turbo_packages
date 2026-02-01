@@ -4,33 +4,35 @@ All notable changes to the turbo_packages monorepo will be documented in this fi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [1.1.0] - 2026-01-20
+## [1.0.0] - 2026-02-01
+
+First official pub.dev release of all 9 publishable packages at 160/160 pana score.
+
+### Published
+
+- turbo_response 1.1.0
+- turbo_serializable 0.3.0
+- turbo_notifiers 1.1.0
+- turbolytics 1.1.0
+- turbo_mvvm 1.1.0
+- turbo_forms 1.0.1
+- turbo_widgets 1.1.0
+- turbo_firestore_api 0.9.0
+- turbo_promptable 0.0.1 (first release)
 
 ### Changed
-- turbo_mvvm v1.1.0: Added TurboMvvmDefaults class, breaking renames (BaseViewModel → TurboViewModel, ViewModelBuilder → TurboViewModelBuilder)
-- turbo_widgets v1.1.0: Added TViewBuilder, TContextualButtons, navigation components, TPlayground enhancements
 
-## [1.0.0] - 2026-01-13
+- Workspace sibling dependencies now use `^version` constraints instead of blank constraints for pub.dev compatibility
+- Updated shadcn_ui to ^0.45.1 across turbo_forms, turbo_widgets, example, and turbo_template
+- Added equatable ^2.0.5 constraint to turbo_forms
+- Added dartdoc comments to turbo_forms public API
+- Added turbo_forms example file
 
-### Added
-- Melos 7.x workspace configuration with pub workspaces
-- Root pubspec.yaml with workspace definition for all 7 packages
-- Standard Melos scripts: analyze, format, test, build_runner
-- Monorepo README.md with package overview and development instructions
-- Monorepo structure and development instructions
+### Infrastructure
 
-### Changed
-- All packages now use `resolution: workspace` for dependency management
-- Internal dependencies (turbo_response, turbo_serializable) resolved via workspace
-- SDK constraints aligned to ^3.6.0 across all packages
-- Repository URLs updated to point to monorepo (github.com/appboypov/turbo_packages)
-- Dev dependencies aligned (lints ^6.0.0, get_it ^9.2.0)
-
-### Packages
-- turbo_response v1.0.1
-- turbo_serializable v0.2.0
-- turbo_notifiers v1.1.0
-- turbo_mvvm v1.1.0
-- turbolytics v1.1.0
-- turbo_firestore_api v0.8.4
-- turbo_promptable v0.0.1
+- Added root and per-package Makefiles with analyze, format, test, fix, pub-check targets
+- Added test coverage script (tool/test_with_coverage.sh)
+- Added pub-check validation script for pana 160/160 scoring
+- Enhanced analysis options across packages
+- Added CLAUDE.md project instructions
+- Added PROGRESS.md release tracking protocol

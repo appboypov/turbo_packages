@@ -30,18 +30,18 @@ dependencies:
   path_provider: ^2.1.5
   provider: ^6.1.5+1
   rxdart: ^0.28.0
-  shadcn_ui: ^0.43.3
+  shadcn_ui: ^0.45.1
   shake_gesture: ^2.0.0
   smooth_sheets: ^0.16.0
   top_snackbar_flutter: ^3.3.0
-  turbo_notifiers:
-  turbo_response:
-  turbo_widgets:
-  turbolytics:
-  turbo_mvvm:
-  turbo_serializable:
-  turbo_firestore_api:
-  turbo_forms:
+  turbo_notifiers: ^1.1.0
+  turbo_response: ^1.1.0
+  turbo_widgets: ^1.1.0
+  turbolytics: ^1.1.0
+  turbo_mvvm: ^1.1.0
+  turbo_serializable: ^0.3.0
+  turbo_firestore_api: ^0.9.0
+  turbo_forms: ^1.0.1
   url_launcher: ^6.3.2
   flutter_slidable: ^4.0.3
   url_strategy: ^0.3.0

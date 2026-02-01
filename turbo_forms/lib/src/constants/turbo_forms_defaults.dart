@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Default constants for animation durations, sizing, and layout used
+/// throughout turbo_forms widgets.
 abstract final class TurboFormsDefaults {
   static const Duration animationDuration = Duration(milliseconds: 225);
   static const Duration animationDurationHalf = Duration(milliseconds: 113);

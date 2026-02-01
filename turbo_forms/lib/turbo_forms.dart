@@ -1,3 +1,5 @@
+/// Type-safe form field configuration and validation for Flutter with
+/// ShadCN UI integration.
 library turbo_forms;
 
 // Abstracts

@@ -1,5 +1,10 @@
 # CLAUDE.md
 
+<Memory>
+@PROGRESS.md
+@MEMORY.md
+</Memory>
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
@@ -71,7 +76,7 @@ turbo_template          (all turbo packages + Firebase)
 
 ## Key Conventions
 
-- **Workspace dependencies**: Packages with `resolution: workspace` use blank version constraints for sibling packages. Never add version constraints to these.
+- **Workspace dependencies**: Sibling workspace packages use `^version` constraints matching their current published version (e.g., `turbo_response: ^1.1.0`). Inside the workspace, the local version is used (but must satisfy the constraint). Outside the workspace (e.g. pub.dev consumers, pana), the constraint resolves from pub.dev — blank constraints resolve to `any` which pulls the oldest published version, breaking builds and pana's downgrade test.
 - **Naming**: ViewModels end with `ViewModel`, Services with `Service`, APIs with `Api`, DTOs with `Dto`. Turbo types prefixed with `T` (e.g., `TNotifier`, `TFormField`).
 - **Analysis**: Strict — `dart analyze --fatal-infos`. Trailing commas required. Single quotes preferred. Const constructors enforced.
 - **Generated files excluded**: `*.g.dart`, `*.freezed.dart`, `*.mocks.dart` excluded from analysis, formatting, and coverage.

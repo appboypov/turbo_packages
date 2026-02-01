@@ -15,12 +15,12 @@ dependencies:
   cloud_firestore: ^6.0.2
   cupertino_icons: ^1.0.8
   firebase_core: ^4.1.1
-  turbolytics:
-  turbo_response:
-  turbo_notifiers:
-  turbo_serializable:
-  turbo_firestore_api:
-  turbo_mvvm:
+  turbolytics: ^1.1.0
+  turbo_response: ^1.1.0
+  turbo_notifiers: ^1.1.0
+  turbo_serializable: ^0.3.0
+  turbo_firestore_api: ^0.9.0
+  turbo_mvvm: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,9 @@
 part of 't_form_field_config.dart';
 
+/// Immutable state snapshot for a [TFormFieldConfig].
+///
+/// Contains the current value, validation state, controller references,
+/// visibility, and all configuration for a single form field.
 class TFormFieldState<T> extends Equatable {
   final FormFieldValidator<T>? valueValidator;
   final List<T>? initialValues;

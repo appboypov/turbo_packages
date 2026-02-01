@@ -19,10 +19,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  equatable:
-  shadcn_ui:
-  turbo_notifiers:
-  turbolytics:
+  equatable: ^2.0.5
+  shadcn_ui: ^0.45.1
+  turbo_notifiers: ^1.1.0
+  turbolytics: ^1.1.0
 
 dev_dependencies:
   flutter_test:

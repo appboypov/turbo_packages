@@ -15,10 +15,10 @@ dependencies:
   flutter:
     sdk: flutter
   rxdart: ^0.28.0
-  turbolytics:
-  turbo_response:
-  turbo_serializable:
-  turbo_notifiers:
+  turbolytics: ^1.1.0
+  turbo_response: ^1.1.0
+  turbo_serializable: ^0.3.0
+  turbo_notifiers: ^1.1.0
 
 dev_dependencies:
   fake_cloud_firestore: ^4.0.1

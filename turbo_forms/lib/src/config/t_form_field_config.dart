@@ -12,6 +12,11 @@ import 'package:turbolytics/turbolytics.dart';
 part 't_form_field_extensions.dart';
 part 't_form_field_state.dart';
 
+/// Reactive configuration and state manager for a single form field.
+///
+/// Extends [TNotifier] to provide reactive updates when field state changes.
+/// Manages value, validation, visibility, controllers, and focus for a field
+/// identified by its [TFieldType].
 class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     with Turbolytics {
   TFormFieldConfig({
@@ -112,8 +117,10 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
   num get minValue => value.minValue;
   num get maxValue => value.maxValue;
 
+  /// Whether this field currently fails validation.
   bool get isNotValid => !isValid;
 
+  /// Checks validity without triggering UI validation state changes.
   bool get isValidSilent {
     final errorText = switch (fieldType) {
       TFieldType.textInput => value.valueValidator?.call(value.value),
@@ -140,6 +147,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     return errorText == null;
   }
 
+  /// Validates the field and updates error state, enabling validation display.
   bool get isValid {
     if (!value.shouldValidate) {
       update(value.copyWith(shouldValidate: true));
@@ -187,10 +195,14 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
   List<TextInputFormatter>? get inputFormatters => value.inputFormatters;
   Set<T> get valuesAsSet => values?.toSet() ?? {};
   String? get errorText => value.errorText;
+
+  /// The current value of this form field.
   T? get cValue => value.value;
   T? get initialValue => value.initialValue;
   TFieldType get fieldType => value.fieldType;
   ValuesValidatorDef<T>? get valuesValidator => value.valuesValidator;
+
+  /// Whether the current value differs from the initial value.
   bool get didChange => value.value != value.initialValue;
   bool get hasFocus => value.focusNode.hasFocus;
   bool get isEnabled => value.isEnabled;
@@ -257,12 +269,14 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     update(value.copyWith(shouldValidate: false, errorText: null));
   }
 
+  /// Updates the multi-value list and re-validates if needed.
   void updateValues(List<T>? newValues) {
     update(value.copyWith(values: newValues));
     _tryValidate();
     log.info('Set values to $newValues for $fieldType with id: ${value.id}!');
   }
 
+  /// Updates the single value and syncs the text editing controller.
   void updateValue(T? value) {
     update(data.copyWith(value: value));
     if (fieldType.hasTextEditingController) {
@@ -290,6 +304,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     });
   }
 
+  /// Requests focus and selects all text if the field has a text controller.
   void requestFocus() {
     value.focusNode.requestFocus();
     if (fieldType.hasTextEditingController) {
@@ -303,6 +318,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
 
   void unfocus() => value.focusNode.unfocus();
 
+  /// Resets the field to its initial value without triggering validation.
   void silentReset() {
     _resetShouldValidate();
 
@@ -346,14 +362,17 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     update(value.copyWith(values: current(values)));
   }
 
+  /// Appends a value to the multi-value list.
   void addValue(T newValue) => updateCurrentValues(
     (values) => values == null ? [newValue] : [...values, newValue],
   );
 
+  /// Removes a value from the multi-value list.
   void removeValue(T valueToRemove) => updateCurrentValues(
     (values) => values?.where((v) => v != valueToRemove).toList(),
   );
 
+  /// Updates both the initial and current value of this field.
   void updateInitialValue(T? newValue) {
     update(value.copyWith(initialValue: newValue, value: newValue));
     if (fieldType.hasTextEditingController) {
@@ -408,6 +427,7 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     log.info('Set isVisible to $newValue for $fieldType with id: ${value.id}!');
   }
 
+  /// Updates whether this field is enabled and resets validation if disabled.
   void updateIsEnabled(bool newValue) {
     update(value.copyWith(isEnabled: newValue));
     if (newValue) {

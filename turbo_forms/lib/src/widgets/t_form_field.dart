@@ -5,6 +5,10 @@ import 'package:turbo_forms/src/typedefs/t_form_field_builder_def.dart';
 import 'package:turbo_forms/src/widgets/t_error_label.dart';
 import 'package:turbo_forms/src/widgets/t_form_field_builder.dart';
 
+/// A reactive form field widget that rebuilds when its [TFormFieldConfig] changes.
+///
+/// Composes a label, description, error display, and custom field content
+/// built via the [builder] callback.
 class TFormField<T> extends StatelessWidget {
   const TFormField({
     super.key,
@@ -63,6 +67,8 @@ class TFormField<T> extends StatelessWidget {
   );
 }
 
+/// A stateless form field layout widget with label, description, error, and
+/// disabled/read-only state handling.
 class StatelessTFormField extends StatelessWidget {
   const StatelessTFormField({
     super.key,

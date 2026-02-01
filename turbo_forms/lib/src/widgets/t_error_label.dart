@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:turbo_forms/src/constants/turbo_forms_defaults.dart';
 import 'package:turbo_forms/src/widgets/vertical_shrink.dart';
 
+/// Animated error label that expands/collapses based on validation state.
 class TErrorLabel extends StatelessWidget {
   const TErrorLabel({
     required String? errorText,

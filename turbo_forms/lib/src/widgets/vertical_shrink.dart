@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:turbo_forms/src/constants/turbo_forms_defaults.dart';
 
+/// Animated widget that vertically expands/collapses its child with
+/// coordinated size and fade transitions.
 class VerticalShrink extends StatelessWidget {
   const VerticalShrink({
     required this.show,

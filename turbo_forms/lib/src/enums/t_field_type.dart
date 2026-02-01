@@ -1,3 +1,7 @@
+/// Enumerates the supported form field types.
+///
+/// Each type determines which controller is created (text editing, select,
+/// time picker, slider) and whether the field holds a single or multiple values.
 enum TFieldType {
   cameraPath,
   checkbox,
