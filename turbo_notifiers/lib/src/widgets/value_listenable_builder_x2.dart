@@ -14,7 +14,11 @@ class ValueListenableBuilderX2<T1, T2> extends StatefulWidget {
   final ValueListenable<T1> valueListenable;
   final ValueListenable<T2> valueListenable2;
   final Widget Function(
-      BuildContext context, T1 value, T2 value2, Widget? child) builder;
+    BuildContext context,
+    T1 value,
+    T2 value2,
+    Widget? child,
+  ) builder;
 
   @override
   ValueListenableBuilderX2State<T1, T2> createState() =>

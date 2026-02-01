@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbo_flutter_template/core/auth/mixins/logout_management.dart';
-import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/infrastructure/enums/t_route.dart';
+import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_flutter_template/core/ui/abstract/slidable_management.dart';
 import 'package:turbo_flutter_template/core/ui/services/badge_service.dart';
+import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
 
 class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, LogoutManagement {
@@ -39,9 +39,9 @@ class HomeViewModel extends TViewModel with Turbolytics, SlidableManagement, Log
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  Future<void> initialise() async {
-    updateContextualButtonsAnimated((current) => current.copyWith());
-    await super.initialise();
+  Future<void> initialise({bool doSetInitialised = true}) async {
+    await updateContextualButtonsAnimated((current) => current.copyWith());
+    await super.initialise(doSetInitialised: doSetInitialised);
   }
 
   @override

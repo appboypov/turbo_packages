@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:turbo_serializable/turbo_serializable.dart';
 
 part 'meta_data_dto.g.dart';
 

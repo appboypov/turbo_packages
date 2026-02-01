@@ -15,16 +15,6 @@ class PlaygroundViewModel extends TViewModel with Turbolytics {
   // 🧩 DEPENDENCIES -------------------------------------------------------------------------- \\
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
-  @override
-  Future<void> initialise() async {
-    super.initialise();
-  }
-
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-  }
-
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
 

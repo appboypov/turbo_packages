@@ -20,15 +20,15 @@ import 'package:turbo_flutter_template/core/l10n/globals/g_context.dart';
 import 'package:turbo_flutter_template/core/l10n/globals/g_strings.dart';
 import 'package:turbo_flutter_template/core/shared/extensions/duration_extension.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/extensions/context_extension.dart';
+import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/utils/min_duration_completer.dart';
 import 'package:turbo_flutter_template/core/storage/save-local-data/services/local_storage_service.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_durations.dart';
-import 'package:turbo_forms/turbo_forms.dart';
 import 'package:turbo_flutter_template/core/ux/services/dialog_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/toast_service.dart';
 import 'package:turbo_flutter_template/core/ux/services/url_launcher_service.dart';
+import 'package:turbo_forms/turbo_forms.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_notifiers/t_notifier.dart';
 import 'package:turbo_response/turbo_response.dart';
@@ -56,7 +56,7 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  Future<void> initialise() async {
+  Future<void> initialise({bool doSetInitialised = true}) async {
     await _authService.isReady;
     await _canInit.future;
     _authViewMode.addListener(_onAuthViewModeChanged);
@@ -67,7 +67,7 @@ class AuthViewModel extends TViewModel with Turbolytics, TBusyServiceManagement 
       _loginForm.email.updateValue('appboy@apewpew.app');
       _loginForm.password.updateValue('123123123');
     }
-    await super.initialise();
+    await super.initialise(doSetInitialised: doSetInitialised);
   }
 
   @override

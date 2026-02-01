@@ -13,12 +13,12 @@ class SecondVetoViewModel extends TBaseViewModel<SecondVetoViewArguments> {
   ValueListenable<int> get secondValue => _secondValue;
 
   @override
-  Future<void> initialise() async {
+  Future<void> initialise({bool doSetInitialised = true}) async {
     _log('Initialising..');
     final secondVetoViewArguments = arguments;
     _firstValue.value = secondVetoViewArguments.firstCounterValue;
     _secondValue.value = secondVetoViewArguments.secondCounterValue;
-    super.initialise();
+    await super.initialise(doSetInitialised: doSetInitialised);
     _log('Initialised!');
   }
 

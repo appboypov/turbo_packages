@@ -88,7 +88,7 @@ class MyAppViewModel extends TViewModel with Turbolytics {
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  Future<void> initialise() async {
+  Future<void> initialise({bool doSetInitialised = true}) async {
     log.info('Initialising app..');
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -110,12 +110,7 @@ class MyAppViewModel extends TViewModel with Turbolytics {
     Animate.restartOnHotReload = true;
     Provider.debugCheckInvalidValueType = null;
     await _initEssentials();
-    super.initialise();
-  }
-
-  @override
-  Future<void> dispose() async {
-    super.dispose();
+    await super.initialise(doSetInitialised: doSetInitialised);
   }
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\

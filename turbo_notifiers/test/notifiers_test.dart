@@ -168,8 +168,10 @@ void main() {
           notified = true;
         });
 
-        notifier.updateCurrent((current) => current + 5,
-            doNotifyListeners: false);
+        notifier.updateCurrent(
+          (current) => current + 5,
+          doNotifyListeners: false,
+        );
         expect(notifier.value, equals(15));
         expect(notified, isFalse);
       });

@@ -83,7 +83,8 @@ class ValueListenableBuilderX6State<T1, T2, T3, T4, T5, T6>
 
   @override
   void didUpdateWidget(
-      ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget) {
+    ValueListenableBuilderX6<T1, T2, T3, T4, T5, T6> oldWidget,
+  ) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.valueListenable != widget.valueListenable) {

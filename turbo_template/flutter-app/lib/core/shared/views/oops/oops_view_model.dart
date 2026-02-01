@@ -18,16 +18,6 @@ class OopsViewModel extends TViewModel with Turbolytics, LogoutManagement {
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  Future<void> initialise() async {
-    super.initialise();
-  }
-
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-  }
-
-  @override
   TRoute? get contextualButtonsRoute => TRoute.oops;
 
   @override

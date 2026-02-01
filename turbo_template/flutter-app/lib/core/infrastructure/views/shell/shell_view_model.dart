@@ -40,8 +40,8 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   @override
-  Future<void> initialise() async {
-    await super.initialise();
+  Future<void> initialise({bool doSetInitialised = true}) async {
+    await super.initialise(doSetInitialised: doSetInitialised);
     contextualButtonsService.setPositionOverrides(arguments.positionOverrides);
   }
 

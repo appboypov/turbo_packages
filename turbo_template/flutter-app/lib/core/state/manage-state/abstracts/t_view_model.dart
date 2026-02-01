@@ -22,9 +22,9 @@ abstract class TViewModel<ARGUMENTS> extends TBaseViewModel<ARGUMENTS>
 
   @mustCallSuper
   @override
-  Future<void> initialise() async {
-    super.initialise();
+  Future<void> initialise({bool doSetInitialised = true}) async {
     _registerContextualButtons();
+    super.initialise(doSetInitialised: doSetInitialised);
   }
 
   @mustCallSuper

@@ -512,7 +512,7 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
   Timer? _busyTimer;
 
   @override
-  Future<void> initialise() async {
+  Future<void> initialise({bool doSetInitialised = true}) async {
     _log('Initialising..');
     _log('Calling addPostFrameCallback with dummy log to showcase usage!');
     await wait(1000);
@@ -521,7 +521,7 @@ class FirstVetoViewModel extends TBaseViewModel<Object?>
     });
     _log('Logging the media value to showcase it\'s usage:');
     _log('model.media: $media');
-    super.initialise();
+    await super.initialise(doSetInitialised: doSetInitialised);
     _log('Initialised!');
   }
 

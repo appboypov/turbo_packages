@@ -61,8 +61,8 @@ class HomeViewModel extends TBaseViewModel<Object?> {
   late final random = Random();
 
   @override
-  Future<void> initialise() async {
-    super.initialise();
+  Future<void> initialise({bool doSetInitialised = true}) async {
+    await super.initialise(doSetInitialised: doSetInitialised);
   }
 
   @override
