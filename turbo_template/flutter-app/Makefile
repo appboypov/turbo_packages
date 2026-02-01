@@ -1,4 +1,4 @@
-.PHONY: help init init-dry-run emulators flutter-emulators staging prod demo build watch clean test format analyze get icons splash setup-ios setup-android setup-icons setup-splash setup-firebase setup-env setup-all
+.PHONY: help init init-dry-run emulators flutter-emulators staging prod demo build watch clean test format analyze fix get icons splash setup-ios setup-android setup-icons setup-splash setup-firebase setup-env setup-all
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -182,6 +182,9 @@ test: ## Run tests
 
 format: ## Format code
 	dart format .
+
+fix: ## Apply Dart fixes
+	dart fix --apply
 
 analyze: ## Run static analysis
 	flutter analyze

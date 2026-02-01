@@ -1,4 +1,4 @@
-.PHONY: help build clean test format analyze watch get
+.PHONY: help build clean test format analyze fix watch get
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -26,6 +26,9 @@ test: ## Run tests with coverage
 
 format: ## Format code
 	dart format .
+
+fix: ## Apply Dart fixes
+	dart fix --apply
 
 analyze: ## Run static analysis
 	flutter analyze

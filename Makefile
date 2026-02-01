@@ -1,4 +1,4 @@
-.PHONY: help analyze format test build watch clean get pub-check pub-publish pub-publish-dry-run all
+.PHONY: help analyze fix format test build watch clean get pub-check pub-publish pub-publish-dry-run all
 
 .DEFAULT_GOAL := help
 
@@ -28,6 +28,14 @@ format:
 		cd $(package) && dart format .; \
 	else \
 		melos format; \
+	fi
+
+## fix: Apply Dart fixes across packages
+fix:
+	@if [ -n "$(package)" ]; then \
+		cd $(package) && dart fix --apply; \
+	else \
+		melos fix; \
 	fi
 
 ## test: Run tests with coverage across all packages
@@ -84,5 +92,5 @@ pub-publish-dry-run:
 pub-publish:
 	@melos pub-publish
 
-## all: Run full CI pipeline (analyze, format, test)
-all: analyze format test
+## all: Run full CI pipeline (format, analyze, test)
+all: clean get fix format analyze test

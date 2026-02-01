@@ -41,6 +41,12 @@ melos:
         concurrency: 1
       description: Run dart analyze
 
+    fix:
+      run: dart fix --apply
+      exec:
+        concurrency: 1
+      description: Apply Dart fixes
+
     format:
       run: dart format .
       description: Format code

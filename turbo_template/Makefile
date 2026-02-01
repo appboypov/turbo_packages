@@ -1,4 +1,4 @@
-.PHONY: help init init-dry-run scripts-get sync-from-template sync-from-template-dry-run sync-to-template sync-to-template-dry-run emulators deploy deploy-staging deploy-prod deploy-functions deploy-rules deploy-remoteconfig functions-install functions-build functions-watch
+.PHONY: help init init-dry-run scripts-get sync-from-template sync-from-template-dry-run sync-to-template sync-to-template-dry-run emulators deploy deploy-staging deploy-prod deploy-functions deploy-rules deploy-remoteconfig functions-install functions-build functions-watch fix dart-fix
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -68,3 +68,6 @@ build-assets: ## Build Flutter assets
 fix: ## Fix Flutter assets build issues
 	@echo "🔧 Fixing Flutter assets build issues..."
 	cd flutter-app && sh scripts/dart-fix.sh
+
+dart-fix: ## Apply Dart fixes
+	cd flutter-app && dart fix --apply
