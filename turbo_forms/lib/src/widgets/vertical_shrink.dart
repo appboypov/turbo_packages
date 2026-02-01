@@ -43,9 +43,10 @@ class VerticalShrink extends StatelessWidget {
                   duration: fadeDuration,
                   curve: show ? fadeInCurve : fadeOutCurve,
                   child: Align(
-                      alignment: alignment,
-                      heightFactor: show ? null : 0,
-                      child: child),
+                    alignment: alignment,
+                    heightFactor: show ? null : 0,
+                    child: child,
+                  ),
                 ),
                 if (hideChild != null)
                   AnimatedOpacity(
@@ -53,9 +54,10 @@ class VerticalShrink extends StatelessWidget {
                     duration: fadeDuration,
                     curve: show ? fadeInCurve : fadeOutCurve,
                     child: Align(
-                        alignment: alignment,
-                        heightFactor: show ? 0 : null,
-                        child: hideChild),
+                      alignment: alignment,
+                      heightFactor: show ? 0 : null,
+                      child: hideChild,
+                    ),
                   ),
               ],
             ),

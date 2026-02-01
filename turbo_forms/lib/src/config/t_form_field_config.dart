@@ -68,7 +68,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
             sliderController: sliderController ??
                 (fieldType.hasSliderController
                     ? ShadSliderController(
-                        initialValue: initialValue?.tAsType() ?? 0)
+                        initialValue: initialValue?.tAsType() ?? 0,
+                      )
                     : null),
             timePickerController: timePickerController ??
                 (fieldType.hasTimePickerController
@@ -84,7 +85,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
             selectController: selectController ??
                 (fieldType.hasSelectController
                     ? ShadSelectController<T>(
-                        initialValue: initialValues?.toSet())
+                        initialValue: initialValues?.toSet(),
+                      )
                     : null),
             focusNode: focusNode ?? FocusNode(),
             currentSuggestions: currentSuggestions,
@@ -340,10 +342,12 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
   }
 
   void addValue(T newValue) => updateCurrentValues(
-      (values) => values == null ? [newValue] : [...values, newValue]);
+        (values) => values == null ? [newValue] : [...values, newValue],
+      );
 
   void removeValue(T valueToRemove) => updateCurrentValues(
-      (values) => values?.where((v) => v != valueToRemove).toList());
+        (values) => values?.where((v) => v != valueToRemove).toList(),
+      );
 
   void updateInitialValue(T? newValue) {
     update(value.copyWith(initialValue: newValue, value: newValue));
@@ -354,7 +358,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     }
     _tryValidate();
     log.info(
-        'Set initialValue to $newValue for $fieldType with id: ${value.id}!');
+      'Set initialValue to $newValue for $fieldType with id: ${value.id}!',
+    );
   }
 
   void updateInitialValues(List<T>? newValues) {
@@ -366,7 +371,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     }
     _tryValidate();
     log.info(
-        'Set initialValues to $newValues for $fieldType with id: ${value.id}!');
+      'Set initialValues to $newValues for $fieldType with id: ${value.id}!',
+    );
   }
 
   void updateItems(List<T>? newItems) {
@@ -383,7 +389,8 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
       _resetShouldValidate();
     }
     log.info(
-        'Set isReadOnly to $newValue for $fieldType with id: ${value.id}!');
+      'Set isReadOnly to $newValue for $fieldType with id: ${value.id}!',
+    );
   }
 
   void updateIsVisible(bool newValue) {
@@ -410,13 +417,15 @@ class TFormFieldConfig<T> extends TNotifier<TFormFieldState<T>>
     update(value.copyWith(inputFormatters: newValue));
     _tryValidate();
     log.info(
-        'Set inputFormatters to $newValue for $fieldType with id: ${value.id}!');
+      'Set inputFormatters to $newValue for $fieldType with id: ${value.id}!',
+    );
   }
 
   void updateObscureText(bool newValue) {
     update(value.copyWith(obscureText: newValue));
     _tryValidate();
     log.info(
-        'Set obscureText to $newValue for $fieldType with id: ${value.id}!');
+      'Set obscureText to $newValue for $fieldType with id: ${value.id}!',
+    );
   }
 }

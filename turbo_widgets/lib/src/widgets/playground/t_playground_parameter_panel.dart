@@ -208,7 +208,8 @@ class TPlaygroundParameterPanel extends StatelessWidget {
     final words = key.split(RegExp(r'(?=[A-Z])|_'));
     return words
         .map(
-            (w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '')
+          (w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '',
+        )
         .join(' ')
         .trim();
   }

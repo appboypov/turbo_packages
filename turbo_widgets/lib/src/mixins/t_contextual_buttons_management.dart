@@ -83,13 +83,15 @@ mixin TContextualButtonsManagement {
   /// Hides all buttons.
   void hideAllButtons({bool doNotifyListeners = true}) {
     contextualButtonsService.hideAllButtons(
-        doNotifyListeners: doNotifyListeners);
+      doNotifyListeners: doNotifyListeners,
+    );
   }
 
   /// Shows all buttons.
   void showAllButtons({bool doNotifyListeners = true}) {
     contextualButtonsService.showAllButtons(
-        doNotifyListeners: doNotifyListeners);
+      doNotifyListeners: doNotifyListeners,
+    );
   }
 
   /// Hides a specific position.
@@ -147,8 +149,11 @@ mixin TContextualButtonsManagement {
     TContextualPosition position, {
     bool doNotifyListeners = true,
   }) {
-    setPositionWidgets(position, const [],
-        doNotifyListeners: doNotifyListeners);
+    setPositionWidgets(
+      position,
+      const [],
+      doNotifyListeners: doNotifyListeners,
+    );
   }
 
   /// Sets widgets for top position.

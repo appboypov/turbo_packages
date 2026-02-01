@@ -102,7 +102,11 @@ class ProportionalLayoutCalculator {
 
       rect1 = Rect.fromLTWH(rect.left, rect.top, width1, rect.height);
       rect2 = Rect.fromLTWH(
-          rect.left + width1 + spacing, rect.top, width2, rect.height);
+        rect.left + width1 + spacing,
+        rect.top,
+        width2,
+        rect.height,
+      );
     } else {
       // Horizontal split (stacked)
       // Subtract spacing from available height, then distribute proportionally
@@ -114,7 +118,11 @@ class ProportionalLayoutCalculator {
 
       rect1 = Rect.fromLTWH(rect.left, rect.top, rect.width, height1);
       rect2 = Rect.fromLTWH(
-          rect.left, rect.top + height1 + spacing, rect.width, height2);
+        rect.left,
+        rect.top + height1 + spacing,
+        rect.width,
+        height2,
+      );
     }
 
     return [

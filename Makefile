@@ -102,4 +102,4 @@ pub-publish:
 	@melos pub-publish
 
 ## all: Run full CI pipeline (format, analyze, test)
-all: clean get fix format analyze test
+all: clean get build fix format analyze test pub-check pub-publish-dry-run

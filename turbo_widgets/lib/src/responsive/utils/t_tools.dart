@@ -21,9 +21,10 @@ class TTools {
   }) =>
       value
           .scaledPerWidth(
-              currentWidth: currentWidth,
-              widthInDesign: widthInDesign,
-              speed: speed)
+            currentWidth: currentWidth,
+            widthInDesign: widthInDesign,
+            speed: speed,
+          )
           .clamp(value * bottomLimit, value * upperLimit);
 
   double scaledPerHeight(
@@ -34,9 +35,10 @@ class TTools {
   }) =>
       value
           .scaledPerHeight(
-              currentHeight: currentHeight,
-              heightInDesign: heightInDesign,
-              speed: speed)
+            currentHeight: currentHeight,
+            heightInDesign: heightInDesign,
+            speed: speed,
+          )
           .clamp(value * bottomLimit, value * upperLimit);
 
   double scaled(

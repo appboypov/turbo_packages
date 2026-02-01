@@ -27,7 +27,7 @@ class TErrorLabel extends StatelessWidget {
           padding: padding ?? TurboFormsDefaults.defaultErrorPadding,
           child: Row(
             children: [
-              Flexible(child: Text(_errorText ?? '', style: errorTextStyle))
+              Flexible(child: Text(_errorText ?? '', style: errorTextStyle)),
             ],
           ),
         ),

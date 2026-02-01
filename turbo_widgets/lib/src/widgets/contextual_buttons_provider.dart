@@ -36,7 +36,8 @@ class ContextualButtonsProvider<ROUTE extends Enum> extends InheritedWidget {
 
   /// Gets the provider from context, returning null if not found.
   static ContextualButtonsProvider<R>? maybeOf<R extends Enum>(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     return context
         .dependOnInheritedWidgetOfExactType<ContextualButtonsProvider<R>>();
   }
@@ -45,13 +46,16 @@ class ContextualButtonsProvider<ROUTE extends Enum> extends InheritedWidget {
   static ContextualButtonsProvider<R> of<R extends Enum>(BuildContext context) {
     final provider = maybeOf<R>(context);
     assert(
-        provider != null, 'No ContextualButtonsProvider<$R> found in context');
+      provider != null,
+      'No ContextualButtonsProvider<$R> found in context',
+    );
     return provider!;
   }
 
   @override
   bool updateShouldNotify(
-          covariant ContextualButtonsProvider<ROUTE> oldWidget) =>
+    covariant ContextualButtonsProvider<ROUTE> oldWidget,
+  ) =>
       contextualButtonBuilders != oldWidget.contextualButtonBuilders;
 }
 

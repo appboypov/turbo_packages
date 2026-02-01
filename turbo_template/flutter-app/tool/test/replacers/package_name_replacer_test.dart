@@ -131,7 +131,9 @@ VALUE "ProductName", "my_app" "\\0"
 
       test('includes AndroidManifest.xml', () {
         expect(
-            PackageNameReplacer.filePatterns, contains('AndroidManifest.xml'));
+          PackageNameReplacer.filePatterns,
+          contains('AndroidManifest.xml'),
+        );
       });
 
       test('targets seven file patterns', () {

@@ -34,7 +34,7 @@ void main() {
         const config = TContextualButtonsConfig(
           hiddenPositions: {
             TContextualPosition.top,
-            TContextualPosition.bottom
+            TContextualPosition.bottom,
           },
         );
 
@@ -200,7 +200,7 @@ void main() {
           (current) => current.copyWith(
             hiddenPositions: {
               ...current.hiddenPositions,
-              TContextualPosition.bottom
+              TContextualPosition.bottom,
             },
           ),
         );
@@ -347,7 +347,7 @@ void main() {
           const TContextualButtonsConfig(
             hiddenPositions: {
               TContextualPosition.top,
-              TContextualPosition.bottom
+              TContextualPosition.bottom,
             },
           ),
         );

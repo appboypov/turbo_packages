@@ -105,7 +105,9 @@ void main() {
 
       test('includes AndroidManifest.xml', () {
         expect(
-            DisplayNameReplacer.filePatterns, contains('AndroidManifest.xml'));
+          DisplayNameReplacer.filePatterns,
+          contains('AndroidManifest.xml'),
+        );
       });
 
       test('targets four file patterns', () {

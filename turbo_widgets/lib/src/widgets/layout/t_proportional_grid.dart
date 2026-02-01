@@ -110,7 +110,9 @@ class _SlideFlowDelegate extends FlowDelegate {
   }
 
   ProportionalLayoutResult? _findResult(
-      List<ProportionalLayoutResult> results, int index) {
+    List<ProportionalLayoutResult> results,
+    int index,
+  ) {
     for (final r in results) {
       if (r.index == index) return r;
     }
@@ -239,7 +241,10 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   bool _hasLayoutChanged(
-      Size availableSize, List<double> sizes, double spacing) {
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (_currentLayout == null) return true;
     if (_lastSize != availableSize) return true;
     if (_lastSpacing != spacing) return true;
@@ -251,7 +256,10 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   void _updateLayoutImmediate(
-      Size availableSize, List<double> sizes, double spacing) {
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     final newLayout = ProportionalLayoutCalculator.calculate(
       sizes: sizes,
       availableSize: availableSize,
@@ -266,7 +274,10 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   void _onLayoutChangedSlide(
-      Size availableSize, List<double> sizes, double spacing) {
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
@@ -279,7 +290,10 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   void _onLayoutChangedDebounced(
-      Size availableSize, List<double> sizes, double spacing) {
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     _debounceTimer?.cancel();
 
     if (!_isWaitingForStability) {
@@ -300,7 +314,10 @@ class _TProportionalGridState extends State<TProportionalGrid>
   }
 
   void _onLayoutChangedNone(
-      Size availableSize, List<double> sizes, double spacing) {
+    Size availableSize,
+    List<double> sizes,
+    double spacing,
+  ) {
     if (!_hasLayoutChanged(availableSize, sizes, spacing)) return;
 
     setState(() {
