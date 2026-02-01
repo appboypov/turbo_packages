@@ -68,8 +68,17 @@ clean:
 	@if [ -n "$(package)" ]; then \
 		cd $(package) && flutter clean && flutter pub get && dart run build_runner clean; \
 	else \
-		echo "Error: clean requires package variable. Usage: make clean package=<package-name>"; \
-		exit 1; \
+		melos exec --fail-fast --concurrency=1 -- "\
+			if [ -f pubspec.yaml ]; then \
+				if grep -q '^flutter:' pubspec.yaml; then \
+					flutter clean && flutter pub get; \
+				else \
+					dart pub get; \
+				fi; \
+				if grep -q '^[[:space:]]*build_runner:' pubspec.yaml; then \
+					dart run build_runner clean; \
+				fi; \
+			fi"; \
 	fi
 
 ## get: Get dependencies
