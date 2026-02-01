@@ -2,7 +2,7 @@ name: turbo_packages
 publish_to: none
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.10.4
 
 workspace:
   - turbo_firestore_api

@@ -12,7 +12,7 @@ topics:
   - serialization
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.10.4
 
 dependencies:
   turbo_serializable:

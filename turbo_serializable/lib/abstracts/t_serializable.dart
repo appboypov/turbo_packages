@@ -1,3 +1,4 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
 import 'package:turbo_serializable/markdown/factories/t_md_factory.dart';
 
@@ -21,6 +22,7 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their YAML builder, or
   /// set it externally, if applicable. If not provided, [toYaml()] will throw.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String Function(TWriteable writeable)? yamlBuilder;
 
   /// Converts this object to a Markdown string.
@@ -39,6 +41,7 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their Markdown builder, or
   /// set it externally, if applicable. If not provided, [toMarkdown()] will throw.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   TMdFactory? mdFactory;
 
   /// Converts this object to an XML string.
@@ -54,5 +57,6 @@ abstract class TSerializable extends TWriteable {
   ///
   /// Subclasses should override this getter to supply their XML builder, or
   /// set it externally, if applicable. If not provided, [toXml()] will throw.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String Function(Map<String, dynamic> json)? xmlBuilder;
 }

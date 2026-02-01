@@ -15,10 +15,11 @@ topics:
   - xml
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.10.4
 
 dependencies:
   change_case: ^2.2.0
+  json_annotation: ^4.9.0
   meta: ^1.9.0
   turbo_response:
   xml: ^6.3.0

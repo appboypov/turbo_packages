@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
-import '../../shared/dtos/meta_data_dto.dart';
 
 part 'guard_rail_dto.g.dart';
 
@@ -11,6 +10,8 @@ part 'guard_rail_dto.g.dart';
 /// during workflow step execution or agent behavior.
 @JsonSerializable(includeIfNull: true, explicitToJson: true)
 class GuardRailDto extends TurboPromptable {
+  GuardRailDto();
+
   static const fromJsonFactory = _$GuardRailDtoFromJson;
   factory GuardRailDto.fromJson(Map<String, dynamic> json) =>
       _$GuardRailDtoFromJson(json);

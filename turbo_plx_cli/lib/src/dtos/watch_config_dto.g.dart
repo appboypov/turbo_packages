@@ -8,15 +8,16 @@ part of 'watch_config_dto.dart';
 
 WatchConfigDto _$WatchConfigDtoFromJson(Map<String, dynamic> json) =>
     WatchConfigDto(
-      throttleMs: (json['throttle_ms'] as num?)?.toInt() ?? 1000,
+      throttleMs: (json['throttle_ms'] as num?)?.toInt() ??
+          TurboPlxCliDefaults.throttleMs,
       extensions: (json['extensions'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          ['.md'],
+          TurboPlxCliDefaults.extensions,
       ignoreFolders: (json['ignore_folders'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          ['.git', 'node_modules', 'build', '.dart_tool', '.plx'],
+          TurboPlxCliDefaults.ignoreFolders,
     );
 
 Map<String, dynamic> _$WatchConfigDtoToJson(WatchConfigDto instance) =>

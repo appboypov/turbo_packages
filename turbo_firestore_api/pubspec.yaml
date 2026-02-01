@@ -7,7 +7,7 @@ homepage: https://github.com/appboypov/turbo_packages
 issue_tracker: https://github.com/appboypov/turbo_packages/issues
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.10.4
 
 dependencies:
   cloud_firestore: ^6.0.2

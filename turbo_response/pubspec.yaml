@@ -14,7 +14,7 @@ topics:
   - dart
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.10.4
 
 dev_dependencies:
   test: ^1.24.0

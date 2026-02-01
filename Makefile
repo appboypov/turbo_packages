@@ -51,7 +51,7 @@ build:
 	@if [ -n "$(package)" ]; then \
 		cd $(package) && make build; \
 	else \
-		melos build_runner; \
+		melos run build_runner --no-select; \
 	fi
 
 ## watch: Run build_runner in watch mode
@@ -103,3 +103,24 @@ pub-publish:
 
 ## all: Run full CI pipeline (format, analyze, test)
 all: clean get build fix format analyze test pub-check pub-publish-dry-run
+
+## all-from-clean: Run full CI pipeline (clean, get, build, fix, format, analyze, test, pub-check, pub-publish-dry-run) starting from clean
+all-from-clean: clean get build fix format analyze test pub-check pub-publish-dry-run
+
+## all-from-build: Run full CI pipeline (format, analyze, test) starting from build_runner
+all-from-build: build fix format analyze test pub-check pub-publish-dry-run
+
+## all-from-fix: Run full CI pipeline (fix, format, analyze, test) starting from fix
+all-from-fix: fix format analyze test pub-check pub-publish-dry-run
+
+## all-from-format: Run full CI pipeline (format, analyze, test) starting from format
+all-from-format: format analyze test pub-check pub-publish-dry-run
+
+## all-from-analyze: Run full CI pipeline (analyze, test) starting from analyze
+all-from-analyze: analyze test pub-check pub-publish-dry-run
+
+## all-from-test: Run full CI pipeline (test) starting from test
+all-from-test: test pub-check pub-publish-dry-run
+
+## all-from-pub-check: Run full CI pipeline (pub-check) starting from pub-check
+all-from-pub-check: pub-check pub-publish-dry-run

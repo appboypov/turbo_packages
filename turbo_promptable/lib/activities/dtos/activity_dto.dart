@@ -5,7 +5,6 @@ import 'package:turbo_promptable/activities/dtos/sub_agent_dto.dart';
 import 'package:turbo_promptable/workflows/dtos/workflow_dto.dart';
 
 import '../../shared/abstracts/turbo_promptable.dart';
-import '../../shared/dtos/meta_data_dto.dart';
 
 part 'activity_dto.g.dart';
 
@@ -28,11 +27,9 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson>
     this.subAgents,
   });
 
-  @JsonKey(toJson: _toJsonINPUT, fromJson: _fromJsonINPUT)
   final INPUT? input;
   final List<InstructionDto>? instructions;
   final List<SubAgentDto>? subAgents;
-  @JsonKey(toJson: _toJsonOUTPUT, fromJson: _fromJsonOUTPUT)
   final OUTPUT? output;
   final WorkflowDto workflow;
 
@@ -54,30 +51,6 @@ class ActivityDto<INPUT extends HasToJson, OUTPUT extends HasToJson>
         (value) => value.toJson(),
         (value) => value.toJson(),
       );
-
-  static INPUT? _fromJsonINPUT<INPUT>(
-    Object? json,
-    INPUT Function(Object? json) fromJson,
-  ) =>
-      json == null ? null : fromJson(json);
-
-  static Object? _toJsonINPUT<INPUT>(
-    INPUT? input,
-    Object? Function(INPUT value) toJson,
-  ) =>
-      input == null ? null : toJson(input);
-
-  static OUTPUT? _fromJsonOUTPUT<OUTPUT>(
-    Object? json,
-    OUTPUT Function(Object? json) fromJson,
-  ) =>
-      json == null ? null : fromJson(json);
-
-  static Object? _toJsonOUTPUT<OUTPUT>(
-    OUTPUT? output,
-    Object? Function(OUTPUT value) toJson,
-  ) =>
-      output == null ? null : toJson(output);
 
   @override
   String toString() =>

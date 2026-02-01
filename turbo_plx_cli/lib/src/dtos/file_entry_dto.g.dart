@@ -8,8 +8,8 @@ part of 'file_entry_dto.dart';
 
 FileEntryDto _$FileEntryDtoFromJson(Map<String, dynamic> json) => FileEntryDto(
       path: json['path'] as String,
-      content: json['content'] as String,
-      lastModified: (json['lastModified'] as num).toInt(),
+      content: json['content'] as String?,
+      lastModified: (json['lastModified'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$FileEntryDtoToJson(FileEntryDto instance) =>
