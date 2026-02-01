@@ -43,7 +43,7 @@ test:
 	@if [ -n "$(package)" ]; then \
 		cd $(package) && make test; \
 	else \
-		melos test; \
+		melos exec --fail-fast --concurrency=1 --dir-exists="test" -- "bash \"$(CURDIR)/tool/test_with_coverage.sh\""; \
 	fi
 
 ## build: Run build_runner to generate code
@@ -57,10 +57,16 @@ build:
 ## watch: Run build_runner in watch mode
 watch:
 	@if [ -n "$(package)" ]; then \
-		cd $(package) && flutter pub run build_runner watch --delete-conflicting-outputs; \
+		cd $(package) && make watch; \
 	else \
-		echo "Error: watch requires package variable. Usage: make watch package=<package-name>"; \
-		exit 1; \
+		melos exec --fail-fast --concurrency=1 --depends-on="build_runner" -- "\
+			if [ -f pubspec.yaml ]; then \
+				if grep -q '^flutter:' pubspec.yaml; then \
+					flutter pub run build_runner watch --delete-conflicting-outputs; \
+				else \
+					dart run build_runner watch --delete-conflicting-outputs; \
+				fi; \
+			fi"; \
 	fi
 
 ## clean: Clean build artifacts
