@@ -65,18 +65,23 @@ fi
 # Step 4: Check dependency freshness
 check_dependency_freshness "$PACKAGE_DIR"
 
-# Step 5: Run tests (if test directory exists)
+# Step 5: Run tests (if test directory has test files)
 if [ -d "$PACKAGE_DIR/test" ]; then
-    log_step "  Running tests..."
-    cd "$PACKAGE_DIR"
-    TEST_CMD=$(get_test_command "$PACKAGE_DIR")
-    TEST_OUTPUT=""
-    if ! TEST_OUTPUT=$($TEST_CMD 2>&1); then
-        log_error "$PACKAGE_NAME has failing tests"
-        echo "$TEST_OUTPUT" | tail -30 >&2
-        log_info "Run '$TEST_CMD' in $PACKAGE_DIR for details"
-        echo "PUB_CHECK_RESULT:FAIL:$PACKAGE_NAME:test_failures" >&2
-        exit 1
+    test_files_found=$(find "$PACKAGE_DIR/test" -type f -name "*_test.dart" -print -quit 2>/dev/null || true)
+    if [ -n "$test_files_found" ]; then
+        log_step "  Running tests..."
+        cd "$PACKAGE_DIR"
+        TEST_CMD=$(get_test_command "$PACKAGE_DIR")
+        TEST_OUTPUT=""
+        if ! TEST_OUTPUT=$($TEST_CMD 2>&1); then
+            log_error "$PACKAGE_NAME has failing tests"
+            echo "$TEST_OUTPUT" | tail -30 >&2
+            log_info "Run '$TEST_CMD' in $PACKAGE_DIR for details"
+            echo "PUB_CHECK_RESULT:FAIL:$PACKAGE_NAME:test_failures" >&2
+            exit 1
+        fi
+    else
+        log_info "  No test files found, skipping tests..."
     fi
 fi
 

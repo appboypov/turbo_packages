@@ -17,7 +17,7 @@ readonly NC='\033[0m' # No Color
 
 # Logging functions
 log_info() {
-    echo -e "${BLUE}ℹ${NC} $*" >&2
+    echo -e "${BLUE}ℹ${NC} $*"
 }
 
 log_success() {
@@ -33,7 +33,7 @@ log_error() {
 }
 
 log_step() {
-    echo -e "${YELLOW}→${NC} $*" >&2
+    echo -e "${YELLOW}→${NC} $*"
 }
 
 # Get package directory from Melos environment

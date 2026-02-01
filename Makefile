@@ -97,7 +97,11 @@ get:
 
 ## pub-check: Validate all packages meet 160/160 pub.dev points
 pub-check:
-	@melos pub-check
+	@if [ -n "$(package)" ]; then \
+		MELOS_PACKAGE_PATH="$(package)" bash "$(CURDIR)/tool/pub_check.sh"; \
+	else \
+		melos exec --fail-fast --concurrency=1 -- "bash \"$(CURDIR)/tool/pub_check.sh\""; \
+	fi
 
 ## pub-publish-dry-run: Validate packages for publishing without actually publishing
 pub-publish-dry-run:
