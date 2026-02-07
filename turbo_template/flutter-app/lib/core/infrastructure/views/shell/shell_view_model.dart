@@ -7,7 +7,6 @@ import 'package:turbo_flutter_template/core/infrastructure/routers/home_router.d
 import 'package:turbo_flutter_template/core/infrastructure/routers/styling_router.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/abstracts/t_view_model.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/models/contextual_button_entry.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/typedefs/lazy_locator_def.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
 import 'package:turbolytics/turbolytics.dart';
@@ -42,49 +41,10 @@ class ShellViewModel extends TViewModel<ShellViewArguments> with Turbolytics {
   @override
   Future<void> initialise({bool doSetInitialised = true}) async {
     await super.initialise(doSetInitialised: doSetInitialised);
-    contextualButtonsService.setPositionOverrides(arguments.positionOverrides);
   }
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
-
-  @override
-  ContextualButtonsService get contextualButtonsService =>
-      super.contextualButtonsService as ContextualButtonsService;
-
-  @override
-  TRoute? get contextualButtonsRoute => TRoute.shell;
-
-  @override
-  List<ContextualButtonEntry> get contextualButtons => [
-    ContextualButtonEntry(
-      id: 'shell-home',
-      config: TButtonConfig(
-        label: 'Home',
-        tooltip: 'Go home',
-        icon: Icons.home_rounded,
-        onPressed: onHomePressed,
-        isActive:
-            contextualButtonsService.navigationTabService.activeTab.value ==
-            NavigationTab.home,
-      ),
-      position: TContextualPosition.bottom,
-    ),
-    ContextualButtonEntry(
-      id: 'shell-styling',
-      config: TButtonConfig(
-        label: 'Styling',
-        tooltip: 'Open styling',
-        icon: Icons.palette_rounded,
-        onPressed: onStylingPressed,
-        isActive:
-            contextualButtonsService.navigationTabService.activeTab.value ==
-            NavigationTab.styling,
-      ),
-      position: TContextualPosition.bottom,
-    ),
-  ];
-
   // 🎩 STATE --------------------------------------------------------------------------------- \\
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\

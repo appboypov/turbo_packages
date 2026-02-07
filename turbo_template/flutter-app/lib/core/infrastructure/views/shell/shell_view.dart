@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_flutter_template/core/auth/views/auth/auth_view.dart';
 import 'package:turbo_flutter_template/core/infrastructure/views/shell/shell_view_model.dart';
-import 'package:turbo_flutter_template/core/state/manage-state/services/contextual_buttons_service.dart';
 import 'package:turbo_flutter_template/core/state/manage-state/widgets/unfocusable.dart';
 import 'package:turbo_flutter_template/core/ui/constants/t_widget.dart';
 import 'package:turbo_flutter_template/core/ui/widgets/t_provider.dart';
@@ -27,7 +26,6 @@ class ShellView extends StatelessWidget {
       shell: statefulNavigationShell,
       positionOverrides: contextualPositionOverrides,
     ),
-    contextualButtonsService: ContextualButtonsService.locate,
     builder: (context, model, isInitialised, child) {
       if (!isInitialised) {
         return const TScaffold(
