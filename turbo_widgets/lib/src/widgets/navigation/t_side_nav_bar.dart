@@ -17,6 +17,13 @@ enum TSideNavBarButtonAlignment {
   spaceAround,
 }
 
+typedef TSideNavBarItemBuilder = Widget Function(
+  BuildContext context,
+  TButtonConfig config,
+  bool isActive,
+  VoidCallback onTap,
+);
+
 class TSideNavBar extends StatelessWidget {
   const TSideNavBar({
     required this.buttons,
@@ -38,6 +45,7 @@ class TSideNavBar extends StatelessWidget {
     this.labelFontSize = 10,
     this.backgroundColor,
     this.showDividers = false,
+    this.itemBuilder,
   });
 
   final Map<String, TButtonConfig> buttons;
@@ -58,6 +66,7 @@ class TSideNavBar extends StatelessWidget {
   final double labelFontSize;
   final Color? backgroundColor;
   final bool showDividers;
+  final TSideNavBarItemBuilder? itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +105,7 @@ class TSideNavBar extends StatelessWidget {
         labelFontSize: labelFontSize,
         backgroundColor: backgroundColor,
         showDividers: showDividers,
+        itemBuilder: itemBuilder,
       );
     }
 
@@ -111,6 +121,7 @@ class TSideNavBar extends StatelessWidget {
       activeIconRadius: activeIconRadius,
       labelFontSize: labelFontSize,
       backgroundColor: backgroundColor,
+      itemBuilder: itemBuilder,
     );
   }
 }
@@ -137,6 +148,7 @@ class _TSideNavBarVertical extends StatelessWidget {
     required this.labelFontSize,
     required this.backgroundColor,
     required this.showDividers,
+    required this.itemBuilder,
   });
 
   final Map<String, TButtonConfig> buttons;
@@ -155,6 +167,7 @@ class _TSideNavBarVertical extends StatelessWidget {
   final double labelFontSize;
   final Color? backgroundColor;
   final bool showDividers;
+  final TSideNavBarItemBuilder? itemBuilder;
 
   MainAxisAlignment get _mainAxisAlignment => switch (buttonAlignment) {
     TSideNavBarButtonAlignment.start => MainAxisAlignment.start,
@@ -216,8 +229,18 @@ class _TSideNavBarVertical extends StatelessWidget {
     for (var i = 0; i < entries.length; i++) {
       final entry = entries[i];
       final isActive = entry.key == selectedKey;
+      final onTap = () {
+        entry.value.onPressed();
+        onSelect?.call(entry.key);
+      };
 
-      if (isExpanded) {
+      if (itemBuilder != null) {
+        children.add(
+          Builder(
+            builder: (context) => itemBuilder!(context, entry.value, isActive, onTap),
+          ),
+        );
+      } else if (isExpanded) {
         children.add(
           _TSideNavBarExpandedItem(
             config: entry.value,
@@ -225,10 +248,7 @@ class _TSideNavBarVertical extends StatelessWidget {
             iconSize: iconSize,
             activeIconRadius: activeIconRadius,
             labelFontSize: labelFontSize,
-            onTap: () {
-              entry.value.onPressed();
-              onSelect?.call(entry.key);
-            },
+            onTap: onTap,
           ),
         );
       } else {
@@ -239,10 +259,7 @@ class _TSideNavBarVertical extends StatelessWidget {
             iconSize: iconSize,
             activeIconRadius: activeIconRadius,
             labelFontSize: labelFontSize,
-            onTap: () {
-              entry.value.onPressed();
-              onSelect?.call(entry.key);
-            },
+            onTap: onTap,
           ),
         );
       }
@@ -272,6 +289,7 @@ class _TSideNavBarHorizontal extends StatelessWidget {
     required this.activeIconRadius,
     required this.labelFontSize,
     required this.backgroundColor,
+    required this.itemBuilder,
   });
 
   final Map<String, TButtonConfig> buttons;
@@ -285,6 +303,7 @@ class _TSideNavBarHorizontal extends StatelessWidget {
   final double activeIconRadius;
   final double labelFontSize;
   final Color? backgroundColor;
+  final TSideNavBarItemBuilder? itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -321,21 +340,28 @@ class _TSideNavBarHorizontal extends StatelessWidget {
     for (var i = 0; i < entries.length; i++) {
       final entry = entries[i];
       final isActive = entry.key == selectedKey;
-      children.add(
-        Expanded(
-          child: _TSideNavBarCollapsedItem(
-            config: entry.value,
-            isActive: isActive,
-            iconSize: iconSize,
-            activeIconRadius: activeIconRadius,
-            labelFontSize: labelFontSize,
-            onTap: () {
-              entry.value.onPressed();
-              onSelect?.call(entry.key);
-            },
-          ),
-        ),
-      );
+      final onTap = () {
+        entry.value.onPressed();
+        onSelect?.call(entry.key);
+      };
+
+      final Widget item;
+      if (itemBuilder != null) {
+        item = Builder(
+          builder: (context) => itemBuilder!(context, entry.value, isActive, onTap),
+        );
+      } else {
+        item = _TSideNavBarCollapsedItem(
+          config: entry.value,
+          isActive: isActive,
+          iconSize: iconSize,
+          activeIconRadius: activeIconRadius,
+          labelFontSize: labelFontSize,
+          onTap: onTap,
+        );
+      }
+
+      children.add(Expanded(child: item));
     }
     return children;
   }

@@ -109,6 +109,8 @@ class _TContextualButtonsAnimatedState
     final newContent = _ContentResolver.resolve(widget.config, context);
     if (!_contentMapsEqual(_displayedContent, newContent)) {
       _enqueueAnimation(newContent);
+    } else {
+      _displayedContent = newContent;
     }
   }
 
