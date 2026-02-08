@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:turbo_mvvm/turbo_mvvm.dart';
 import 'package:turbo_widgets/turbo_widgets.dart';
@@ -407,7 +407,7 @@ class _TFeatureCardShowcase extends StatelessWidget {
                 title: item.title,
                 description: item.description,
                 icon: item.icon,
-                accent: item.accent,
+                accent: Colors.blue,
               ),
             ),
           )

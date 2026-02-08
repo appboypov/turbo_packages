@@ -9,20 +9,20 @@ class TFeatureCard extends StatelessWidget {
     required this.description,
     required this.icon,
     super.key,
-    this.accent = 'primary',
+    this.accent,
     this.borderRadius = 16,
   });
 
   final String title;
   final String description;
   final IconData icon;
-  final String accent;
+  final Color? accent;
   final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final accentColor = _resolveAccentColor(theme, accent);
+    final accentColor = accent ?? theme.colorScheme.primary;
     final innerRadius = math.max(0.0, borderRadius - 1);
 
     return Container(
@@ -126,14 +126,5 @@ class TFeatureCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _resolveAccentColor(ShadThemeData theme, String accent) {
-    return switch (accent) {
-      'secondary' => theme.colorScheme.secondary,
-      'muted' => theme.colorScheme.muted,
-      'foreground' => theme.colorScheme.foreground,
-      _ => theme.colorScheme.primary,
-    };
   }
 }

@@ -121,15 +121,15 @@ class MyAppView extends StatelessWidget {
                                                   : 1,
                                               child: IgnorePointer(
                                                 ignoring:
-                                                    busyModel.isBusy ||
-                                                    !hasInternetConnection,
-                                                child: ShakeGesture(
-                                                  onShake: () =>
-                                                      model.onShakeDetected(
-                                                        context: context,
-                                                      ),
-                                                  child: child!,
-                                                ),
+                                                    busyModel.isBusy || !hasInternetConnection,
+                                                child: deviceType.isMobile
+                                                    ? ShakeGesture(
+                                                        onShake: () => model.onShakeDetected(
+                                                          context: context,
+                                                        ),
+                                                        child: child!,
+                                                      )
+                                                    : child!,
                                               ),
                                             ),
                                           ),

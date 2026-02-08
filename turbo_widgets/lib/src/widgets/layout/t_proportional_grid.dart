@@ -158,6 +158,8 @@ class TProportionalGrid extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
     this.debounceDuration = const Duration(milliseconds: 150),
+    this.maxHeight,
+    this.maxWidth,
   });
 
   /// The items to display in the grid.
@@ -178,6 +180,9 @@ class TProportionalGrid extends StatefulWidget {
   /// How long to wait after changes stop before recalculating layout.
   /// Only used for [TProportionalGridAnimation.fade] and [TProportionalGridAnimation.scale].
   final Duration debounceDuration;
+
+  final double? maxHeight;
+  final double? maxWidth;
 
   @override
   State<TProportionalGrid> createState() => _TProportionalGridState();
@@ -340,8 +345,8 @@ class _TProportionalGridState extends State<TProportionalGrid>
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableSize = Size(
-          constraints.maxWidth,
-          constraints.hasBoundedHeight ? constraints.maxHeight : 400,
+          widget.maxWidth ?? constraints.maxWidth,
+          widget.maxHeight ?? (constraints.hasBoundedHeight ? constraints.maxHeight : 400),
         );
 
         final sizes = widget.items.map((item) => item.size).toList();
