@@ -703,6 +703,17 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// then syncing with Firestore. If the remote update fails, the local
   /// state remains updated.
   ///
+  /// Sends only fields that changed since the last known local state. The
+  /// pre-mutation DTO is captured before the local state is updated and
+  /// forwarded to the API as `previousWriteable` so the API can compute a
+  /// minimal diff payload (and skip the write entirely on a no-op). When no
+  /// document with [id] exists in local state the previous DTO is `null` and
+  /// the API falls back to a full-payload write.
+  ///
+  /// If [remoteUpdateRequestBuilder] is provided, it must be deterministic —
+  /// it is applied to BOTH the previous DTO and the new DTO so the diff
+  /// inputs share the same shape.
+  ///
   /// Parameters:
   /// - [transaction] - Optional transaction for atomic operations
   /// - [id] - The ID of the document to update
@@ -721,13 +732,22 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   }) async {
     try {
       log.debug('Updating doc with id: $id');
+      final DTO? previousDto = tryFindById(id)?.dto;
       final pDoc = updateLocalDoc(
         id: id,
         doc: doc,
         doNotifyListeners: doNotifyListeners,
       );
+      final TWriteableId newWriteable =
+          remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId;
+      final TWriteableId? previousForRemote = previousDto == null
+          ? null
+          : (remoteUpdateRequestBuilder != null
+              ? remoteUpdateRequestBuilder(previousDto)
+              : previousDto as TWriteableId);
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+        writeable: newWriteable,
+        previousWriteable: previousForRemote,
         id: id,
         transaction: transaction,
       );
@@ -815,6 +835,10 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   }) async {
     try {
       log.debug('Updating ${ids.length} docs');
+      final Map<String, DTO> previousDtos = <String, DTO>{
+        for (final id in ids)
+          if (tryFindById(id)?.dto case final DTO previousDto) id: previousDto,
+      };
       final pDocs = updateLocalDocs(
         ids: ids,
         doc: doc,
@@ -826,6 +850,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
             id: pDoc.id,
             transaction: transaction,
             writeable: pDoc as TWriteableId,
+            previousWriteable: previousDtos[pDoc.id] as TWriteableId?,
           )).throwWhenFail();
         }
         return TurboResponse.success(result: pDocs);
@@ -836,6 +861,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
             id: pDoc.id,
             writeBatch: batch,
             writeable: pDoc as TWriteableId,
+            previousWriteable: previousDtos[pDoc.id] as TWriteableId?,
           );
         }
         final future = batch.commit();

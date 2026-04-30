@@ -415,6 +415,15 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   /// then syncing with Firestore. If the remote update fails, the local
   /// state remains updated.
   ///
+  /// Sends only fields that changed since the last known local state. The
+  /// pre-mutation DTO is captured before the local state is updated and
+  /// forwarded to the API as `previousWriteable` so the API can compute a
+  /// minimal diff payload (and skip the write entirely on a no-op).
+  ///
+  /// If [remoteUpdateRequestBuilder] is provided, it must be deterministic —
+  /// it is applied to BOTH the previous DTO and the new DTO so the diff
+  /// inputs share the same shape.
+  ///
   /// Parameters:
   /// - [id] - The document ID
   /// - [doc] - The function to update the document
@@ -433,13 +442,20 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   }) async {
     try {
       log.debug('Updating doc with id: $id');
+      final DTO previousDto = _doc.value.dto;
       final pDoc = updateLocalDoc(
         id: id,
         doc: doc,
         doNotifyListeners: doNotifyListeners,
       );
+      final TWriteable newWriteable =
+          remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable;
+      final TWriteable previousForRemote = remoteUpdateRequestBuilder != null
+          ? remoteUpdateRequestBuilder(previousDto)
+          : previousDto as TWriteable;
       final future = api.updateDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable,
+        writeable: newWriteable,
+        previousWriteable: previousForRemote,
         id: id,
         transaction: transaction,
       );
