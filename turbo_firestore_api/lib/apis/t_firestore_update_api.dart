@@ -340,7 +340,10 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
         ),
       );
       final nullSafeWriteBatch = writeBatch ?? this.writeBatch;
-      final documentReference = getDocRefById(id: id);
+      final documentReference = getDocRefById(
+        id: id,
+        collectionPathOverride: collectionPathOverride,
+      );
       _log.debug(message: 'Creating JSON..', sensitiveData: null);
       final newJson = writeable.toJson();
       final Map<String, Object?> payload;
