@@ -706,9 +706,10 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// Sends only fields that changed since the last known local state. The
   /// pre-mutation DTO is captured before the local state is updated and
   /// forwarded to the API as `previousWriteable` so the API can compute a
-  /// minimal diff payload (and skip the write entirely on a no-op). When no
-  /// document with [id] exists in local state the previous DTO is `null` and
-  /// the API falls back to a full-payload write.
+  /// minimal diff payload (and skip the write entirely on a no-op).
+  ///
+  /// The document with [id] must already exist in local state before calling
+  /// this method.
   ///
   /// If [remoteUpdateRequestBuilder] is provided, it must be deterministic —
   /// it is applied to BOTH the previous DTO and the new DTO so the diff
