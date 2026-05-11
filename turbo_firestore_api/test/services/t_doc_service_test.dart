@@ -117,7 +117,7 @@ _TestableDocService _buildService({
     collection: collection,
     apiBuilder: (_, __, ___, ____) => recordingApi,
     defaultValue: (vars, _, __) =>
-        _TestDto(id: vars.defaultId, values: const <String, dynamic>{}),
+        _TestDto(id: vars.defaultIdValue, values: const <String, dynamic>{}),
     initialValue: initialDto == null ? null : (_, __, ___) => initialDto,
     modelBuilder: (_, __, dto) => _TestModel(dto: dto),
   );

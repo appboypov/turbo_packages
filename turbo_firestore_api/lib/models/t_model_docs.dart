@@ -60,7 +60,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   MODEL? get(String? id) => _idMap[id];
   MODEL? remove(String id) => _idMap.remove(id);
   Iterable<String> get ids => _idMap.keys;
-  Iterable<MODEL> get models => _idMap.values;
+  Iterable<MODEL> get docs => _idMap.values;
   List<MODEL> getList(Object? id) => _sortFilteredListsMap[id]?.values ?? [];
   Iterable<MODEL> findWhere(bool Function(MODEL model) test) =>
       _idMap.values.where(test);
@@ -119,7 +119,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     bool doInitialApply = true,
   }) {
     if (doInitialApply) {
-      sortFilteredList.apply(models);
+      sortFilteredList.apply(docs);
     }
     _sortFilteredListsMap[id] = sortFilteredList;
     return sortFilteredList.values;
