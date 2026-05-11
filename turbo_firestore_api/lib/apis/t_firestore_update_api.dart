@@ -200,7 +200,7 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
             ),
           );
           transaction.update(
-            getDocRefById(id: documentReference.id),
+            documentReference,
             payload,
           );
         }
