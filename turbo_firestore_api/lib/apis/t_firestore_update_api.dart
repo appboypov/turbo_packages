@@ -33,10 +33,20 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
   /// Parameters:
   /// [writeable] data to update, must implement [TWriteable]
   /// [id] unique identifier of the document
+  /// [previousWriteable] optional previous state of the writeable. When provided,
+  /// only the fields whose values differ between [previousWriteable.toJson()] and
+  /// [writeable.toJson()] are sent to Firestore (computed via [TMapDiff.diff]).
+  /// When the diff is empty the write is skipped entirely and a success
+  /// response is returned without contacting Firestore. When `null`, the full
+  /// payload is sent (backwards-compatible behavior).
   /// [writeBatch] optional batch to include this operation in
   /// [timestampType] type of timestamp to add when updating
   /// [collectionPathOverride] override path for collection groups
   /// [transaction] optional transaction to include this operation in
+  /// [includeDeletes] when `true` and [previousWriteable] is provided, fields
+  /// that exist in [previousWriteable.toJson()] but are absent from
+  /// [writeable.toJson()] are emitted as [FieldValue.delete()] entries in the
+  /// diff payload. Defaults to `false`.
   ///
   /// Returns [TurboResponse] containing:
   /// - Success with document reference
@@ -68,10 +78,12 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
   Future<TurboResponse<DocumentReference>> updateDoc({
     required TWriteable writeable,
     required String id,
+    TWriteable? previousWriteable,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,
     String? collectionPathOverride,
     Transaction? transaction,
+    bool includeDeletes = false,
   }) async {
     assert(
       _isCollectionGroup == (collectionPathOverride != null),
@@ -112,9 +124,11 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
         final lastBatchResponse = await updateDocInBatch(
           writeable: writeable,
           id: id,
+          previousWriteable: previousWriteable,
           writeBatch: writeBatch,
           timestampType: timestampType,
           collectionPathOverride: collectionPathOverride,
+          includeDeletes: includeDeletes,
         );
         _log.debug(
           message: 'Checking if batchUpdate was successful..',
@@ -134,34 +148,60 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
           message: 'Creating JSON..',
           sensitiveData: null,
         );
-        final json = writeable.toJson();
-        final writeableAsJson = timestampType.add(
-          json,
-          createdAtFieldName: _createdAtFieldName,
-          updatedAtFieldName: _updatedAtFieldName,
-        );
+        final newJson = writeable.toJson();
+        final Map<String, Object?> payload;
+        if (previousWriteable == null) {
+          payload = timestampType.add(
+            newJson,
+            createdAtFieldName: _createdAtFieldName,
+            updatedAtFieldName: _updatedAtFieldName,
+          );
+        } else {
+          final beforeJson = previousWriteable.toJson();
+          final diffMap = TMapDiff.diff(
+            before: beforeJson,
+            after: newJson,
+            includeDeletes: includeDeletes,
+          );
+          if (diffMap.isEmpty) {
+            _log.debug(
+              message: 'No fields changed, skipping update for id: $id',
+              sensitiveData: null,
+            );
+            _log.info(
+              message: 'Updating data done!',
+              sensitiveData: null,
+            );
+            return TurboResponse.success(result: documentReference);
+          }
+          payload = timestampType.add(
+            diffMap,
+            createdAtFieldName: _createdAtFieldName,
+            updatedAtFieldName: _updatedAtFieldName,
+          );
+        }
         if (transaction == null) {
           _log.debug(
             message: 'Updating data with documentReference.update..',
             sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
-              data: writeableAsJson,
+              data: payload,
             ),
           );
-          await documentReference.update(writeableAsJson);
+          await documentReference.update(payload);
         } else {
           _log.debug(
             message: 'Updating data with transaction.update..',
             sensitiveData: TSensitiveData(
               path: collectionPathOverride ?? _collectionPath(),
               id: documentReference.id,
-              data: writeableAsJson,
+              data: payload,
             ),
           );
           transaction.update(
-            getDocRefById(id: documentReference.id),
-            writeableAsJson,
+            documentReference,
+            payload,
           );
         }
         _log.info(
@@ -217,9 +257,19 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
   /// Parameters:
   /// [writeable] data to update, must implement [TWriteable]
   /// [id] unique identifier of the document
+  /// [previousWriteable] optional previous state of the writeable. When provided,
+  /// only the fields whose values differ between [previousWriteable.toJson()] and
+  /// [writeable.toJson()] are enqueued on the batch (computed via
+  /// [TMapDiff.diff]). When the diff is empty no operation is enqueued and a
+  /// success response wrapping the unchanged batch is returned. When `null`,
+  /// the full payload is enqueued (backwards-compatible behavior).
   /// [writeBatch] optional existing batch to add to
   /// [timestampType] type of timestamp to add when updating
   /// [collectionPathOverride] override path for collection groups
+  /// [includeDeletes] when `true` and [previousWriteable] is provided, fields
+  /// that exist in [previousWriteable.toJson()] but are absent from
+  /// [writeable.toJson()] are emitted as [FieldValue.delete()] entries in the
+  /// diff payload. Defaults to `false`.
   ///
   /// Returns [TurboResponse] containing:
   /// - Success with batch and document reference
@@ -257,9 +307,11 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
   updateDocInBatch({
     required TWriteable writeable,
     required String id,
+    TWriteable? previousWriteable,
     WriteBatch? writeBatch,
     TTimestampType timestampType = TTimestampType.updatedAt,
     String? collectionPathOverride,
+    bool includeDeletes = false,
   }) async {
     assert(
       _isCollectionGroup == (collectionPathOverride != null),
@@ -288,25 +340,60 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
         ),
       );
       final nullSafeWriteBatch = writeBatch ?? this.writeBatch;
-      final documentReference = getDocRefById(id: id);
-      _log.debug(message: 'Creating JSON..', sensitiveData: null);
-      final json = writeable.toJson();
-      final writeableAsJson = timestampType.add(
-        json,
-        createdAtFieldName: _createdAtFieldName,
-        updatedAtFieldName: _updatedAtFieldName,
+      final documentReference = getDocRefById(
+        id: id,
+        collectionPathOverride: collectionPathOverride,
       );
+      _log.debug(message: 'Creating JSON..', sensitiveData: null);
+      final newJson = writeable.toJson();
+      final Map<String, Object?> payload;
+      if (previousWriteable == null) {
+        payload = timestampType.add(
+          newJson,
+          createdAtFieldName: _createdAtFieldName,
+          updatedAtFieldName: _updatedAtFieldName,
+        );
+      } else {
+        final beforeJson = previousWriteable.toJson();
+        final diffMap = TMapDiff.diff(
+          before: beforeJson,
+          after: newJson,
+          includeDeletes: includeDeletes,
+        );
+        if (diffMap.isEmpty) {
+          _log.debug(
+            message: 'No fields changed, skipping update for id: $id',
+            sensitiveData: null,
+          );
+          _log.info(
+            message:
+                'Adding update to batch done! Returning WriteBatchWithReference..',
+            sensitiveData: null,
+          );
+          return TurboResponse.success(
+            result: TWriteBatchWithReference(
+              writeBatch: nullSafeWriteBatch,
+              documentReference: documentReference,
+            ),
+          );
+        }
+        payload = timestampType.add(
+          diffMap,
+          createdAtFieldName: _createdAtFieldName,
+          updatedAtFieldName: _updatedAtFieldName,
+        );
+      }
       _log.debug(
         message: 'Updating data with writeBatch.update..',
         sensitiveData: TSensitiveData(
           path: collectionPathOverride ?? _collectionPath(),
           id: documentReference.id,
-          data: writeableAsJson,
+          data: payload,
         ),
       );
       nullSafeWriteBatch.update(
         documentReference,
-        writeableAsJson,
+        payload,
       );
       _log.info(
         message:
