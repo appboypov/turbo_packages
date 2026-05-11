@@ -5,8 +5,6 @@ import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
 import 'package:turbo_firestore_api/typedefs/t_sort_filter_defs.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
-// TODO(brian): Add option to create several lists with indexes, sort and filter options per list and to dispose them - always keeping all data in sync | 26/04/2026
-
 class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   const TModelDocs({
     required TIdMapDef<MODEL> idMap,
@@ -35,8 +33,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
       models.add(model);
       idMap[model.id] = model;
     }
-    final pSortFilteredListsMap =
-        sortFilteredListsMap ?? <String, TSortFilteredList<DTO, MODEL>>{};
+    final pSortFilteredListsMap = sortFilteredListsMap ?? <String, TSortFilteredList<DTO, MODEL>>{};
     for (final sortFilteredList in pSortFilteredListsMap.values) {
       sortFilteredList.apply(models);
     }
@@ -62,8 +59,11 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   Iterable<String> get ids => _idMap.keys;
   Iterable<MODEL> get docs => _idMap.values;
   List<MODEL> getList(Object? id) => _sortFilteredListsMap[id]?.values ?? [];
-  Iterable<MODEL> findWhere(bool Function(MODEL model) test) =>
-      _idMap.values.where(test);
+  TSortFilteredList<DTO, MODEL> getSortFilteredList(Object id) => _sortFilteredListsMap.putIfAbsent(
+    id,
+    () => TSortFilteredList<DTO, MODEL>(),
+  );
+  Iterable<MODEL> findWhere(bool Function(MODEL model) test) => _idMap.values.where(test);
 
   List<MODEL> listByIds(Iterable<String> ids) {
     final models = <MODEL>[];
@@ -113,7 +113,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     return newValue;
   }
 
-  List<MODEL> addList({
+  List<MODEL> upsertList({
     required Object id,
     required TSortFilteredList<DTO, MODEL> sortFilteredList,
     bool doInitialApply = true,
@@ -125,8 +125,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     return sortFilteredList.values;
   }
 
-  List<MODEL> removeList(Object id) =>
-      _sortFilteredListsMap.remove(id)?.values ?? [];
+  List<MODEL> removeList(Object id) => _sortFilteredListsMap.remove(id)?.values ?? [];
 
   int get length => _idMap.length;
 }

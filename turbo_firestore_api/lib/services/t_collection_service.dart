@@ -266,6 +266,10 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// Returns a list of documents for the given list ID. Throws if the list does not exist.
   List<MODEL> getList(Object id) => docsNotifier.value.getList(id);
 
+  /// Returns the sorted and filtered list for the given ID. If the list does not exist, a new empty list is created and returned.
+  TSortFilteredList<DTO, MODEL> getSortFilteredList(Object id) =>
+      docsNotifier.value.getSortFilteredList(id);
+
   @protected
   TModelDocs<DTO, MODEL> defaultDocs() =>
       modelDocsBuilder?.call(
@@ -684,9 +688,9 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   // 🕹️ LOCAL & REMOTE MUTATORS --------------------------------------------------------------- \\
 
   /// Adds a sorted and filtered list of documents to the local state.
-  void addList(Object id, TSortFilteredList<DTO, MODEL> list) => docsNotifier.updateCurrent(
+  void upsertList(Object id, TSortFilteredList<DTO, MODEL> list) => docsNotifier.updateCurrent(
     (value) => value
-      ..addList(
+      ..upsertList(
         id: id,
         sortFilteredList: list,
       ),
@@ -744,8 +748,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       final TWriteableId? previousForRemote = previousDto == null
           ? null
           : (remoteUpdateRequestBuilder != null
-              ? remoteUpdateRequestBuilder(previousDto)
-              : previousDto as TWriteableId);
+                ? remoteUpdateRequestBuilder(previousDto)
+                : previousDto as TWriteableId);
       final future = api.updateDoc(
         writeable: newWriteable,
         previousWriteable: previousForRemote,
