@@ -1,4 +1,4 @@
-.PHONY: help build clean test format analyze fix watch get
+.PHONY: help build clean test format analyze fix watch get barrels
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -35,3 +35,31 @@ analyze: ## Run static analysis
 
 get: ## Get dependencies
 	flutter pub get
+
+barrels: ## Generate barrel file exports for lib/turbo_firestore_api.dart
+	@BARREL="lib/turbo_firestore_api.dart"; \
+	PKG_NAME=$$(basename "$$BARREL" .dart); \
+	{ \
+		echo "library;"; \
+		echo ""; \
+		PREV_DIR=""; \
+		find -L lib -name '*.dart' \
+			-not -name "$$PKG_NAME.dart" \
+			-not -name '*.g.dart' \
+			-not -name '*.freezed.dart' \
+			-not -path 'lib/turbo_firestore_api.dart' \
+			| sort \
+			| while read -r f; do \
+				if grep -q '^part of ' "$$f"; then continue; fi; \
+				REL=$${f#lib/}; \
+				DIR=$$(dirname "$$REL" | cut -d/ -f1); \
+				if [ "$$DIR" != "$$PREV_DIR" ]; then \
+					if [ -n "$$PREV_DIR" ]; then echo ""; fi; \
+					LABEL=$$(echo "$$DIR" | awk '{print toupper(substr($$0,1,1)) substr($$0,2)}'); \
+					echo "/// $$LABEL"; \
+					PREV_DIR="$$DIR"; \
+				fi; \
+				echo "export '$$REL';"; \
+			done; \
+	} > "$$BARREL"; \
+	echo "Updated $$BARREL"

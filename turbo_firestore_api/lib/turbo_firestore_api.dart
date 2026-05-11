@@ -1,103 +1,74 @@
-/// A powerful and flexible Firestore API wrapper for Flutter applications
-///
-/// This package provides a type-safe, feature-rich interface for interacting with Cloud Firestore
-/// It includes support for CRUD operations, real-time updates, batch operations, and more
-///
-/// Features:
-/// - Type-safe document operations
-/// - Real-time data streaming
-/// - Batch and transaction support
-/// - Automatic timestamp management
-/// - Search capabilities
-/// - Collection group queries
-/// - Error handling and logging
-/// - Optimistic updates
-/// - Debouncing and mutex support
-/// - Authentication state synchronization
-///
-/// Example:
-/// ```dart
-/// // Create a typed API instance
-/// final api = TurboFirestoreApi<User>(
-///   collectionPath: 'users',
-///   fromJson: User.fromJson,
-///   toJson: (user) => user.toJson(),
-/// );
-///
-/// // Create a document
-/// final response = await api.createDoc(
-///   writeable: user,
-///   timestampType: TurboTimestampType.createdAndUpdated,
-/// );
-///
-/// // Stream real-time updates
-/// api.streamAllWithConverter().listen((users) {
-///   print('Got ${users.length} users');
-/// });
-/// ```
-///
-/// See the individual components for detailed documentation:
 library;
 
 /// Abstracts
-/// Main API class and extensions
+export 'abstracts/i_firestore_cache_service.dart';
+export 'abstracts/t_model.dart';
+/// Apis
 export 'apis/t_firestore_api.dart';
-
 /// Constants
 export 'constants/t_auth_errors.dart';
 export 'constants/t_error_codes.dart';
 export 'constants/t_firestore_api_defaults.dart';
-
-/// Enums for configuring API behavior
+/// Dtos
+export 'dtos/t_cached_query.dart';
+/// Enums
 export 'enums/t_operation_type.dart';
 export 'enums/t_parse_type.dart';
 export 'enums/t_search_term_type.dart';
 export 'enums/t_timestamp_type.dart';
-
-/// Exception types for error handling
+export 'enums/t_user_id_location.dart';
+/// Exceptions
 export 'exceptions/invalid_json_exception.dart';
 export 'exceptions/t_firestore_exception.dart';
-
-/// Extensions for enhanced functionality
+/// Extensions
 export 'extensions/completer_extension.dart';
 export 'extensions/t_list_extension.dart';
 export 'extensions/t_map_extension.dart';
-
-/// Generators for dummy data
+/// Factories
+export 'factories/t_api_factory.dart';
+/// Generators
 export 'generators/t_dummy_schema.dart';
 export 'generators/t_value_generator.dart';
 export 'generators/t_value_generator_registry.dart';
 export 'generators/t_value_specs.dart';
-
-/// Mixins for shared behavior
+/// Mixins
 export 'mixins/t_exception_handler.dart';
+/// Models
 export 'models/t_firestore_collection.dart';
+export 'models/t_firestore_page.dart';
+export 'models/t_model_docs.dart';
 export 'models/t_sensitive_data.dart';
-
-/// Data models and utilities
+export 'models/t_sort_filtered_list.dart';
 export 'models/t_vars.dart';
 export 'models/t_write_batch_with_reference.dart';
-
-/// Services for state management
+/// Services
 export 'services/t_auth_sync_service.dart';
 export 'services/t_collection_service.dart';
 export 'services/t_doc_service.dart';
 export 'services/t_hook_collection_service.dart';
+export 'services/t_hook_doc_service.dart';
 export 'services/t_post_collection_service.dart';
 export 'services/t_post_doc_service.dart';
 export 'services/t_pre_collection_service.dart';
 export 'services/t_pre_document_service.dart';
-
-/// Type definitions
+export 'services/t_user_collection_service.dart';
+export 'services/t_user_doc_service.dart';
+/// Typedefs
 export 'typedefs/collection_reference_def.dart';
 export 'typedefs/create_doc_def.dart';
 export 'typedefs/t_api_builder_def.dart';
+export 'typedefs/t_id_list_def.dart';
+export 'typedefs/t_id_map_def.dart';
+export 'typedefs/t_model_builder_def.dart';
+export 'typedefs/t_model_docs_builder_def.dart';
 export 'typedefs/t_model_item_builder_def.dart';
+export 'typedefs/t_sort_filter_defs.dart';
 export 'typedefs/t_stream_builder_def.dart';
 export 'typedefs/t_value_builder_def.dart';
 export 'typedefs/t_writeable_item_builder_def.dart';
 export 'typedefs/update_doc_def.dart';
 export 'typedefs/upsert_doc_def.dart';
-
-/// Core utilities for logging, debugging and
+/// Util
 export 'util/t_firestore_logger.dart';
+export 'util/t_map_diff.dart';
+export 'util/t_mutex.dart';
