@@ -6,10 +6,7 @@ import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 import 'package:turbolytics/turbolytics.dart';
 
-class TUserCollectionService<
-  DTO extends TWriteableId,
-  MODEL extends TModel<DTO>
->
+class TUserCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
     extends TCollectionService<DTO, MODEL>
     with Turbolytics {
   TUserCollectionService({
@@ -30,10 +27,9 @@ class TUserCollectionService<
           streamBuilder?.call(user, api, this) ??
           api.streamByQueryWithConverter(
             whereDescription: '${api.userIdFieldName} == ${user.uid}',
-            collectionReferenceQuery: (collectionReference) =>
-                collectionReference.where(
-                  api.userIdFieldName,
-                  isEqualTo: user.uid,
-                ),
+            collectionReferenceQuery: (collectionReference) => collectionReference.where(
+              api.userIdFieldName,
+              isEqualTo: user.uid,
+            ),
           );
 }
