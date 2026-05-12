@@ -11,10 +11,7 @@ import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 ///
 /// Type Parameters:
 /// - [DTO] - The document type, must extend [TWriteableId]
-abstract class TPostCollectionService<
-  DTO extends TWriteableId,
-  MODEL extends TModel<DTO>
->
+abstract class TPostCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
     extends TCollectionService<DTO, MODEL> {
   /// Creates a new [TPostCollectionService] instance.
   TPostCollectionService({
@@ -59,11 +56,12 @@ abstract class TPostCollectionService<
       final docs = value ?? defaultValues();
       if (user != null) {
         log.debug('Updating docs for user ${user.uid}');
-        docsNotifier.update(
-          TModelDocs.fromDtos(
+        docsNotifier.updateCurrent(
+          (cValue) => TModelDocs.fromDtos(
             dtos: docs,
             modelBuilder: (dto) => modelBuilder(this, null, dto),
-            sortFilteredListsMap: initialSortFilteredListsMap?.call(),
+            sort: cValue.sort ?? initialSort,
+            filters: cValue.filters ?? initialFilters,
           ),
         );
         markAsReady();

@@ -94,9 +94,11 @@ class TFirestoreCollection<DTO extends TWriteableId> {
     TCollectionValueBuilderDef<DTO, MODEL>? defaultValue,
     IFirestoreCacheService? firestoreCacheService,
     bool initialiseStream = true,
-    TSortFilteredListsMap<DTO, MODEL> Function()? initialSortFilteredListsMap,
+    TSort<MODEL>? initialSort,
+    List<TFilter<MODEL>>? initialFilters,
   }) => TCollectionService<DTO, MODEL>(
-    initialSortFilteredListsMap: initialSortFilteredListsMap,
+    initialFilters: initialFilters,
+    initialSort: initialSort,
     modelBuilder: modelBuilder,
     modelDocsBuilder: modelDocsBuilder,
     collection: this,

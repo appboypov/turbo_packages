@@ -1,16 +1,17 @@
 import 'package:turbo_firestore_api/abstracts/t_model.dart';
-import 'package:turbo_firestore_api/models/t_sort_filtered_list.dart';
+import 'package:turbo_firestore_api/abstracts/t_sort.dart';
+import 'package:turbo_firestore_api/models/t_filter.dart';
+import 'package:turbo_firestore_api/models/t_list.dart';
 import 'package:turbo_firestore_api/typedefs/t_id_map_def.dart';
 import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
-import 'package:turbo_firestore_api/typedefs/t_sort_filter_defs.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
 class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   const TModelDocs({
     required TIdMapDef<MODEL> idMap,
-    required TSortFilteredListsMap<DTO, MODEL> sortFilteredListsMap,
+    required TList<DTO, MODEL> list,
     required this.modelBuilder,
-  }) : _sortFilteredListsMap = sortFilteredListsMap,
+  }) : _list = list,
        _idMap = idMap;
 
   factory TModelDocs.empty({
@@ -18,13 +19,14 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   }) => TModelDocs(
     idMap: {},
     modelBuilder: modelBuilder,
-    sortFilteredListsMap: {},
+    list: TList.empty(),
   );
 
   factory TModelDocs.fromDtos({
     required List<DTO> dtos,
     required TModelBuilderDef<DTO, MODEL> modelBuilder,
-    TSortFilteredListsMap<DTO, MODEL>? sortFilteredListsMap,
+    required TSort<MODEL>? sort,
+    required List<TFilter<MODEL>>? filters,
   }) {
     final idMap = <String, MODEL>{};
     final models = <MODEL>[];
@@ -33,20 +35,20 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
       models.add(model);
       idMap[model.id] = model;
     }
-    final pSortFilteredListsMap = sortFilteredListsMap ?? <String, TSortFilteredList<DTO, MODEL>>{};
-    for (final sortFilteredList in pSortFilteredListsMap.values) {
-      sortFilteredList.apply(models);
-    }
     return TModelDocs<DTO, MODEL>(
       idMap: idMap,
       modelBuilder: modelBuilder,
-      sortFilteredListsMap: pSortFilteredListsMap,
+      list: TList(
+        filters: filters,
+        sort: sort,
+        models: models,
+      ),
     );
   }
 
   final TModelBuilderDef<DTO, MODEL> modelBuilder;
   final TIdMapDef<MODEL> _idMap;
-  final TSortFilteredListsMap<DTO, MODEL> _sortFilteredListsMap;
+  final TList<DTO, MODEL> _list;
 
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
@@ -55,14 +57,17 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   bool exists(String id) => _idMap.containsKey(id);
   DTO? dto(String? id) => _idMap[id]?.dto;
   MODEL? get(String? id) => _idMap[id];
-  MODEL? remove(String id) => _idMap.remove(id);
+  MODEL? remove(String id) {
+    _list.remove(id);
+    return _idMap.remove(id);
+  }
+
   Iterable<String> get ids => _idMap.keys;
   Iterable<MODEL> get docs => _idMap.values;
-  List<MODEL> getList(Object? id) => _sortFilteredListsMap[id]?.values ?? [];
-  TSortFilteredList<DTO, MODEL> getSortFilteredList(Object id) => _sortFilteredListsMap.putIfAbsent(
-    id,
-    () => TSortFilteredList<DTO, MODEL>(),
-  );
+  List<MODEL> get list => _list.values;
+  TSort<MODEL>? get sort => _list.sort;
+  List<TFilter<MODEL>>? get filters => _list.filters;
+
   Iterable<MODEL> findWhere(bool Function(MODEL model) test) => _idMap.values.where(test);
 
   List<MODEL> listByIds(Iterable<String> ids) {
@@ -81,9 +86,7 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     for (final newValue in newValues) {
       final model = upsertDto(newValue);
       models.add(model);
-      for (final sortFilteredList in _sortFilteredListsMap.values) {
-        sortFilteredList.add(model);
-      }
+      _list.add(model);
     }
     return models;
   }
@@ -93,18 +96,13 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     for (final newValue in newValues) {
       final model = upsertValue(newValue);
       models.add(model);
-      for (final sortFilteredList in _sortFilteredListsMap.values) {
-        sortFilteredList.add(model);
-      }
     }
     return models;
   }
 
   MODEL upsertDto(DTO newValue) {
     final model = upsertValue(modelBuilder(newValue));
-    for (final sortFilteredList in _sortFilteredListsMap.values) {
-      sortFilteredList.add(model);
-    }
+    _list.add(model);
     return model;
   }
 
@@ -113,19 +111,11 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
     return newValue;
   }
 
-  List<MODEL> upsertList({
-    required Object id,
-    required TSortFilteredList<DTO, MODEL> sortFilteredList,
-    bool doInitialApply = true,
-  }) {
-    if (doInitialApply) {
-      sortFilteredList.apply(docs);
-    }
-    _sortFilteredListsMap[id] = sortFilteredList;
-    return sortFilteredList.values;
-  }
-
-  List<MODEL> removeList(Object id) => _sortFilteredListsMap.remove(id)?.values ?? [];
-
   int get length => _idMap.length;
+
+  void updateSort(TSort<MODEL> sort) => _list.updateSort(sort: sort);
+  void updateFilters(List<TFilter<MODEL>> filters) => _list.updateFilters(
+    filters: filters,
+    models: docs,
+  );
 }

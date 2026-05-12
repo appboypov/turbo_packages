@@ -1,16 +1,9 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart' hide Type;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/abstracts/i_firestore_cache_service.dart';
-import 'package:turbo_firestore_api/abstracts/t_model.dart';
-import 'package:turbo_firestore_api/factories/t_api_factory.dart';
-import 'package:turbo_firestore_api/models/t_model_docs.dart';
-import 'package:turbo_firestore_api/models/t_sort_filtered_list.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
-import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
-import 'package:turbo_firestore_api/typedefs/t_model_docs_builder_def.dart';
-import 'package:turbo_firestore_api/typedefs/t_sort_filter_defs.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_serializable.dart';
@@ -62,7 +55,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   TCollectionService({
     required this.collection,
     required this.modelBuilder,
-    this.initialSortFilteredListsMap,
+    this.initialSort,
+    this.initialFilters,
     this.modelDocsBuilder,
     this.apiBuilder,
     this.streamBuilder,
@@ -103,9 +97,9 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// Function to provide default document value.
   final TCollectionValueBuilderDef<DTO, MODEL>? defaultValue;
 
-  @protected
-  /// Optional map of sorting and filtering definitions for managing sorted and filtered lists of documents. This can be used to maintain multiple views of the data based on different criteria.
-  final TSortFilteredListsMap<DTO, MODEL> Function()? initialSortFilteredListsMap;
+  final TSort<MODEL>? initialSort;
+
+  final List<TFilter<MODEL>>? initialFilters;
 
   @protected
   /// Optional Firestore cache service for caching document data locally.
@@ -144,18 +138,21 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       final docs = value ?? defaultValues();
       if (user != null) {
         log.debug('Updating docs for user ${user.uid}');
-        docsNotifier.update(
-          modelDocsBuilder?.call(
+        docsNotifier.updateCurrent(
+          (cValue) =>
+              modelDocsBuilder?.call(
                 api,
                 this,
                 modelBuilder,
-                initialSortFilteredListsMap?.call(),
+                cValue.sort ?? initialSort,
+                cValue.filters ?? initialFilters,
                 docs,
               ) ??
               TModelDocs.fromDtos(
                 dtos: docs,
                 modelBuilder: (dto) => modelBuilder(this, null, dto),
-                sortFilteredListsMap: initialSortFilteredListsMap?.call(),
+                filters: cValue.filters ?? initialFilters,
+                sort: cValue.sort ?? initialSort,
               ),
         );
         _isReady.completeIfNotComplete();
@@ -263,26 +260,21 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// Listenable for the document collection state.
   Listenable get listenable => docs;
 
-  /// Returns a list of documents for the given list ID. Throws if the list does not exist.
-  List<MODEL> getList(Object id) => docsNotifier.value.getList(id);
-
-  /// Returns the sorted and filtered list for the given ID. If the list does not exist, a new empty list is created and returned.
-  TSortFilteredList<DTO, MODEL> getSortFilteredList(Object id) =>
-      docsNotifier.value.getSortFilteredList(id);
-
   @protected
   TModelDocs<DTO, MODEL> defaultDocs() =>
       modelDocsBuilder?.call(
         api,
         this,
         modelBuilder,
-        initialSortFilteredListsMap?.call(),
+        initialSort,
+        initialFilters,
         defaultValues(),
       ) ??
       TModelDocs.fromDtos(
         dtos: defaultValues(),
         modelBuilder: (dto) => modelBuilder(this, null, dto),
-        sortFilteredListsMap: initialSortFilteredListsMap?.call(),
+        filters: initialFilters,
+        sort: initialSort,
       );
 
   @protected
@@ -291,13 +283,15 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
         api,
         this,
         modelBuilder,
-        initialSortFilteredListsMap?.call(),
+        initialSort,
+        initialFilters,
         initialValues() ?? defaultValues(),
       ) ??
       TModelDocs.fromDtos(
         dtos: initialValues() ?? defaultValues(),
         modelBuilder: (dto) => modelBuilder(this, null, dto),
-        sortFilteredListsMap: initialSortFilteredListsMap?.call(),
+        filters: initialFilters,
+        sort: initialSort,
       );
 
   @protected
@@ -686,20 +680,6 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   }
 
   // 🕹️ LOCAL & REMOTE MUTATORS --------------------------------------------------------------- \\
-
-  /// Adds a sorted and filtered list of documents to the local state.
-  void upsertList(Object id, TSortFilteredList<DTO, MODEL> list) => docsNotifier.updateCurrent(
-    (value) => value
-      ..upsertList(
-        id: id,
-        sortFilteredList: list,
-      ),
-  );
-
-  /// Removes a sorted and filtered list of documents from the local state.
-  void removeList(Object id) => docsNotifier.updateCurrent(
-    (value) => value..removeList(id),
-  );
 
   /// Updates a document both locally and in Firestore.
   ///
