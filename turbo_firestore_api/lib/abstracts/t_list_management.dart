@@ -8,7 +8,10 @@ mixin TListManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
 
+  @override
   TSort<MODEL> get initialSort;
+
+  @override
   List<TFilter<MODEL>> get initialFilters;
 
   // 🎩 STATE --------------------------------------------------------------------------------- \\
@@ -27,7 +30,6 @@ mixin TListManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
 
   void updateSort(TSort<MODEL> sort) {
     _activeSort.update(sort);
-
   }
 
   void updateFilters(List<TFilter<MODEL>> filters) {
