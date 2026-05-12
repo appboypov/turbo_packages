@@ -8,4 +8,11 @@ abstract interface class IFilter<MODEL> {
 
 extension IFilterExtension<DTO extends TWriteableId, MODEL extends TModel<DTO>> on IFilter<MODEL> {
   TFilter<MODEL> asFilter<INPUT>([INPUT? input]) => TFilter(value: this, input: input);
+
+  TFilter<MODEL> withSet<INPUT>(Set<INPUT> input) => TFilter(value: this, input: input);
+  TFilter<MODEL> withList<INPUT>(List<INPUT> input) => TFilter(value: this, input: input);
+
+  TFilter<MODEL> withInt(int input) => TFilter(value: this, input: input);
+  TFilter<MODEL> withDouble(double input) => TFilter(value: this, input: input);
+  TFilter<MODEL> withString(String input) => TFilter(value: this, input: input);
 }
