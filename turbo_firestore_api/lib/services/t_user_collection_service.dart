@@ -19,6 +19,9 @@ class TUserCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>
     super.initialiseStream = true,
     super.firestoreCacheService,
     super.modelDocsBuilder,
+    super.initialFilters,
+    super.initialSort,
+    super.readyDeps,
   });
 
   @override

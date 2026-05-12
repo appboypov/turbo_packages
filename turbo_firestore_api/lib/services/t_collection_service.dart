@@ -64,6 +64,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
     this.defaultValue,
     super.initialiseStream = true,
     this.firestoreCacheService,
+    this.readyDeps,
   });
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -97,9 +98,14 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   /// Function to provide default document value.
   final TCollectionValueBuilderDef<DTO, MODEL>? defaultValue;
 
+  /// Initial sort of the list inside model docs.
   final TSort<MODEL>? initialSort;
 
+  /// Initial filter of the list inside model docs.
   final List<TFilter<MODEL>>? initialFilters;
+
+  /// List of dependencies to wait for before anything else.
+  final List<Future> Function(User user)? readyDeps;
 
   @protected
   /// Optional Firestore cache service for caching document data locally.
@@ -123,6 +129,15 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
+
+  @override
+  @mustCallSuper
+  FutureOr<dynamic> Function(User user)? get onAuth => readyDeps == null
+      ? super.onAuth
+      : (user) async {
+          await Future.wait(readyDeps!(user));
+          super.onAuth?.call(user);
+        };
 
   @override
   Stream<List<DTO>> Function(User user) get stream =>

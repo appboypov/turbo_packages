@@ -3,11 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Type;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/abstracts/i_firestore_cache_service.dart';
-import 'package:turbo_firestore_api/abstracts/t_model.dart';
-import 'package:turbo_firestore_api/factories/t_api_factory.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
-import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
@@ -47,6 +43,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
     this.afterLocalNotifyUpdate,
     this.beforeLocalNotifyUpdate,
     this.onMissingRemoteValue,
+    this.readyDeps,
   });
 
   // 📍 LOCATOR ------------------------------------------------------------------------------- \\
@@ -84,6 +81,9 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   /// Whether to attempt to create a missing remote document if the local state is default and no remote document exists.
   final TDocValueBuilderDef<DTO, MODEL>? onMissingRemoteValue;
 
+  /// List of dependencies to wait for before anything else.
+  final List<Future> Function(User user)? readyDeps;
+
   // 🎬 INIT & DISPOSE ------------------------------------------------------------------------ \\
 
   /// Disposes of the document service and releases resources.
@@ -108,6 +108,15 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
 
   // 👂 LISTENERS ----------------------------------------------------------------------------- \\
   // ⚡️ OVERRIDES ----------------------------------------------------------------------------- \\
+
+  @override
+  @mustCallSuper
+  FutureOr<dynamic> Function(User user)? get onAuth => readyDeps == null
+      ? super.onAuth
+      : (user) async {
+          await Future.wait(readyDeps!(user));
+          super.onAuth?.call(user);
+        };
 
   @override
   Stream<DTO?> Function(User user) get stream =>
@@ -464,8 +473,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
         doc: doc,
         doNotifyListeners: doNotifyListeners,
       );
-      final TWriteable newWriteable =
-          remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable;
+      final TWriteable newWriteable = remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable;
       final TWriteable previousForRemote = remoteUpdateRequestBuilder != null
           ? remoteUpdateRequestBuilder(previousDto)
           : previousDto as TWriteable;

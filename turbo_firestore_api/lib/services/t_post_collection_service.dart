@@ -24,6 +24,9 @@ abstract class TPostCollectionService<DTO extends TWriteableId, MODEL extends TM
     super.initialValue,
     super.modelDocsBuilder,
     super.streamBuilder,
+    super.readyDeps,
+    super.initialFilters,
+    super.initialSort,
   });
 
   /// Called after the local state has been updated with new data.

@@ -24,6 +24,9 @@ abstract class TPreCollectionService<DTO extends TWriteableId, MODEL extends TMo
     super.initialValue,
     super.modelDocsBuilder,
     super.streamBuilder,
+    super.initialFilters,
+    super.initialSort,
+    super.readyDeps,
   });
 
   /// Called before the local state is updated with new data.

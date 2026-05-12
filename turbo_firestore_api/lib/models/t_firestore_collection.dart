@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/abstracts/i_firestore_cache_service.dart';
-import 'package:turbo_firestore_api/abstracts/t_model.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
-import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
-import 'package:turbo_firestore_api/typedefs/t_model_docs_builder_def.dart';
-import 'package:turbo_firestore_api/typedefs/t_sort_filter_defs.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
 class TFirestoreCollection<DTO extends TWriteableId> {
@@ -15,13 +11,11 @@ class TFirestoreCollection<DTO extends TWriteableId> {
     required this.fromJson,
     required this.toJson,
     this.createdAtFieldName = TFirestoreApiDefaults.createdAtFieldName,
-    this.documentReferenceFieldName =
-        TFirestoreApiDefaults.documentReferenceFieldName,
+    this.documentReferenceFieldName = TFirestoreApiDefaults.documentReferenceFieldName,
     this.fromJsonError,
     this.idFieldName = TFirestoreApiDefaults.idFieldName,
     this.isCollectionGroup = TFirestoreApiDefaults.isCollectionGroup,
-    this.tryAddLocalDocumentReference =
-        TFirestoreApiDefaults.tryAddLocalDocumentReference,
+    this.tryAddLocalDocumentReference = TFirestoreApiDefaults.tryAddLocalDocumentReference,
     this.tryAddLocalId = TFirestoreApiDefaults.tryAddLocalId,
     this.updatedAtFieldName = TFirestoreApiDefaults.updatedAtFieldName,
     this.defaultIdValue = TFirestoreApiDefaults.defaultIdValue,
@@ -96,8 +90,10 @@ class TFirestoreCollection<DTO extends TWriteableId> {
     bool initialiseStream = true,
     TSort<MODEL>? initialSort,
     List<TFilter<MODEL>>? initialFilters,
+    List<Future> Function(User user)? readyDeps,
   }) => TCollectionService<DTO, MODEL>(
     initialFilters: initialFilters,
+    readyDeps: readyDeps,
     initialSort: initialSort,
     modelBuilder: modelBuilder,
     modelDocsBuilder: modelDocsBuilder,
@@ -121,8 +117,10 @@ class TFirestoreCollection<DTO extends TWriteableId> {
     ValueChanged<DTO?>? beforeLocalNotifyUpdate,
     bool initialiseStream = TFirestoreApiDefaults.initialiseStream,
     TDocValueBuilderDef<DTO, MODEL>? onMissingRemoteValue,
+    List<Future> Function(User user)? readyDeps,
   }) => TDocService<DTO, MODEL>(
     modelBuilder: modelBuilder,
+    readyDeps: readyDeps,
     collection: this,
     firestoreCacheService: firestoreCacheService,
     afterLocalNotifyUpdate: afterLocalNotifyUpdate,

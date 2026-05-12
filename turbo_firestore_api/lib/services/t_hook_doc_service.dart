@@ -28,6 +28,7 @@ abstract class THookDocService<
     super.afterLocalNotifyUpdate,
     super.beforeLocalNotifyUpdate,
     super.firestoreCacheService,
+    super.readyDeps,
   });
 
   /// Called before the local state is updated with new data.
