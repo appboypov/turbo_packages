@@ -224,37 +224,13 @@ mixin TurboFirestoreGetApi<DTO> on _TFirestoreApiBase<DTO> {
         }
       }
 
-      final result = (await getDocRefByIdWithConverter(
+      final response = await getById(
         id: id,
         collectionPathOverride: collectionPathOverride,
-      ).get(_getOptions)).data();
-      if (result != null) {
-        _log.info(
-          message: 'Found item!',
-          sensitiveData: null,
-        );
-        // #FEEDBACK #TODO 2026-04-27T17:38:39.013+02:00 | Remove withConverter methods and convert self - saving cache before the convertion
-        if (_firestoreCache != null && _toJson != null) {
-          unawaited(
-            _firestoreCache.saveDoc(
-              doc: _toJson(result),
-              docId: id,
-              path: _pPath(collectionPathOverride),
-            ),
-          );
-        }
-        return TurboResponse.success(result: result);
-      } else {
-        _log.warning(
-          message: 'Found nothing!',
-          sensitiveData: null,
-        );
-        return TurboResponse.fail(
-          error: 'Document not found',
-          title: 'Not Found',
-          message: 'The requested document was not found',
-        );
-      }
+        tryCache: false,
+        forceCacheRefresh: forceCacheRefresh,
+      );
+      return response.mapSuccess(_fromJson!);
     } catch (error, stackTrace) {
       final path = _pPath(collectionPathOverride);
       final fullPath = _buildFullPath(path, id);

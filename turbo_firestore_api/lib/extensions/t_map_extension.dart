@@ -37,7 +37,7 @@ extension TMapExtension on Map<dynamic, dynamic> {
     DocumentReference documentReference, {
     required String referenceFieldName,
     required bool tryAddLocalDocumentReference,
-  }) => tryAddLocalDocumentReference && containsKey(referenceFieldName)
+  }) => !tryAddLocalDocumentReference || containsKey(referenceFieldName)
       ? this as Map<T, E>
       : (this..[referenceFieldName] = documentReference) as Map<T, E>;
 
