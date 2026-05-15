@@ -264,6 +264,41 @@ abstract class _TFirestoreApiBase<T> {
     );
   }
 
+  /// Maps stream errors without passing an enum literal from stale [Stream.handleError]
+  /// closures across Flutter web hot reload (avoids DDC subtype checks).
+  Never _logAndThrowStreamFirestoreError({
+    required Object error,
+    required StackTrace stackTrace,
+    required String message,
+    required String path,
+    String? id,
+    String? query,
+    String? whereDescription,
+    String? fullPath,
+  }) {
+    final exception = _createException(
+      error: error,
+      stackTrace: stackTrace,
+      path: path,
+      id: id,
+      query: query,
+      operationType: TOperationType.stream,
+    );
+    _log.error(
+      message: message,
+      sensitiveData: TSensitiveData(
+        path: path,
+        id: id,
+        whereDescription: whereDescription,
+        operationType: TOperationType.stream,
+        fullPath: fullPath,
+      ),
+      error: error,
+      stackTrace: stackTrace,
+    );
+    throw exception;
+  }
+
   /// Helper method for logging the length of a List result.
   void _logResultLength(List<dynamic> result) {
     if (result.isNotEmpty) {

@@ -65,25 +65,14 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
       ),
     );
     return listCollectionReference().snapshots().handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          operationType: TOperationType.stream,
-        );
-        _log.error(
-          message: 'Error streaming collection',
-          sensitiveData: TSensitiveData(
+      (Object error, StackTrace stackTrace) =>
+          _logAndThrowStreamFirestoreError(
+            error: error,
+            stackTrace: stackTrace,
+            message: 'Error streaming collection',
             path: path,
-            operationType: TOperationType.stream,
             fullPath: path,
           ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
     );
   }
 
@@ -131,25 +120,15 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-          (Object error, StackTrace stackTrace) {
-            final exception = _createException(
-              error: error,
-              stackTrace: stackTrace,
-              path: path,
-              operationType: TOperationType.stream,
-            );
-            _log.error(
-              message: 'Error streaming collection with converter',
-              sensitiveData: TSensitiveData(
+          (Object error, StackTrace stackTrace) =>
+              _logAndThrowStreamFirestoreError(
+                error: error,
+                stackTrace: stackTrace,
+                message:
+                    'Error streaming collection with converter',
                 path: path,
-                operationType: TOperationType.stream,
                 fullPath: path,
               ),
-              error: error,
-              stackTrace: stackTrace,
-            );
-            throw exception;
-          },
         );
   }
 
@@ -208,27 +187,16 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-          (Object error, StackTrace stackTrace) {
-            final exception = _createException(
-              error: error,
-              stackTrace: stackTrace,
-              path: path,
-              query: whereDescription,
-              operationType: TOperationType.stream,
-            );
-            _log.error(
-              message: 'Error streaming collection by query',
-              sensitiveData: TSensitiveData(
+          (Object error, StackTrace stackTrace) =>
+              _logAndThrowStreamFirestoreError(
+                error: error,
+                stackTrace: stackTrace,
+                message: 'Error streaming collection by query',
                 path: path,
+                query: whereDescription,
                 whereDescription: whereDescription,
-                operationType: TOperationType.stream,
                 fullPath: path,
               ),
-              error: error,
-              stackTrace: stackTrace,
-            );
-            throw exception;
-          },
         );
   }
 
@@ -290,27 +258,17 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
           (event) => event.docs.map((e) => e.data()).toList(),
         )
         .handleError(
-          (Object error, StackTrace stackTrace) {
-            final exception = _createException(
-              error: error,
-              stackTrace: stackTrace,
-              path: path,
-              query: whereDescription,
-              operationType: TOperationType.stream,
-            );
-            _log.error(
-              message: 'Error streaming collection by query with converter',
-              sensitiveData: TSensitiveData(
+          (Object error, StackTrace stackTrace) =>
+              _logAndThrowStreamFirestoreError(
+                error: error,
+                stackTrace: stackTrace,
+                message:
+                    'Error streaming collection by query with converter',
                 path: path,
+                query: whereDescription,
                 whereDescription: whereDescription,
-                operationType: TOperationType.stream,
                 fullPath: path,
               ),
-              error: error,
-              stackTrace: stackTrace,
-            );
-            throw exception;
-          },
         );
   }
 
@@ -365,27 +323,15 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
     );
     final fullPath = _buildFullPath(path, id);
     return docRef.snapshots().handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          id: id,
-          operationType: TOperationType.stream,
-        );
-        _log.error(
-          message: 'Error streaming document',
-          sensitiveData: TSensitiveData(
+      (Object error, StackTrace stackTrace) =>
+          _logAndThrowStreamFirestoreError(
+            error: error,
+            stackTrace: stackTrace,
+            message: 'Error streaming document',
             path: path,
             id: id,
-            operationType: TOperationType.stream,
             fullPath: fullPath,
           ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
     );
   }
 
@@ -445,27 +391,15 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
     );
     final fullPath = _buildFullPath(path, id);
     return docRefWithConverter.snapshots().map((e) => e.data()).handleError(
-      (Object error, StackTrace stackTrace) {
-        final exception = _createException(
-          error: error,
-          stackTrace: stackTrace,
-          path: path,
-          id: id,
-          operationType: TOperationType.stream,
+          (Object error, StackTrace stackTrace) =>
+              _logAndThrowStreamFirestoreError(
+                error: error,
+                stackTrace: stackTrace,
+                message: 'Error streaming document with converter',
+                path: path,
+                id: id,
+                fullPath: fullPath,
+              ),
         );
-        _log.error(
-          message: 'Error streaming document with converter',
-          sensitiveData: TSensitiveData(
-            path: path,
-            id: id,
-            operationType: TOperationType.stream,
-            fullPath: fullPath,
-          ),
-          error: error,
-          stackTrace: stackTrace,
-        );
-        throw exception;
-      },
-    );
   }
 }
