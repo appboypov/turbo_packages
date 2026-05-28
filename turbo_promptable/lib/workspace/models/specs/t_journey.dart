@@ -1,0 +1,18 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:turbo_promptable/workspace/models/root/t_spec.dart';
+
+part 't_journey.g.dart';
+
+/// An end-to-end user journey through the system.
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
+class TJourney extends TSpec {
+  const TJourney({
+    required super.name,
+    super.metaData,
+  });
+
+  factory TJourney.fromJson(Map<String, dynamic> json) =>
+      _$TJourneyFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$TJourneyToJson(this);
+}
