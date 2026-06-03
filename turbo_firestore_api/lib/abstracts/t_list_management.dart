@@ -17,7 +17,7 @@ mixin TListManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   late final _activeSort = TNotifier<TSort<MODEL>>(initialSort);
-  late final _activeFilters = TNotifier<List<TFilter<MODEL>>>(initialFilters);
+  late final _activeFilters = TNotifier<List<TFilter<MODEL>>>(initialFilters, forceUpdate: true);
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
@@ -36,5 +36,16 @@ mixin TListManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   void updateFilters(List<TFilter<MODEL>> filters) {
     _activeFilters.update(filters);
     docsNotifier.updateCurrent((docs) => docs..updateFilters(filters));
+  }
+
+  void onFilterToggled(TFilter<MODEL> filter) {
+    final Set<TFilter<MODEL>> activeFilters = Set.from(_activeFilters.value);
+    final isActive = activeFilters.contains(filter);
+    if (isActive) {
+      activeFilters.remove(filter);
+    } else {
+      activeFilters.add(filter);
+    }
+    _activeFilters.update(activeFilters.toList());
   }
 }

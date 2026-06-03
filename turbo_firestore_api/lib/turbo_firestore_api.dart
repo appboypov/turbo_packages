@@ -6,36 +6,46 @@ export 'abstracts/i_firestore_cache_service.dart';
 export 'abstracts/t_list_management.dart';
 export 'abstracts/t_model.dart';
 export 'abstracts/t_sort.dart';
+
 /// Apis
 export 'apis/t_firestore_api.dart';
+
 /// Constants
 export 'constants/t_auth_errors.dart';
 export 'constants/t_error_codes.dart';
 export 'constants/t_firestore_api_defaults.dart';
+
 /// Dtos
 export 'dtos/t_cached_query.dart';
+
 /// Enums
 export 'enums/t_operation_type.dart';
 export 'enums/t_parse_type.dart';
 export 'enums/t_search_term_type.dart';
 export 'enums/t_timestamp_type.dart';
 export 'enums/t_user_id_location.dart';
+
 /// Exceptions
 export 'exceptions/invalid_json_exception.dart';
 export 'exceptions/t_firestore_exception.dart';
+
 /// Extensions
 export 'extensions/completer_extension.dart';
 export 'extensions/t_list_extension.dart';
 export 'extensions/t_map_extension.dart';
+
 /// Factories
 export 'factories/t_api_factory.dart';
+
 /// Generators
 export 'generators/t_dummy_schema.dart';
-export 'generators/t_value_generator.dart';
 export 'generators/t_value_generator_registry.dart';
+export 'generators/t_value_generator.dart';
 export 'generators/t_value_specs.dart';
+
 /// Mixins
 export 'mixins/t_exception_handler.dart';
+
 /// Models
 export 'models/t_filter.dart';
 export 'models/t_firestore_collection.dart';
@@ -45,6 +55,7 @@ export 'models/t_model_docs.dart';
 export 'models/t_sensitive_data.dart';
 export 'models/t_vars.dart';
 export 'models/t_write_batch_with_reference.dart';
+
 /// Services
 export 'services/t_auth_sync_service.dart';
 export 'services/t_collection_service.dart';
@@ -57,6 +68,7 @@ export 'services/t_pre_collection_service.dart';
 export 'services/t_pre_document_service.dart';
 export 'services/t_user_collection_service.dart';
 export 'services/t_user_doc_service.dart';
+
 /// Typedefs
 export 'typedefs/collection_reference_def.dart';
 export 'typedefs/create_doc_def.dart';
@@ -72,6 +84,7 @@ export 'typedefs/t_value_builder_def.dart';
 export 'typedefs/t_writeable_item_builder_def.dart';
 export 'typedefs/update_doc_def.dart';
 export 'typedefs/upsert_doc_def.dart';
+
 /// Util
 export 'util/t_firestore_logger.dart';
 export 'util/t_map_diff.dart';
