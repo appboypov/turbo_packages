@@ -1,11 +1,10 @@
 library;
 
 /// Abstracts
-export 'abstracts/i_filter.dart';
 export 'abstracts/i_firestore_cache_service.dart';
-export 'abstracts/t_list_management.dart';
+export 'abstracts/t_collection_management.dart';
 export 'abstracts/t_model.dart';
-export 'abstracts/t_sort.dart';
+export 'abstracts/t_sort_option.dart';
 
 /// Apis
 export 'apis/t_firestore_api.dart';
@@ -47,7 +46,7 @@ export 'generators/t_value_specs.dart';
 export 'mixins/t_exception_handler.dart';
 
 /// Models
-export 'models/t_filter.dart';
+export 'abstracts/t_filter_option.dart';
 export 'models/t_firestore_collection.dart';
 export 'models/t_firestore_page.dart';
 export 'models/t_list.dart';
@@ -73,12 +72,12 @@ export 'services/t_user_doc_service.dart';
 export 'typedefs/collection_reference_def.dart';
 export 'typedefs/create_doc_def.dart';
 export 'typedefs/t_api_builder_def.dart';
+export 'typedefs/t_filter_predicate.dart';
 export 'typedefs/t_id_list_def.dart';
 export 'typedefs/t_id_map_def.dart';
 export 'typedefs/t_model_builder_def.dart';
 export 'typedefs/t_model_docs_builder_def.dart';
 export 'typedefs/t_model_item_builder_def.dart';
-export 'typedefs/t_sort_filter_defs.dart';
 export 'typedefs/t_stream_builder_def.dart';
 export 'typedefs/t_value_builder_def.dart';
 export 'typedefs/t_writeable_item_builder_def.dart';

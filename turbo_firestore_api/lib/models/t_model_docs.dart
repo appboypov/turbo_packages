@@ -1,6 +1,6 @@
 import 'package:turbo_firestore_api/abstracts/t_model.dart';
-import 'package:turbo_firestore_api/abstracts/t_sort.dart';
-import 'package:turbo_firestore_api/models/t_filter.dart';
+import 'package:turbo_firestore_api/abstracts/t_sort_option.dart';
+import 'package:turbo_firestore_api/models/t_filter_input.dart';
 import 'package:turbo_firestore_api/models/t_list.dart';
 import 'package:turbo_firestore_api/typedefs/t_id_map_def.dart';
 import 'package:turbo_firestore_api/typedefs/t_model_builder_def.dart';
@@ -25,8 +25,8 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   factory TModelDocs.fromDtos({
     required List<DTO> dtos,
     required TModelBuilderDef<DTO, MODEL> modelBuilder,
-    required TSort<MODEL>? sort,
-    required List<TFilter<MODEL>>? filters,
+    required TSortOption? sort,
+    required Set<TFilterInput>? filters,
   }) {
     final idMap = <String, MODEL>{};
     final models = <MODEL>[];
@@ -65,8 +65,8 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   Iterable<String> get ids => _idMap.keys;
   Iterable<MODEL> get docs => _idMap.values;
   List<MODEL> get list => _list.values;
-  TSort<MODEL>? get sort => _list.sort;
-  List<TFilter<MODEL>>? get filters => _list.filters;
+  TSortOption? get sort => _list.sort;
+  Set<TFilterInput>? get filters => _list.filters;
 
   Iterable<MODEL> findWhere(bool Function(MODEL model) test) => _idMap.values.where(test);
 
@@ -113,8 +113,8 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
 
   int get length => _idMap.length;
 
-  void updateSort(TSort<MODEL> sort) => _list.updateSort(sort: sort);
-  void updateFilters(List<TFilter<MODEL>> filters) => _list.updateFilters(
+  void updateSort(TSortOption<MODEL> sort) => _list.updateSort(sort: sort);
+  void updateFilters(Set<TFilterInput> filters) => _list.updateFilters(
     filters: filters,
     models: docs,
   );

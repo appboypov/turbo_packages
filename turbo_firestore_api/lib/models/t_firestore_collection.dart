@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:turbo_firestore_api/models/t_filter_input.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
@@ -88,8 +89,8 @@ class TFirestoreCollection<DTO extends TWriteableId> {
     TCollectionValueBuilderDef<DTO, MODEL>? defaultValue,
     IFirestoreCacheService? firestoreCacheService,
     bool initialiseStream = true,
-    TSort<MODEL>? initialSort,
-    List<TFilter<MODEL>>? initialFilters,
+    TSortOption? initialSort,
+    Set<TFilterInput>? initialFilters,
     List<Future> Function(User user)? readyDeps,
   }) => TCollectionService<DTO, MODEL>(
     initialFilters: initialFilters,

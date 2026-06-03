@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Type;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:turbo_firestore_api/models/t_filter_input.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
@@ -99,10 +100,10 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   final TCollectionValueBuilderDef<DTO, MODEL>? defaultValue;
 
   /// Initial sort of the list inside model docs.
-  final TSort<MODEL>? initialSort;
+  final TSortOption? initialSort;
 
   /// Initial filter of the list inside model docs.
-  final List<TFilter<MODEL>>? initialFilters;
+  final Set<TFilterInput>? initialFilters;
 
   /// List of dependencies to wait for before anything else.
   final List<Future> Function(User user)? readyDeps;
