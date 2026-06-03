@@ -23,7 +23,8 @@ import 'package:turbolytics/turbolytics.dart';
 ///
 /// Type Parameters:
 /// - [DTO] - The document type, must extend [TWriteableId]
-class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends TAuthSyncService<DTO>
+class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
+    extends TAuthSyncService<DTO>
     with Turbolytics {
   /// Creates a new [TDocService] instance.
   ///
@@ -121,7 +122,8 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   @override
   Stream<DTO?> Function(User user) get stream =>
       (user) =>
-          streamBuilder?.call(user, api, this) ?? api.streamByDocIdWithConverter(id: user.uid);
+          streamBuilder?.call(user, api, this) ??
+          api.streamByDocIdWithConverter(id: user.uid);
 
   /// Handles incoming data updates from Firestore.
   ///
@@ -148,12 +150,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
             doc: (current, _) => value,
           );
         } else {
-          if (_doc.value.dto.isDefault && onMissingRemoteValue != null) {
-            await createDoc(
-              doc: (vars) => onMissingRemoteValue!(vars, collection, this),
-            );
-          }
-          _doc.update(defaultDoc());
+          await handleMissingRemoteValue();
         }
         _isReady.completeIfNotComplete();
         log.debug('Updated doc');
@@ -249,7 +246,8 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   // 🏗️ HELPERS ------------------------------------------------------------------------------- \\
 
   @protected
-  DTO initialDto() => initialValue?.call(vars(), collection, this) ?? defaultDto();
+  DTO initialDto() =>
+      initialValue?.call(vars(), collection, this) ?? defaultDto();
 
   @protected
   MODEL initialDoc() => modelBuilder(this, null, initialDto());
@@ -259,6 +257,18 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
 
   @protected
   MODEL defaultDoc() => modelBuilder(this, null, defaultDto());
+
+  @protected
+  Future<void> handleMissingRemoteValue() async {
+    if (_doc.value.dto.isDefault && onMissingRemoteValue != null) {
+      await createDoc(
+        id: userId,
+        doc: (vars) => onMissingRemoteValue!(vars, collection, this),
+      );
+    } else {
+      _doc.update(defaultDoc());
+    }
+  }
 
   // ⚙️ LOCAL MUTATORS ------------------------------------------------------------------------ \\
 
@@ -310,10 +320,11 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   /// - [doNotifyListeners] - Whether to notify listeners of the change
   @protected
   DTO createLocalDoc({
+    String? id,
     required CreateDocDef<DTO, MODEL> doc,
     bool doNotifyListeners = true,
   }) {
-    final pDoc = doc(vars());
+    final pDoc = doc(vars(id: id));
     log.debug('Creating local doc with id: ${pDoc.id}');
     if (doNotifyListeners) {
       beforeLocalNotifyUpdate?.call(pDoc);
@@ -473,7 +484,8 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
         doc: doc,
         doNotifyListeners: doNotifyListeners,
       );
-      final TWriteable newWriteable = remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable;
+      final TWriteable newWriteable =
+          remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteable;
       final TWriteable previousForRemote = remoteUpdateRequestBuilder != null
           ? remoteUpdateRequestBuilder(previousDto)
           : previousDto as TWriteable;
@@ -515,18 +527,21 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
   @protected
   Future<TurboResponse<DTO>> createDoc({
     Transaction? transaction,
+    String? id,
     required CreateDocDef<DTO, MODEL> doc,
     bool doNotifyListeners = true,
   }) async {
     try {
       final pDoc = createLocalDoc(
+        id: id,
         doc: doc,
         doNotifyListeners: doNotifyListeners,
       );
-      log.debug('Creating doc with id: ${pDoc.id}');
+      final docId = id ?? pDoc.id;
+      log.debug('Creating doc with id: $docId');
       final future = api.createDoc(
         writeable: pDoc,
-        id: pDoc.id,
+        id: docId,
         transaction: transaction,
       );
       final turboResponse = await future;
@@ -579,7 +594,8 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>> extends T
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TWriteableId,
         id: id,
         transaction: transaction,
         merge: true,

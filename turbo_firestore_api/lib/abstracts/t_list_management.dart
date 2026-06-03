@@ -30,9 +30,11 @@ mixin TListManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
 
   void updateSort(TSort<MODEL> sort) {
     _activeSort.update(sort);
+    docsNotifier.updateCurrent((docs) => docs..updateSort(sort));
   }
 
   void updateFilters(List<TFilter<MODEL>> filters) {
     _activeFilters.update(filters);
+    docsNotifier.updateCurrent((docs) => docs..updateFilters(filters));
   }
 }

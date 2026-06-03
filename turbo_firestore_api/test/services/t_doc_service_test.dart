@@ -7,6 +7,7 @@ import 'package:turbo_firestore_api/abstracts/t_model.dart';
 import 'package:turbo_firestore_api/apis/t_firestore_api.dart';
 import 'package:turbo_firestore_api/enums/t_timestamp_type.dart';
 import 'package:turbo_firestore_api/models/t_firestore_collection.dart';
+import 'package:turbo_firestore_api/models/t_vars.dart';
 import 'package:turbo_firestore_api/services/t_doc_service.dart';
 import 'package:turbo_response/turbo_response.dart';
 import 'package:turbo_serializable/abstracts/t_writeable.dart';
@@ -36,8 +37,8 @@ class _WrappedWriteable extends TWriteable {
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'wrapped': _inner.toJson(),
-      };
+    'wrapped': _inner.toJson(),
+  };
 }
 
 class _TestModel extends TModel<_TestDto> {
@@ -55,7 +56,28 @@ class _RecordingFirestoreApi extends TFirestoreApi<_TestDto> {
   TWriteable? recordedWriteable;
   TWriteable? recordedPreviousWriteable;
   bool didRecordCall = false;
+  int createCallCount = 0;
   int updateCallCount = 0;
+  final createdIds = <String>[];
+  final createdDocs = <_TestDto>[];
+
+  @override
+  Future<TurboResponse<DocumentReference>> createDoc({
+    required TWriteable writeable,
+    String? id,
+    WriteBatch? writeBatch,
+    TTimestampType createTimeStampType = TTimestampType.createdAtAndUpdatedAt,
+    TTimestampType updateTimeStampType = TTimestampType.updatedAt,
+    bool merge = false,
+    List<FieldPath>? mergeFields,
+    String? collectionPathOverride,
+    Transaction? transaction,
+  }) async {
+    createCallCount++;
+    createdIds.add(id!);
+    createdDocs.add(writeable as _TestDto);
+    return TurboResponse.success(result: getDocRefById(id: id));
+  }
 
   @override
   Future<TurboResponse<DocumentReference>> updateDoc({
@@ -84,8 +106,15 @@ class _TestableDocService extends TDocService<_TestDto, _TestModel> {
     required super.modelBuilder,
     required super.apiBuilder,
     super.initialValue,
+    super.onMissingRemoteValue,
+    this.testUserId,
     required TFirestoreCollection<_TestDto> collection,
   }) : super(collection: collection, initialiseStream: false);
+
+  final String? testUserId;
+
+  @override
+  String? get userId => testUserId ?? super.userId;
 
   Future<TurboResponse<_TestDto>> publicUpdateDoc({
     required String id,
@@ -98,26 +127,47 @@ class _TestableDocService extends TDocService<_TestDto, _TestModel> {
       remoteUpdateRequestBuilder: remoteUpdateRequestBuilder,
     );
   }
+
+  Future<void> publicHandleMissingRemoteValue() => handleMissingRemoteValue();
+
+  Future<TurboResponse<_TestDto>> publicCreateDoc({
+    required String id,
+    required _TestDto Function(TVars vars) doc,
+  }) {
+    return createDoc(id: id, doc: doc);
+  }
 }
 
-TFirestoreCollection<_TestDto> _buildCollection() => TFirestoreCollection<_TestDto>(
+TFirestoreCollection<_TestDto> _buildCollection() =>
+    TFirestoreCollection<_TestDto>(
       apiName: 'test',
       collectionName: 'tests',
-      fromJson: (json) =>
-          _TestDto(id: json['id'] as String, values: Map<String, dynamic>.from(json)),
+      fromJson: (json) => _TestDto(
+        id: json['id'] as String,
+        values: Map<String, dynamic>.from(json),
+      ),
       toJson: (dto) => dto.toJson(),
     );
 
 _TestableDocService _buildService({
   required _RecordingFirestoreApi recordingApi,
   _TestDto? initialDto,
+  bool createMissingRemoteValue = false,
+  String? userId,
 }) {
   final collection = _buildCollection();
   return _TestableDocService(
     collection: collection,
+    testUserId: userId,
     apiBuilder: (_, __, ___, ____) => recordingApi,
     defaultValue: (vars, _, __) =>
         _TestDto(id: vars.defaultIdValue, values: const <String, dynamic>{}),
+    onMissingRemoteValue: createMissingRemoteValue
+        ? (vars, _, __) => _TestDto(
+            id: vars.userId!,
+            values: <String, dynamic>{'id': vars.userId},
+          )
+        : null,
     initialValue: initialDto == null ? null : (_, __, ___) => initialDto,
     modelBuilder: (_, __, dto) => _TestModel(dto: dto),
   );
@@ -134,6 +184,49 @@ void main() {
     recordingApi = _RecordingFirestoreApi(
       firebaseFirestore: firestore,
       collectionPath: () => 'tests',
+    );
+  });
+
+  group('TDocService.onData', () {
+    test(
+      'Given createDoc is called with an explicit id, when the builder reads vars.id, then the local and remote document use that id',
+      () async {
+        final service = _buildService(recordingApi: recordingApi);
+
+        final response = await service.publicCreateDoc(
+          id: 'user-1',
+          doc: (vars) => _TestDto(
+            id: vars.id,
+            values: <String, dynamic>{'id': vars.id},
+          ),
+        );
+
+        expect(response.isSuccess, isTrue);
+        expect(recordingApi.createCallCount, 1);
+        expect(recordingApi.createdIds, ['user-1']);
+        expect(recordingApi.createdDocs.single.id, 'user-1');
+        expect(service.doc.value.id, 'user-1');
+
+        await service.dispose();
+      },
+    );
+
+    test(
+      'Given no remote document exists and a remote default builder is registered, when data arrives, then the local document stays addressed by the user id',
+      () async {
+        final service = _buildService(
+          recordingApi: recordingApi,
+          createMissingRemoteValue: true,
+          userId: 'user-1',
+        );
+
+        await service.publicHandleMissingRemoteValue();
+
+        expect(service.id, 'user-1');
+        expect(service.doc.value.id, 'user-1');
+
+        await service.dispose();
+      },
     );
   });
 
@@ -231,7 +324,10 @@ void main() {
 
         expect(response.isSuccess, isTrue);
         expect(recordingApi.updateCallCount, 1);
-        expect(recordingApi.recordedPreviousWriteable, isA<_WrappedWriteable>());
+        expect(
+          recordingApi.recordedPreviousWriteable,
+          isA<_WrappedWriteable>(),
+        );
         expect(
           recordingApi.recordedPreviousWriteable!.toJson(),
           <String, dynamic>{
