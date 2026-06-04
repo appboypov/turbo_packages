@@ -95,8 +95,7 @@ Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the deve
 
 Thanks to everyone who has contributed to these packages:
 
-- [@appboypov](https://github.com/appboypov) — maintainer
-- [@LahaLuhem](https://github.com/LahaLuhem)
+<a href="https://github.com/LahaLuhem"><img src="https://github.com/LahaLuhem.png" width="64" height="64" alt="@LahaLuhem" /></a>
 
 ## License
 

@@ -209,7 +209,8 @@ class Article extends TSerializable {
 
 Thanks to everyone who has contributed to this package:
 
-- [@appboypov](https://github.com/appboypov) — maintainer
+<a href="https://github.com/LahaLuhem"><img src="https://github.com/LahaLuhem.png" width="64" height="64" alt="@LahaLuhem" /></a>
+
 - [@LahaLuhem](https://github.com/LahaLuhem) — const constructors for `TWriteableId` and `TWriteableCustomId` ([#31](https://github.com/appboypov/turbo_packages/pull/31))
 
 ## License
