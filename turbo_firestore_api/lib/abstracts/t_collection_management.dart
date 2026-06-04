@@ -49,6 +49,6 @@ mixin TCollectionManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
     } else {
       activeFilters.add(filter);
     }
-    _activeFilters.update(activeFilters);
+    updateFilters(activeFilters);
   }
 }

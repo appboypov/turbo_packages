@@ -51,7 +51,7 @@ class TList<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   }
 
   Iterable<MODEL> _filtered(Iterable<MODEL> models) => models.where(
-    (model) => _filters!.every(
+    (model) => _filters!.any(
       (filter) => filter.isMatch(
         model,
       ),
@@ -61,7 +61,7 @@ class TList<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   // 🪄 MUTATORS ------------------------------------------------------------------------------ \\
 
   void add(MODEL model) {
-    if (_filters?.every(
+    if (_filters?.any(
           (filter) => filter.isMatch(
             model,
           ),

@@ -14,4 +14,12 @@ class TFilterInput<MODEL, OPTION extends TFilterOption<MODEL>, INPUT> {
     required this.option,
     required this.input,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TFilterInput && other.option == option && other.input == input;
+
+  @override
+  int get hashCode => Object.hash(option, input);
 }
