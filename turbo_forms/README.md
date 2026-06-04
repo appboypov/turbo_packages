@@ -7,7 +7,7 @@ Type-safe form field configuration and validation for Flutter with ShadCN UI int
 - **TFormFieldConfig**: Reactive form field configuration with built-in validation
 - **TFormFieldState**: Immutable state management for form fields
 - **TFieldType**: Comprehensive enum for all supported field types
-- **TFormConfig**: Abstract class for building type-safe form configurations
+- **TFormConfig**: Abstract class for building type-safe form configurations, generic over a `DTO` with built-in lifecycle management (`initialise`, `updateDto`, `updateCurrentDto`)
 - **Widgets**: Pre-built form field widgets with animation support
 
 ## Installation

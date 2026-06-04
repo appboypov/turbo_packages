@@ -32,7 +32,7 @@ abstract class TFormConfig<DTO> {
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  DTO get dto => _dto!;
+  DTO get dto => _dto as DTO;
 
   /// Map of enum identifiers to their form field configurations.
   @protected
@@ -60,6 +60,6 @@ abstract class TFormConfig<DTO> {
   }
 
   void updateCurrentDto(DTO Function(DTO dto) update) {
-    _dto = update(_dto!);
+    _dto = update(_dto as DTO);
   }
 }

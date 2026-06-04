@@ -4,11 +4,11 @@ Object-Oriented Prompting framework for the turbo ecosystem. Define AI agent pro
 
 ## Features
 
-- Type-safe workspace models: `Role`, `Persona`, `Workflow`, `Step`, `Activity`, `Instruction`, `Input`, `Output`, `Goal`, `Issue`, `Context`, `Template`, `Tool`, and more
-- Spec models: `Ability`, `Feature`, `Requirement`, `Scenario`, `Journey`, `Task`, `Module`, `Mockup`, `Prototype`
-- Tool models: `Api`, `Cli`, `Script`, `Mcp`, together with `ToolCommand`, `ToolParameter`, and `ToolParameterOption` for declarative command schemas
-- Spawnable abstraction (`TSpawnable`) with CLI tool and prompt-delivery enums for launching agents against Claude Code, Cursor, Windsurf, and others
-- Cross-referencing abstracts (`OfAbilities`, `OfFeatures`, `OfIssues`, `OfJourneys`, `OfMockups`, `OfModules`, `OfPrds`, `OfProjects`, `OfPrototypes`, `OfScenarios`) for composing specs
+- Type-safe workspace models: `TRole`, `TPersona`, `TWorkflow`, `TStep`, `TInstruction`, `TInput`, `TOutput`, `TGoal`, `TEndGoal`, `TIssue`, `TContext`, `TTemplate`, `TTool`, and more
+- Spec models: `TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TTask`, `TModule`, `TMockup`, `TPrototype`
+- Tool models: `TApi`, `TCli`, `TScript`, `TMcp`, and `TToolSet`, each carrying a list of `TToolAbility`
+- Spawnable abstraction (`TSpawnable`, extended by `TAgent`) carrying `id`, `allowedTools`, `yolo`, `model`, and `headless`, with a `spawn` method that builds a launch command via a `TCliTool` for tools like Claude Code, Cursor, Windsurf, and custom CLIs
+- Cross-referencing abstracts (`TOfAbilities`, `TOfFeatures`, `TOfIssues`, `TOfJourneys`, `TOfMockups`, `TOfModules`, `TOfPrds`, `TOfProjects`, `TOfPrototypes`, `TOfScenarios`) for composing specs
 - JSON serialization on every model via `json_serializable`; YAML, Markdown, and XML output inherited from [`turbo_serializable`](https://pub.dev/packages/turbo_serializable)
 - Structured metadata (`TMetaData`) on every promptable
 
@@ -16,7 +16,7 @@ Object-Oriented Prompting framework for the turbo ecosystem. Define AI agent pro
 
 ```yaml
 dependencies:
-  turbo_promptable: ^0.4.0
+  turbo_promptable: ^0.6.0
 ```
 
 ## Usage
@@ -24,14 +24,18 @@ dependencies:
 ```dart
 import 'package:turbo_promptable/turbo_promptable.dart';
 
-const workflow = Workflow(
+const workflow = TWorkflow(
   name: 'Review Workflow',
+  endGoal: TEndGoal(
+    'A reviewed, higher-quality codebase',
+    name: 'Quality Review',
+  ),
   steps: [
-    Step(
+    TStep(
       name: 'Analyse',
-      input: Input(name: 'Source Code'),
+      input: TInput(name: 'Source Code'),
       instructions: 'Analyse the provided source code for quality issues.',
-      output: Output(
+      output: TOutput(
         name: 'Analysis Report',
         schema: 'markdown',
       ),
@@ -39,20 +43,16 @@ const workflow = Workflow(
   ],
 );
 
-const role = Role(
+const persona = TPersona(
   name: 'Code Reviewer',
   expertise: 'Static analysis and code quality',
-  workflows: [workflow],
-);
-
-const persona = Persona(
-  name: 'Code Reviewer',
-  expertise: 'Static analysis and code quality',
-  workflows: [workflow],
   identity: 'A meticulous reviewer focused on maintainability.',
 );
 
-print(persona.toJson());
+void main() {
+  print(workflow.toJson());
+  print(persona.toJson());
+}
 ```
 
 ## Core Concepts
@@ -66,24 +66,24 @@ Every workspace model extends `TPromptable`, which itself extends `TSerializable
 
 ### Roles and Personas
 
-- `Role` — a spawnable capability bundle with expertise, activities, checklists, instructions, templates, tools, and workflows
-- `Persona` — a `Role` augmented with an `identity` string that describes the persona's character; construct via `Persona(...)` or `Persona.fromRole(role: ..., identity: ...)`
+- `TRole` — a capability bundle with required `expertise`, plus optional `instructions` and `tools`
+- `TPersona` — a `TRole` augmented with an `identity` string that describes the persona's character; construct via `TPersona(...)` or `TPersona.fromRole(role: ..., identity: ...)`
 
 ### Workflows and Steps
 
-A `Workflow` contains an ordered list of `Step`s. Each `Step` has a required `Input`, a string `instructions` field, and a required `Output`.
+A `TWorkflow` contains an ordered list of `TStep`s and a required `TEndGoal`. Each `TStep` has a required `TInput`, a string `instructions` field, and a required `TOutput`.
 
 ### Specs
 
-Spec models (`Ability`, `Feature`, `Requirement`, `Scenario`, `Journey`, `Task`, `Module`, `Mockup`, `Prototype`) describe intended behaviour and deliverables. They cross-reference each other via the `Of*` abstracts exported from `workspace/abstracts/`.
+Spec models (`TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TTask`, `TModule`, `TMockup`, `TPrototype`) describe intended behaviour and deliverables. They cross-reference each other via the `TOf*` abstracts exported from `workspace/abstracts/`.
 
 ### Tools
 
-Tool subclasses (`Api`, `Cli`, `Script`, `Mcp`) extend the shared `Tool` base, which carries a list of `ToolCommand`s. Each command declares its parameters via `ToolParameter`, and parameters can enumerate discrete `ToolParameterOption`s.
+Tool subclasses (`TApi`, `TCli`, `TScript`, `TMcp`) extend the shared `TTool` base, which carries a list of `TToolAbility`s. `TTool.asToolSet(...)` converts a tool into a `TToolSet`.
 
 ### Spawnable
 
-`TSpawnable` (used by `Role` and `Persona`) carries `cliTool` (`TCliTool`), `command`, and `promptDelivery` (`TPromptDelivery`) for orchestrating agent launches across tools like Claude Code, Cursor, Windsurf, and custom CLIs.
+`TSpawnable` (extended by `TAgent`) carries `id`, `allowedTools`, `yolo`, `model`, and `headless`, and exposes a `spawn` method that builds a launch command via a `TCliTool` for orchestrating agent launches across tools like Claude Code, Cursor, Windsurf, and custom CLIs.
 
 ## License
 

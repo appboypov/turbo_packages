@@ -84,13 +84,14 @@ void main() {
 | Member | Type | Description |
 |---|---|---|
 | `toJson()` | `Map<String, dynamic>` | Serialize to JSON map (required override) |
-| `toYaml()` | `String` | Serialize via `yamlBuilder`. Throws `UnimplementedError` if null. |
-| `toMarkdown()` | `String` | Serialize via `markdownBuilder`. Throws `UnimplementedError` if null. |
-| `toXml()` | `String` | Serialize via `xmlBuilder`. Throws `UnimplementedError` if null. |
-| `id` | `dynamic` | Unique identifier (required override) |
-| `yamlBuilder` | `String Function(Map<String, dynamic>)?` | Optional YAML builder getter |
-| `markdownBuilder` | `String Function(Map<String, dynamic>)?` | Optional Markdown builder getter |
-| `xmlBuilder` | `String Function(Map<String, dynamic>)?` | Optional XML builder getter |
+| `toYaml()` | `String` | Serialize via `yamlBuilder`, falling back to map-based YAML when null |
+| `toMd()` | `String` | Serialize via `mdFactory`, falling back to map-based Markdown when null |
+| `toXml()` | `String` | Serialize via `xmlBuilder`, falling back to map-based XML when null |
+| `id` | `String` | Unique identifier (required override) |
+| `isDefault` | `bool` | True when `id` equals `TSDefaults.defaultIdValue` |
+| `yamlBuilder` | `String Function(TWriteableId, bool)?` | Optional YAML builder field |
+| `mdFactory` | `TMdFactory?` | Optional Markdown factory field |
+| `xmlBuilder` | `String Function(TWriteableId, bool)?` | Optional XML builder field |
 
 ### Format Factories
 
@@ -193,9 +194,9 @@ class Article extends TSerializable {
 
 ## Error Handling
 
-- `toYaml()` and `toXml()` throw `UnimplementedError` if the corresponding builder is `null`
+- `toYaml()` and `toXml()` on `TSerializable` throw `UnimplementedError` if the corresponding builder is `null`
 - `toMarkdown()` on `TSerializable` returns an empty string if `mdFactory` is `null`
-- `toMarkdown()` on `TSerializableId` throws `UnimplementedError` if `markdownBuilder` is `null`
+- `toYaml()`, `toMd()`, and `toXml()` on `TSerializableId` fall back to map-based serialization when the corresponding builder is `null`
 - `validate()` returns `null` if valid, or `TurboResponse.fail` if invalid
 
 ## Additional Information
