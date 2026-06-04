@@ -3,6 +3,7 @@ library;
 /// Abstracts
 export 'abstracts/i_firestore_cache_service.dart';
 export 'abstracts/t_collection_management.dart';
+export 'abstracts/t_filter_option.dart';
 export 'abstracts/t_model.dart';
 export 'abstracts/t_sort_option.dart';
 
@@ -38,15 +39,14 @@ export 'factories/t_api_factory.dart';
 
 /// Generators
 export 'generators/t_dummy_schema.dart';
-export 'generators/t_value_generator_registry.dart';
 export 'generators/t_value_generator.dart';
+export 'generators/t_value_generator_registry.dart';
 export 'generators/t_value_specs.dart';
 
 /// Mixins
 export 'mixins/t_exception_handler.dart';
 
 /// Models
-export 'abstracts/t_filter_option.dart';
 export 'models/t_firestore_collection.dart';
 export 'models/t_firestore_page.dart';
 export 'models/t_list.dart';

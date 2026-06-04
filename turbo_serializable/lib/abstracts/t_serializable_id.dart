@@ -35,12 +35,12 @@ abstract class TSerializableId extends TWriteableId {
     KeyValueBuilderDef? listItemBuilder,
   }) =>
       yamlBuilder?.call(this, true) ??
-          ((writeable) => toJson().toYaml(
-            includeMetaData: includeMetaData,
-            metaDataKey: metaDataKey,
-            keyBuilder: keyBuilder,
-            listItemBuilder: listItemBuilder,
-          ))(this);
+      ((writeable) => toJson().toYaml(
+        includeMetaData: includeMetaData,
+        metaDataKey: metaDataKey,
+        keyBuilder: keyBuilder,
+        listItemBuilder: listItemBuilder,
+      ))(this);
 
   /// Returns a function that builds a YAML string from a JSON map.
   ///
@@ -103,12 +103,12 @@ abstract class TSerializableId extends TWriteableId {
     String metaDataKey = TSDefaults.metaDataKey,
   }) =>
       xmlBuilder?.call(this, includeMetaData) ??
-          ((writeable) => toJson().toXml(
-            includeMetaData: includeMetaData,
-            metaDataKey: metaDataKey,
-            keyBuilder: keyBuilder,
-            listItemBuilder: listItemBuilder,
-          ))(this);
+      ((writeable) => toJson().toXml(
+        includeMetaData: includeMetaData,
+        metaDataKey: metaDataKey,
+        keyBuilder: keyBuilder,
+        listItemBuilder: listItemBuilder,
+      ))(this);
 
   /// Returns a function that builds an XML string from a JSON map.
   ///

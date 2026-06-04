@@ -61,11 +61,10 @@ class _RecordingDocumentReference
   Stream<DocumentSnapshot<Map<String, dynamic>>> snapshots({
     bool includeMetadataChanges = false,
     ListenSource source = ListenSource.defaultSource,
-  }) =>
-      _inner.snapshots(
-        includeMetadataChanges: includeMetadataChanges,
-        source: source,
-      );
+  }) => _inner.snapshots(
+    includeMetadataChanges: includeMetadataChanges,
+    source: source,
+  );
 
   @override
   Future<void> set(Map<String, dynamic> data, [SetOptions? options]) =>
@@ -75,11 +74,10 @@ class _RecordingDocumentReference
   DocumentReference<R> withConverter<R>({
     required FromFirestore<R> fromFirestore,
     required ToFirestore<R> toFirestore,
-  }) =>
-      _inner.withConverter<R>(
-        fromFirestore: fromFirestore,
-        toFirestore: toFirestore,
-      );
+  }) => _inner.withConverter<R>(
+    fromFirestore: fromFirestore,
+    toFirestore: toFirestore,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -164,7 +162,11 @@ void main() {
       'when updateDoc is called with previousWriteable, '
       'then the captured update receives only the changed key plus updatedAt',
       () async {
-        final previous = _MapWriteable(<String, dynamic>{'a': 1, 'b': 2, 'c': 3});
+        final previous = _MapWriteable(<String, dynamic>{
+          'a': 1,
+          'b': 2,
+          'c': 3,
+        });
         final next = _MapWriteable(<String, dynamic>{'a': 1, 'b': 2, 'c': 99});
 
         final response = await api.updateDoc(

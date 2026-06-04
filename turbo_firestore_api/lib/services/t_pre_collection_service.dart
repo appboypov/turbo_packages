@@ -11,7 +11,10 @@ import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 ///
 /// Type Parameters:
 /// - [DTO] - The document type, must extend [TWriteableId]
-abstract class TPreCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
+abstract class TPreCollectionService<
+  DTO extends TWriteableId,
+  MODEL extends TModel<DTO>
+>
     extends TCollectionService<DTO, MODEL> {
   /// Creates a new [TPreCollectionService] instance.
   TPreCollectionService({

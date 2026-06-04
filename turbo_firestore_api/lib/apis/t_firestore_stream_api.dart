@@ -65,14 +65,13 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
       ),
     );
     return listCollectionReference().snapshots().handleError(
-      (Object error, StackTrace stackTrace) =>
-          _logAndThrowStreamFirestoreError(
-            error: error,
-            stackTrace: stackTrace,
-            message: 'Error streaming collection',
-            path: path,
-            fullPath: path,
-          ),
+      (Object error, StackTrace stackTrace) => _logAndThrowStreamFirestoreError(
+        error: error,
+        stackTrace: stackTrace,
+        message: 'Error streaming collection',
+        path: path,
+        fullPath: path,
+      ),
     );
   }
 
@@ -124,8 +123,7 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
               _logAndThrowStreamFirestoreError(
                 error: error,
                 stackTrace: stackTrace,
-                message:
-                    'Error streaming collection with converter',
+                message: 'Error streaming collection with converter',
                 path: path,
                 fullPath: path,
               ),
@@ -262,8 +260,7 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
               _logAndThrowStreamFirestoreError(
                 error: error,
                 stackTrace: stackTrace,
-                message:
-                    'Error streaming collection by query with converter',
+                message: 'Error streaming collection by query with converter',
                 path: path,
                 query: whereDescription,
                 whereDescription: whereDescription,
@@ -323,15 +320,14 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
     );
     final fullPath = _buildFullPath(path, id);
     return docRef.snapshots().handleError(
-      (Object error, StackTrace stackTrace) =>
-          _logAndThrowStreamFirestoreError(
-            error: error,
-            stackTrace: stackTrace,
-            message: 'Error streaming document',
-            path: path,
-            id: id,
-            fullPath: fullPath,
-          ),
+      (Object error, StackTrace stackTrace) => _logAndThrowStreamFirestoreError(
+        error: error,
+        stackTrace: stackTrace,
+        message: 'Error streaming document',
+        path: path,
+        id: id,
+        fullPath: fullPath,
+      ),
     );
   }
 
@@ -390,7 +386,10 @@ mixin TurboFirestoreStreamApi<DTO> on _TFirestoreApiBase<DTO> {
       ),
     );
     final fullPath = _buildFullPath(path, id);
-    return docRefWithConverter.snapshots().map((e) => e.data()).handleError(
+    return docRefWithConverter
+        .snapshots()
+        .map((e) => e.data())
+        .handleError(
           (Object error, StackTrace stackTrace) =>
               _logAndThrowStreamFirestoreError(
                 error: error,

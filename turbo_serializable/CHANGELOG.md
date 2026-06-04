@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-06-04
+
+### Added
+- `isDefault` getter on `TSerializableId` (overrides `TWriteableId.isDefault`, true when `id` equals `TSDefaults.defaultIdValue`)
+
+### Changed
+- **BREAKING**: `TSerializableId` now extends `TWriteableId` instead of `TWriteableCustomId`
+- **BREAKING**: `TSerializableId` gained a constructor accepting optional `yamlBuilder`, `mdFactory`, and `xmlBuilder`; these are now `final` fields instead of abstract getters
+- **BREAKING**: Renamed `toMarkdown()` to `toMd()`; the method now accepts named formatting parameters (`mdFactory`, `includeMetaData`, `headingLevel`, title/list-item builders, and key overrides)
+- **BREAKING**: `toYaml()`, `toMd()`, and `toXml()` no longer throw `UnimplementedError` when no builder is supplied — they fall back to map-based serialization via the corresponding `toJson()` extension
+- **BREAKING**: `yamlBuilder` and `xmlBuilder` signatures changed from `String Function(Map<String, dynamic> json)` to `String Function(TWriteableId writeable, bool includeMetaData)`; the `markdownBuilder` getter is replaced by the `mdFactory` field
+
 ## [0.5.1] - 2026-05-03
 
 ### Added

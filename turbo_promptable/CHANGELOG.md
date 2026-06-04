@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-06-04
+
+### Changed
+- **BREAKING**: Renamed every public model class to a `T`-prefixed name and renamed the corresponding source files (e.g. `Agent` → `TAgent`, `Project` → `TProject`, `EndGoal` → `TEndGoal`, `Requirement` → `TRequirement`, `Tool`/`Api`/`Cli`/`Mcp`/`Script`/`ToolSet` → `TTool`/`TApi`/`TCli`/`TMcp`/`TScript`/`TToolSet`, `Step` → `TStep`). Consumers must update all type references and any deep imports
+- **BREAKING**: Renamed the capability mixin interfaces from `Of*` to `TOf*` (e.g. `OfProjects` → `TOfProjects`, `OfAbilities` → `TOfAbilities`)
+
+### Removed
+- **BREAKING**: Removed unused models and their generated JSON serialization files
+
 ## [0.5.0] - 2026-05-03
 
 ### Added

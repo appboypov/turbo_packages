@@ -142,7 +142,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
 
   @override
   Stream<List<DTO>> Function(User user) get stream =>
-      (user) => streamBuilder?.call(user, api, this) ?? api.streamAllWithConverter();
+      (user) =>
+          streamBuilder?.call(user, api, this) ?? api.streamAllWithConverter();
 
   /// Handles data updates from the Firestore stream.
   ///
@@ -238,7 +239,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\
 
-  List<MODEL> listByIds(Iterable<String> ids) => docsNotifier.value.listByIds(ids);
+  List<MODEL> listByIds(Iterable<String> ids) =>
+      docsNotifier.value.listByIds(ids);
 
   /// Returns a new instance of [V] with basic variables filled in.
   V vars<V extends TVars>({String? id}) =>
@@ -314,7 +316,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   List<DTO>? initialValues() => initialValue?.call(vars(), collection, this);
 
   @protected
-  List<DTO> defaultValues() => defaultValue?.call(vars(), collection, this) ?? [];
+  List<DTO> defaultValues() =>
+      defaultValue?.call(vars(), collection, this) ?? [];
 
   @protected
   List<MODEL> upsertResults({
@@ -582,7 +585,8 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
         doNotifyListeners: doNotifyListeners,
       );
       final future = api.createDoc(
-        writeable: remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable,
+        writeable:
+            remoteUpdateRequestBuilder?.call(pDoc) ?? pDoc as TSerializable,
         id: id,
         transaction: transaction,
         merge: true,

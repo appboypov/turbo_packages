@@ -39,7 +39,8 @@ abstract class TFormConfig<DTO> {
   Map<Enum, TFormFieldConfig> get formFieldConfigs;
 
   /// Retrieves a typed form field configuration by its enum [id].
-  TFormFieldConfig<T> formFieldConfig<T>(Enum id) => formFieldConfigs[id] as TFormFieldConfig<T>;
+  TFormFieldConfig<T> formFieldConfig<T>(Enum id) =>
+      formFieldConfigs[id] as TFormFieldConfig<T>;
 
   /// Whether all enabled and visible form fields pass validation.
   bool get isValid {

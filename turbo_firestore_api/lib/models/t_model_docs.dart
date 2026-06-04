@@ -68,7 +68,8 @@ class TModelDocs<DTO extends TWriteableId, MODEL extends TModel<DTO>> {
   TSortOption? get sort => _list.sort;
   Set<TFilterInput>? get filters => _list.filters;
 
-  Iterable<MODEL> findWhere(bool Function(MODEL model) test) => _idMap.values.where(test);
+  Iterable<MODEL> findWhere(bool Function(MODEL model) test) =>
+      _idMap.values.where(test);
 
   List<MODEL> listByIds(Iterable<String> ids) {
     final models = <MODEL>[];

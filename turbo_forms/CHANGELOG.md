@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+- Generic `DTO` lifecycle management on `TFormConfig<DTO>`: `initialise({required DTO? initialDto})`, `dto` getter, `updateDto(DTO newDto)`, and `updateCurrentDto(DTO Function(DTO dto) update)`
+
+### Changed
+- `TFormConfig` is now generic as `TFormConfig<DTO>`; the type parameter defaults to `dynamic`, so existing `extends TFormConfig` subclasses remain source-compatible
+
 ## 1.0.3
 
 ### Changed

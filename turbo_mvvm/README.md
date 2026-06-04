@@ -1,7 +1,7 @@
 # Turbo MVVM
 
 [![Pub Version](https://img.shields.io/pub/v/turbo_mvvm?logo=dart&label=turbo_mvvm)](https://pub.dev/packages/turbo_mvvm)
-[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Stars](https://img.shields.io/github/stars/appboypov/turbo_packages?style=social)](https://github.com/appboypov/turbo_packages)
 
 A lightweight MVVM state management solution for Flutter, inspired by the [FilledStacks](https://www.filledstacks.com/) [stacked](https://pub.dev/packages/stacked) package. It simplifies managing view logic, state, and lifecycle in your Flutter applications.
@@ -338,4 +338,4 @@ Contributions are welcome! Please open issues or pull requests on the [GitHub re
 
 ## License
 
-This package is licensed under the BSD 3-Clause License. See the [LICENSE](LICENSE) file for details.
+This package is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

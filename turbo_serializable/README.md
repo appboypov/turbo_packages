@@ -18,7 +18,7 @@ A minimal serialization abstraction for the turbo ecosystem with optional multi-
 
 ```yaml
 dependencies:
-  turbo_serializable: ^0.5.0
+  turbo_serializable: ^0.6.0
 ```
 
 ## Quick Start
@@ -64,7 +64,7 @@ void main() {
 | `TWriteableId` | Extends `TWriteable` with a string identifier |
 | `TWriteableCustomId<T>` | Extends `TWriteable` with a typed identifier |
 | `TSerializable` | Extends `TWriteable` with YAML, Markdown, and XML serialization |
-| `TSerializableId` | Extends `TWriteableCustomId` with YAML, Markdown, and XML serialization |
+| `TSerializableId` | Extends `TWriteableId` with YAML, Markdown, and XML serialization |
 
 ### TSerializable
 

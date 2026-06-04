@@ -18,7 +18,10 @@ mixin TCollectionManagement<DTO extends TWriteableId, MODEL extends TModel<DTO>>
   // 🎩 STATE --------------------------------------------------------------------------------- \\
 
   late final _activeSort = TNotifier<TSortOption>(initialSort);
-  late final _activeFilters = TNotifier<Set<TFilterInput>>(initialFilters, forceUpdate: true);
+  late final _activeFilters = TNotifier<Set<TFilterInput>>(
+    initialFilters,
+    forceUpdate: true,
+  );
 
   // 🛠 UTIL ---------------------------------------------------------------------------------- \\
   // 🧲 FETCHERS ------------------------------------------------------------------------------ \\

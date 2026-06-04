@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2026-06-04
+
+### Added
+- `TCollectionManagement` mixin for reactive sorting and filtering of model-wrapped document lists, including filter toggle support
+- `TFilterInput` for binding a filter option to a concrete input value
+
+### Changed
+- **BREAKING**: Replaced the filter and sort API — the former `IFilter`/`TFilter`/`TSort` (and the earlier `TFilterType`/`TSortType`) types are removed in favour of `TFilterOption<MODEL>`, `TFilterInput<MODEL, OPTION, INPUT>`, and `TSortOption<VALUE>`
+- **BREAKING**: Renamed `TSortFilteredList` to `TList`
+- Document updates now send only the changed fields instead of the full document (PKG-32)
+- Streamlined error handling in Firestore streams
+
+### Fixed
+- Corrected filter semantics and equality comparison
+- `id` override now propagates through `createDoc` and `handleMissingRemoteValue`
+
 ## [0.12.0] - 2026-05-03
 
 ### Added
