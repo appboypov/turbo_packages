@@ -61,8 +61,8 @@ void main() {
 | Class | Description |
 |---|---|
 | `TWriteable` | Base class providing `toJson()` and `validate()` |
-| `TWriteableId` | Extends `TWriteable` with a string identifier |
-| `TWriteableCustomId<T>` | Extends `TWriteable` with a typed identifier |
+| `TWriteableId` | Extends `TWriteable` with a string identifier; exposes a `const` constructor for const subclasses |
+| `TWriteableCustomId<T>` | Extends `TWriteable` with a typed identifier; exposes a `const` constructor for const subclasses |
 | `TSerializable` | Extends `TWriteable` with YAML, Markdown, and XML serialization |
 | `TSerializableId` | Extends `TWriteableId` with YAML, Markdown, and XML serialization |
 
@@ -204,6 +204,13 @@ class Article extends TSerializable {
 - [API Documentation](https://pub.dev/documentation/turbo_serializable/latest/)
 - [GitHub Repository](https://github.com/appboypov/turbo_packages/tree/main/turbo_serializable)
 - [Issue Tracker](https://github.com/appboypov/turbo_packages/issues)
+
+## Contributors
+
+Thanks to everyone who has contributed to this package:
+
+- [@appboypov](https://github.com/appboypov) — maintainer
+- [@LahaLuhem](https://github.com/LahaLuhem) — const constructors for `TWriteableId` and `TWriteableCustomId` ([#31](https://github.com/appboypov/turbo_packages/pull/31))
 
 ## License
 

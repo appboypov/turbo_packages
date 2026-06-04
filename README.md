@@ -91,6 +91,13 @@ melos pub-publish-dry-run
 
 Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the development workflow, branch and commit conventions, and the checks a change must pass before merge.
 
+## Contributors
+
+Thanks to everyone who has contributed to these packages:
+
+- [@appboypov](https://github.com/appboypov) — maintainer
+- [@LahaLuhem](https://github.com/LahaLuhem)
+
 ## License
 
 Distributed under the MIT License. See the root [`LICENSE`](./LICENSE) file, or the `LICENSE` file in each package directory, for details.
