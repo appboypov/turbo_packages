@@ -4,7 +4,12 @@ class TFilterInput<MODEL, OPTION extends TFilterOption<MODEL>, INPUT> {
   final OPTION option;
   final INPUT? input;
 
-  bool isMatch(MODEL model) => option.predicate(model, input);
+  // Filters are held in raw `Set<TFilterInput>`, erasing MODEL to `dynamic`.
+  // A statically-typed `(dynamic, dynamic)` call rejects the real
+  // `(MODEL, dynamic)` predicate (contravariance), so dispatch dynamically and
+  // let the runtime bind the actual model instance.
+  bool isMatch(MODEL model) =>
+      (option as dynamic).predicate(model, input) as bool;
 
   const TFilterInput.fromOption({
     required this.option,
