@@ -139,7 +139,7 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
   /// Cleans up resources and resets the service state.
   @mustCallSuper
   Future<void> dispose() async {
-    _log.warning('Disposing TurboAuthSyncService!');
+    _log.debug('Disposing TurboAuthSyncService.');
     await _clearStream();
     _resetRetryTimer();
     _clearTokenCache();
