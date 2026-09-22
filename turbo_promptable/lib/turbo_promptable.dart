@@ -20,6 +20,7 @@ export 'issues/dtos/t_linear_state.dart';
 export 'issues/dtos/t_linear_team.dart';
 export 'issues/dtos/t_linear_user.dart';
 export 'results/dtos/t_result_dto.dart';
+export 'results/models/t_result.dart';
 export 'spawn/enums/t_cli_tool.dart';
 export 'spawn/enums/t_config_source.dart';
 export 'spawn/models/t_file.dart';
