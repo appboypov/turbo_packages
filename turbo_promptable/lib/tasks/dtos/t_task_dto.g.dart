@@ -8,9 +8,7 @@ part of 't_task_dto.dart';
 
 TTaskDto _$TTaskDtoFromJson(Map<String, dynamic> json) => TTaskDto(
   title: json['title'] as String,
-  feedback: json['feedback'] as String,
-  file: json['file'] as String,
-  line: (json['line'] as num).toInt(),
+  description: json['description'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   result: json['result'] == null
       ? null
@@ -19,9 +17,7 @@ TTaskDto _$TTaskDtoFromJson(Map<String, dynamic> json) => TTaskDto(
 
 Map<String, dynamic> _$TTaskDtoToJson(TTaskDto instance) => <String, dynamic>{
   'title': instance.title,
-  'feedback': instance.feedback,
-  'file': instance.file,
-  'line': instance.line,
+  'description': instance.description,
   'createdAt': instance.createdAt.toIso8601String(),
   'result': ?instance.result?.toJson(),
 };

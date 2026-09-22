@@ -3,29 +3,23 @@ import 'package:turbo_promptable/results/dtos/t_result_dto.dart';
 
 part 't_task_dto.g.dart';
 
-/// Local task created from one feedback trigger.
+/// Local unit of work.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class TTaskDto {
   const TTaskDto({
     required this.title,
-    required this.feedback,
-    required this.file,
-    required this.line,
+    required this.description,
     required this.createdAt,
     this.result,
   });
 
-  /// Verb-first summary of the requested work.
+  /// Verb-first summary of the work.
   final String title;
 
-  /// Trigger text as the user wrote it.
-  final String feedback;
+  /// What the work requires.
+  final String description;
 
-  /// Absolute path of the file that held the trigger.
-  final String file;
-
-  /// One-based line of the trigger in [file].
-  final int line;
+  /// When the task was created.
   final DateTime createdAt;
 
   /// Set once the task is finished.
