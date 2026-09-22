@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:turbo_promptable/spawn/enums/t_cli_tool.dart';
 import 'package:turbo_promptable/turbo_promptable.dart';
 
 export 'package:turbo_promptable/workspace/enums/t_body_type.dart';

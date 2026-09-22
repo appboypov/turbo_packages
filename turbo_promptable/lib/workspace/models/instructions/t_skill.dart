@@ -5,7 +5,7 @@ part 't_skill.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class TSkill extends TInstruction {
-  TSkill(
+  const TSkill(
     super.name, {
     super.metaData,
     super.principles,

@@ -1,4 +1,4 @@
-.PHONY: help build clean test format analyze fix watch get
+.PHONY: help build clean test format analyze fix watch get sync-package-config
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -14,6 +14,7 @@ watch: ## Run build_runner in watch mode
 
 clean: ## Clean build artifacts
 	dart pub get
+	@$(MAKE) sync-package-config
 	dart run build_runner clean
 
 test: ## Run tests with coverage
@@ -34,3 +35,7 @@ analyze: ## Run static analysis
 
 get: ## Get dependencies
 	dart pub get
+	@$(MAKE) sync-package-config
+
+sync-package-config: ## Mirror workspace resolution into this package
+	@dart run tool/sync_package_config.dart

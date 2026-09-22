@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:turbo_promptable/workspace/enums/t_body_type.dart';
 import 'package:turbo_promptable/workspace/enums/t_ref_type.dart';
 import 'package:turbo_promptable/workspace/models/meta/t_meta_data.dart';
@@ -7,6 +8,7 @@ import 'package:turbo_serializable/turbo_serializable.dart';
 export 'package:turbo_promptable/workspace/enums/t_body_type.dart';
 export 'package:turbo_promptable/workspace/models/meta/t_meta_data.dart';
 
+@immutable
 abstract class TPromptable extends TSerializable {
   const TPromptable({
     required this.name,
