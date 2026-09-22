@@ -5,7 +5,8 @@ Object-Oriented Prompting framework for the turbo ecosystem. Define AI agent pro
 ## Features
 
 - Type-safe workspace models: `TRole`, `TPersona`, `TWorkflow`, `TStep`, `TInstruction`, `TInput`, `TOutput`, `TGoal`, `TEndGoal`, `TIssue`, `TContext`, `TTemplate`, `TTool`, and more
-- Spec models: `TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TTask`, `TModule`, `TMockup`, `TPrototype`
+- Spec models: `TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TModule`, `TMockup`, `TPrototype`
+- Local tasks: `TTask` backed by `TTaskDto`, with a nullable `TResultDto` once finished
 - Tool models: `TApi`, `TCli`, `TScript`, `TMcp`, and `TToolSet`, each carrying a list of `TToolAbility`
 - Spawnable abstraction (`TSpawnable`, extended by `TAgent`) carrying `id`, `allowedTools`, `yolo`, `model`, and `headless`, with a `spawn` method that builds a launch command via a `TCliTool` for tools like Claude Code, Cursor, Windsurf, and custom CLIs
 - Cross-referencing abstracts (`TOfAbilities`, `TOfFeatures`, `TOfIssues`, `TOfJourneys`, `TOfMockups`, `TOfModules`, `TOfPrds`, `TOfProjects`, `TOfPrototypes`, `TOfScenarios`) for composing specs
@@ -75,7 +76,7 @@ A `TWorkflow` contains an ordered list of `TStep`s and a required `TEndGoal`. Ea
 
 ### Specs
 
-Spec models (`TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TTask`, `TModule`, `TMockup`, `TPrototype`) describe intended behaviour and deliverables. They cross-reference each other via the `TOf*` abstracts exported from `workspace/abstracts/`.
+Spec models (`TAbility`, `TFeature`, `TRequirement`, `TScenario`, `TJourney`, `TModule`, `TMockup`, `TPrototype`) describe intended behaviour and deliverables. They cross-reference each other via the `TOf*` abstracts exported from `workspace/abstracts/`.
 
 ### Tools
 
