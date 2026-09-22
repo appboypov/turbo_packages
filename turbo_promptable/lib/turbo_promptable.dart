@@ -3,6 +3,7 @@
 library turbo_promptable;
 
 export 'core/extensions/t_collection_extensions.dart';
+export 'core/globals/g_now.dart';
 export 'issues/dtos/t_linear_active_cycle.dart';
 export 'issues/dtos/t_linear_attachment.dart';
 export 'issues/dtos/t_linear_comment.dart';

@@ -1,3 +1,4 @@
+import 'package:turbo_promptable/core/globals/g_now.dart';
 import 'package:turbo_promptable/tasks/dtos/t_task_dto.dart';
 
 /// Local unit of work backed by a [TTaskDto].
@@ -10,7 +11,7 @@ class TTask {
         dto: TTaskDto(
           title: title,
           description: description,
-          createdAt: DateTime.now(),
+          createdAt: gNow,
         ),
       );
 
