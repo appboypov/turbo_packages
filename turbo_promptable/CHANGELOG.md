@@ -10,9 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `TTask` local task model with `TTask.create`, backed by `TTaskDto` and a nullable `TResultDto`
 - Linear issue DTOs under `issues/dtos`
+- `TTaskStatus` and `TLinearIssueStatus` with the Linear issue states; `TTaskDto.status` defaults to inbox
+- `@Plxecutable` annotation and `TTask` status helpers such as `toDone()`
+- `TResult` model, `TResultDto.values` and the `gNow` global
 
 ### Removed
 - **BREAKING**: Spec model `TTask`; `TTask` is now the local task model
+- **BREAKING**: `TTaskDto.description` renamed to `body`
 
 ## [0.6.0] - 2026-06-04
 

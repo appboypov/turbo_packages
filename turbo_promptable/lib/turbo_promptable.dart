@@ -2,6 +2,7 @@
 /// workflows, and tools as type-safe Dart objects.
 library turbo_promptable;
 
+export 'core/annotations/plxecutable.dart';
 export 'core/extensions/t_collection_extensions.dart';
 export 'core/globals/g_now.dart';
 export 'issues/dtos/t_linear_active_cycle.dart';
@@ -19,6 +20,7 @@ export 'issues/dtos/t_linear_project_milestone.dart';
 export 'issues/dtos/t_linear_state.dart';
 export 'issues/dtos/t_linear_team.dart';
 export 'issues/dtos/t_linear_user.dart';
+export 'issues/enums/t_linear_issue_status.dart';
 export 'results/dtos/t_result_dto.dart';
 export 'results/models/t_result.dart';
 export 'spawn/enums/t_cli_tool.dart';
@@ -29,6 +31,7 @@ export 'spawn/records/headless_invocation.dart';
 export 'spawn/records/interactive_invocation.dart';
 export 'spawn/records/system_prompt_invocation.dart';
 export 'tasks/dtos/t_task_dto.dart';
+export 'tasks/enums/t_task_status.dart';
 export 'tasks/models/t_task.dart';
 export 'workspace/abstracts/t_of_abilities.dart';
 export 'workspace/abstracts/t_of_features.dart';
