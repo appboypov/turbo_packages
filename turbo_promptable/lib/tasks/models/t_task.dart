@@ -41,13 +41,7 @@ class TTask {
   @Plxecutable()
   TTask toDuplicate() => _to(TTaskStatus.duplicate);
 
-  TTask _to(TTaskStatus status) => TTask(
-    dto: TTaskDto(
-      title: dto.title,
-      body: dto.body,
-      createdAt: dto.createdAt,
-      status: status,
-      result: dto.result,
-    ),
-  );
+  TTask _to(TTaskStatus status) => copyWith(dto: dto.copyWith(status: status));
+
+  TTask copyWith({TTaskDto? dto}) => TTask(dto: dto ?? this.dto);
 }
