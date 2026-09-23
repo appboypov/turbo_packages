@@ -12,11 +12,10 @@ TAgent<IDENTITY> _$TAgentFromJson<IDENTITY extends TRole>(
 ) => TAgent<IDENTITY>(
   json['name'] as String,
   id: json['id'] as String,
-  allowedTools: json['allowedTools'] as String?,
-  yolo: json['yolo'] as bool? ?? true,
-  model: json['model'] as String?,
-  headless: json['headless'] as bool? ?? true,
   identity: fromJsonIDENTITY(json['identity']),
+  spawnConfig: json['spawnConfig'] == null
+      ? null
+      : TSpawnConfigDto.fromJson(json['spawnConfig'] as Map<String, dynamic>),
   workflow: json['workflow'] == null
       ? null
       : TWorkflow.fromJson(json['workflow'] as Map<String, dynamic>),
@@ -28,10 +27,6 @@ Map<String, dynamic> _$TAgentToJson<IDENTITY extends TRole>(
 ) => <String, dynamic>{
   'name': instance.name,
   'id': instance.id,
-  'allowedTools': ?instance.allowedTools,
-  'yolo': instance.yolo,
-  'model': ?instance.model,
-  'headless': instance.headless,
   'identity': toJsonIDENTITY(instance.identity),
   'workflow': ?instance.workflow?.toJson(),
 };

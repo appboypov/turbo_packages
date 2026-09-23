@@ -8,19 +8,25 @@ part 't_agent.g.dart';
   includeIfNull: false,
   genericArgumentFactories: true,
 )
-class TAgent<IDENTITY extends TRole> extends TSpawnable {
+class TAgent<IDENTITY extends TRole> extends TPromptable implements TSpawnable {
   const TAgent(
-    super.name, {
-    required super.id,
-    super.allowedTools,
-    super.yolo = true,
-    super.model,
-    super.headless = true,
+    String name, {
+    required this.id,
     required this.identity,
+    this.spawnConfig,
     this.workflow,
-  });
+  }) : super(name: name);
 
+  @override
+  final String id;
+
+  /// Role of this agent; its prompt is the default system prompt.
   final IDENTITY identity;
+
+  @override
+  @JsonKey(includeToJson: false)
+  final TSpawnConfigDto? spawnConfig;
+
   final TWorkflow? workflow;
 
   factory TAgent.fromJson(
@@ -33,7 +39,4 @@ class TAgent<IDENTITY extends TRole> extends TSpawnable {
     this,
     (IDENTITY identity) => identity.toJson(),
   );
-
-  @override
-  String get systemPrompt => identity.toMd();
 }

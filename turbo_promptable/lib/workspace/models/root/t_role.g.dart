@@ -7,6 +7,7 @@ part of 't_role.dart';
 // **************************************************************************
 
 TRole _$TRoleFromJson(Map<String, dynamic> json) => TRole(
+  id: json['id'] as String,
   name: json['name'] as String,
   metaData: json['metaData'] == null
       ? null
@@ -18,11 +19,15 @@ TRole _$TRoleFromJson(Map<String, dynamic> json) => TRole(
   tools: (json['tools'] as List<dynamic>?)
       ?.map((e) => TTool.fromJson(e as Map<String, dynamic>))
       .toList(),
+  spawnConfig: json['spawnConfig'] == null
+      ? null
+      : TSpawnConfigDto.fromJson(json['spawnConfig'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TRoleToJson(TRole instance) => <String, dynamic>{
   'name': instance.name,
   'metaData': ?instance.metaData?.toJson(),
+  'id': instance.id,
   'instructions': ?instance.instructions?.map((e) => e.toJson()).toList(),
   'tools': ?instance.tools?.map((e) => e.toJson()).toList(),
   'expertise': instance.expertise,

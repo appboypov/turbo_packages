@@ -13,10 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TTaskStatus` and `TLinearIssueStatus` with the Linear issue states; `TTaskDto.status` defaults to inbox
 - `@Plxecutable` annotation and `TTask` status helpers such as `toDone()`
 - `TResult` model, `TResultDto.values` and the `gNow` global
+- Spawn from code: `TSpawnConfigDto` with `overriddenBy`, `tSpawnConfigChain` (role, then agent, then task or issue), `TSpawnSettings`, `TResolvedSpawnDto`, `TAgentBound`, and the `TEffort`, `TSpawnConcept` and `TSessionApp` enums
+- `TCliTool.pi` and per-tool argv fragments with `TCliTool.argv`; `TUnsupportedSpawnSettingException` for a setting a tool cannot express
 
 ### Removed
 - **BREAKING**: Spec model `TTask`; `TTask` is now the local task model
 - **BREAKING**: `TTaskDto.description` renamed to `body`
+- **BREAKING**: `TSpawnable` is now an interface with `id` and `spawnConfig`, implemented by `TAgent`, `TRole`, `TTask` and `TIssue`; its `allowedTools`, `yolo`, `model`, `headless`, `systemPrompt` and `spawn()` are removed
+- **BREAKING**: `TRole`, `TPersona`, `TIssue` and `TTaskDto` require an `id`; `TTask.create` requires an `id`
+- **BREAKING**: `TCliTool.spawn`, `yolo`, `resume`, `allowedTools`, `headless`, `mcpsConfig` and the tool path getters, `ConfigSource`, and the `HeadlessInvocation`, `InteractiveInvocation` and `SystemPromptInvocation` records are removed; the cursor executable is now `cursor-agent`
 
 ## [0.6.0] - 2026-06-04
 

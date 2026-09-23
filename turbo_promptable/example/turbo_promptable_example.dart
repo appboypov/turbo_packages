@@ -32,6 +32,7 @@ void main() {
   );
 
   const role = TRole(
+    id: 'code-reviewer',
     name: 'Code Reviewer',
     expertise: 'Static analysis and code quality',
     instructions: [instruction],
