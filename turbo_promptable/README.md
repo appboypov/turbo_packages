@@ -84,7 +84,11 @@ Tool subclasses (`TApi`, `TCli`, `TScript`, `TMcp`) extend the shared `TTool` ba
 
 ### Spawnable
 
-`TSpawnable` (extended by `TAgent`) carries `id`, `allowedTools`, `yolo`, `model`, and `headless`, and exposes a `spawn` method that builds a launch command via a `TCliTool` for orchestrating agent launches across tools like Claude Code, Cursor, Windsurf, and custom CLIs.
+`TSpawnable` (extended by `TAgent`, `TRole`, `TTask` and `TIssue`) carries an `id` and an optional `TSpawnConfigDto`: a raw command, or tool, model, system prompt, skills, effort and working folder. `TSpawnSettings` holds the plx spawn settings: search folders per concept, the default agent, tool and working folder, and the first-message builders.
+
+### Trigger settings
+
+`TTriggerSettings` holds the plx trigger settings: a list of `TTriggerKindDto`. Each kind has a unique `name`, a pattern (`start`, optional `contains`, `end`) and an optional shell `command`. The plx server runs that command once for each finished trigger of the kind. The optional `ignore` list holds gitignore-style rules relative to each watched folder; plx skips the files and folders they exclude.
 
 ## License
 

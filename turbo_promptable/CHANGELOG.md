@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TResult` model, `TResultDto.values` and the `gNow` global
 - Spawn from code: `TSpawnConfigDto` with `overriddenBy`, `tSpawnConfigChain` (role, then agent, then task or issue), `TSpawnSettings`, `TResolvedSpawnDto`, `TAgentBound`, and the `TEffort`, `TSpawnConcept` and `TSessionApp` enums
 - `TCliTool.pi` and per-tool argv fragments with `TCliTool.argv`; `TUnsupportedSpawnSettingException` for a setting a tool cannot express
+- Trigger settings: `TTriggerSettings` and `TTriggerKindDto` (name, pattern and optional shell command per trigger kind, plus optional gitignore-style `ignore` rules)
 
 ### Removed
 - **BREAKING**: Spec model `TTask`; `TTask` is now the local task model
