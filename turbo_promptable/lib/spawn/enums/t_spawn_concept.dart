@@ -4,4 +4,5 @@ enum TSpawnConcept {
   role,
   task,
   issue,
+  ;
 }
