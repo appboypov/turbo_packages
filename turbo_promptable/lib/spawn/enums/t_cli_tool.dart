@@ -54,7 +54,7 @@ enum TCliTool {
     TCliTool.claude || TCliTool.codex || TCliTool.cursor => null,
   };
 
-  /// Full argv for [config]'s helper settings, with its first message last.
+  /// Full argv for [config]'s helper settings, with its message last.
   ///
   /// Throws [TUnsupportedSpawnSettingException] when [config] sets a setting
   /// this tool cannot express. Empty strings and lists count as not set.
@@ -67,7 +67,7 @@ enum TCliTool {
     final effort = config.effort;
     final systemPrompt = config.systemPrompt;
     final skills = config.skills;
-    final firstMessage = config.firstMessage;
+    final message = config.message;
     return [
       executable,
       if (model != null && model.isNotEmpty) ...modelArgs(model),
@@ -76,7 +76,7 @@ enum TCliTool {
         ...require('systemPrompt', systemPromptArgs(systemPrompt)),
       if (skills != null && skills.isNotEmpty)
         ...require('skills', skillArgs(skills)),
-      if (firstMessage != null && firstMessage.isNotEmpty) firstMessage,
+      if (message != null && message.isNotEmpty) message,
     ];
   }
 }

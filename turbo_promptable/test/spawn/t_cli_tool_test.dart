@@ -10,7 +10,7 @@ void main() {
           effort: TEffort.high,
           systemPrompt: 'You are Skuddy.',
           skills: ['a', 'b'],
-          firstMessage: 'Fix login',
+          message: 'Fix login',
         ),
       );
 

@@ -16,7 +16,7 @@ class TSpawnConfigDto {
     this.skills,
     this.effort,
     this.workingFolder,
-    this.firstMessage,
+    this.message,
   });
 
   /// Raw command that runs exactly as written. When set, the helper settings
@@ -43,7 +43,7 @@ class TSpawnConfigDto {
   final String? workingFolder;
 
   /// First message the session starts with.
-  final String? firstMessage;
+  final String? message;
 
   /// Whether this config runs [command] instead of the helper settings.
   bool get isRaw => command != null;
@@ -59,7 +59,7 @@ class TSpawnConfigDto {
       skills: child.skills ?? skills,
       effort: child.effort ?? effort,
       workingFolder: child.workingFolder ?? workingFolder,
-      firstMessage: child.firstMessage ?? firstMessage,
+      message: child.message ?? message,
     );
   }
 
