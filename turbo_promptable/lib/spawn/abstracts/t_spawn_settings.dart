@@ -1,10 +1,6 @@
 import 'package:turbo_promptable/spawn/enums/t_cli_tool.dart';
 import 'package:turbo_promptable/spawn/enums/t_session_app.dart';
 import 'package:turbo_promptable/spawn/enums/t_spawn_concept.dart';
-import 'package:turbo_promptable/tasks/models/t_task.dart';
-import 'package:turbo_promptable/workspace/models/root/t_agent.dart';
-import 'package:turbo_promptable/workspace/models/root/t_issue.dart';
-import 'package:turbo_promptable/workspace/models/root/t_role.dart';
 
 /// plx spawn settings. Subclass it once in the `spawn/` folder of the plx
 /// settings folder and declare one top-level value of the subclass.
@@ -27,16 +23,4 @@ abstract class TSpawnSettings {
 
   /// App the session opens in.
   TSessionApp get sessionApp => TSessionApp.herdr;
-
-  /// First message of an agent session, or null for none.
-  String? agentFirstMessage(TAgent agent, String filePath) => null;
-
-  /// First message of a role session, or null for none.
-  String? roleFirstMessage(TRole role, String filePath) => null;
-
-  /// First message of a task session, or null for none.
-  String? taskFirstMessage(TTask task, String filePath) => null;
-
-  /// First message of an issue session, or null for none.
-  String? issueFirstMessage(TIssue issue, String filePath) => null;
 }

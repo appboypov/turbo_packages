@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING** `TSpawnConfigDto.firstMessage` holds the first message of a session, so a role, agent, task or issue sets it. `TSpawnSettings` loses `agentFirstMessage`, `roleFirstMessage`, `taskFirstMessage` and `issueFirstMessage`. `TResolvedSpawnDto` loses `firstMessage`. `TCliTool.argv` reads the first message from its config.
+
 ### Added
 - `TTask` local task model with `TTask.create`, backed by `TTaskDto` and a nullable `TResultDto`
 - Linear issue DTOs under `issues/dtos`

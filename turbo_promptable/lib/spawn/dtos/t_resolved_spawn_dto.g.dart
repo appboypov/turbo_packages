@@ -14,7 +14,6 @@ TResolvedSpawnDto _$TResolvedSpawnDtoFromJson(Map<String, dynamic> json) =>
       config: TSpawnConfigDto.fromJson(json['config'] as Map<String, dynamic>),
       sessionApp: $enumDecode(_$TSessionAppEnumMap, json['sessionApp']),
       agentId: json['agentId'] as String?,
-      firstMessage: json['firstMessage'] as String?,
     );
 
 Map<String, dynamic> _$TResolvedSpawnDtoToJson(TResolvedSpawnDto instance) =>
@@ -25,7 +24,6 @@ Map<String, dynamic> _$TResolvedSpawnDtoToJson(TResolvedSpawnDto instance) =>
       'config': instance.config.toJson(),
       'sessionApp': _$TSessionAppEnumMap[instance.sessionApp]!,
       'agentId': ?instance.agentId,
-      'firstMessage': ?instance.firstMessage,
     };
 
 const _$TSpawnConceptEnumMap = {

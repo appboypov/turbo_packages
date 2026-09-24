@@ -15,7 +15,6 @@ class TResolvedSpawnDto {
     required this.config,
     required this.sessionApp,
     this.agentId,
-    this.firstMessage,
   });
 
   final TSpawnConcept concept;
@@ -33,8 +32,6 @@ class TResolvedSpawnDto {
 
   /// Agent the session runs as; null for a role spawn.
   final String? agentId;
-
-  final String? firstMessage;
 
   factory TResolvedSpawnDto.fromJson(Map<String, dynamic> json) =>
       _$TResolvedSpawnDtoFromJson(json);

@@ -17,6 +17,7 @@ TSpawnConfigDto _$TSpawnConfigDtoFromJson(Map<String, dynamic> json) =>
           .toList(),
       effort: $enumDecodeNullable(_$TEffortEnumMap, json['effort']),
       workingFolder: json['workingFolder'] as String?,
+      firstMessage: json['firstMessage'] as String?,
     );
 
 Map<String, dynamic> _$TSpawnConfigDtoToJson(TSpawnConfigDto instance) =>
@@ -28,6 +29,7 @@ Map<String, dynamic> _$TSpawnConfigDtoToJson(TSpawnConfigDto instance) =>
       'skills': ?instance.skills,
       'effort': ?_$TEffortEnumMap[instance.effort],
       'workingFolder': ?instance.workingFolder,
+      'firstMessage': ?instance.firstMessage,
     };
 
 const _$TCliToolEnumMap = {

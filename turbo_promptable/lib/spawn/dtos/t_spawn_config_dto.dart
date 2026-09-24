@@ -16,6 +16,7 @@ class TSpawnConfigDto {
     this.skills,
     this.effort,
     this.workingFolder,
+    this.firstMessage,
   });
 
   /// Raw command that runs exactly as written. When set, the helper settings
@@ -41,6 +42,9 @@ class TSpawnConfigDto {
   /// read from the root of the package that declares the spawned entity.
   final String? workingFolder;
 
+  /// First message the session starts with.
+  final String? firstMessage;
+
   /// Whether this config runs [command] instead of the helper settings.
   bool get isRaw => command != null;
 
@@ -55,6 +59,7 @@ class TSpawnConfigDto {
       skills: child.skills ?? skills,
       effort: child.effort ?? effort,
       workingFolder: child.workingFolder ?? workingFolder,
+      firstMessage: child.firstMessage ?? firstMessage,
     );
   }
 
