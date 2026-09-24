@@ -88,7 +88,39 @@ Tool subclasses (`TApi`, `TCli`, `TScript`, `TMcp`) extend the shared `TTool` ba
 
 ### Trigger settings
 
-`TTriggerSettings` holds the plx trigger settings: a list of `TTriggerKindDto`. Each kind has a unique `name`, a pattern (`start`, optional `contains`, `end`) and an optional shell `command`. The plx server runs that command once for each finished trigger of the kind. The optional `ignore` list holds gitignore-style rules relative to each watched folder; plx skips the files and folders they exclude.
+`TTriggerSettings` holds the plx trigger settings: a list of `TTriggerKind`s. Each kind has a unique `name` and a pattern (`start`, optional `contains`, `end`). The optional `ignore` list holds gitignore-style rules relative to each watched folder; plx skips the files and folders they exclude.
+
+`TTriggerKind` is sealed:
+
+- `TCommandTriggerKind` has an optional `agent`, an optional `role` and a `command` function. When the kind fires, the plx server calls `command(trigger, agent, role)` and runs the returned line with `/bin/sh -c` in the watched folder. `"$trigger"` gives the whole trigger body.
+- `TStreamTriggerKind` has no command. One agent claims it with `plx claim trigger --name <kind>` and receives its fired triggers.
+
+A fired trigger is a `TTriggerContents`: the kind, every hit of that kind in the watched folders (`TTriggerHitDto`, finished or open) and the rendered file tree with codemaps of the hit files. Its `toString` is the whole body in `<trigger>` tags.
+
+```dart
+class MyTriggerSettings extends TTriggerSettings {
+  const MyTriggerSettings();
+
+  @override
+  List<TTriggerKind> get kinds => [
+    TCommandTriggerKind(
+      name: 'task',
+      start: '//',
+      contains: '#TASK',
+      end: ';',
+      agent: const Skuddy(),
+      command: (trigger, agent, role) =>
+          'plx spawn agent --id ${agent!.id} --prompt "$trigger"',
+    ),
+    const TStreamTriggerKind(
+      name: 'feedback',
+      start: '//',
+      contains: '#FEEDBACK',
+      end: ';',
+    ),
+  ];
+}
+```
 
 ## License
 
