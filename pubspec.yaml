@@ -25,6 +25,10 @@ dev_dependencies:
 
 melos:
   repository: https://github.com/appboypov/turbo_packages
+  ide:
+    intellij:
+      enabled: false
+
 
   command:
     version:

@@ -6,7 +6,7 @@ part 't_nfr.g.dart';
 /// A non-functional requirement linked to abilities, journeys, and scenarios.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class TNFR extends TRequirement {
-  TNFR({
+  const TNFR({
     required super.name,
     super.metaData,
     super.abilityIds,

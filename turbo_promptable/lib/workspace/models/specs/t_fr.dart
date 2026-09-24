@@ -6,7 +6,7 @@ part 't_fr.g.dart';
 /// A functional requirement linked to abilities, journeys, and scenarios.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class TFR extends TRequirement {
-  TFR({
+  const TFR({
     required super.name,
     super.metaData,
     super.abilityIds,

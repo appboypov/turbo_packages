@@ -5,7 +5,7 @@ part 't_convention.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 class TConvention extends TInstruction {
-  TConvention(
+  const TConvention(
     super.name, {
     super.metaData,
     super.principles,
