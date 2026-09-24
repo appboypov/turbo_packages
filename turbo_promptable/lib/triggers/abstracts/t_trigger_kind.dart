@@ -7,14 +7,14 @@ import 'package:turbo_promptable/workspace/models/root/t_role.dart';
 /// A kind is either a [TCommandTriggerKind] or a [TStreamTriggerKind].
 sealed class TTriggerKind {
   const TTriggerKind({
-    required this.name,
+    required this.id,
     required this.start,
     this.contains,
     required this.end,
   });
 
-  /// Unique name of the kind, such as `task`.
-  final String name;
+  /// Unique id of the kind, such as `task`.
+  final String id;
 
   /// Literal marker that begins the trigger, such as `//`.
   final String start;
@@ -34,7 +34,7 @@ sealed class TTriggerKind {
 /// folder. plx never fills in an agent or role.
 final class TCommandTriggerKind extends TTriggerKind {
   const TCommandTriggerKind({
-    required super.name,
+    required super.id,
     required super.start,
     super.contains,
     required super.end,
@@ -55,11 +55,11 @@ final class TCommandTriggerKind extends TTriggerKind {
   command;
 }
 
-/// A kind without a command. One agent claims it with `plx claim trigger`
-/// and receives its fired triggers; while unclaimed, plx only logs it.
+/// A kind without a command. Agents claim it with `plx claim trigger` and
+/// each claim receives its fired triggers; while unclaimed, plx only logs it.
 final class TStreamTriggerKind extends TTriggerKind {
   const TStreamTriggerKind({
-    required super.name,
+    required super.id,
     required super.start,
     super.contains,
     required super.end,

@@ -18,7 +18,7 @@ class TTriggerContents {
   factory TTriggerContents.fromJson(Map<String, dynamic> json) =>
       _$TTriggerContentsFromJson(json);
 
-  /// Name of the fired kind.
+  /// Id of the fired kind.
   final String kind;
 
   /// Finished and open hits of [kind].
