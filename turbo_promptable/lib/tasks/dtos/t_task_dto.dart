@@ -43,8 +43,7 @@ class TTaskDto {
   /// How the task's session is spawned; overrides its agent's config.
   final TSpawnConfigDto? spawnConfig;
 
-  factory TTaskDto.fromJson(Map<String, dynamic> json) =>
-      _$TTaskDtoFromJson(json);
+  factory TTaskDto.fromJson(Map<String, dynamic> json) => _$TTaskDtoFromJson(json);
   Map<String, dynamic> toJson() => _$TTaskDtoToJson(this);
 
   TTaskDto copyWith({
@@ -52,16 +51,14 @@ class TTaskDto {
     String? body,
     TTaskStatus? status,
     TResultDto? result,
-  }) {
-    return TTaskDto(
-      id: id,
-      title: title ?? this.title,
-      body: body ?? this.body,
-      createdAt: createdAt,
-      status: status ?? this.status,
-      result: result ?? this.result,
-      agentId: agentId,
-      spawnConfig: spawnConfig,
-    );
-  }
+  }) => TTaskDto(
+    id: id,
+    title: title ?? this.title,
+    body: body ?? this.body,
+    createdAt: createdAt,
+    status: status ?? this.status,
+    result: result ?? this.result,
+    agentId: agentId,
+    spawnConfig: spawnConfig,
+  );
 }

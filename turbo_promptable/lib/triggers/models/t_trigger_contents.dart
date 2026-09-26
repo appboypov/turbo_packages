@@ -13,6 +13,7 @@ class TTriggerContents {
     required this.kind,
     required this.hits,
     this.context = '',
+    this.instructions,
   });
 
   factory TTriggerContents.fromJson(Map<String, dynamic> json) =>
@@ -28,13 +29,19 @@ class TTriggerContents {
   /// engine. Empty when rendering failed.
   final String context;
 
+  /// Instructions of the fired kind, rendered in `<user_instructions>` right
+  /// after the opening tag. None when null.
+  final String? instructions;
+
   Map<String, dynamic> toJson() => _$TTriggerContentsToJson(this);
 
   @override
   String toString() {
-    final buffer = StringBuffer()
-      ..writeln("<trigger kind='$kind'>")
-      ..writeln('<hits>');
+    final buffer = StringBuffer()..writeln("<trigger kind='$kind'>");
+    if (instructions case final text?) {
+      buffer.writeln('<user_instructions>$text</user_instructions>');
+    }
+    buffer.writeln('<hits>');
     for (final hit in hits) {
       buffer.write("<hit file='${hit.file}' line='${hit.line}'");
       if (hit.isOpen) buffer.write(" open='true'");

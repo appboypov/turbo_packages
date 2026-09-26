@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `TIntent` model backed by `TIntentDto`: one outcome the user wants, with its requests, end goal, Linear team and issue, product, repo, change id, open questions and material
 - `TReferenceDto` with a `TBodyDto` (`TBodySource`, `TContentType`), `TProductDto`, `TRepoDto`, `TQuestionDto`, and `TOrganisationDto`, which extends `TLinearTeamDto`
+- `instructions` on `TTriggerKind`, `TCommandTriggerKind` and `TStreamTriggerKind`, and on `TTriggerContents`, which renders them in `<user_instructions>` right after the opening `<trigger>` tag when not null
 
 ## [0.8.0] - 2026-09-25
 

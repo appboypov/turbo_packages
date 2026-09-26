@@ -49,6 +49,44 @@ void main() {
 
       expect(bare.toString(), endsWith('</hits>\n</trigger>'));
     });
+
+    test(
+      'Given instructions, Then they open the trigger in user_instructions',
+      () {
+        const instructed = TTriggerContents(
+          kind: 'plx',
+          hits: [
+            TTriggerHitDto(
+              file: '/abs/n.md',
+              line: 1,
+              text: 'x;',
+              trigger: 'x;',
+            ),
+          ],
+          instructions: 'Record a task first.',
+        );
+
+        expect(
+          instructed.toString(),
+          startsWith(
+            "<trigger kind='plx'>\n"
+            '<user_instructions>Record a task first.</user_instructions>\n'
+            '<hits>\n',
+          ),
+        );
+        expect(
+          TTriggerContents.fromJson(instructed.toJson()).toString(),
+          instructed.toString(),
+        );
+      },
+    );
+
+    test(
+      'Given no instructions, Then the trigger has no user_instructions',
+      () {
+        expect(contents.toString(), isNot(contains('<user_instructions>')));
+      },
+    );
   });
 
   group('TTriggerContents json', () {

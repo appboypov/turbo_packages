@@ -1,21 +1,25 @@
-import 'package:turbo_promptable/core/annotations/plxecutable.dart';
-import 'package:turbo_promptable/core/globals/g_now.dart';
-import 'package:turbo_promptable/spawn/abstracts/t_agent_bound.dart';
-import 'package:turbo_promptable/spawn/dtos/t_spawn_config_dto.dart';
-import 'package:turbo_promptable/tasks/dtos/t_task_dto.dart';
-import 'package:turbo_promptable/tasks/enums/t_task_status.dart';
+import 'package:turbo_promptable/turbo_promptable.dart';
 
 /// Local unit of work backed by a [TTaskDto].
 class TTask implements TAgentBound {
-  const TTask({required this.dto});
+  const TTask._({required this.dto});
 
   /// Creates a task in the inbox, created now.
   factory TTask.create({
     required String id,
     required String title,
     required String body,
-  }) => TTask(
-    dto: TTaskDto(id: id, title: title, body: body, createdAt: gNow),
+    TAgent? agent,
+    TSpawnConfigDto? spawnConfig,
+  }) => TTask._(
+    dto: TTaskDto(
+      id: id,
+      title: title,
+      body: body,
+      agentId: agent?.id,
+      spawnConfig: spawnConfig ?? agent?.spawnConfig,
+      createdAt: gNow,
+    ),
   );
 
   final TTaskDto dto;
@@ -56,7 +60,15 @@ class TTask implements TAgentBound {
   @Plxecutable()
   TTask toDuplicate() => _to(TTaskStatus.duplicate);
 
-  TTask _to(TTaskStatus status) => copyWith(dto: dto.copyWith(status: status));
+  TTask _to(TTaskStatus status) => _copyWith(dto: dto.copyWith(status: status));
 
-  TTask copyWith({TTaskDto? dto}) => TTask(dto: dto ?? this.dto);
+  TTask _copyWith({TTaskDto? dto}) => TTask._(dto: dto ?? this.dto);
+
+  TTask withResult({
+    TResult? result,
+  }) => _copyWith(
+    dto: dto.copyWith(
+      result: result?.dto,
+    ),
+  );
 }

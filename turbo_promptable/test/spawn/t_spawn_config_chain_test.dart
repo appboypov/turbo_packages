@@ -19,15 +19,12 @@ const _pieter = TAgent(
   spawnConfig: TSpawnConfigDto(model: 'opus'),
 );
 
-TTask _task(TSpawnConfigDto? config) => TTask(
-  dto: TTaskDto(
-    id: 'fix_login',
-    title: 'Fix login',
-    body: 'Login fails.',
-    createdAt: DateTime(2026, 9, 23),
-    agentId: 'pieter',
-    spawnConfig: config,
-  ),
+TTask _task(TSpawnConfigDto? config) => TTask.create(
+  body: 'Login fails.',
+  id: 'fix_login',
+  title: 'Fix login',
+  spawnConfig: config,
+  agent: _pieter,
 );
 
 void main() {

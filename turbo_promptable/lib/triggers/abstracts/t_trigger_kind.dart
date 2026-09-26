@@ -11,6 +11,7 @@ sealed class TTriggerKind {
     required this.start,
     this.contains,
     required this.end,
+    this.instructions,
   });
 
   /// Unique id of the kind, such as `task`.
@@ -25,6 +26,10 @@ sealed class TTriggerKind {
   /// Literal marker that finishes the trigger when it ends the line, such as
   /// `;`.
   final String end;
+
+  /// Instructions that come with every firing of this kind, in
+  /// `<user_instructions>` inside the trigger. None when null.
+  final String? instructions;
 }
 
 /// A kind the plx server acts on by running a shell command.
@@ -38,6 +43,7 @@ final class TCommandTriggerKind extends TTriggerKind {
     required super.start,
     super.contains,
     required super.end,
+    super.instructions,
     this.agent,
     this.role,
     required this.command,
@@ -63,5 +69,6 @@ final class TStreamTriggerKind extends TTriggerKind {
     required super.start,
     super.contains,
     required super.end,
+    super.instructions,
   });
 }
