@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-09-28
+
 ### Added
+- `THerdrTriggerKind`: a third sealed trigger kind that the plx server delivers to agents running in herdr by label, with no claim. Its `contains` prefix defaults to `#`; the text after it up to the first space is the target name
 - `TIntent` model backed by `TIntentDto`: one outcome the user wants, with its requests, end goal, Linear team and issue, product, repo, change id, open questions and material
 - `TReferenceDto` with a `TBodyDto` (`TBodySource`, `TContentType`), `TProductDto`, `TRepoDto`, `TQuestionDto`, and `TOrganisationDto`, which extends `TLinearTeamDto`
 - `instructions` on `TTriggerKind`, `TCommandTriggerKind` and `TStreamTriggerKind`, and on `TTriggerContents`, which renders them in `<user_instructions>` right after the opening `<trigger>` tag when not null
