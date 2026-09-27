@@ -4,7 +4,8 @@ import 'package:turbo_promptable/workspace/models/root/t_role.dart';
 
 /// One kind of text trigger: the pattern that finds it in a line.
 ///
-/// A kind is either a [TCommandTriggerKind] or a [TStreamTriggerKind].
+/// A kind is a [TCommandTriggerKind], a [TStreamTriggerKind] or a
+/// [THerdrTriggerKind].
 sealed class TTriggerKind {
   const TTriggerKind({
     required this.id,
@@ -68,6 +69,22 @@ final class TStreamTriggerKind extends TTriggerKind {
     required super.id,
     required super.start,
     super.contains,
+    required super.end,
+    super.instructions,
+  });
+}
+
+/// A kind the plx server delivers to agents running in herdr, with no claim.
+///
+/// The text right after [contains] up to the first space is the target name.
+/// plx sends the fired trigger to every agent pane in the herdr panes, tabs
+/// and workspaces whose label contains that name. A line that also matches a
+/// command or stream kind is not a herdr trigger.
+final class THerdrTriggerKind extends TTriggerKind {
+  const THerdrTriggerKind({
+    required super.id,
+    required super.start,
+    String super.contains = '#',
     required super.end,
     super.instructions,
   });
