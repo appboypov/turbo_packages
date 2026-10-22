@@ -25,8 +25,8 @@ import 'responses/t_jev_models_response_dto.dart';
 import 'results/t_jev_failure.dart';
 import 'services/t_jev_system_one_body_service.dart';
 import 'types/t_jev_model.dart';
-import 'utils/process_environment.dart';
-import 'utils/response_json_object.dart';
+import 'utils/t_jev_process_environment.dart';
+import 'utils/t_jev_response_json_object.dart';
 
 /// A client that asks Jev typed Questions about State.
 ///

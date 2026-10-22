@@ -13,10 +13,10 @@ import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_http_method.dart';
 import '../models/t_jev_image.dart';
 import '../results/t_jev_failure.dart';
+import '../services/t_jev_request_content_service.dart';
+import '../services/t_jev_request_platform_service.dart';
 import '../services/t_jev_request_trace_service.dart';
 import '../typedefs/t_jev_response_parser.dart';
-import '../utils/request_content.dart';
-import '../utils/request_platform.dart';
 
 /// Sends Requests to TypeSafe and turns each outcome into a `TurboResponse`:
 /// a 2xx response into a success, or into a [TJevResponseValidationFailure]
@@ -38,6 +38,8 @@ final class TJevApi {
   // 🛠 UTIL
 
   static final _random = Random();
+  static const _contentService = TJevRequestContentService();
+  static const _platformService = TJevRequestPlatformService();
 
   // 🏗️ HELPERS
 
@@ -76,7 +78,7 @@ final class TJevApi {
     } on Exception catch (error) {
       final reason = switch (error) {
         http.ClientException(:final message) => message,
-        _ when isUnwrappedConnectionError(error) => '$error',
+        _ when _platformService.isUnwrappedConnectionError(error) => '$error',
         _ => null,
       };
       if (reason == null) rethrow;
@@ -176,15 +178,17 @@ final class TJevApi {
   }) async {
     final content = json == null
         ? null
-        : requestContent(json: json, images: images);
-    final body = content == null ? null : encodeBody(content.bytes);
+        : _contentService.build(json: json, images: images);
+    final body = content == null
+        ? null
+        : _platformService.encodeBody(content.bytes);
     final sdkHeaders = {
       TJevHttp.authorizationHeader: '${TJevHttp.bearerPrefix}${_config.apiKey}',
       TJevHttp.acceptHeader: TJevHttp.jsonMediaType,
       if (content != null) TJevHttp.contentTypeHeader: content.contentType,
       if (body?.encoding case final encoding?)
         TJevHttp.contentEncodingHeader: encoding,
-      ...platformHeaders,
+      ..._platformService.platformHeaders,
     };
     final aborted = Completer<void>();
     abortTrigger?.whenComplete(() {
@@ -212,7 +216,7 @@ final class TJevApi {
             ..headers.addEntries(headers.entries.where(_isUnprotected))
             ..headers.addAll({
               ...sdkHeaders,
-              if (attempt > 0) ...retryHeaders(attempt),
+              if (attempt > 0) ..._platformService.retryHeaders(attempt),
             });
       if (body != null) request.bodyBytes = body.bytes;
       final response = await _attempt(
@@ -223,9 +227,11 @@ final class TJevApi {
         trace: trace,
         onSuccess: onSuccess,
       );
-      if (response case Fail(
-        error: final TJevFailure failure,
-      ) when attempt < retry.maxRetries && retry.retries(failure)) {
+      if (response
+          case Fail(
+            error: final TJevFailure failure,
+          )
+          when attempt < retry.maxRetries && retry.retries(failure)) {
         final delay = retry.delayAfter(
           attempt: attempt,
           failure: failure,

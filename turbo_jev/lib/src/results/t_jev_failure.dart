@@ -7,7 +7,7 @@ import '../constants/t_jev_http.dart';
 import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
 import '../models/t_jev_validation_detail.dart';
-import '../utils/retry_after.dart';
+import '../services/t_jev_retry_after_service.dart';
 
 part 't_jev_aborted_failure.dart';
 part 't_jev_authentication_failure.dart';

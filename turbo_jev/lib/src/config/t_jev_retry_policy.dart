@@ -7,8 +7,8 @@ import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_invalid_retry_policy_exception.dart';
 import '../results/t_jev_failure.dart';
+import '../services/t_jev_retry_after_service.dart';
 import '../typedefs/t_jev_retry_predicate.dart';
-import '../utils/retry_after.dart';
 
 /// When a client sends a failed Request again and how long it waits first.
 ///
@@ -119,7 +119,9 @@ final class TJevRetryPolicy {
     required Random random,
   }) {
     if (respectRetryAfter && failure is TJevHttpFailure) {
-      final serverDelay = retryAfterOf(failure.headers);
+      final serverDelay = const TJevRetryAfterService().delayOf(
+        failure.headers,
+      );
       if (serverDelay != null && serverDelay <= maxRetryAfter) {
         return serverDelay;
       }

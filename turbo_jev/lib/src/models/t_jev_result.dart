@@ -9,7 +9,7 @@ import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_unasked_question_exception.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
 import '../types/t_jev_model.dart';
-import '../utils/response_json_object.dart';
+import '../utils/t_jev_response_json_object.dart';
 import 't_jev_usage.dart';
 
 /// The Answers of one Request, with the model that answered and its Usage.

@@ -4,12 +4,12 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
+import '../apis/t_jev_file_api.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_image_format.dart';
 import '../exceptions/t_jev_invalid_image_exception.dart';
-import '../utils/image_file.dart';
-import '../utils/random_hex.dart';
+import '../utils/t_jev_random_hex.dart';
 
 /// A PNG or JPEG picture sent with a Request.
 ///
@@ -67,7 +67,7 @@ final class TJevImage {
   /// JPEG file, and a `FileSystemException` when it cannot be read. Reading
   /// a file needs `dart:io`; in a browser it throws an [UnsupportedError].
   static Future<TJevImage> fromFile(String path) async =>
-      TJevImage(await readImageFile(path));
+      TJevImage(await const TJevFileApi().readBytes(path));
 
   /// Runs [encode] and calls [onEncoded] with each Image whose [toJson] it
   /// calls, so encoding content finds every Image placed in it, also inside
