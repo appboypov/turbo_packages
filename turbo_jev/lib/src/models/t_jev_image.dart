@@ -63,9 +63,9 @@ final class TJevImage {
 
   /// An Image of the file at [path].
   ///
-  /// Throws [TJevInvalidImageException] when the file is empty or no PNG or
-  /// JPEG file, and a `FileSystemException` when it cannot be read. Reading
-  /// a file needs `dart:io`; in a browser it throws an [UnsupportedError].
+  /// Throws [TJevInvalidImageException] when the file cannot be read, is
+  /// empty or is no PNG or JPEG file. Reading a file needs `dart:io`; in a
+  /// browser it cannot be read.
   static Future<TJevImage> fromFile(String path) async =>
       TJevImage(await const TJevFileApi().readBytes(path));
 

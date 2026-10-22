@@ -1,11 +1,14 @@
-/// Reads files where there is no file system, such as in a browser.
+import '../abstracts/t_jev_exception.dart';
+import '../constants/t_jev_messages.dart';
+
+/// Reads Image files where there is no file system, such as in a browser.
 final class TJevFileApi {
   const TJevFileApi();
 
-  /// Throws an [UnsupportedError]: a browser has no file system to read
-  /// [path] from.
-  Future<List<int>> readBytes(String path) => throw UnsupportedError(
-    'Reading the Image file $path needs dart:io. Create the Image from its '
-    'bytes or base64 text instead.',
-  );
+  /// Throws [TJevInvalidImageException]: a browser has no file system to
+  /// read the Image file at [path] from.
+  Future<List<int>> readBytes(String path) async =>
+      throw TJevInvalidImageException(
+        message: TJevMessages.imageFileWithoutFileSystem(path),
+      );
 }

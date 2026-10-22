@@ -4,7 +4,9 @@ library;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/models/no_json.dart';
 import 'support/services/fake_type_safe.dart';
+import 'support/utils/throws_t_jev_exception.dart';
 
 const _billing = TJevNoul(instructions: 'Is this message about billing?');
 
@@ -87,5 +89,31 @@ void main() {
         });
       },
     );
+
+    for (final (what, extraBody) in <(String, Map<String, Object?>)>[
+      (
+        'a non-finite number',
+        {
+          'trace': {'score': double.nan},
+        },
+      ),
+      ('an object without toJson', {'trace': const NoJson()}),
+    ]) {
+      test(
+        'When an extra body field holds $what, then asking throws before '
+        'sending',
+        () {
+          expect(
+            () => jev.ask(
+              state: 'I was charged twice.',
+              questions: const [_billing],
+              extraBody: extraBody,
+            ),
+            throwsTJevException<TJevInvalidQuestionException>(),
+          );
+          expect(typeSafe.requests, isEmpty);
+        },
+      );
+    }
   });
 }

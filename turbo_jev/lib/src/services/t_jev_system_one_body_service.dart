@@ -36,9 +36,10 @@ final class TJevSystemOneBodyService {
   /// so its `assets` name the very Images each `toJson` returned.
   ///
   /// Throws [TJevInvalidQuestionException] when a Question is invalid, or
-  /// when the State is no JSON content or holds a non-finite number, and
-  /// [TJevImageReferenceException] when the JSON holds an Image Reference of
-  /// no placed or listed Image, or when it uses no Image in [listed].
+  /// when the State or [extraBody] is no JSON content or holds a non-finite
+  /// number, and [TJevImageReferenceException] when the JSON holds an Image
+  /// Reference of no placed or listed Image, or when it uses no Image in
+  /// [listed].
   TJevSystemOneBody build({
     required TJevModel model,
     required Object state,
@@ -54,10 +55,15 @@ final class TJevSystemOneBodyService {
           id: _questionDto(id, question),
       },
     );
-    if (TJevQuestion.checkContent(state, TJevMessages.stateLocation) case Fail(
-      :final message,
-    )) {
-      throw TJevInvalidQuestionException(message: message!);
+    for (final (content, location) in [
+      (state, TJevMessages.stateLocation),
+      (extraBody, TJevMessages.extraBodyLocation),
+    ]) {
+      if (TJevQuestion.checkContent(content, location) case Fail(
+        :final message,
+      )) {
+        throw TJevInvalidQuestionException(message: message!);
+      }
     }
     final known = <String, TJevImage>{};
     final json = TJevImage.collectEncoded(

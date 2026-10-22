@@ -89,6 +89,9 @@ abstract final class TJevMessages {
   /// The location of the State in a content text.
   static const stateLocation = 'The State';
 
+  /// The location of the extra body fields of a Request in a content text.
+  static const extraBodyLocation = 'The extra body';
+
   /// The location of the Instructions of a Question in a content text.
   static const instructionsLocation = 'The Instructions';
 
@@ -120,6 +123,10 @@ abstract final class TJevMessages {
   static String unencodableContent(String location, Type type) =>
       '$location holds a $type, which does not encode to JSON content.';
 
+  /// The content at [location] holds a list or map that contains itself.
+  static String selfReferencingContent(String location) =>
+      '$location holds a list or map that contains itself.';
+
   /// The content holds the Image [references] of no known Image.
   static String unknownImageReferences(Iterable<String> references) =>
       'The content holds the Image References ${references.join(', ')} of '
@@ -140,6 +147,15 @@ abstract final class TJevMessages {
 
   /// The Image data starts with no signature of a known format.
   static const unknownImageFormat = 'The Image data is no PNG or JPEG file.';
+
+  /// The Image file at [path] cannot be read, as [reason] says.
+  static String unreadableImageFile(String path, String reason) =>
+      'The Image file $path cannot be read: $reason.';
+
+  /// The Image file at [path] cannot be read without a file system.
+  static String imageFileWithoutFileSystem(String path) =>
+      'Reading the Image file $path needs dart:io. Create the Image from its '
+      'bytes or base64 text instead.';
 
   /// A Result is asked the Answer of a Question of [type] and [id] that its
   /// Request did not ask.

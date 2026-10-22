@@ -241,6 +241,33 @@ void main() {
         'then it is invalid', () {
       expectInvalid(const TJevNoul(instructions: {1: 'one'}));
     });
+
+    test('When a list in it contains itself, then it is invalid', () {
+      final looped = <Object?>['Pick one'];
+      looped.add(looped);
+
+      expectInvalid(TJevNoul(instructions: looped));
+    });
+
+    test(
+      'When a map in it contains itself deeper down, then it is invalid',
+      () {
+        final looped = <String, Object?>{};
+        looped['nested'] = [
+          {'back': looped},
+        ];
+
+        expectInvalid(TJevChoice<String>(options: {'a': looped}));
+      },
+    );
+
+    test('When it holds the same list twice, then it is valid', () {
+      const shared = ['strict'];
+
+      expectValid(
+        const TJevNoul(instructions: {'first': shared, 'second': shared}),
+      );
+    });
   });
 
   group('Given an invalid Question', () {
@@ -297,5 +324,20 @@ void main() {
         expect(typeSafe.requests, isEmpty);
       });
     }
+
+    test(
+      'When it holds a list that contains itself, then asking throws before '
+      'sending',
+      () {
+        final looped = <Object?>['I was charged twice.'];
+        looped.add({'thread': looped});
+
+        expect(
+          () => jev.ask(state: looped, questions: const [question]),
+          throwsA(isA<TJevInvalidQuestionException>()),
+        );
+        expect(typeSafe.requests, isEmpty);
+      },
+    );
   });
 }
