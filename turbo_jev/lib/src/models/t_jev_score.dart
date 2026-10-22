@@ -58,9 +58,7 @@ final class TJevScore<T extends Object>
     final descriptions = _descriptions;
     if (descriptions.isEmpty || descriptions.length > TJevLimits.maxLevels) {
       throw TJevInvalidQuestionException(
-        reason:
-            'Score $id needs 1 to ${TJevLimits.maxLevels} Levels, '
-            'not ${descriptions.length}.',
+        reason: TJevMessages.levelCount(id, descriptions.length),
       );
     }
     final wireKeys = <String>{};
@@ -68,15 +66,18 @@ final class TJevScore<T extends Object>
       final key = TJevQuestion._wireKey(level);
       if (!wireKeys.add(key)) {
         throw TJevInvalidQuestionException(
-          reason: 'Two Levels of Score $id have the wire key $key.',
+          reason: TJevMessages.duplicateLevelKey(id, key),
         );
       }
     }
-    TJevQuestion.checkContent(instructions, 'The Instructions of Score $id');
+    TJevQuestion.checkContent(
+      instructions,
+      TJevMessages.scoreInstructionsLocation(id),
+    );
     for (final (number, description) in descriptions.indexed) {
       TJevQuestion.checkContent(
         description,
-        'The description of Level $number of Score $id',
+        TJevMessages.levelDescriptionLocation(id, number),
       );
     }
     return TJevScoreQuestionDto(
@@ -93,9 +94,9 @@ final class TJevScore<T extends Object>
     final levelNumbers = [
       for (var number = 0; number < levels.length; number++) '$number',
     ];
-    TJevQuestion._checkKeys('legend', dto.legend.keys, levelNumbers);
+    TJevQuestion._checkKeys(TJevHttp.legendKey, dto.legend.keys, levelNumbers);
     TJevQuestion._checkKeys(
-      'probabilities',
+      TJevHttp.probabilitiesKey,
       dto.probabilities.keys,
       levelNumbers,
     );

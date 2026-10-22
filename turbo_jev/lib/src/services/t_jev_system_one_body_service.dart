@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
+import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_image_reference_exception.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
@@ -37,7 +38,7 @@ final class TJevSystemOneBodyService {
     required Map<String, Object?>? extraBody,
     required List<TJevImage> listed,
   }) {
-    TJevQuestion.checkContent(request.state, 'The State');
+    TJevQuestion.checkContent(request.state, TJevMessages.stateLocation);
     final known = <String, TJevImage>{};
     final json = TJevImage.collectEncoded(
       () => jsonEncode({...request.toJson(), ...?extraBody}),
@@ -48,7 +49,7 @@ final class TJevSystemOneBodyService {
     }
     final used = <String, TJevImage>{};
     final unknown = <String>{};
-    for (final match in TJevImage.referencePattern.allMatches(json)) {
+    for (final match in TJevHttp.imageReferencePattern.allMatches(json)) {
       final reference = match[0]!;
       final image = known[reference];
       if (image == null) {
@@ -59,10 +60,7 @@ final class TJevSystemOneBodyService {
     }
     if (unknown.isNotEmpty) {
       throw TJevImageReferenceException(
-        reason:
-            'The content holds the Image References ${unknown.join(', ')} of '
-            'no known Image. List each Image interpolated in a string in '
-            'images.',
+        reason: TJevMessages.unknownImageReferences(unknown),
       );
     }
     final unused = {
@@ -71,10 +69,7 @@ final class TJevSystemOneBodyService {
     };
     if (unused.isNotEmpty) {
       throw TJevImageReferenceException(
-        reason:
-            'No content uses the listed Images ${unused.join(', ')}. '
-            'Interpolate each listed Image in a string of the State, '
-            'Instructions or Criteria.',
+        reason: TJevMessages.unusedImages(unused),
       );
     }
     if (used.isEmpty) return (json: json, images: const {});

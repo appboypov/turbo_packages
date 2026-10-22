@@ -6,6 +6,7 @@ import 'apis/t_jev_api.dart';
 import 'config/t_jev_config.dart';
 import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
+import 'constants/t_jev_messages.dart';
 import 'enums/t_jev_log_level.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
 import 'exceptions/t_jev_browser_exception.dart';
@@ -110,12 +111,7 @@ final class TJev {
     bool dangerouslyAllowBrowser = false,
   }) {
     if (_isBrowser && !dangerouslyAllowBrowser) {
-      throw const TJevBrowserException(
-        reason:
-            'TJev runs in a browser, which shows the API key to anyone using '
-            'the page. Call TypeSafe from a server instead, or pass '
-            'dangerouslyAllowBrowser: true if you understand the risk.',
-      );
+      throw const TJevBrowserException(reason: TJevMessages.browser);
     }
     final config = TJevConfig.resolve(
       apiKey: apiKey,
@@ -177,7 +173,10 @@ final class TJev {
   static Map<String, String> _withLongContext(
     Map<String, String>? headers, {
     required bool longContext,
-  }) => {...?headers, if (longContext) TJevHttp.longContextHeader: 'true'};
+  }) => {
+    ...?headers,
+    if (longContext) TJevHttp.longContextHeader: TJevHttp.dangerZoneOptIn,
+  };
 
   /// Keys [questions] by their ids; missing ids become `q0`, `q1` and so on
   /// in Request order.
@@ -186,7 +185,7 @@ final class TJev {
   ) {
     if (questions.isEmpty) {
       throw const TJevInvalidQuestionException(
-        reason: 'A Request needs at least one Question.',
+        reason: TJevMessages.noQuestions,
       );
     }
     var generatedIds = 0;
@@ -195,7 +194,7 @@ final class TJev {
       final id = question.id ?? 'q${generatedIds++}';
       if (questionsById.containsKey(id)) {
         throw TJevInvalidQuestionException(
-          reason: 'Two Questions share the id $id.',
+          reason: TJevMessages.duplicateQuestionId(id),
         );
       }
       questionsById[id] = question;
@@ -274,10 +273,10 @@ final class TJev {
     final hasBox = questions.any((question) => question is TJevBox);
     if (hasBox && !askedModel.supportsBox) {
       throw TJevInvalidQuestionException(
-        reason:
-            'A Box needs a model of '
-            '${TJevModel.boxModels.map((model) => model.id).join(' or ')}, '
-            'not ${askedModel.id}.',
+        reason: TJevMessages.unsupportedBoxModel(
+          boxModelIds: TJevModel.boxModels.map((model) => model.id),
+          modelId: askedModel.id,
+        ),
       );
     }
     final body = _bodyService.build(
@@ -298,7 +297,8 @@ final class TJev {
       path: TJevHttp.systemOnePath,
       headers: {
         ..._withLongContext(headers, longContext: longContext),
-        if (hasBox || body.images.isNotEmpty) TJevHttp.imagesHeader: 'true',
+        if (hasBox || body.images.isNotEmpty)
+          TJevHttp.imagesHeader: TJevHttp.dangerZoneOptIn,
       },
       timeout: timeout == null
           ? _config.timeout

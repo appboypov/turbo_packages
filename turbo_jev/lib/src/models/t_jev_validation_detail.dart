@@ -1,3 +1,6 @@
+import '../constants/t_jev_http.dart';
+import '../constants/t_jev_messages.dart';
+
 /// One reason TypeSafe gave for finding the Request body invalid.
 final class TJevValidationDetail {
   const TJevValidationDetail({required this.location, required this.message});
@@ -14,10 +17,11 @@ final class TJevValidationDetail {
   /// stays: `['body', 'questions', 'body', 'options']` gives
   /// `questions.body.options`.
   String get path => switch (location) {
-    ['body', ...final rest] => rest.join('.'),
-    _ => location.join('.'),
+    [TJevHttp.bodyLocation, ...final rest] => TJevMessages.fieldPath(rest),
+    _ => TJevMessages.fieldPath(location),
   };
 
   @override
-  String toString() => path.isEmpty ? message : '$path: $message';
+  String toString() =>
+      path.isEmpty ? message : TJevMessages.fieldMessage(path, message);
 }

@@ -80,9 +80,6 @@ sealed class TJevHttpFailure extends TJevFailure {
     };
   }
 
-  /// The longest raw body, in characters, that [message] holds uncut.
-  static const _maxRawBodyLength = 200;
-
   /// The HTTP status code.
   final int status;
 
@@ -106,31 +103,37 @@ sealed class TJevHttpFailure extends TJevFailure {
   static String _messageOf(Object? body, List<TJevValidationDetail> details) {
     final message = switch (body) {
       String() when body.isNotEmpty => body,
-      {'error': final String error} => error,
-      {'error': {'message': final String message}} => message,
-      {'message': final String message} => message,
-      {'detail': final String detail} => detail,
-      {'detail': {'message': final String message}} => message,
-      {'detail': List()} when details.isNotEmpty => details.join('; '),
+      {TJevHttp.errorKey: final String error} => error,
+      {TJevHttp.errorKey: {TJevHttp.messageKey: final String message}} =>
+        message,
+      {TJevHttp.messageKey: final String message} => message,
+      {TJevHttp.detailKey: final String detail} => detail,
+      {TJevHttp.detailKey: {TJevHttp.messageKey: final String message}} =>
+        message,
+      {TJevHttp.detailKey: List()} when details.isNotEmpty => details.join(
+        TJevMessages.validationDetailSeparator,
+      ),
       _ => null,
     };
     if (message != null) return message;
-    if (body == null) return 'status code (no body)';
+    if (body == null) return TJevMessages.noBody;
     final raw = body is String ? body : jsonEncode(body);
     final characters = raw.runes;
-    return characters.length > _maxRawBodyLength
-        ? '${String.fromCharCodes(characters.take(_maxRawBodyLength))}…'
+    return characters.length > TJevLimits.maxRawBodyLength
+        ? '${String.fromCharCodes(characters.take(TJevLimits.maxRawBodyLength))}'
+              '${TJevMessages.cutMarker}'
         : raw;
   }
 
   /// The entries of a `detail` list in [body] that hold a `msg` string.
   static List<TJevValidationDetail> _validationDetailsOf(Object? body) => [
-    if (body case {'detail': final List<Object?> detail})
+    if (body case {TJevHttp.detailKey: final List<Object?> detail})
       for (final entry in detail)
-        if (entry case {'msg': final String message})
+        if (entry case {TJevHttp.detailMessageKey: final String message})
           TJevValidationDetail(
             location: switch (entry) {
-              {'loc': final List<Object?> location} => location,
+              {TJevHttp.detailLocationKey: final List<Object?> location} =>
+                location,
               _ => const [],
             },
             message: message,

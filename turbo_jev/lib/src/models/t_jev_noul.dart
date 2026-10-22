@@ -29,12 +29,18 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   TJevNoulQuestionDto toDto({required String id}) {
     if (instructions == null && trueMeans == null && falseMeans == null) {
       throw TJevInvalidQuestionException(
-        reason: 'Noul $id needs Instructions or a meaning of true or false.',
+        reason: TJevMessages.meaninglessNoul(id),
       );
     }
-    TJevQuestion.checkContent(instructions, 'The Instructions of Noul $id');
-    TJevQuestion.checkContent(trueMeans, 'The meaning of true of Noul $id');
-    TJevQuestion.checkContent(falseMeans, 'The meaning of false of Noul $id');
+    TJevQuestion.checkContent(
+      instructions,
+      TJevMessages.noulInstructionsLocation(id),
+    );
+    TJevQuestion.checkContent(trueMeans, TJevMessages.trueMeaningLocation(id));
+    TJevQuestion.checkContent(
+      falseMeans,
+      TJevMessages.falseMeaningLocation(id),
+    );
     return TJevNoulQuestionDto(
       instructions: instructions,
       criteria: trueMeans == null && falseMeans == null

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 
+import '../constants/t_jev_http.dart';
 import '../constants/t_jev_limits.dart';
+import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
 import '../requests/t_jev_box_question_dto.dart';
@@ -65,7 +67,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
         return;
       case num() when !content.isFinite:
         throw TJevInvalidQuestionException(
-          reason: '$location holds the non-finite number $content.',
+          reason: TJevMessages.nonFiniteNumber(location, content),
         );
       case num():
         return;
@@ -77,7 +79,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
         for (final MapEntry(:key, :value) in content.entries) {
           if (key is! String) {
             throw TJevInvalidQuestionException(
-              reason: '$location holds the map key $key, which is no String.',
+              reason: TJevMessages.nonStringMapKey(location, key),
             );
           }
           checkContent(value, location);
@@ -87,9 +89,10 @@ sealed class TJevQuestion<A extends TJevAnswer> {
           jsonEncode(content);
         } on JsonUnsupportedObjectError {
           throw TJevInvalidQuestionException(
-            reason:
-                '$location holds a ${content.runtimeType}, which does not '
-                'encode to JSON content.',
+            reason: TJevMessages.unencodableContent(
+              location,
+              content.runtimeType,
+            ),
           );
         }
     }
@@ -99,9 +102,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
   /// Question of type [expected].
   static void _checkAnswerType(String actual, String expected) {
     if (actual != expected) {
-      throw FormatException(
-        'type: a $expected Question got a $actual Answer.',
-      );
+      throw FormatException(TJevMessages.answerTypeMismatch(actual, expected));
     }
   }
 
@@ -114,10 +115,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
   ) {
     final keys = actual.toSet();
     if (keys.length != expected.length || !keys.containsAll(expected)) {
-      throw FormatException(
-        '$field: the keys ${keys.join(', ')} do not fit the expected keys '
-        '${expected.join(', ')}.',
-      );
+      throw FormatException(TJevMessages.unexpectedKeys(field, keys, expected));
     }
   }
 }

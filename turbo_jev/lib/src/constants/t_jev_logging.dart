@@ -1,3 +1,5 @@
+import 't_jev_http.dart';
+
 /// How [TJev] logs and what it keeps out of its logs.
 abstract final class TJevLogging {
   /// The name of the `package:logging` logger the client logs to.
@@ -10,25 +12,24 @@ abstract final class TJevLogging {
   static const redactedValue = '***';
 
   /// The lowercase names of the headers whose values are secret.
-  static const secretHeaders = {
-    'authorization',
+  static final secretHeaders = Set<String>.unmodifiable({
+    TJevHttp.authorizationHeader.toLowerCase(),
     'proxy-authorization',
     'cookie',
     'set-cookie',
-  };
+  });
 
   /// The lowercase parts that make a header name secret wherever they occur
   /// in it.
   static const secretHeaderNameParts = ['token', 'secret', 'api-key'];
 
   /// The lowercase parts that make a JSON body field name secret wherever
-  /// they occur in it.
+  /// they occur in it: the [secretHeaderNameParts] and the other spellings
+  /// of a password and an API key.
   static const secretBodyFieldNameParts = [
-    'token',
-    'secret',
+    ...secretHeaderNameParts,
     'password',
     'api_key',
-    'api-key',
     'apikey',
   ];
 }
