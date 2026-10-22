@@ -223,11 +223,9 @@ final class TJevApi {
         trace: trace,
         onSuccess: onSuccess,
       );
-      if (response
-          case Fail(
-            error: final TJevFailure failure,
-          )
-          when attempt < retry.maxRetries && retry.retries(failure)) {
+      if (response case Fail(
+        error: final TJevFailure failure,
+      ) when attempt < retry.maxRetries && retry.retries(failure)) {
         final delay = retry.delayAfter(
           attempt: attempt,
           failure: failure,

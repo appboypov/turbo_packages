@@ -19,7 +19,8 @@ import '../results/t_jev_failure.dart';
 ///
 /// A [TJevAbortedFailure] never reaches the predicate, and the max retries
 /// and budget of the policy stop retries whatever it answers.
-typedef TJevRetryPredicate = bool Function(
-  TJevFailure failure,
-  bool retriesByDefault,
-);
+typedef TJevRetryPredicate =
+    bool Function(
+      TJevFailure failure,
+      bool retriesByDefault,
+    );
