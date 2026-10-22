@@ -414,6 +414,36 @@ void main() {
 
   group('Given a predicate', () {
     test(
+      'When it gets a failure, then it also gets whether the built-in rules '
+      'retry it',
+      () {
+        fakeAsync((async) {
+          final typeSafe = _answering([
+            http.Response('{}', 503),
+            http.Response('{}', 400),
+          ]);
+          final decisions = <(int, bool)>[];
+          _Call(
+            _jevFor(typeSafe.client),
+            retry: TJevRetryPolicy(
+              predicate: (failure, retriesByDefault) {
+                decisions.add((
+                  (failure as TJevHttpFailure).status,
+                  retriesByDefault,
+                ));
+                return retriesByDefault;
+              },
+            ),
+          );
+
+          async.elapse(const Duration(seconds: 2));
+
+          expect(decisions, [(503, true), (400, false)]);
+        });
+      },
+    );
+
+    test(
       'When it returns true for a 400, then the 400 is retried',
       () {
         fakeAsync((async) {
@@ -421,7 +451,8 @@ void main() {
           _Call(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
-              predicate: (failure) => failure is TJevBadRequestFailure,
+              predicate: (failure, retriesByDefault) =>
+                  retriesByDefault || failure is TJevBadRequestFailure,
             ),
           );
 
@@ -433,22 +464,51 @@ void main() {
     );
 
     test(
-      'When it returns false for a 503, then the 503 is still retried by '
-      'its status',
+      'When it returns false for a 503, then the 503 is not retried',
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(
+          final call = _Call(
             _jevFor(typeSafe.client),
-            retry: TJevRetryPolicy(predicate: (_) => false),
+            retry: TJevRetryPolicy(
+              predicate: (failure, retriesByDefault) =>
+                  retriesByDefault &&
+                  !(failure is TJevHttpFailure && failure.status == 503),
+            ),
           );
 
           async.elapse(const Duration(seconds: 2));
 
-          expect(typeSafe.requests, hasLength(3));
+          expect(typeSafe.requests, hasLength(1));
+          expect(
+            call.error,
+            isA<TJevHttpFailure>().having((f) => f.status, 'status', 503),
+          );
         });
       },
     );
+
+    for (final (status, requests) in [(400, 1), (503, 3)]) {
+      test(
+        'When it returns the built-in decision for a $status, then ask sends '
+        'the Request $requests times, as without a predicate',
+        () {
+          fakeAsync((async) {
+            final typeSafe = _failingWith(status);
+            _Call(
+              _jevFor(typeSafe.client),
+              retry: TJevRetryPolicy(
+                predicate: (_, retriesByDefault) => retriesByDefault,
+              ),
+            );
+
+            async.elapse(const Duration(seconds: 2));
+
+            expect(typeSafe.requests, hasLength(requests));
+          });
+        },
+      );
+    }
 
     test(
       'When it is the only rule, then only the failures it picks are retried',
@@ -464,7 +524,7 @@ void main() {
               statuses: const {},
               retryConnectionFailures: false,
               retryTimeouts: false,
-              predicate: (failure) =>
+              predicate: (failure, _) =>
                   failure is TJevHttpFailure && failure.status == 409,
             ),
           );
@@ -476,6 +536,48 @@ void main() {
             call.error,
             isA<TJevHttpFailure>().having((f) => f.status, 'status', 503),
           );
+        });
+      },
+    );
+
+    test(
+      'When it retries every failure, then max retries still stops the '
+      'retries',
+      () {
+        fakeAsync((async) {
+          final typeSafe = _failingWith(400);
+          _Call(
+            _jevFor(typeSafe.client),
+            retry: TJevRetryPolicy(maxRetries: 1, predicate: (_, _) => true),
+          );
+
+          async.elapse(const Duration(minutes: 1));
+
+          expect(typeSafe.requests, hasLength(2));
+        });
+      },
+    );
+
+    test(
+      'When it retries every failure, then the budget still stops the '
+      'retries',
+      () {
+        fakeAsync((async) {
+          final typeSafe = _failingWith(400);
+          _Call(
+            _jevFor(typeSafe.client),
+            retry: TJevRetryPolicy(
+              maxRetries: 5,
+              jitter: 0,
+              budget: const Duration(seconds: 1),
+              predicate: (_, _) => true,
+            ),
+          );
+
+          async.elapse(const Duration(seconds: 10));
+
+          // 0 ms + 500 ms is within 1 s; 500 ms + 1 s reaches it.
+          expect(typeSafe.requests, hasLength(2));
         });
       },
     );
@@ -512,7 +614,7 @@ void main() {
           _Call(
             _jevFor(
               typeSafe.client,
-              retry: TJevRetryPolicy(predicate: (_) => true),
+              retry: TJevRetryPolicy(predicate: (_, _) => true),
             ),
             retry: TJevRetryPolicy(),
           );
@@ -600,7 +702,7 @@ void main() {
           });
           final abort = Completer<void>();
           final call = _Call(
-            _jevFor(client, retry: TJevRetryPolicy(predicate: (_) => true)),
+            _jevFor(client, retry: TJevRetryPolicy(predicate: (_, _) => true)),
             abortTrigger: abort.future,
           );
 
