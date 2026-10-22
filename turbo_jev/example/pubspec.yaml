@@ -1,0 +1,11 @@
+name: turbo_jev_example
+description: Asks Jev one Request of each Question type and prints each Answer.
+publish_to: none
+
+environment:
+  sdk: ^3.10.4
+
+resolution: workspace
+
+dependencies:
+  turbo_jev: ^0.1.0

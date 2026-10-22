@@ -9,6 +9,7 @@ workspace:
   - turbo_firestore_api/example
   - turbo_forms
   - turbo_jev
+  - turbo_jev/example
   - turbo_mvvm
   - turbo_mvvm/example
   - turbo_notifiers
