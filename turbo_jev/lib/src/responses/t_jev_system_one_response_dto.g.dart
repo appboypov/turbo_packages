@@ -19,7 +19,7 @@ TJevSystemOneResponseDto _$TJevSystemOneResponseDtoFromJson(
     ),
     usage: $checkedConvert(
       'usage',
-      (v) => TJevUsage.fromJson(v as Map<String, dynamic>),
+      (v) => TJevUsageDto.fromJson(v as Map<String, dynamic>),
     ),
   );
   return val;

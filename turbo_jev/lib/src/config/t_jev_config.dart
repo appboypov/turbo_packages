@@ -5,7 +5,7 @@ import '../constants/t_jev_environment_keys.dart';
 import '../enums/t_jev_log_level.dart';
 import '../exceptions/t_jev_api_key_exception.dart';
 import '../exceptions/t_jev_invalid_timeout_exception.dart';
-import '../models/t_jev_model.dart';
+import '../types/t_jev_model.dart';
 import 't_jev_retry_policy.dart';
 
 /// The resolved config of a [TJev] client.

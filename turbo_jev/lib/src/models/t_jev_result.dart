@@ -7,8 +7,8 @@ import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
 import '../exceptions/t_jev_unasked_question_exception.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
+import '../types/t_jev_model.dart';
 import '../utils/response_json_object.dart';
-import 't_jev_model.dart';
 import 't_jev_usage.dart';
 
 /// The Answers of one Request, with the model that answered and its Usage.
@@ -39,7 +39,10 @@ final class TJevResult {
     final dto = TJevSystemOneResponseDto.fromJson(responseJsonObject(response));
     return TJevResult(
       model: TJevModel(dto.model),
-      usage: dto.usage,
+      usage: TJevUsage(
+        inputTokens: dto.usage.inputTokens,
+        outputTokens: dto.usage.outputTokens,
+      ),
       requestId: response.headers[TJevHttp.requestIdHeader],
       httpResponse: response,
       answers: {

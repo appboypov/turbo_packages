@@ -13,7 +13,7 @@ import '../models/t_jev_request_log.dart';
 import '../models/t_jev_request_summary.dart';
 import '../models/t_jev_response_log.dart';
 import '../results/t_jev_failure.dart';
-import 'redacted_headers.dart';
+import '../utils/redacted_headers.dart';
 
 /// Follows one Request from its first attempt to its end and logs it to the
 /// [TJevLogging.loggerName] logger: each attempt and response at debug and
@@ -21,8 +21,8 @@ import 'redacted_headers.dart';
 ///
 /// It skips records below its [TJevLogLevel] and builds a record only when
 /// the logger takes it.
-final class TJevRequestTrace {
-  TJevRequestTrace({
+final class TJevRequestTraceService {
+  TJevRequestTraceService({
     required TJevLogLevel level,
     required String method,
     required String path,
@@ -32,9 +32,7 @@ final class TJevRequestTrace {
        _path = path,
        _body = body;
 
-  // 🧩 DEPENDENCIES
-
-  static final _logger = Logger(TJevLogging.loggerName);
+  // 🎩 STATE
 
   final TJevLogLevel _level;
   final String _method;
@@ -43,13 +41,38 @@ final class TJevRequestTrace {
   /// The body before compression.
   final List<int>? _body;
 
-  // 🎩 STATE
-
   final _elapsed = clock.stopwatch()..start();
   var _attempts = 0;
   var _timeouts = 0;
   int? _status;
   String? _requestId;
+
+  // 🛠 UTIL
+
+  static final _logger = Logger(TJevLogging.loggerName);
+
+  // 🏗️ HELPERS
+
+  /// Logs the record [build] makes at [level], unless the trace or the
+  /// logger skips [level].
+  void _log(TJevLogLevel level, Object Function() build) {
+    if (level.level < _level.level) return;
+    _logger.log(level.level, build);
+  }
+
+  /// [bytes] as text cut at [TJevLogging.maxLoggedBodyBytes] bytes, with the
+  /// number of bytes it leaves out.
+  static ({String? body, int omittedBytes}) _cut(List<int>? bytes) {
+    if (bytes == null || bytes.isEmpty) return (body: null, omittedBytes: 0);
+    const maxBytes = TJevLogging.maxLoggedBodyBytes;
+    return (
+      body: utf8.decode(
+        bytes.length > maxBytes ? bytes.sublist(0, maxBytes) : bytes,
+        allowMalformed: true,
+      ),
+      omittedBytes: max(bytes.length - maxBytes, 0),
+    );
+  }
 
   // 🪄 MUTATORS
 
@@ -106,28 +129,5 @@ final class TJevRequestTrace {
       ),
     );
     return response;
-  }
-
-  // 🏗️ HELPERS
-
-  /// Logs the record [build] makes at [level], unless the trace or the
-  /// logger skips [level].
-  void _log(TJevLogLevel level, Object Function() build) {
-    if (level.level < _level.level) return;
-    _logger.log(level.level, build);
-  }
-
-  /// [bytes] as text cut at [TJevLogging.maxLoggedBodyBytes] bytes, with the
-  /// number of bytes it leaves out.
-  static ({String? body, int omittedBytes}) _cut(List<int>? bytes) {
-    if (bytes == null || bytes.isEmpty) return (body: null, omittedBytes: 0);
-    const maxBytes = TJevLogging.maxLoggedBodyBytes;
-    return (
-      body: utf8.decode(
-        bytes.length > maxBytes ? bytes.sublist(0, maxBytes) : bytes,
-        allowMalformed: true,
-      ),
-      omittedBytes: max(bytes.length - maxBytes, 0),
-    );
   }
 }

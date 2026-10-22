@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../models/t_jev_model_card.dart';
+import 't_jev_model_card_dto.dart';
 
 part 't_jev_models_response_dto.g.dart';
 
@@ -13,5 +13,5 @@ final class TJevModelsResponseDto {
       _$TJevModelsResponseDtoFromJson(json);
 
   /// The models and Model Aliases of the account.
-  final List<TJevModelCard> models;
+  final List<TJevModelCardDto> models;
 }
