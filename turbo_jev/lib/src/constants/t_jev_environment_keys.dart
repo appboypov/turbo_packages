@@ -1,5 +1,7 @@
 /// Names of the environment variables [TJev] reads its config from.
 abstract final class TJevEnvironmentKeys {
+  // 🧲 FETCHERS
+
   /// The API key.
   static const apiKey = 'TYPESAFE_API_KEY';
 

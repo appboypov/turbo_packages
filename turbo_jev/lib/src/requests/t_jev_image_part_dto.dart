@@ -7,11 +7,15 @@ part 't_jev_image_part_dto.g.dart';
 final class TJevImagePartDto {
   const TJevImagePartDto({required this.part});
 
+  // 🎩 STATE
+
   @JsonKey(includeToJson: true)
   String get type => 'image';
 
   /// The name of the multipart part that holds the Image's file bytes.
   final String part;
+
+  // 🧲 FETCHERS
 
   Map<String, dynamic> toJson() => _$TJevImagePartDtoToJson(this);
 }

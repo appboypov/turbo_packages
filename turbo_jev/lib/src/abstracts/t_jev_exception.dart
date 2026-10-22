@@ -14,6 +14,8 @@ part '../exceptions/t_jev_unasked_question_exception.dart';
 sealed class TJevException implements Exception {
   const TJevException();
 
+  // 🧲 FETCHERS
+
   /// What is wrong, in words.
   String get message;
 }

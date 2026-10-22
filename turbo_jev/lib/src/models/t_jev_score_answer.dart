@@ -44,6 +44,8 @@ final class TJevScoreAnswer<T extends Object> extends TJevAnswer {
     );
   }
 
+  // 🎩 STATE
+
   /// The Probability-weighted mean of the Level numbers, from 0 to the top
   /// Level number. It can fall between two Levels.
   final double score;
@@ -57,6 +59,8 @@ final class TJevScoreAnswer<T extends Object> extends TJevAnswer {
 
   /// The description of each Level as Jev read it, in Level order.
   final Map<T, Object?> legend;
+
+  // 🧲 FETCHERS
 
   /// [score] divided by the top Level number, from 0 to 1, so Scores with
   /// different numbers of Levels compare.

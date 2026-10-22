@@ -19,6 +19,8 @@ final class TJevModelCard {
     releaseDate: dto.releaseDate,
   );
 
+  // 🎩 STATE
+
   /// The model id a Request can name, usually a Model Alias.
   final TJevModel name;
 

@@ -6,6 +6,8 @@ import '../types/t_jev_model.dart';
 final class TJevModelConverter implements JsonConverter<TJevModel, String> {
   const TJevModelConverter();
 
+  // ⚡️ OVERRIDES
+
   @override
   TJevModel fromJson(String json) => TJevModel(json);
 

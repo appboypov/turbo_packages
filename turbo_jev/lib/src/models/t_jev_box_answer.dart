@@ -26,6 +26,8 @@ final class TJevBoxAnswer extends TJevAnswer {
     );
   }
 
+  // 🎩 STATE
+
   /// The top edge, as a fraction of the Image's height from 0 to 1.
   final double top;
 

@@ -40,6 +40,8 @@ final class TJevChoiceAnswer<T extends Object> extends TJevAnswer {
     );
   }
 
+  // 🎩 STATE
+
   /// The Option with the highest Probability.
   final T choice;
 
@@ -50,6 +52,8 @@ final class TJevChoiceAnswer<T extends Object> extends TJevAnswer {
   /// How much of the Probability sits on [choice], from 0 (spread evenly) to
   /// 1 (all on [choice]): `(top - 1/n) / (1 - 1/n)` for `n` Options.
   final double confidence;
+
+  // 🧲 FETCHERS
 
   /// The highest Probability of any Option.
   double get topProbability => probabilities.values.reduce(math.max);

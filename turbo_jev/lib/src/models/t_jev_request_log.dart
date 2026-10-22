@@ -12,6 +12,15 @@ final class TJevRequestLog {
     required this.omittedBodyBytes,
   });
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$method $path -> attempt $attempt headers=$headers body=$body'
+      '${omittedBodyBytes > 0 ? ' (+$omittedBodyBytes bytes)' : ''}';
+
+  // 🎩 STATE
+
   /// The HTTP method.
   final String method;
 
@@ -19,7 +28,7 @@ final class TJevRequestLog {
   final String path;
 
   /// The number of the attempt: 1 for the first send, 2 for the first
-  /// Retry.
+  /// retry.
   final int attempt;
 
   /// The sent headers, each secret value replaced by
@@ -28,15 +37,12 @@ final class TJevRequestLog {
 
   /// The body before compression as text, cut at
   /// [TJevLogging.maxLoggedBodyBytes] bytes, or `null` without a body. With
-  /// body redaction on, a JSON body has each secret field value replaced by
-  /// [TJevLogging.redactedValue] before the cut.
+  /// body redaction on, a JSON body, or the `request` part of a multipart
+  /// body, has each secret field value replaced by [TJevLogging.redactedValue]
+  /// before the cut. The other parts of a multipart body stay as they are,
+  /// the bytes of its Images included.
   final String? body;
 
   /// How many bytes of the body [body] leaves out.
   final int omittedBodyBytes;
-
-  @override
-  String toString() =>
-      '$method $path -> attempt $attempt headers=$headers body=$body'
-      '${omittedBodyBytes > 0 ? ' (+$omittedBodyBytes bytes)' : ''}';
 }

@@ -23,11 +23,15 @@ part '../models/t_jev_score.dart';
 sealed class TJevQuestion<A extends TJevAnswer> {
   const TJevQuestion({this.id});
 
+  // 🎩 STATE
+
   /// The id that keys this Question in its Request.
   ///
   /// Questions without an id get `q0`, `q1` and so on in Request order. Jev
   /// does not read ids, so an id only makes logged JSON easier to read.
   final String? id;
+
+  // 🧲 FETCHERS
 
   /// Whether this Question can be asked: a success when it can, else a fail
   /// whose message names the rule it breaks.
@@ -45,6 +49,8 @@ sealed class TJevQuestion<A extends TJevAnswer> {
   @internal
   static TurboResponse<void> checkContent(Object? content, String location) =>
       _checkContent(content, location, containers: Set.identity());
+
+  // 🏗️ HELPERS
 
   /// [checkContent] of [content] inside the lists and maps of [containers],
   /// the path of containers from the outer content down to [content].

@@ -12,6 +12,16 @@ final class TJevRequestSummary {
     required this.elapsed,
   });
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$method $path ${aborted ? 'aborted' : '<- ${status ?? 'no response'}'} '
+      'in ${elapsed.inMilliseconds}ms after $retries retries and $timeouts '
+      'timeouts (request ${requestId ?? '-'})';
+
+  // 🎩 STATE
+
   /// The HTTP method.
   final String method;
 
@@ -25,21 +35,15 @@ final class TJevRequestSummary {
   /// The id TypeSafe gave the last response, if it sent one.
   final String? requestId;
 
-  /// How many Retries were sent.
+  /// How many retries were sent.
   final int retries;
 
   /// How many attempts ran out of time.
   final int timeouts;
 
-  /// Whether the Abort Trigger stopped the Request.
+  /// Whether the abort trigger stopped the Request.
   final bool aborted;
 
-  /// How long the Request took, its Retries and waits included.
+  /// How long the Request took, its retries and waits included.
   final Duration elapsed;
-
-  @override
-  String toString() =>
-      '$method $path ${aborted ? 'aborted' : '<- ${status ?? 'no response'}'} '
-      'in ${elapsed.inMilliseconds}ms after $retries retries and $timeouts '
-      'timeouts (request ${requestId ?? '-'})';
 }

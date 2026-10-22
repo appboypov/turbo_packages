@@ -6,6 +6,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevInvalidQuestionException extends TJevException {
   const TJevInvalidQuestionException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// What is wrong with the Questions or the content.
   @override
   final String message;

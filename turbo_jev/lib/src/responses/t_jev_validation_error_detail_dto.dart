@@ -10,6 +10,8 @@ final class TJevValidationErrorDetailDto {
   factory TJevValidationErrorDetailDto.fromJson(Map<String, dynamic> json) =>
       _$TJevValidationErrorDetailDtoFromJson(json);
 
+  // 🎩 STATE
+
   /// Where in the Request the problem is, empty when TypeSafe names no
   /// place.
   @JsonKey(defaultValue: [])

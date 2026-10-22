@@ -4,6 +4,8 @@ import 't_jev_limits.dart';
 
 /// The texts of the exceptions [TJev] throws and of the failures it returns.
 abstract final class TJevMessages {
+  // 🧲 FETCHERS
+
   /// Why the client refuses to run in a browser.
   static const browser =
       'TJev runs in a browser, which shows the API key to anyone using '
@@ -222,6 +224,8 @@ abstract final class TJevMessages {
 
   /// The text after a raw body cut in an HTTP failure message.
   static const cutMarker = '…';
+
+  // 🏗️ HELPERS
 
   static String _answerPath(String id) => fieldPath([TJevHttp.answersKey, id]);
 }

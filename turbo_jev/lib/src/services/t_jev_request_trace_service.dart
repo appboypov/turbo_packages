@@ -19,7 +19,7 @@ import '../utils/t_jev_redacted_json_body.dart';
 
 /// Logs Requests to its [Logger]: each attempt and response at debug, one
 /// [TJevRequestSummary] at info when a Request ends, a [TJevRetryLog] at
-/// warning for each Retry and a [TJevFailureLog] at error when a Request
+/// warning for each retry and a [TJevFailureLog] at error when a Request
 /// ends in a failure other than an abort.
 ///
 /// It skips records below its [TJevLogLevel] and builds a record only when

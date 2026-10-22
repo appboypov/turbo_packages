@@ -12,6 +12,8 @@ final class TJevNoulAnswerDto {
   factory TJevNoulAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevNoulAnswerDtoFromJson(json);
 
+  // 🎩 STATE
+
   final TJevQuestionType type;
 
   /// The Probability that the statement is true.

@@ -7,11 +7,15 @@ part 't_jev_noul_criteria_dto.g.dart';
 final class TJevNoulCriteriaDto {
   const TJevNoulCriteriaDto({this.trueMeans, this.falseMeans});
 
+  // 🎩 STATE
+
   @JsonKey(name: 'true')
   final Object? trueMeans;
 
   @JsonKey(name: 'false')
   final Object? falseMeans;
+
+  // 🧲 FETCHERS
 
   Map<String, dynamic> toJson() => _$TJevNoulCriteriaDtoToJson(this);
 }

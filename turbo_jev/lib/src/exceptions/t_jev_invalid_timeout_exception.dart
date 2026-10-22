@@ -7,14 +7,18 @@ final class TJevInvalidTimeoutException extends TJevException {
     required this.timeout,
   });
 
+  // ⚡️ OVERRIDES
+
   /// What is wrong with the timeout.
   @override
   final String message;
 
-  /// The timeout that was given.
-  final Duration timeout;
-
   @override
   String toString() =>
       'TJevInvalidTimeoutException{message: $message, timeout: $timeout}';
+
+  // 🎩 STATE
+
+  /// The timeout that was given.
+  final Duration timeout;
 }

@@ -6,6 +6,8 @@ final class TJevAbortedFailure extends TJevFailure {
   @internal
   const TJevAbortedFailure();
 
+  // ⚡️ OVERRIDES
+
   @override
   String get message => TJevMessages.aborted;
 

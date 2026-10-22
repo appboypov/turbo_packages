@@ -10,12 +10,16 @@ part 't_jev_box_question_dto.g.dart';
 final class TJevBoxQuestionDto implements TJevQuestionDto {
   const TJevBoxQuestionDto({this.instructions});
 
+  // ⚡️ OVERRIDES
+
   @override
   @JsonKey(includeToJson: true)
   TJevQuestionType get type => TJevQuestionType.box;
 
-  final Object? instructions;
-
   @override
   Map<String, dynamic> toJson() => _$TJevBoxQuestionDtoToJson(this);
+
+  // 🎩 STATE
+
+  final Object? instructions;
 }

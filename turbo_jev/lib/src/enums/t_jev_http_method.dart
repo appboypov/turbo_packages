@@ -8,6 +8,8 @@ enum TJevHttpMethod {
 
   const TJevHttpMethod(this.wireValue);
 
+  // 🎩 STATE
+
   /// The name of the method on the wire.
   final String wireValue;
 }

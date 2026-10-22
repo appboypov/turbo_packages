@@ -12,6 +12,15 @@ final class TJevResponseLog {
     required this.omittedBodyBytes,
   });
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$method $path <- $status headers=$headers body=$body'
+      '${omittedBodyBytes > 0 ? ' (+$omittedBodyBytes bytes)' : ''}';
+
+  // 🎩 STATE
+
   /// The HTTP method of the Request.
   final String method;
 
@@ -33,9 +42,4 @@ final class TJevResponseLog {
 
   /// How many bytes of the body [body] leaves out.
   final int omittedBodyBytes;
-
-  @override
-  String toString() =>
-      '$method $path <- $status headers=$headers body=$body'
-      '${omittedBodyBytes > 0 ? ' (+$omittedBodyBytes bytes)' : ''}';
 }

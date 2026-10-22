@@ -18,6 +18,8 @@ enum TJevQuestionType {
 
   const TJevQuestionType(this.wireValue);
 
+  // 🎩 STATE
+
   /// The value of the type on the wire.
   final String wireValue;
 }

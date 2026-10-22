@@ -60,6 +60,8 @@ final class TJevRetryPolicy {
     }
   }
 
+  // 🎩 STATE
+
   /// How many times a failed Request is sent again; `0` turns retries off.
   final int maxRetries;
 
@@ -98,6 +100,8 @@ final class TJevRetryPolicy {
   /// `null` turns the limit off.
   final Duration? budget;
 
+  // 🧲 FETCHERS
+
   /// Whether [failure] is sent again, retries left aside.
   @internal
   bool retries(TJevFailure failure) {
@@ -128,6 +132,8 @@ final class TJevRetryPolicy {
     }
     return _backoff(attempt) * (1 - random.nextDouble() * jitter);
   }
+
+  // 🏗️ HELPERS
 
   bool _retriesByRule(TJevFailure failure) => switch (failure) {
     TJevHttpFailure(:final status) => statuses.contains(status),

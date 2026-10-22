@@ -1,5 +1,7 @@
 /// Paths, header names and wire formats of the TypeSafe HTTP API.
 abstract final class TJevHttp {
+  // 🧲 FETCHERS
+
   /// The System One endpoint that answers Questions about State.
   static const systemOnePath = '/v1/systemone';
 

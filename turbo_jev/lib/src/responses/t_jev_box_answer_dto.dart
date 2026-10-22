@@ -17,6 +17,8 @@ final class TJevBoxAnswerDto {
   factory TJevBoxAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevBoxAnswerDtoFromJson(json);
 
+  // 🎩 STATE
+
   final TJevQuestionType type;
 
   final TJevBoxCoordinatesDto box;

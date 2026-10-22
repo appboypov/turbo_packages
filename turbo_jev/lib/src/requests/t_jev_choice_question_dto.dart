@@ -10,15 +10,19 @@ part 't_jev_choice_question_dto.g.dart';
 final class TJevChoiceQuestionDto implements TJevQuestionDto {
   const TJevChoiceQuestionDto({this.instructions, required this.criteria});
 
+  // ⚡️ OVERRIDES
+
   @override
   @JsonKey(includeToJson: true)
   TJevQuestionType get type => TJevQuestionType.choice;
+
+  @override
+  Map<String, dynamic> toJson() => _$TJevChoiceQuestionDtoToJson(this);
+
+  // 🎩 STATE
 
   final Object? instructions;
 
   /// The description of each Option, keyed by its wire key.
   final Map<String, Object?> criteria;
-
-  @override
-  Map<String, dynamic> toJson() => _$TJevChoiceQuestionDtoToJson(this);
 }

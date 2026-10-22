@@ -355,7 +355,7 @@ void main() {
     );
 
     test(
-      'When the Abort Trigger completes while the client waits to retry, '
+      'When the abort trigger completes while the client waits to retry, '
       'then the client logs the warning and no error',
       () {
         fakeAsync((async) {
@@ -547,7 +547,7 @@ void main() {
     );
 
     test(
-      'When the Abort Trigger completes while the client waits to retry, '
+      'When the abort trigger completes while the client waits to retry, '
       'then the summary says the Request was aborted',
       () {
         fakeAsync((async) {
@@ -583,7 +583,7 @@ void main() {
     );
 
     test(
-      'When the Abort Trigger completes before TypeSafe answers, then the '
+      'When the abort trigger completes before TypeSafe answers, then the '
       'summary says the Request was aborted without a response',
       () {
         fakeAsync((async) {

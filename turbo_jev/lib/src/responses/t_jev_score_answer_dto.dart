@@ -18,6 +18,8 @@ final class TJevScoreAnswerDto {
   factory TJevScoreAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevScoreAnswerDtoFromJson(json);
 
+  // 🎩 STATE
+
   final TJevQuestionType type;
 
   final double score;

@@ -3,6 +3,8 @@ import '../types/t_jev_model.dart';
 
 /// Values [TJev] uses when neither config nor environment sets them.
 abstract final class TJevDefaults {
+  // 🧲 FETCHERS
+
   /// The base URL of TypeSafe.
   static const baseUrl = 'https://api.typesafe.ai';
 

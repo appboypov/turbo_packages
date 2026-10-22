@@ -12,6 +12,8 @@ final class TJevModelsResponseDto {
   factory TJevModelsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$TJevModelsResponseDtoFromJson(json);
 
+  // 🎩 STATE
+
   /// The models and Model Aliases of the account.
   final List<TJevModelCardDto> models;
 }

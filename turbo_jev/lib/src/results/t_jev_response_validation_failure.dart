@@ -30,6 +30,15 @@ final class TJevResponseValidationFailure extends TJevFailure {
     );
   }
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      'TJevResponseValidationFailure{message: $message, status: $status, '
+      'requestId: $requestId}';
+
+  // 🎩 STATE
+
   /// The path of the field that does not fit and what is wrong with it.
   @override
   final String message;
@@ -45,9 +54,4 @@ final class TJevResponseValidationFailure extends TJevFailure {
 
   /// The response body: decoded JSON, else its text.
   final Object? body;
-
-  @override
-  String toString() =>
-      'TJevResponseValidationFailure{message: $message, status: $status, '
-      'requestId: $requestId}';
 }

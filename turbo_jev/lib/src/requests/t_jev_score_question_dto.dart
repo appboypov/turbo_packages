@@ -10,15 +10,19 @@ part 't_jev_score_question_dto.g.dart';
 final class TJevScoreQuestionDto implements TJevQuestionDto {
   const TJevScoreQuestionDto({this.instructions, required this.criteria});
 
+  // ⚡️ OVERRIDES
+
   @override
   @JsonKey(includeToJson: true)
   TJevQuestionType get type => TJevQuestionType.score;
+
+  @override
+  Map<String, dynamic> toJson() => _$TJevScoreQuestionDtoToJson(this);
+
+  // 🎩 STATE
 
   final Object? instructions;
 
   /// The description of each Level, in Level order.
   final List<Object> criteria;
-
-  @override
-  Map<String, dynamic> toJson() => _$TJevScoreQuestionDtoToJson(this);
 }

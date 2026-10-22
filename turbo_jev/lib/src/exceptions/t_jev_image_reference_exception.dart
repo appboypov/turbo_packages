@@ -6,6 +6,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevImageReferenceException extends TJevException {
   const TJevImageReferenceException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// Which references or Images do not match.
   @override
   final String message;

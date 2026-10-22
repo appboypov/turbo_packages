@@ -13,9 +13,13 @@ final class TJevValidationErrorDto {
   factory TJevValidationErrorDto.fromJson(Map<String, dynamic> json) =>
       _$TJevValidationErrorDtoFromJson(json);
 
+  // 🎩 STATE
+
   /// The validation errors, in the order TypeSafe sent them.
   @JsonKey(fromJson: _detailFromJson)
   final List<TJevValidationErrorDetailDto> detail;
+
+  // 🏗️ HELPERS
 
   /// The entries of [json] that hold a message; the others are left out.
   static List<TJevValidationErrorDetailDto> _detailFromJson(

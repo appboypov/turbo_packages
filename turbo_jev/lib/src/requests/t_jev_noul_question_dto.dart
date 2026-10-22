@@ -15,14 +15,18 @@ part 't_jev_noul_question_dto.g.dart';
 final class TJevNoulQuestionDto implements TJevQuestionDto {
   const TJevNoulQuestionDto({this.instructions, this.criteria});
 
+  // ⚡️ OVERRIDES
+
   @override
   @JsonKey(includeToJson: true)
   TJevQuestionType get type => TJevQuestionType.noul;
 
+  @override
+  Map<String, dynamic> toJson() => _$TJevNoulQuestionDtoToJson(this);
+
+  // 🎩 STATE
+
   final Object? instructions;
 
   final TJevNoulCriteriaDto? criteria;
-
-  @override
-  Map<String, dynamic> toJson() => _$TJevNoulQuestionDtoToJson(this);
 }

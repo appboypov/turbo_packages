@@ -4,6 +4,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevInvalidRetryPolicyException extends TJevException {
   const TJevInvalidRetryPolicyException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// What is wrong with the policy.
   @override
   final String message;
