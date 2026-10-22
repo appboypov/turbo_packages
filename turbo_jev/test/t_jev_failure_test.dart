@@ -11,6 +11,9 @@ import 'support/fake_type_safe.dart';
 
 const _billing = TJevNoul(instructions: 'Is this about billing?');
 
+/// These tests type single failures, so no Request is sent again.
+final _noRetries = TJevRetryPolicy(maxRetries: 0);
+
 void main() {
   Future<TJevFailure> failureFor(http.Response response) async {
     final typeSafe = FakeTypeSafe(respond: (_) => response);
@@ -18,6 +21,7 @@ void main() {
       apiKey: 'ts_key',
       httpClient: typeSafe.client,
       environment: const {},
+      retry: _noRetries,
     );
     final result = await jev.ask(
       state: 'I was charged twice.',
@@ -323,6 +327,7 @@ void main() {
             (_) => throw http.ClientException('Connection refused'),
           ),
           environment: const {},
+          retry: _noRetries,
         );
 
         final response = await jev.ask(state: 'Hi', questions: [_billing]);
@@ -350,6 +355,7 @@ void main() {
             apiKey: 'ts_key',
             httpClient: silent,
             environment: const {},
+            retry: _noRetries,
           );
           TurboResponse<TJevResult>? response;
           jev
@@ -379,6 +385,7 @@ void main() {
           apiKey: 'ts_key',
           httpClient: silent,
           environment: const {},
+          retry: _noRetries,
           timeout: const Duration(milliseconds: 20),
         );
 
@@ -402,6 +409,7 @@ void main() {
           apiKey: 'ts_key',
           httpClient: silent,
           environment: const {},
+          retry: _noRetries,
           timeout: const Duration(hours: 1),
         );
 
@@ -435,6 +443,7 @@ void main() {
             ),
           ),
           environment: const {},
+          retry: _noRetries,
         );
 
         final response = await jev.ask(

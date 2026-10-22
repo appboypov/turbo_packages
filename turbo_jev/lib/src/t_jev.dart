@@ -6,6 +6,7 @@ import 'package:turbo_response/turbo_response.dart';
 import 'abstracts/t_jev_question.dart';
 import 'apis/t_jev_api.dart';
 import 'config/t_jev_config.dart';
+import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
@@ -52,6 +53,10 @@ final class TJev {
   /// [longContext] on, every Request opts in to the long-context Danger Zone,
   /// which raises the context limits to 262k tokens.
   ///
+  /// [retry] decides when a failed Request is sent again and defaults to
+  /// [TJevRetryPolicy] with its defaults: 2 retries of 408, 429, 5xx,
+  /// connection failures and timeouts.
+  ///
   /// The client closes [httpClient] only when it created it.
   ///
   /// Throws [TJevApiKeyException] when no API key is found or the key is not
@@ -64,6 +69,7 @@ final class TJev {
     Duration? timeout,
     Map<String, String>? defaultHeaders,
     bool longContext = false,
+    TJevRetryPolicy? retry,
     http.Client? httpClient,
     Map<String, String>? environment,
   }) {
@@ -76,6 +82,7 @@ final class TJev {
         defaultHeaders,
         longContext: longContext,
       ),
+      retry: retry,
       environment: environment ?? processEnvironment,
     );
     return TJev._(
@@ -121,10 +128,13 @@ final class TJev {
   /// opts in to the long-context Danger Zone.
   ///
   /// Read each Answer with [TJevResult.answer]. A [timeout] replaces the
-  /// client timeout for this call. A failed call returns a fail holding a
-  /// [TJevFailure]: a [TJevHttpFailure] for a non-2xx response, a
-  /// [TJevResponseValidationFailure] for a 2xx response whose body does not
-  /// fit the Request, a [TJevConnectionFailure] or a [TJevTimeoutFailure].
+  /// client timeout for each attempt of this call and a [retry] policy
+  /// replaces the client policy. When [abortTrigger] completes before the
+  /// call ends, the call stops, also while it waits to retry. A failed call
+  /// returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
+  /// non-2xx response, a [TJevResponseValidationFailure] for a 2xx response
+  /// whose body does not fit the Request, a [TJevConnectionFailure], a
+  /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///
   /// Throws [TJevInvalidQuestionException] before sending when [questions]
   /// is empty, two Questions share an id or a Question is invalid, and
@@ -133,6 +143,8 @@ final class TJev {
     required Object state,
     required List<TJevQuestion> questions,
     Duration? timeout,
+    TJevRetryPolicy? retry,
+    Future<void>? abortTrigger,
     TJevModel? model,
     Map<String, Object?>? extraBody,
     Map<String, String>? headers,
@@ -146,6 +158,8 @@ final class TJev {
       timeout: timeout == null
           ? _config.timeout
           : TJevConfig.checkedTimeout(timeout),
+      retry: retry ?? _config.retry,
+      abortTrigger: abortTrigger,
       json: {
         ...TJevSystemOneRequestDto(
           model: (model ?? _config.defaultModel).id,
@@ -169,14 +183,19 @@ final class TJev {
   /// and release date.
   ///
   /// [headers] are sent after the client's default headers. A [timeout]
-  /// replaces the client timeout for this call. A failed call returns a fail
-  /// holding a [TJevFailure]: a [TJevHttpFailure] for a non-2xx response, a
-  /// [TJevConnectionFailure] or a [TJevTimeoutFailure].
+  /// replaces the client timeout for each attempt of this call and a [retry]
+  /// policy replaces the client policy. When [abortTrigger] completes before
+  /// the call ends, the call stops, also while it waits to retry. A failed
+  /// call returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
+  /// non-2xx response, a [TJevConnectionFailure], a [TJevTimeoutFailure] or
+  /// a [TJevAbortedFailure].
   ///
   /// Throws [TJevInvalidTimeoutException] when [timeout] is not positive.
   Future<TurboResponse<List<TJevModelCard>>> models({
     Map<String, String>? headers,
     Duration? timeout,
+    TJevRetryPolicy? retry,
+    Future<void>? abortTrigger,
   }) => _api.send(
     method: 'GET',
     path: TJevHttp.modelsPath,
@@ -184,6 +203,8 @@ final class TJev {
     timeout: timeout == null
         ? _config.timeout
         : TJevConfig.checkedTimeout(timeout),
+    retry: retry ?? _config.retry,
+    abortTrigger: abortTrigger,
     onSuccess: (response) => TJevModelsResponseDto.fromJson(
       jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
     ).models,

@@ -47,6 +47,9 @@ abstract final class TJevHttp {
   /// The request header that names the runtime and its platform.
   static const runtimeHeader = 'X-TypeSafe-Runtime';
 
+  /// The request header that numbers a retry: 1 for the first retry.
+  static const retryCountHeader = 'X-TypeSafe-Retry-Count';
+
   /// The Danger Zone header that raises the context limits to 262k tokens.
   static const longContextHeader = 'TypeSafe-Danger-Zone-Long-Context';
 
@@ -59,5 +62,6 @@ abstract final class TJevHttp {
     'user-agent',
     'x-typesafe-sdk',
     'x-typesafe-runtime',
+    'x-typesafe-retry-count',
   };
 }

@@ -44,6 +44,18 @@ _Avoid_: asset, attachment, file
 The token that stands for an Image wherever it appears in content.
 _Avoid_: placeholder, image tag
 
+**Retry**:
+Sending a failed Request again after a wait, with the same body.
+_Avoid_: resend, replay
+
+**Retry Policy**:
+The rules that decide which failures get a Retry, how long each wait lasts and when retries stop.
+_Avoid_: backoff config, retry options
+
+**Abort Trigger**:
+A future the caller completes to stop a Request, also while it waits for a Retry.
+_Avoid_: cancel token, signal
+
 ### Questions
 
 **Question**:

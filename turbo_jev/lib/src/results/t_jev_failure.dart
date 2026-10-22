@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 
 import '../constants/t_jev_http.dart';
 import '../models/t_jev_validation_detail.dart';
+import '../utils/retry_after.dart';
 
+part 't_jev_aborted_failure.dart';
 part 't_jev_authentication_failure.dart';
 part 't_jev_bad_request_failure.dart';
 part 't_jev_connection_failure.dart';

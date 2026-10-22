@@ -5,6 +5,7 @@ import '../constants/t_jev_environment_keys.dart';
 import '../exceptions/t_jev_api_key_exception.dart';
 import '../exceptions/t_jev_invalid_timeout_exception.dart';
 import '../models/t_jev_model.dart';
+import 't_jev_retry_policy.dart';
 
 /// The resolved config of a [TJev] client.
 ///
@@ -17,6 +18,7 @@ final class TJevConfig {
     required this.defaultModel,
     required this.timeout,
     required this.defaultHeaders,
+    required this.retry,
   });
 
   /// Resolves the config and checks its API key and timeout.
@@ -32,6 +34,7 @@ final class TJevConfig {
     required TJevModel? defaultModel,
     required Duration? timeout,
     required Map<String, String> defaultHeaders,
+    required TJevRetryPolicy? retry,
     required Map<String, String> environment,
   }) {
     String? fromEnvironment(String key) {
@@ -56,6 +59,7 @@ final class TJevConfig {
               : TJevModel(environmentModel)),
       timeout: checkedTimeout(timeout ?? TJevDefaults.timeout),
       defaultHeaders: Map.unmodifiable(defaultHeaders),
+      retry: retry ?? TJevRetryPolicy(),
     );
   }
 
@@ -77,6 +81,9 @@ final class TJevConfig {
 
   /// The headers every Request sends before its own headers.
   final Map<String, String> defaultHeaders;
+
+  /// When a failed Request is sent again, unless a call sets its own policy.
+  final TJevRetryPolicy retry;
 
   /// Returns [timeout] when it is positive.
   ///
