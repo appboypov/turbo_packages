@@ -56,6 +56,10 @@ _Avoid_: backoff config, retry options
 A future the caller completes to stop a Request, also while it waits for a Retry.
 _Avoid_: cancel token, signal
 
+**Request Summary**:
+The one info log record of a Request, with its status, request id, Retries, timeouts and whether its Abort Trigger stopped it.
+_Avoid_: access log, request report
+
 ### Questions
 
 **Question**:

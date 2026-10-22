@@ -8,6 +8,7 @@ import 'apis/t_jev_api.dart';
 import 'config/t_jev_config.dart';
 import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
+import 'enums/t_jev_log_level.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
 import 'exceptions/t_jev_image_reference_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
@@ -15,6 +16,9 @@ import 'exceptions/t_jev_invalid_timeout_exception.dart';
 import 'models/t_jev_image.dart';
 import 'models/t_jev_model.dart';
 import 'models/t_jev_model_card.dart';
+import 'models/t_jev_request_log.dart';
+import 'models/t_jev_request_summary.dart';
+import 'models/t_jev_response_log.dart';
 import 'models/t_jev_result.dart';
 import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
@@ -60,6 +64,16 @@ final class TJev {
   /// [TJevRetryPolicy] with its defaults: 2 retries of 408, 429, 5xx,
   /// connection failures and timeouts.
   ///
+  /// The client logs to the `turbo_jev` logger of `package:logging`, and
+  /// the app decides where its records go. [logLevel] comes from this
+  /// argument first, from `TYPESAFE_LOG_LEVEL` in [environment] second and
+  /// is [TJevLogLevel.warning] without either; the client skips records
+  /// below it. At info it logs one [TJevRequestSummary] per Request, and at
+  /// debug a [TJevRequestLog] per attempt and a [TJevResponseLog] per
+  /// response, with each secret header value replaced in full. The
+  /// `package:logging` level must let these records through as well, such
+  /// as `Logger.root.level = Level.ALL` for debug.
+  ///
   /// The client closes [httpClient] only when it created it.
   ///
   /// Throws [TJevApiKeyException] when no API key is found or the key is not
@@ -73,6 +87,7 @@ final class TJev {
     Map<String, String>? defaultHeaders,
     bool longContext = false,
     TJevRetryPolicy? retry,
+    TJevLogLevel? logLevel,
     http.Client? httpClient,
     Map<String, String>? environment,
   }) {
@@ -86,6 +101,7 @@ final class TJev {
         longContext: longContext,
       ),
       retry: retry,
+      logLevel: logLevel,
       environment: environment ?? processEnvironment,
     );
     return TJev._(

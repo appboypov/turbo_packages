@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 
 import '../constants/t_jev_defaults.dart';
 import '../constants/t_jev_environment_keys.dart';
+import '../enums/t_jev_log_level.dart';
 import '../exceptions/t_jev_api_key_exception.dart';
 import '../exceptions/t_jev_invalid_timeout_exception.dart';
 import '../models/t_jev_model.dart';
@@ -19,11 +20,13 @@ final class TJevConfig {
     required this.timeout,
     required this.defaultHeaders,
     required this.retry,
+    required this.logLevel,
   });
 
   /// Resolves the config and checks its API key and timeout.
   ///
-  /// An explicit empty [apiKey] does not fall back to the environment.
+  /// An explicit empty [apiKey] does not fall back to the environment. An
+  /// environment log level that names no [TJevLogLevel] counts as unset.
   ///
   /// Throws [TJevApiKeyException] when no key is found or the key is not
   /// printable ASCII without spaces, and [TJevInvalidTimeoutException] when
@@ -35,6 +38,7 @@ final class TJevConfig {
     required Duration? timeout,
     required Map<String, String> defaultHeaders,
     required TJevRetryPolicy? retry,
+    required TJevLogLevel? logLevel,
     required Map<String, String> environment,
   }) {
     String? fromEnvironment(String key) {
@@ -43,6 +47,7 @@ final class TJevConfig {
     }
 
     final environmentModel = fromEnvironment(TJevEnvironmentKeys.defaultModel);
+    final environmentLogLevel = fromEnvironment(TJevEnvironmentKeys.logLevel);
     return TJevConfig._(
       apiKey: _checkedApiKey(
         apiKey ?? fromEnvironment(TJevEnvironmentKeys.apiKey),
@@ -60,6 +65,12 @@ final class TJevConfig {
       timeout: checkedTimeout(timeout ?? TJevDefaults.timeout),
       defaultHeaders: Map.unmodifiable(defaultHeaders),
       retry: retry ?? TJevRetryPolicy(),
+      logLevel:
+          logLevel ??
+          (environmentLogLevel == null
+              ? null
+              : TJevLogLevel.tryParse(environmentLogLevel)) ??
+          TJevDefaults.logLevel,
     );
   }
 
@@ -84,6 +95,9 @@ final class TJevConfig {
 
   /// When a failed Request is sent again, unless a call sets its own policy.
   final TJevRetryPolicy retry;
+
+  /// How much the client logs.
+  final TJevLogLevel logLevel;
 
   /// Returns [timeout] when it is positive.
   ///
