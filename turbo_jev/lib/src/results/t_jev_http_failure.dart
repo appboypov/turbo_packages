@@ -145,20 +145,19 @@ sealed class TJevHttpFailure extends TJevFailure {
         : raw;
   }
 
-  /// The entries of a `detail` list in [body] that hold a `msg` string.
-  static List<TJevValidationDetail> _validationDetailsOf(Object? body) => [
-    if (body case {TJevHttp.detailKey: final List<Object?> detail})
-      for (final entry in detail)
-        if (entry case {TJevHttp.detailMessageKey: final String message})
-          TJevValidationDetail(
-            location: switch (entry) {
-              {TJevHttp.detailLocationKey: final List<Object?> location} =>
-                location,
-              _ => const [],
-            },
-            message: message,
-          ),
-  ];
+  /// The validation errors a [body] lists under `detail`, each with its
+  /// message; none when [body] lists none.
+  static List<TJevValidationDetail> _validationDetailsOf(Object? body) {
+    if (body is! Map<String, dynamic>) return const [];
+    try {
+      return [
+        for (final detail in TJevValidationErrorDto.fromJson(body).detail)
+          TJevValidationDetail.fromDto(detail),
+      ];
+    } on CheckedFromJsonException {
+      return const [];
+    }
+  }
 
   @override
   String toString() =>

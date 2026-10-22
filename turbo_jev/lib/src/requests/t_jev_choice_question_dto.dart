@@ -17,7 +17,6 @@ final class TJevChoiceQuestionDto implements TJevQuestionDto {
   final Object? instructions;
 
   /// The description of each Option, keyed by its wire key.
-  @JsonKey(includeIfNull: true)
   final Map<String, Object?> criteria;
 
   @override

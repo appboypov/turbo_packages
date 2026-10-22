@@ -28,59 +28,38 @@ final class TJevChoice<T extends Object>
   final Map<T, Object?> options;
 
   @override
-  TJevChoiceQuestionDto toDto({required String id}) {
+  TurboResponse<void> validate() {
     if (options.isEmpty || options.length > TJevLimits.maxOptions) {
-      throw TJevInvalidQuestionException(
-        message: TJevMessages.optionCount(id, options.length),
+      return TurboResponse.failAsBool(
+        message: TJevMessages.optionCount(options.length),
       );
     }
-    TJevQuestion.checkContent(
+    final instructionsCheck = TJevQuestion.checkContent(
       instructions,
-      TJevMessages.choiceInstructionsLocation(id),
+      TJevMessages.instructionsLocation,
     );
-    final criteria = <String, Object?>{};
+    if (instructionsCheck.isFail) return instructionsCheck;
+    final keys = <String>{};
     for (final MapEntry(key: option, value: description) in options.entries) {
-      final key = TJevQuestion._wireKey(option);
-      if (criteria.containsKey(key)) {
-        throw TJevInvalidQuestionException(
-          message: TJevMessages.duplicateOptionKey(id, key),
+      final key = TJevQuestion.wireKey(option);
+      if (!keys.add(key)) {
+        return TurboResponse.failAsBool(
+          message: TJevMessages.duplicateOptionKey(key),
         );
       }
-      TJevQuestion.checkContent(
+      final descriptionCheck = TJevQuestion.checkContent(
         description,
-        TJevMessages.optionDescriptionLocation(id, key),
+        TJevMessages.optionDescriptionLocation(key),
       );
-      criteria[key] = description;
+      if (descriptionCheck.isFail) return descriptionCheck;
     }
-    return TJevChoiceQuestionDto(
-      instructions: instructions,
-      criteria: criteria,
-    );
+    return const TurboResponse.successAsBool();
   }
 
-  @override
-  TJevChoiceAnswer<T> answerFromJson(Map<String, dynamic> json) {
-    final dto = TJevChoiceAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.choice);
-    final optionsByKey = {
-      for (final option in options.keys) TJevQuestion._wireKey(option): option,
-    };
-    TJevQuestion._checkKeys(
-      TJevHttp.probabilitiesKey,
-      dto.probabilities.keys,
-      optionsByKey.keys.toList(),
-    );
-    final choice = optionsByKey[dto.choice];
-    if (choice == null) {
-      throw FormatException(TJevMessages.unknownOption(dto.choice));
-    }
-    return TJevChoiceAnswer(
-      choice: choice,
-      confidence: dto.confidence,
-      probabilities: {
-        for (final MapEntry(:key, value: option) in optionsByKey.entries)
-          option: dto.probabilities[key]!,
-      },
-    );
-  }
+  /// The result of [open] called with this Choice typed on its Option type
+  /// [T], so what [open] builds keeps [T].
+  @internal
+  R withOptionType<R>(
+    R Function<O extends Object>(TJevChoice<O> choice) open,
+  ) => open<T>(this);
 }

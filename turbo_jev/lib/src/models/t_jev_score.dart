@@ -54,63 +54,32 @@ final class TJevScore<T extends Object>
   List<Object> get _descriptions => _levelList ?? _levelMap!.values.toList();
 
   @override
-  TJevScoreQuestionDto toDto({required String id}) {
+  TurboResponse<void> validate() {
     final descriptions = _descriptions;
     if (descriptions.isEmpty || descriptions.length > TJevLimits.maxLevels) {
-      throw TJevInvalidQuestionException(
-        message: TJevMessages.levelCount(id, descriptions.length),
+      return TurboResponse.failAsBool(
+        message: TJevMessages.levelCount(descriptions.length),
       );
     }
     final wireKeys = <String>{};
     for (final level in _levels) {
-      final key = TJevQuestion._wireKey(level);
+      final key = TJevQuestion.wireKey(level);
       if (!wireKeys.add(key)) {
-        throw TJevInvalidQuestionException(
-          message: TJevMessages.duplicateLevelKey(id, key),
+        return TurboResponse.failAsBool(
+          message: TJevMessages.duplicateLevelKey(key),
         );
       }
     }
-    TJevQuestion.checkContent(
-      instructions,
-      TJevMessages.scoreInstructionsLocation(id),
-    );
-    for (final (number, description) in descriptions.indexed) {
-      TJevQuestion.checkContent(
-        description,
-        TJevMessages.levelDescriptionLocation(id, number),
-      );
-    }
-    return TJevScoreQuestionDto(
-      instructions: instructions,
-      criteria: descriptions,
-    );
+    return TJevQuestion._checkContents([
+      (instructions, TJevMessages.instructionsLocation),
+      for (final (number, description) in descriptions.indexed)
+        (description, TJevMessages.levelDescriptionLocation(number)),
+    ]);
   }
 
-  @override
-  TJevScoreAnswer<T> answerFromJson(Map<String, dynamic> json) {
-    final dto = TJevScoreAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.score);
-    final levels = _levels;
-    final levelNumbers = [
-      for (var number = 0; number < levels.length; number++) '$number',
-    ];
-    TJevQuestion._checkKeys(TJevHttp.legendKey, dto.legend.keys, levelNumbers);
-    TJevQuestion._checkKeys(
-      TJevHttp.probabilitiesKey,
-      dto.probabilities.keys,
-      levelNumbers,
-    );
-    return TJevScoreAnswer(
-      score: dto.score,
-      confidence: dto.confidence,
-      probabilities: {
-        for (final (number, level) in levels.indexed)
-          level: dto.probabilities['$number']!,
-      },
-      legend: {
-        for (final (number, level) in levels.indexed)
-          level: dto.legend['$number'],
-      },
-    );
-  }
+  /// The result of [open] called with this Score typed on its Level type
+  /// [T], so what [open] builds keeps [T].
+  @internal
+  R withLevelType<R>(R Function<L extends Object>(TJevScore<L> score) open) =>
+      open<T>(this);
 }

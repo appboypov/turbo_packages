@@ -21,13 +21,12 @@ import 'models/t_jev_request_log.dart';
 import 'models/t_jev_request_summary.dart';
 import 'models/t_jev_response_log.dart';
 import 'models/t_jev_result.dart';
-import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
+import 'responses/t_jev_system_one_response_dto.dart';
 import 'services/t_jev_request_trace_service.dart';
 import 'services/t_jev_system_one_body_service.dart';
 import 'types/t_jev_model.dart';
 import 'utils/t_jev_process_environment.dart';
-import 'utils/t_jev_response_json_object.dart';
 
 /// A client that asks Jev typed Questions about State.
 ///
@@ -218,19 +217,15 @@ final class TJev {
     return questionsById;
   }
 
-  /// The model cards of a 2xx models [response].
+  /// The model cards of [json], the body of a 2xx models response.
   ///
-  /// Throws a [FormatException] or a `CheckedFromJsonException` when the
-  /// body is no models list.
-  static List<TJevModelCard> _modelCardsOf(http.Response response) => [
-    for (final card in TJevModelsResponseDto.fromJson(
-      responseJsonObject(response),
-    ).models)
-      TJevModelCard(
-        name: card.name,
-        description: card.description,
-        releaseDate: card.releaseDate,
-      ),
+  /// Throws a `CheckedFromJsonException` when [json] is no models list.
+  static List<TJevModelCard> _modelCardsOf(
+    Map<String, dynamic> json,
+    http.Response _,
+  ) => [
+    for (final card in TJevModelsResponseDto.fromJson(json).models)
+      TJevModelCard.fromDto(card),
   ];
 
   // 🪄 MUTATORS
@@ -296,15 +291,9 @@ final class TJev {
       );
     }
     final body = _bodyService.build(
-      request: TJevSystemOneRequestDto(
-        model: askedModel.id,
-        state: state,
-        questions: {
-          for (final MapEntry(key: id, value: question)
-              in questionsById.entries)
-            id: question.toDto(id: id),
-        },
-      ),
+      model: askedModel,
+      state: state,
+      questions: questionsById,
       extraBody: extraBody,
       listed: images,
     );
@@ -323,9 +312,11 @@ final class TJev {
       abortTrigger: abortTrigger,
       json: body.json,
       images: body.images,
-      onSuccess: (response) => TJevResult.fromSystemOne(
+      onSuccess: (json, response) => TJevResult.fromDto(
+        TJevSystemOneResponseDto.fromJson(json),
         questions: questionsById,
-        response: response,
+        requestId: response.headers[TJevHttp.requestIdHeader],
+        httpResponse: response,
       ),
     );
   }

@@ -23,27 +23,34 @@ void main() {
     );
   });
 
-  void expectThrowsBeforeSending(TJevQuestion question) {
+  void expectValid(TJevQuestion question) {
+    expect(question.validate(), isA<Success<void>>());
+  }
+
+  void expectInvalid(TJevQuestion question) {
     expect(
-      () => jev.ask(state: 'Some State.', questions: [question]),
-      throwsA(isA<TJevInvalidQuestionException>()),
+      question.validate(),
+      isA<Fail<void>>().having((fail) => fail.message, 'message', isNotEmpty),
     );
-    expect(typeSafe.requests, isEmpty);
   }
 
   group('Given a Choice', () {
-    test('When it has no Options, then asking throws before sending', () {
-      expectThrowsBeforeSending(const TJevChoice<String>(options: {}));
+    test('When it has no Options, then it is invalid', () {
+      expectInvalid(const TJevChoice<String>(options: {}));
     });
 
-    test(
-      'When it has more than 255 Options, then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          TJevChoice<int>(options: {for (var i = 0; i < 256; i++) i: null}),
-        );
-      },
-    );
+    test('When it has more than 255 Options, then it is invalid', () {
+      expectInvalid(
+        TJevChoice<int>(options: {for (var i = 0; i < 256; i++) i: null}),
+      );
+    });
+
+    test('When it has 1 or 255 Options, then it is valid', () {
+      expectValid(const TJevChoice<String>(options: {'only': null}));
+      expectValid(
+        TJevChoice<int>(options: {for (var i = 0; i < 255; i++) i: null}),
+      );
+    });
 
     test('When it has 255 Options, then it is sent', () async {
       await jev.ask(
@@ -56,22 +63,18 @@ void main() {
       expect(typeSafe.requests, hasLength(1));
     });
 
-    test(
-      'When two Options share a wire key, then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          const TJevChoice<Tag>(
-            options: {Tag('urgent', 1): 'Now', Tag('urgent', 2): 'Today'},
-          ),
-        );
-      },
-    );
+    test('When two Options share a wire key, then it is invalid', () {
+      expectInvalid(
+        const TJevChoice<Tag>(
+          options: {Tag('urgent', 1): 'Now', Tag('urgent', 2): 'Today'},
+        ),
+      );
+    });
 
     test(
-      'When an enum value and a string share a wire key, '
-      'then asking throws before sending',
+      'When an enum value and a string share a wire key, then it is invalid',
       () {
-        expectThrowsBeforeSending(
+        expectInvalid(
           const TJevChoice<Object>(
             options: {Kind.single: 'One', 'single': 'Also one'},
           ),
@@ -81,19 +84,23 @@ void main() {
   });
 
   group('Given a Score', () {
-    test('When it has no Levels, then asking throws before sending', () {
-      expectThrowsBeforeSending(const TJevScore<String>(levels: {}));
-      expectThrowsBeforeSending(const TJevScore<String>.list(levels: []));
+    test('When it has no Levels, then it is invalid', () {
+      expectInvalid(const TJevScore<String>(levels: {}));
+      expectInvalid(const TJevScore<String>.list(levels: []));
     });
 
-    test(
-      'When it has more than 10 Levels, then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          TJevScore<int>.list(levels: [for (var i = 0; i < 11; i++) i]),
-        );
-      },
-    );
+    test('When it has more than 10 Levels, then it is invalid', () {
+      expectInvalid(
+        TJevScore<int>.list(levels: [for (var i = 0; i < 11; i++) i]),
+      );
+    });
+
+    test('When it has 1 or 10 Levels, then it is valid', () {
+      expectValid(const TJevScore.list(levels: ['Only']));
+      expectValid(
+        TJevScore<int>.list(levels: [for (var i = 0; i < 10; i++) i]),
+      );
+    });
 
     test('When it has 1 or 10 Levels, then it is sent', () async {
       await jev.ask(
@@ -107,38 +114,30 @@ void main() {
       expect(typeSafe.requests, hasLength(1));
     });
 
-    test(
-      'When two Levels of a list are equal, then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          const TJevScore.list(levels: ['Low', 'High', 'Low']),
-        );
-      },
-    );
+    test('When two Levels of a list are equal, then it is invalid', () {
+      expectInvalid(const TJevScore.list(levels: ['Low', 'High', 'Low']));
+    });
 
-    test(
-      'When two Levels share a wire key, then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          const TJevScore<Object>(
-            levels: {Kind.single: 'One', 'single': 'Also one'},
-          ),
-        );
-        expectThrowsBeforeSending(
-          const TJevScore<Object>.list(levels: [1, '1']),
-        );
-      },
-    );
+    test('When two Levels share a wire key, then it is invalid', () {
+      expectInvalid(
+        const TJevScore<Object>(
+          levels: {Kind.single: 'One', 'single': 'Also one'},
+        ),
+      );
+      expectInvalid(const TJevScore<Object>.list(levels: [1, '1']));
+    });
   });
 
   group('Given a Noul', () {
-    test(
-      'When it has no Instructions and no meanings, '
-      'then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(const TJevNoul(id: 'empty'));
-      },
-    );
+    test('When it has no Instructions and no meanings, then it is invalid', () {
+      expectInvalid(const TJevNoul(id: 'empty'));
+    });
+
+    test('When it has Instructions or a meaning, then it is valid', () {
+      expectValid(const TJevNoul(instructions: 'Is this spam?'));
+      expectValid(const TJevNoul(trueMeans: 'Spam'));
+      expectValid(const TJevNoul(falseMeans: 'Not spam'));
+    });
 
     test('When it has only the meaning of false, then it is sent', () async {
       await jev.ask(
@@ -152,6 +151,18 @@ void main() {
           'criteria': {'false': 'Not spam'},
         },
       });
+    });
+  });
+
+  group('Given a Box', () {
+    test('When it has Instructions or none, then it is valid', () {
+      expectValid(const TJevBox(instructions: 'the mug in `photo`'));
+      expectValid(const TJevBox());
+    });
+
+    test('When its Instructions hold a non-finite number, '
+        'then it is invalid', () {
+      expectInvalid(const TJevBox(instructions: double.nan));
     });
   });
 
@@ -217,32 +228,53 @@ void main() {
         const TJevChoice<String>(options: {'a': Rubric(double.nan)}),
       ),
     ]) {
+      test('When $where holds a non-finite number, then it is invalid', () {
+        expectInvalid(question);
+      });
+    }
+
+    test('When it holds an object without toJson, then it is invalid', () {
+      expectInvalid(const TJevNoul(instructions: NoJson()));
+    });
+
+    test('When a map in it has a key that is no String, '
+        'then it is invalid', () {
+      expectInvalid(const TJevNoul(instructions: {1: 'one'}));
+    });
+  });
+
+  group('Given an invalid Question', () {
+    for (final question in <TJevQuestion>[
+      const TJevNoul(id: 'empty'),
+      const TJevChoice<String>(id: 'pick', options: {}),
+      const TJevScore<String>.list(id: 'rate', levels: []),
+      const TJevBox(id: 'find', instructions: double.nan),
+    ]) {
       test(
-        'When $where holds a non-finite number, '
-        'then asking throws before sending',
+        'When a ${question.runtimeType} is asked, then asking throws with its '
+        'id and broken rule before sending',
         () {
-          expectThrowsBeforeSending(question);
+          expect(
+            () => jev.ask(
+              state: 'Some State.',
+              questions: [question],
+              model: TJevModel.jevPreview,
+            ),
+            throwsA(
+              isA<TJevInvalidQuestionException>().having(
+                (exception) => exception.message,
+                'message',
+                allOf(
+                  contains(question.id!),
+                  endsWith(question.validate().message!),
+                ),
+              ),
+            ),
+          );
+          expect(typeSafe.requests, isEmpty);
         },
       );
     }
-
-    test(
-      'When it holds an object without toJson, '
-      'then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(const TJevNoul(instructions: NoJson()));
-      },
-    );
-
-    test(
-      'When a map in it has a key that is no String, '
-      'then asking throws before sending',
-      () {
-        expectThrowsBeforeSending(
-          const TJevNoul(instructions: {1: 'one'}),
-        );
-      },
-    );
   });
 
   group('Given State', () {

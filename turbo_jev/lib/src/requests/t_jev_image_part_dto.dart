@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 't_jev_image_part_dto.g.dart';
 
 /// The wire form of an Image sent in a part of a multipart Request.
-@JsonSerializable(createFactory: false)
+@JsonSerializable(createFactory: false, includeIfNull: false)
 final class TJevImagePartDto {
   const TJevImagePartDto({required this.part});
 

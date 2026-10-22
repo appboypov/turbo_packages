@@ -10,7 +10,10 @@ TJevSystemOneResponseDto _$TJevSystemOneResponseDtoFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('TJevSystemOneResponseDto', json, ($checkedConvert) {
   final val = TJevSystemOneResponseDto(
-    model: $checkedConvert('model', (v) => v as String),
+    model: $checkedConvert(
+      'model',
+      (v) => const TJevModelConverter().fromJson(v as String),
+    ),
     answers: $checkedConvert(
       'answers',
       (v) => (v as Map<String, dynamic>).map(

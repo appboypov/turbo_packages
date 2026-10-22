@@ -173,9 +173,6 @@ abstract final class TJevHttp {
   /// The field of a validation detail that holds its message.
   static const detailMessageKey = 'msg';
 
-  /// The field of a validation detail that holds its location.
-  static const detailLocationKey = 'loc';
-
   /// The first entry of a validation detail location in the Request body.
   static const bodyLocation = 'body';
 

@@ -5,11 +5,13 @@ import 'package:meta/meta.dart';
 import '../abstracts/t_jev_answer.dart';
 import '../abstracts/t_jev_exception.dart';
 import '../abstracts/t_jev_question.dart';
-import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
+import '../responses/t_jev_box_answer_dto.dart';
+import '../responses/t_jev_choice_answer_dto.dart';
+import '../responses/t_jev_noul_answer_dto.dart';
+import '../responses/t_jev_score_answer_dto.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
 import '../types/t_jev_model.dart';
-import '../utils/t_jev_response_json_object.dart';
 import 't_jev_usage.dart';
 
 /// The Answers of one Request, with the model that answered and its Usage.
@@ -27,31 +29,28 @@ final class TJevResult {
     required Map<TJevQuestion, TJevAnswer> answers,
   }) : _answers = answers;
 
-  /// Parses a System One response to the Questions keyed by their ids.
+  /// The Result of [dto], the System One response to the Questions keyed by
+  /// their ids, received as [httpResponse] for the Request TypeSafe gave the
+  /// id [requestId].
   ///
-  /// Throws a [FormatException] or a [CheckedFromJsonException] when the
-  /// body is no System One response or an Answer is missing or does not fit
+  /// Throws a [FormatException] when an Answer is missing or does not fit
   /// its Question.
   @internal
-  factory TJevResult.fromSystemOne({
+  factory TJevResult.fromDto(
+    TJevSystemOneResponseDto dto, {
     required Map<String, TJevQuestion> questions,
-    required http.Response response,
-  }) {
-    final dto = TJevSystemOneResponseDto.fromJson(responseJsonObject(response));
-    return TJevResult(
-      model: TJevModel(dto.model),
-      usage: TJevUsage(
-        inputTokens: dto.usage.inputTokens,
-        outputTokens: dto.usage.outputTokens,
-      ),
-      requestId: response.headers[TJevHttp.requestIdHeader],
-      httpResponse: response,
-      answers: {
-        for (final MapEntry(key: id, value: question) in questions.entries)
-          question: _answerFromJson(question, id, dto.answers[id]),
-      },
-    );
-  }
+    required String? requestId,
+    required http.Response httpResponse,
+  }) => TJevResult(
+    model: dto.model,
+    usage: TJevUsage.fromDto(dto.usage),
+    requestId: requestId,
+    httpResponse: httpResponse,
+    answers: {
+      for (final MapEntry(key: id, value: question) in questions.entries)
+        question: _answerOf(question, id, dto.answers[id]),
+    },
+  );
 
   /// The resolved model, which may differ from the Model Alias asked for.
   final TJevModel model;
@@ -103,17 +102,39 @@ final class TJevResult {
       if (question is Q) question: answer as A,
   };
 
-  /// Parses [json], the Answer TypeSafe sent under [id], to [question].
-  static A _answerFromJson<A extends TJevAnswer>(
-    TJevQuestion<A> question,
+  /// The Answer to [question] from [json], the wire form of the Answer
+  /// TypeSafe sent under [id].
+  ///
+  /// Throws a [FormatException] whose message starts with the path of the
+  /// Answer when [json] is missing or does not fit [question].
+  static TJevAnswer _answerOf(
+    TJevQuestion question,
     String id,
     Map<String, dynamic>? json,
   ) {
     if (json == null) {
       throw FormatException(TJevMessages.missingAnswer(id));
     }
+    TJevChoiceAnswer<O> choiceAnswer<O extends Object>(TJevChoice<O> choice) =>
+        TJevChoiceAnswer.fromDto(
+          TJevChoiceAnswerDto.fromJson(json),
+          options: {
+            for (final option in choice.options.keys)
+              TJevQuestion.wireKey(option): option,
+          },
+        );
+    TJevScoreAnswer<L> scoreAnswer<L extends Object>(TJevScore<L> score) =>
+        TJevScoreAnswer.fromDto(
+          TJevScoreAnswerDto.fromJson(json),
+          levels: score.levels.keys.toList(),
+        );
     try {
-      return question.answerFromJson(json);
+      return switch (question) {
+        TJevNoul() => TJevNoulAnswer.fromDto(TJevNoulAnswerDto.fromJson(json)),
+        TJevChoice() => question.withOptionType<TJevAnswer>(choiceAnswer),
+        TJevScore() => question.withLevelType<TJevAnswer>(scoreAnswer),
+        TJevBox() => TJevBoxAnswer.fromDto(TJevBoxAnswerDto.fromJson(json)),
+      };
     } on CheckedFromJsonException catch (error) {
       throw FormatException(
         TJevMessages.invalidAnswer(

@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../converters/t_jev_model_converter.dart';
+import '../types/t_jev_model.dart';
 import 't_jev_usage_dto.dart';
 
 part 't_jev_system_one_response_dto.g.dart';
@@ -17,7 +19,8 @@ final class TJevSystemOneResponseDto {
       _$TJevSystemOneResponseDtoFromJson(json);
 
   /// The resolved model, which may differ from the Model Alias sent.
-  final String model;
+  @TJevModelConverter()
+  final TJevModel model;
 
   /// The wire form of each Answer, keyed by its Question id.
   final Map<String, Map<String, dynamic>> answers;

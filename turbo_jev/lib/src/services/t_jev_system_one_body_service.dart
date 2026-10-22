@@ -1,22 +1,32 @@
 import 'dart:convert';
 
+import 'package:turbo_response/turbo_response.dart';
+
 import '../abstracts/t_jev_exception.dart';
 import '../abstracts/t_jev_question.dart';
+import '../abstracts/t_jev_question_dto.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
 import '../models/t_jev_image.dart';
 import '../records/t_jev_system_one_body.dart';
+import '../requests/t_jev_box_question_dto.dart';
+import '../requests/t_jev_choice_question_dto.dart';
 import '../requests/t_jev_image_part_dto.dart';
+import '../requests/t_jev_noul_criteria_dto.dart';
+import '../requests/t_jev_noul_question_dto.dart';
+import '../requests/t_jev_score_question_dto.dart';
 import '../requests/t_jev_system_one_assets_dto.dart';
 import '../requests/t_jev_system_one_request_dto.dart';
+import '../types/t_jev_model.dart';
 
-/// Builds the body of a System One Request and checks its State and Image
-/// References.
+/// Builds the body of a System One Request and checks its Questions, State
+/// and Image References.
 final class TJevSystemOneBodyService {
   const TJevSystemOneBodyService();
 
-  /// The body of [request] with [extraBody] merged last, and the Images it
-  /// sends.
+  /// The body of a Request that asks [model] the [questions], keyed by
+  /// their ids, about [state], with [extraBody] merged last, and the Images
+  /// it sends.
   ///
   /// The Images are those placed as objects anywhere in the content, also
   /// inside the `toJson` of another object, and those in [listed], each
@@ -25,16 +35,30 @@ final class TJevSystemOneBodyService {
   /// and an entry in `assets`. The body is encoded from the content once,
   /// so its `assets` name the very Images each `toJson` returned.
   ///
-  /// Throws [TJevInvalidQuestionException] when the State is no JSON
-  /// content or holds a non-finite number, and [TJevImageReferenceException]
-  /// when the JSON holds an Image Reference of no placed or listed Image, or
-  /// when it uses no Image in [listed].
+  /// Throws [TJevInvalidQuestionException] when a Question is invalid, or
+  /// when the State is no JSON content or holds a non-finite number, and
+  /// [TJevImageReferenceException] when the JSON holds an Image Reference of
+  /// no placed or listed Image, or when it uses no Image in [listed].
   TJevSystemOneBody build({
-    required TJevSystemOneRequestDto request,
+    required TJevModel model,
+    required Object state,
+    required Map<String, TJevQuestion> questions,
     required Map<String, Object?>? extraBody,
     required List<TJevImage> listed,
   }) {
-    TJevQuestion.checkContent(request.state, TJevMessages.stateLocation);
+    final request = TJevSystemOneRequestDto(
+      model: model,
+      state: state,
+      questions: {
+        for (final MapEntry(key: id, value: question) in questions.entries)
+          id: _questionDto(id, question),
+      },
+    );
+    if (TJevQuestion.checkContent(state, TJevMessages.stateLocation) case Fail(
+      :final message,
+    )) {
+      throw TJevInvalidQuestionException(message: message!);
+    }
     final known = <String, TJevImage>{};
     final json = TJevImage.collectEncoded(
       () => jsonEncode({...request.toJson(), ...?extraBody}),
@@ -87,5 +111,47 @@ final class TJevSystemOneBodyService {
       }),
       images: images,
     );
+  }
+
+  /// The wire form of [question], which [id] keys in its Request.
+  ///
+  /// Throws [TJevInvalidQuestionException] when [question] is invalid.
+  static TJevQuestionDto _questionDto(String id, TJevQuestion question) {
+    if (question.validate() case Fail(:final message)) {
+      throw TJevInvalidQuestionException(
+        message: TJevMessages.invalidQuestion(
+          question.runtimeType,
+          id,
+          message!,
+        ),
+      );
+    }
+    return switch (question) {
+      TJevNoul(:final instructions, :final trueMeans, :final falseMeans) =>
+        TJevNoulQuestionDto(
+          instructions: instructions,
+          criteria: trueMeans == null && falseMeans == null
+              ? null
+              : TJevNoulCriteriaDto(
+                  trueMeans: trueMeans,
+                  falseMeans: falseMeans,
+                ),
+        ),
+      TJevChoice(:final instructions, :final options) => TJevChoiceQuestionDto(
+        instructions: instructions,
+        criteria: {
+          for (final MapEntry(key: option, value: description)
+              in options.entries)
+            TJevQuestion.wireKey(option): description,
+        },
+      ),
+      TJevScore(:final instructions, :final levels) => TJevScoreQuestionDto(
+        instructions: instructions,
+        criteria: levels.values.toList(),
+      ),
+      TJevBox(:final instructions) => TJevBoxQuestionDto(
+        instructions: instructions,
+      ),
+    };
   }
 }

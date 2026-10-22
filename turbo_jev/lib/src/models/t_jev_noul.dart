@@ -26,33 +26,16 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   final Object? falseMeans;
 
   @override
-  TJevNoulQuestionDto toDto({required String id}) {
+  TurboResponse<void> validate() {
     if (instructions == null && trueMeans == null && falseMeans == null) {
-      throw TJevInvalidQuestionException(
-        message: TJevMessages.meaninglessNoul(id),
+      return const TurboResponse.failAsBool(
+        message: TJevMessages.meaninglessNoul,
       );
     }
-    TJevQuestion.checkContent(
-      instructions,
-      TJevMessages.noulInstructionsLocation(id),
-    );
-    TJevQuestion.checkContent(trueMeans, TJevMessages.trueMeaningLocation(id));
-    TJevQuestion.checkContent(
-      falseMeans,
-      TJevMessages.falseMeaningLocation(id),
-    );
-    return TJevNoulQuestionDto(
-      instructions: instructions,
-      criteria: trueMeans == null && falseMeans == null
-          ? null
-          : TJevNoulCriteriaDto(trueMeans: trueMeans, falseMeans: falseMeans),
-    );
-  }
-
-  @override
-  TJevNoulAnswer answerFromJson(Map<String, dynamic> json) {
-    final dto = TJevNoulAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.noul);
-    return TJevNoulAnswer(probability: dto.noul);
+    return TJevQuestion._checkContents([
+      (instructions, TJevMessages.instructionsLocation),
+      (trueMeans, TJevMessages.trueMeaningLocation),
+      (falseMeans, TJevMessages.falseMeaningLocation),
+    ]);
   }
 }

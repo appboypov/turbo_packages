@@ -1,3 +1,6 @@
+import 'package:meta/meta.dart';
+
+import '../responses/t_jev_model_card_dto.dart';
 import '../types/t_jev_model.dart';
 
 /// A model the account can ask, as `TJev.models` lists it.
@@ -7,6 +10,14 @@ final class TJevModelCard {
     required this.description,
     required this.releaseDate,
   });
+
+  /// The model card of [dto].
+  @internal
+  factory TJevModelCard.fromDto(TJevModelCardDto dto) => TJevModelCard(
+    name: dto.name,
+    description: dto.description,
+    releaseDate: dto.releaseDate,
+  );
 
   /// The model id a Request can name, usually a Model Alias.
   final TJevModel name;
