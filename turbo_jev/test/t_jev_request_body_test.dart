@@ -4,6 +4,7 @@ library;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/constants/jpeg_bytes.dart';
 import 'support/models/no_json.dart';
 import 'support/services/fake_type_safe.dart';
 import 'support/utils/throws_t_jev_exception.dart';
@@ -115,5 +116,30 @@ void main() {
         },
       );
     }
+    test(
+      'When an extra body field names assets in a Request with an Image, '
+      'then the extra value is sent instead of the assets the client builds',
+      () async {
+        final door = TJevImage(jpegBytes);
+
+        await jev.ask(
+          state: {'door': door},
+          questions: const [_billing],
+          extraBody: {
+            'assets': {'door': 'custom'},
+          },
+        );
+
+        expect(typeSafe.lastBody, {
+          'model': 'jev-1.13.0',
+          'state': {'door': door.reference},
+          'questions': _billingQuestions,
+          'assets': {'door': 'custom'},
+        });
+        final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+        expect([for (final part in parts) part.name], ['request', 'asset-0']);
+        expect(parts.last.bytes, jpegBytes);
+      },
+    );
   });
 }

@@ -8,6 +8,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
+import 'package:turbo_jev/src/constants/t_jev_messages.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/services/fake_type_safe.dart';
@@ -124,10 +125,13 @@ void main() {
       'times and returns a connection failure',
       () {
         fakeAsync((async) {
+          const handshakeError = HandshakeException(
+            'Handshake error in client',
+          );
           var requests = 0;
           final client = MockClient((_) {
             requests++;
-            throw const HandshakeException('Handshake error in client');
+            throw handshakeError;
           });
           final call = PendingAsk(_jevFor(client));
 
@@ -139,7 +143,7 @@ void main() {
             isA<TJevConnectionFailure>().having(
               (failure) => failure.message,
               'message',
-              'Connection error: HandshakeException: Handshake error in client',
+              TJevMessages.connectionError('$handshakeError'),
             ),
           );
         });

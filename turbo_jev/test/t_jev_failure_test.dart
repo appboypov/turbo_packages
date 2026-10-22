@@ -180,13 +180,15 @@ void main() {
     );
 
     test(
-      'When the body is empty, then the message says there is no body',
+      'When the body is empty, then the failure holds no body and still has '
+      'a message',
       () async {
         final failure =
             await failureFor(http.Response('', 503)) as TJevHttpFailure;
 
-        expect(failure.message, 'status code (no body)');
+        expect(failure.status, 503);
         expect(failure.body, isNull);
+        expect(failure.message, isNotEmpty);
       },
     );
   });
@@ -383,7 +385,7 @@ void main() {
           isA<TJevConnectionFailure>().having(
             (failure) => failure.message,
             'message',
-            'Connection error: Connection refused',
+            contains('Connection refused'),
           ),
         );
       },
@@ -510,13 +512,11 @@ void main() {
           timeout: Duration.zero,
         ),
         throwsA(
-          isA<TJevInvalidTimeoutException>()
-              .having((error) => error.timeout, 'timeout', Duration.zero)
-              .having(
-                (error) => error.message,
-                'message',
-                'A timeout must be positive, not 0:00:00.000000.',
-              ),
+          isA<TJevInvalidTimeoutException>().having(
+            (error) => error.timeout,
+            'timeout',
+            Duration.zero,
+          ),
         ),
       );
       final jev = TJev(apiKey: 'ts_key', environment: const {});

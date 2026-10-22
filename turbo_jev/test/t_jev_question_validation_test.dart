@@ -2,6 +2,7 @@
 library;
 
 import 'package:test/test.dart';
+import 'package:turbo_jev/src/constants/t_jev_messages.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/enums/kind.dart';
@@ -291,9 +292,10 @@ void main() {
               isA<TJevInvalidQuestionException>().having(
                 (exception) => exception.message,
                 'message',
-                allOf(
-                  contains(question.id!),
-                  endsWith(question.validate().message!),
+                TJevMessages.invalidQuestion(
+                  question.runtimeType,
+                  question.id!,
+                  question.validate().message!,
                 ),
               ),
             ),
