@@ -4,9 +4,8 @@ library;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/enums/kind.dart';
 import 'support/fake_type_safe.dart';
-
-enum _Kind { single }
 
 final class _Tag {
   const _Tag(this.name, this.id);
@@ -94,7 +93,7 @@ void main() {
       () {
         expectThrowsBeforeSending(
           const TJevChoice<Object>(
-            options: {_Kind.single: 'One', 'single': 'Also one'},
+            options: {Kind.single: 'One', 'single': 'Also one'},
           ),
         );
       },
@@ -142,7 +141,7 @@ void main() {
       () {
         expectThrowsBeforeSending(
           const TJevScore<Object>(
-            levels: {_Kind.single: 'One', 'single': 'Also one'},
+            levels: {Kind.single: 'One', 'single': 'Also one'},
           ),
         );
         expectThrowsBeforeSending(

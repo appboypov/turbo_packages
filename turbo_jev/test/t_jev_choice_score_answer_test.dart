@@ -7,29 +7,27 @@ import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/enums/severity.dart';
+import 'support/enums/team.dart';
 import 'support/fake_type_safe.dart';
 
-enum _Team { returns, shipping, billing }
-
-enum _Severity { cosmetic, degraded, blocking }
-
-const _department = TJevChoice<_Team>(
+const _department = TJevChoice<Team>(
   id: 'department',
   instructions: 'Which team should handle this?',
   options: {
-    _Team.returns: 'Exchanges, wrong or damaged items',
-    _Team.shipping: 'Delivery status, delays, lost packages',
-    _Team.billing: 'Charges, invoices, payment problems',
+    Team.returns: 'Exchanges, wrong or damaged items',
+    Team.shipping: 'Delivery status, delays, lost packages',
+    Team.billing: 'Charges, invoices, payment problems',
   },
 );
 
-const _severity = TJevScore<_Severity>(
+const _severity = TJevScore<Severity>(
   id: 'bug_severity',
   instructions: 'How severe is the reported issue?',
   levels: {
-    _Severity.cosmetic: 'Cosmetic; no impact to functionality',
-    _Severity.degraded: 'Broken or degraded feature, but workaround exists',
-    _Severity.blocking: 'Blocking issue; no workaround exists',
+    Severity.cosmetic: 'Cosmetic; no impact to functionality',
+    Severity.degraded: 'Broken or degraded feature, but workaround exists',
+    Severity.blocking: 'Blocking issue; no workaround exists',
   },
 );
 
@@ -102,16 +100,16 @@ void main() {
         );
 
         final answer = response.result!.answer(_department);
-        expect(answer.choice, _Team.returns);
+        expect(answer.choice, Team.returns);
         expect(answer.probabilities, {
-          _Team.returns: 0.61,
-          _Team.shipping: 0.04,
-          _Team.billing: 0.35,
+          Team.returns: 0.61,
+          Team.shipping: 0.04,
+          Team.billing: 0.35,
         });
         expect(answer.probabilities.keys, [
-          _Team.returns,
-          _Team.shipping,
-          _Team.billing,
+          Team.returns,
+          Team.shipping,
+          Team.billing,
         ]);
         expect(answer.confidence, 0.42);
       },
@@ -171,7 +169,7 @@ void main() {
         );
 
         final answer = response.result!.answer(_department);
-        expect(answer.choice, _Team.billing);
+        expect(answer.choice, Team.billing);
         expect(answer.topProbability, 1);
         expect(answer.margin, double.infinity);
       },
@@ -217,15 +215,15 @@ void main() {
         expect(answer.score, 1.43);
         expect(answer.confidence, 0.35);
         expect(answer.probabilities, {
-          _Severity.cosmetic: 0.0,
-          _Severity.degraded: 0.57,
-          _Severity.blocking: 0.43,
+          Severity.cosmetic: 0.0,
+          Severity.degraded: 0.57,
+          Severity.blocking: 0.43,
         });
         expect(answer.legend, {
-          _Severity.cosmetic: 'Cosmetic; no impact to functionality',
-          _Severity.degraded:
+          Severity.cosmetic: 'Cosmetic; no impact to functionality',
+          Severity.degraded:
               'Broken or degraded feature, but workaround exists',
-          _Severity.blocking: 'Blocking issue; no workaround exists',
+          Severity.blocking: 'Blocking issue; no workaround exists',
         });
       },
     );
@@ -241,7 +239,7 @@ void main() {
 
         final answer = response.result!.answer(_severity);
         expect(answer.normalizedScore, closeTo(0.715, 1e-9));
-        expect(answer.mostLikelyLevel, _Severity.degraded);
+        expect(answer.mostLikelyLevel, Severity.degraded);
       },
     );
 
@@ -333,7 +331,7 @@ void main() {
 
         expect(
           response.result!.answer(_severity).mostLikelyLevel,
-          _Severity.degraded,
+          Severity.degraded,
         );
       },
     );
@@ -397,7 +395,7 @@ void main() {
         expect(result.choices.keys, [_department, priority]);
         expect(
           [for (final answer in result.choices.values) answer.choice],
-          [_Team.returns, 'high'],
+          [Team.returns, 'high'],
         );
         expect(result.scores.keys, [_severity]);
         expect(result.scores.values.single.score, 1.43);

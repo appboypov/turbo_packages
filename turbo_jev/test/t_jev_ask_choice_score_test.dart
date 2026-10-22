@@ -4,11 +4,9 @@ library;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/enums/severity.dart';
+import 'support/enums/team.dart';
 import 'support/fake_type_safe.dart';
-
-enum _Team { returns, shipping, billing }
-
-enum _Severity { cosmetic, degraded, blocking }
 
 final class _Candidate {
   const _Candidate(this.id);
@@ -37,13 +35,13 @@ void main() {
       'When its Options are enum values, '
       'then each Option goes on the wire under its name in map order',
       () async {
-        const department = TJevChoice<_Team>(
+        const department = TJevChoice<Team>(
           id: 'department',
           instructions: 'Which team should handle this?',
           options: {
-            _Team.returns: 'Exchanges, wrong or damaged items',
-            _Team.shipping: 'Delivery status, delays, lost packages',
-            _Team.billing: 'Charges, invoices, payment problems',
+            Team.returns: 'Exchanges, wrong or damaged items',
+            Team.shipping: 'Delivery status, delays, lost packages',
+            Team.billing: 'Charges, invoices, payment problems',
           },
         );
 
@@ -120,14 +118,14 @@ void main() {
       'When its Levels are enum values, '
       'then their descriptions go on the wire as a list in map order',
       () async {
-        const severity = TJevScore<_Severity>(
+        const severity = TJevScore<Severity>(
           id: 'bug_severity',
           instructions: 'How severe is the reported issue?',
           levels: {
-            _Severity.cosmetic: 'Cosmetic; no impact to functionality',
-            _Severity.degraded:
+            Severity.cosmetic: 'Cosmetic; no impact to functionality',
+            Severity.degraded:
                 'Broken or degraded feature, but workaround exists',
-            _Severity.blocking: 'Blocking issue; no workaround exists',
+            Severity.blocking: 'Blocking issue; no workaround exists',
           },
         );
 
@@ -205,7 +203,7 @@ void main() {
       await jev.ask(
         state: 'Wrong size, third time.',
         questions: const [
-          TJevChoice<_Team>(options: {_Team.returns: 'Returns'}),
+          TJevChoice<Team>(options: {Team.returns: 'Returns'}),
           TJevScore.list(levels: ['Calm', 'Angry']),
           TJevNoul(instructions: 'Is this about billing?'),
         ],
