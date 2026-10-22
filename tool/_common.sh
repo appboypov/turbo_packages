@@ -86,7 +86,11 @@ check_required_files() {
 
 # Ensure pana is available
 ensure_pana() {
-    if ! dart pub global list 2>/dev/null | grep -q "^pana "; then
+    # Read the list first: under pipefail, `grep -q` closing the pipe early
+    # fails the pipeline and reports an installed pana as missing.
+    local global_packages
+    global_packages=$(dart pub global list 2>/dev/null || true)
+    if ! grep -q "^pana " <<< "$global_packages"; then
         log_step "Activating pana..."
         if ! dart pub global activate pana > /dev/null 2>&1; then
             log_error "Failed to activate pana"
