@@ -105,7 +105,10 @@ final class TJevConfig {
   @internal
   static Duration checkedTimeout(Duration timeout) {
     if (timeout <= Duration.zero) {
-      throw TJevInvalidTimeoutException(timeout: timeout);
+      throw TJevInvalidTimeoutException(
+        reason: 'A timeout must be positive, not $timeout.',
+        timeout: timeout,
+      );
     }
     return timeout;
   }
