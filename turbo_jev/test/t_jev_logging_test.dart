@@ -31,6 +31,15 @@ TJev _jevFor(
   retry: TJevRetryPolicy(jitter: 0),
 );
 
+/// A client on [client] that logs at debug with body redaction off.
+TJev _unredactedJevFor(http.Client client) => TJev(
+  apiKey: 'ts_key',
+  httpClient: client,
+  environment: const {},
+  logLevel: TJevLogLevel.debug,
+  redactLoggedBodies: false,
+);
+
 /// A fake TypeSafe that answers the Requests in order with [responses] and
 /// every later Request with the last of them.
 FakeTypeSafe _answering(List<http.Response> responses) {
@@ -485,6 +494,200 @@ void main() {
             }
           }
         });
+      },
+    );
+  });
+
+  group('Given secret fields in JSON bodies', () {
+    /// One field per secret name part, each in another case and spelling.
+    const secretFields = {
+      'access_token': 'hidden-1',
+      'clientSecret': 'hidden-2',
+      'PASSWORD': 'hidden-3',
+      'x_api_key': 'hidden-4',
+      'Api-Key': 'hidden-5',
+      'apiKey': 'hidden-6',
+    };
+    const redactedFields = {
+      'access_token': '***',
+      'clientSecret': '***',
+      'PASSWORD': '***',
+      'x_api_key': '***',
+      'Api-Key': '***',
+      'apiKey': '***',
+    };
+    final responseBody = jsonEncode({
+      ...secretFields,
+      'status': 'ok',
+      'items': [
+        {...secretFields, 'id': 1},
+      ],
+      'meta': {
+        'inner': {...secretFields, 'name': 'jev'},
+        'count': 2,
+      },
+    });
+    const state = {
+      'user': {...secretFields, 'name': 'Ann'},
+      'sessions': [secretFields, 'plain'],
+    };
+
+    Future<FakeTypeSafe> askAtDebug({bool redactionOff = false}) async {
+      final typeSafe = FakeTypeSafe(
+        respond: (_) => http.Response(responseBody, 500),
+      );
+      final jev = redactionOff
+          ? _unredactedJevFor(typeSafe.client)
+          : _jevFor(typeSafe.client, logLevel: TJevLogLevel.debug);
+      await jev.ask(
+        state: state,
+        questions: const [_billing],
+        retry: TJevRetryPolicy(maxRetries: 0),
+      );
+      return typeSafe;
+    }
+
+    test(
+      'When the client logs a response at debug, then each secret field is '
+      'redacted at top level and inside lists and maps, and the other '
+      'fields stay',
+      () async {
+        await askAtDebug();
+
+        final body = jsonDecode(objectsOf<TJevResponseLog>().single.body!);
+        expect(body, {
+          ...redactedFields,
+          'status': 'ok',
+          'items': [
+            {...redactedFields, 'id': 1},
+          ],
+          'meta': {
+            'inner': {...redactedFields, 'name': 'jev'},
+            'count': 2,
+          },
+        });
+      },
+    );
+
+    test(
+      'When the client logs a Request at debug, then each secret field in '
+      'its State is redacted and the other fields stay',
+      () async {
+        final typeSafe = await askAtDebug();
+
+        final logged =
+            jsonDecode(objectsOf<TJevRequestLog>().single.body!)
+                as Map<String, Object?>;
+        expect(logged['state'], {
+          'user': {...redactedFields, 'name': 'Ann'},
+          'sessions': [redactedFields, 'plain'],
+        });
+        expect(
+          {...logged}..remove('state'),
+          {...FakeTypeSafe.bodyOf(typeSafe.lastRequest)}..remove('state'),
+        );
+      },
+    );
+
+    test(
+      'When the client logs at debug, then no secret value reaches a log '
+      'record',
+      () async {
+        await askAtDebug();
+
+        expect(records, isNotEmpty);
+        for (final record in records) {
+          final logged = '${record.message} ${record.object} ${record.error}';
+          for (final secret in secretFields.values) {
+            expect(logged, isNot(contains(secret)));
+          }
+        }
+      },
+    );
+
+    test(
+      'When a secret field makes the body longer than 4096 bytes, then it is '
+      'redacted before the body is cut',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(
+            jsonEncode({'token': 'h' * 5000, 'status': 'ok'}),
+            500,
+          ),
+        );
+
+        await _jevFor(
+          typeSafe.client,
+          logLevel: TJevLogLevel.debug,
+        ).models(retry: TJevRetryPolicy(maxRetries: 0));
+
+        expect(
+          objectsOf<TJevResponseLog>().single,
+          isA<TJevResponseLog>()
+              .having((l) => l.body, 'body', '{"token":"***","status":"ok"}')
+              .having((l) => l.omittedBodyBytes, 'omittedBodyBytes', 0),
+        );
+      },
+    );
+
+    test(
+      'When a JSON body holds no secret field, then it is logged as it came',
+      () async {
+        const body = '{"status": "ok",  "items": [1, 2.0]}';
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(body, 500),
+        );
+
+        await _jevFor(
+          typeSafe.client,
+          logLevel: TJevLogLevel.debug,
+        ).models(retry: TJevRetryPolicy(maxRetries: 0));
+
+        expect(objectsOf<TJevResponseLog>().single.body, body);
+      },
+    );
+
+    test(
+      'When body redaction is off, then the records hold the bodies '
+      'unchanged',
+      () async {
+        final typeSafe = await askAtDebug(redactionOff: true);
+
+        expect(
+          objectsOf<TJevRequestLog>().single.body,
+          jsonEncode(FakeTypeSafe.bodyOf(typeSafe.lastRequest)),
+        );
+        expect(objectsOf<TJevResponseLog>().single.body, responseBody);
+      },
+    );
+
+    test(
+      'When body redaction is off, then secret headers are still redacted',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(
+            '{}',
+            500,
+            headers: {'x-refresh-token': 'refresh-secret'},
+          ),
+        );
+
+        await _unredactedJevFor(
+          typeSafe.client,
+        ).models(retry: TJevRetryPolicy(maxRetries: 0));
+
+        final requestHeaders = objectsOf<TJevRequestLog>().single.headers;
+        expect(
+          requestHeaders.entries
+              .where((header) => header.key.toLowerCase() == 'authorization')
+              .single
+              .value,
+          '***',
+        );
+        expect(
+          objectsOf<TJevResponseLog>().single.headers['x-refresh-token'],
+          '***',
+        );
       },
     );
   });

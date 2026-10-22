@@ -14,6 +14,7 @@ import '../models/t_jev_request_summary.dart';
 import '../models/t_jev_response_log.dart';
 import '../results/t_jev_failure.dart';
 import '../utils/redacted_headers.dart';
+import '../utils/redacted_json_body.dart';
 
 /// Follows one Request from its first attempt to its end and logs it to the
 /// [TJevLogging.loggerName] logger: each attempt and response at debug and
@@ -24,10 +25,12 @@ import '../utils/redacted_headers.dart';
 final class TJevRequestTraceService {
   TJevRequestTraceService({
     required TJevLogLevel level,
+    required bool redactBodies,
     required String method,
     required String path,
     required List<int>? body,
   }) : _level = level,
+       _redactBodies = redactBodies,
        _method = method,
        _path = path,
        _body = body;
@@ -35,6 +38,10 @@ final class TJevRequestTraceService {
   // 🎩 STATE
 
   final TJevLogLevel _level;
+
+  /// Whether a logged JSON body has the values of its secret fields
+  /// replaced.
+  final bool _redactBodies;
   final String _method;
   final String _path;
 
@@ -61,16 +68,18 @@ final class TJevRequestTraceService {
   }
 
   /// [bytes] as text cut at [TJevLogging.maxLoggedBodyBytes] bytes, with the
-  /// number of bytes it leaves out.
-  static ({String? body, int omittedBytes}) _cut(List<int>? bytes) {
+  /// number of bytes it leaves out. With body redaction on, the values of
+  /// secret JSON fields are replaced before the cut.
+  ({String? body, int omittedBytes}) _loggedBodyOf(List<int>? bytes) {
     if (bytes == null || bytes.isEmpty) return (body: null, omittedBytes: 0);
+    final logged = _redactBodies ? redactedJsonBody(bytes) : bytes;
     const maxBytes = TJevLogging.maxLoggedBodyBytes;
     return (
       body: utf8.decode(
-        bytes.length > maxBytes ? bytes.sublist(0, maxBytes) : bytes,
+        logged.length > maxBytes ? logged.sublist(0, maxBytes) : logged,
         allowMalformed: true,
       ),
-      omittedBytes: max(bytes.length - maxBytes, 0),
+      omittedBytes: max(logged.length - maxBytes, 0),
     );
   }
 
@@ -80,7 +89,7 @@ final class TJevRequestTraceService {
   void sent(http.BaseRequest request) {
     final attempt = ++_attempts;
     _log(TJevLogLevel.debug, () {
-      final (:body, :omittedBytes) = _cut(_body);
+      final (:body, :omittedBytes) = _loggedBodyOf(_body);
       return TJevRequestLog(
         method: _method,
         path: _path,
@@ -97,7 +106,7 @@ final class TJevRequestTraceService {
     _status = response.statusCode;
     _requestId = response.headers[TJevHttp.requestIdHeader];
     _log(TJevLogLevel.debug, () {
-      final (:body, :omittedBytes) = _cut(response.bodyBytes);
+      final (:body, :omittedBytes) = _loggedBodyOf(response.bodyBytes);
       return TJevResponseLog(
         method: _method,
         path: _path,

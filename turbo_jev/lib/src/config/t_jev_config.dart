@@ -21,6 +21,7 @@ final class TJevConfig {
     required this.defaultHeaders,
     required this.retry,
     required this.logLevel,
+    required this.redactLoggedBodies,
   });
 
   /// Resolves the config and checks its API key and timeout.
@@ -39,6 +40,7 @@ final class TJevConfig {
     required Map<String, String> defaultHeaders,
     required TJevRetryPolicy? retry,
     required TJevLogLevel? logLevel,
+    required bool redactLoggedBodies,
     required Map<String, String> environment,
   }) {
     String? fromEnvironment(String key) {
@@ -71,6 +73,7 @@ final class TJevConfig {
               ? null
               : TJevLogLevel.tryParse(environmentLogLevel)) ??
           TJevDefaults.logLevel,
+      redactLoggedBodies: redactLoggedBodies,
     );
   }
 
@@ -98,6 +101,10 @@ final class TJevConfig {
 
   /// How much the client logs.
   final TJevLogLevel logLevel;
+
+  /// Whether a JSON body logged at debug has the values of its secret
+  /// fields replaced in full.
+  final bool redactLoggedBodies;
 
   /// Returns [timeout] when it is positive.
   ///

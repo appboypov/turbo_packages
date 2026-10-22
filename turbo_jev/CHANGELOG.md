@@ -18,7 +18,7 @@ First release of a typed Dart client for Jev that matches the official JavaScrip
 - `TJev.models` lists the models of the account. `TJevModel` names Model Aliases and versions.
 - Sealed `TJevFailure` types for every failure of normal use. Misuse throws a `TJev*Exception` before sending.
 - `TJevRetryPolicy` with backoff and jitter and `Retry-After` support and a time budget. Every call takes a timeout and an Abort Trigger.
-- Logging through the `turbo_jev` logger of `package:logging` with secret headers replaced.
+- Logging through the `turbo_jev` logger of `package:logging` with secret headers and secret JSON body fields replaced. `redactLoggedBodies` turns the body redaction off.
 - Long-context Danger Zone opt-in and default headers and extra body fields.
 - Gzip compression of bodies from 1 KiB outside the browser.
 - Browser use behind your own proxy with `dangerouslyAllowBrowser`.

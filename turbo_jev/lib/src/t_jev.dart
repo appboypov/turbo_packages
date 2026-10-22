@@ -74,6 +74,14 @@ final class TJev {
   /// `package:logging` level must let these records through as well, such
   /// as `Logger.root.level = Level.ALL` for debug.
   ///
+  /// With [redactLoggedBodies] on, the default, a logged body that is JSON
+  /// has the value of each object field whose name holds `token`, `secret`,
+  /// `password` or an API key spelling (`api_key`, `api-key`, `apikey`), in
+  /// any case and at any depth, replaced in full before the body is cut at
+  /// 4096 bytes. Other bodies, such as multipart ones, are logged as they
+  /// are. Turn it off to see the bodies as sent and received; secret header
+  /// values stay replaced either way.
+  ///
   /// The client closes [httpClient] only when it created it.
   ///
   /// In a browser the API key is visible to anyone using the page, so the
@@ -95,6 +103,7 @@ final class TJev {
     bool longContext = false,
     TJevRetryPolicy? retry,
     TJevLogLevel? logLevel,
+    bool redactLoggedBodies = true,
     http.Client? httpClient,
     Map<String, String>? environment,
     bool dangerouslyAllowBrowser = false,
@@ -118,6 +127,7 @@ final class TJev {
       ),
       retry: retry,
       logLevel: logLevel,
+      redactLoggedBodies: redactLoggedBodies,
       environment: environment ?? processEnvironment,
     );
     return TJev._(
