@@ -82,27 +82,22 @@ final class TJevResult {
   }
 
   /// The Answer of every Noul of the Request, in Request order.
-  Map<TJevNoul, TJevNoulAnswer> get nouls => {
-    for (final MapEntry(key: question, value: answer) in _answers.entries)
-      if (question is TJevNoul) question: answer as TJevNoulAnswer,
-  };
+  Map<TJevNoul, TJevNoulAnswer> get nouls => _answersOf();
 
   /// The Answer of every Choice of the Request, in Request order.
-  Map<TJevChoice, TJevChoiceAnswer> get choices => {
-    for (final MapEntry(key: question, value: answer) in _answers.entries)
-      if (question is TJevChoice) question: answer as TJevChoiceAnswer,
-  };
+  Map<TJevChoice, TJevChoiceAnswer> get choices => _answersOf();
 
   /// The Answer of every Score of the Request, in Request order.
-  Map<TJevScore, TJevScoreAnswer> get scores => {
-    for (final MapEntry(key: question, value: answer) in _answers.entries)
-      if (question is TJevScore) question: answer as TJevScoreAnswer,
-  };
+  Map<TJevScore, TJevScoreAnswer> get scores => _answersOf();
 
   /// The Answer of every Box of the Request, in Request order.
-  Map<TJevBox, TJevBoxAnswer> get boxes => {
+  Map<TJevBox, TJevBoxAnswer> get boxes => _answersOf();
+
+  /// The Answer of every Question of type [Q] of the Request, in Request
+  /// order.
+  Map<Q, A> _answersOf<Q extends TJevQuestion<A>, A extends TJevAnswer>() => {
     for (final MapEntry(key: question, value: answer) in _answers.entries)
-      if (question is TJevBox) question: answer as TJevBoxAnswer,
+      if (question is Q) question: answer as A,
   };
 
   /// Parses [json], the Answer TypeSafe sent under [id], to [question].

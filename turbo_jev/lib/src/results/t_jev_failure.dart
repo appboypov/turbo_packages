@@ -28,3 +28,26 @@ part 't_jev_unprocessable_entity_failure.dart';
 sealed class TJevFailure {
   const TJevFailure();
 }
+
+/// The status, request id, headers and body of [response], the fields every
+/// failure of a response holds.
+///
+/// The body is decoded JSON, else its text, or `null` when empty.
+({int status, String? requestId, Map<String, String> headers, Object? body})
+_responseFieldsOf(http.Response response) {
+  final text = utf8.decode(response.bodyBytes, allowMalformed: true);
+  Object? body;
+  if (text.isNotEmpty) {
+    try {
+      body = jsonDecode(text);
+    } on FormatException {
+      body = text;
+    }
+  }
+  return (
+    status: response.statusCode,
+    requestId: response.headers[TJevHttp.requestIdHeader],
+    headers: response.headers,
+    body: body,
+  );
+}

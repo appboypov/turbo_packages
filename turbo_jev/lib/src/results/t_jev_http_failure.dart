@@ -13,12 +13,11 @@ sealed class TJevHttpFailure extends TJevFailure {
   /// The failure for a non-2xx [response], typed by its status.
   @internal
   factory TJevHttpFailure.fromResponse(http.Response response) {
-    final status = response.statusCode;
-    final body = _decodeBody(response);
+    final (:status, :requestId, :headers, :body) = _responseFieldsOf(
+      response,
+    );
     final details = _validationDetailsOf(body);
     final message = _messageOf(body, details);
-    final requestId = response.headers[TJevHttp.requestIdHeader];
-    final headers = response.headers;
     return switch (status) {
       400 => TJevBadRequestFailure._(
         status: status,
@@ -103,16 +102,6 @@ sealed class TJevHttpFailure extends TJevFailure {
 
   /// The response body: decoded JSON, else its text, or `null` when empty.
   final Object? body;
-
-  static Object? _decodeBody(http.Response response) {
-    final text = utf8.decode(response.bodyBytes, allowMalformed: true);
-    if (text.isEmpty) return null;
-    try {
-      return jsonDecode(text);
-    } on FormatException {
-      return text;
-    }
-  }
 
   static String _messageOf(Object? body, List<TJevValidationDetail> details) {
     final message = switch (body) {
