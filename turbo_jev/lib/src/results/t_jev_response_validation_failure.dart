@@ -17,13 +17,18 @@ final class TJevResponseValidationFailure extends TJevFailure {
   factory TJevResponseValidationFailure.fromResponse(
     http.Response response, {
     required String reason,
-  }) => TJevResponseValidationFailure(
-    reason: reason,
-    status: response.statusCode,
-    requestId: response.headers[TJevHttp.requestIdHeader],
-    headers: response.headers,
-    body: TJevHttpFailure._decodeBody(response),
-  );
+  }) {
+    final (:status, :requestId, :headers, :body) = _responseFieldsOf(
+      response,
+    );
+    return TJevResponseValidationFailure(
+      reason: reason,
+      status: status,
+      requestId: requestId,
+      headers: headers,
+      body: body,
+    );
+  }
 
   /// The path of the field that does not fit and what is wrong with it.
   final String reason;
