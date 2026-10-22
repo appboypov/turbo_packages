@@ -29,7 +29,7 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   TJevNoulQuestionDto toDto({required String id}) {
     if (instructions == null && trueMeans == null && falseMeans == null) {
       throw TJevInvalidQuestionException(
-        reason: TJevMessages.meaninglessNoul(id),
+        message: TJevMessages.meaninglessNoul(id),
       );
     }
     TJevQuestion.checkContent(

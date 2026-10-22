@@ -12,6 +12,27 @@ abstract final class TJevHttp {
   /// The highest HTTP status of a successful response.
   static const maxSuccessStatus = 299;
 
+  /// The HTTP status of a Request TypeSafe rejected as invalid.
+  static const badRequestStatus = 400;
+
+  /// The HTTP status of a Request whose API key TypeSafe did not accept.
+  static const unauthorizedStatus = 401;
+
+  /// The HTTP status of a Request the API key may not make.
+  static const forbiddenStatus = 403;
+
+  /// The HTTP status of a Request for something TypeSafe did not find.
+  static const notFoundStatus = 404;
+
+  /// The HTTP status of a Request whose body does not match its schema.
+  static const unprocessableEntityStatus = 422;
+
+  /// The HTTP status of a Request refused by the rate limit.
+  static const tooManyRequestsStatus = 429;
+
+  /// The lowest HTTP status of a server error.
+  static const minServerErrorStatus = 500;
+
   /// The media type of JSON bodies.
   static const jsonMediaType = 'application/json';
 

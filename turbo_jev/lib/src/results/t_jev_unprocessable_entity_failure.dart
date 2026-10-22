@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe found the Request body does not match its schema (422).
 final class TJevUnprocessableEntityFailure extends TJevHttpFailure {

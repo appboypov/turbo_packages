@@ -58,7 +58,7 @@ final class TJevScore<T extends Object>
     final descriptions = _descriptions;
     if (descriptions.isEmpty || descriptions.length > TJevLimits.maxLevels) {
       throw TJevInvalidQuestionException(
-        reason: TJevMessages.levelCount(id, descriptions.length),
+        message: TJevMessages.levelCount(id, descriptions.length),
       );
     }
     final wireKeys = <String>{};
@@ -66,7 +66,7 @@ final class TJevScore<T extends Object>
       final key = TJevQuestion._wireKey(level);
       if (!wireKeys.add(key)) {
         throw TJevInvalidQuestionException(
-          reason: TJevMessages.duplicateLevelKey(id, key),
+          message: TJevMessages.duplicateLevelKey(id, key),
         );
       }
     }

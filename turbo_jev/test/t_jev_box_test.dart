@@ -242,8 +242,8 @@ void main() {
             ),
             throwsA(
               isA<TJevInvalidQuestionException>().having(
-                (exception) => exception.reason,
-                'reason',
+                (exception) => exception.message,
+                'message',
                 allOf(contains('jev-preview'), contains('jev-1.14.0')),
               ),
             ),

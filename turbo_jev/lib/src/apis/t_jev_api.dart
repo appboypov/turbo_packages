@@ -6,13 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_response/turbo_response.dart';
 
+import '../abstracts/t_jev_failure.dart';
 import '../config/t_jev_config.dart';
 import '../config/t_jev_retry_policy.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_http_method.dart';
 import '../models/t_jev_image.dart';
-import '../results/t_jev_failure.dart';
 import '../services/t_jev_request_content_service.dart';
 import '../services/t_jev_request_platform_service.dart';
 import '../services/t_jev_request_trace_service.dart';
@@ -76,8 +76,8 @@ final class TJevApi {
       ]);
       if (response != null) return TurboResponse.success(result: response);
       abortAttempt.complete();
-      return TurboResponse.fail(
-        error: aborted.isCompleted
+      return _fail(
+        aborted.isCompleted
             ? const TJevAbortedFailure()
             : TJevTimeoutFailure(timeout: timeout),
       );
@@ -88,8 +88,8 @@ final class TJevApi {
         _ => null,
       };
       if (reason == null) rethrow;
-      return TurboResponse.fail(
-        error: aborted.isCompleted
+      return _fail(
+        aborted.isCompleted
             ? const TJevAbortedFailure()
             : TJevConnectionFailure(
                 message: TJevMessages.connectionError(reason),
@@ -99,6 +99,10 @@ final class TJevApi {
       timer.cancel();
     }
   }
+
+  /// The fail of [failure], with its message.
+  static TurboResponse<T> _fail<T>(TJevFailure failure) =>
+      TurboResponse.fail(error: failure, message: failure.message);
 
   /// Waits [delay] and returns `false`, or returns `true` as soon as
   /// [aborted] completes.
@@ -128,22 +132,22 @@ final class TJevApi {
       try {
         return TurboResponse.success(result: onSuccess(response));
       } on FormatException catch (error) {
-        return TurboResponse.fail(
-          error: TJevResponseValidationFailure.fromResponse(
+        return _fail(
+          TJevResponseValidationFailure.fromResponse(
             response,
-            reason: error.message,
+            message: error.message,
           ),
         );
       } on CheckedFromJsonException catch (error) {
-        return TurboResponse.fail(
-          error: TJevResponseValidationFailure.fromResponse(
+        return _fail(
+          TJevResponseValidationFailure.fromResponse(
             response,
-            reason: TJevMessages.fieldMessage(error.key, error.message),
+            message: TJevMessages.fieldMessage(error.key, error.message),
           ),
         );
       }
     }
-    return TurboResponse.fail(error: TJevHttpFailure.fromResponse(response));
+    return _fail(TJevHttpFailure.fromResponse(response));
   }
 
   static bool _isUnprotected(MapEntry<String, String> header) =>
@@ -251,15 +255,13 @@ final class TJevApi {
           requestId = received.headers[TJevHttp.requestIdHeader];
           _trace.received(received, method: method.wireValue, path: path);
           response = _toTurboResponse(received, onSuccess);
-        case Fail(:final error):
+        case Fail(:final error, :final message):
           if (error is TJevTimeoutFailure) timeouts++;
-          response = TurboResponse.fail(error: error);
+          response = TurboResponse.fail(error: error, message: message);
       }
-      if (response
-          case Fail(
-            error: final TJevFailure failure,
-          )
-          when attempt < retry.maxRetries && retry.retries(failure)) {
+      if (response case Fail(
+        error: final TJevFailure failure,
+      ) when attempt < retry.maxRetries && retry.retries(failure)) {
         final delay = retry.delayAfter(
           attempt: attempt,
           failure: failure,
@@ -270,10 +272,7 @@ final class TJevApi {
           return ended(response, retries: attempt);
         }
         if (await _waitUnlessAborted(delay, aborted)) {
-          return ended(
-            TurboResponse.fail(error: const TJevAbortedFailure()),
-            retries: attempt,
-          );
+          return ended(_fail(const TJevAbortedFailure()), retries: attempt);
         }
         continue;
       }

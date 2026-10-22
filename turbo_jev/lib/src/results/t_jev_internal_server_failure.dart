@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe failed to handle the Request (5xx), including overload (529).
 final class TJevInternalServerFailure extends TJevHttpFailure {

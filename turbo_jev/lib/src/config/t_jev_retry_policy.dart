@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:meta/meta.dart';
 
+import '../abstracts/t_jev_exception.dart';
+import '../abstracts/t_jev_failure.dart';
 import '../constants/t_jev_defaults.dart';
 import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
-import '../exceptions/t_jev_invalid_retry_policy_exception.dart';
-import '../results/t_jev_failure.dart';
 import '../services/t_jev_retry_after_service.dart';
 import '../typedefs/t_jev_retry_predicate.dart';
 
@@ -147,6 +147,6 @@ final class TJevRetryPolicy {
     return backoff < maxBackoff ? backoff : maxBackoff;
   }
 
-  static Never _fail(String reason) =>
-      throw TJevInvalidRetryPolicyException(reason: reason);
+  static Never _fail(String message) =>
+      throw TJevInvalidRetryPolicyException(message: message);
 }

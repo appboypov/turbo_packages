@@ -1,28 +1,28 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// A 2xx response whose body does not fit the Request: no JSON, a missing or
 /// mistyped field, a missing Answer, or an Answer whose type or keys do not
 /// fit its Question.
 final class TJevResponseValidationFailure extends TJevFailure {
   const TJevResponseValidationFailure({
-    required this.reason,
+    required this.message,
     required this.status,
     required this.requestId,
     required this.headers,
     required this.body,
   });
 
-  /// The failure for a 2xx [response] whose body does not fit for [reason].
+  /// The failure for a 2xx [response] whose body does not fit, as [message]
+  /// says.
   @internal
   factory TJevResponseValidationFailure.fromResponse(
     http.Response response, {
-    required String reason,
+    required String message,
   }) {
-    final (:status, :requestId, :headers, :body) = _responseFieldsOf(
-      response,
-    );
+    final (:status, :requestId, :headers, :body) =
+        TJevHttpFailure._responseFieldsOf(response);
     return TJevResponseValidationFailure(
-      reason: reason,
+      message: message,
       status: status,
       requestId: requestId,
       headers: headers,
@@ -31,7 +31,8 @@ final class TJevResponseValidationFailure extends TJevFailure {
   }
 
   /// The path of the field that does not fit and what is wrong with it.
-  final String reason;
+  @override
+  final String message;
 
   /// The HTTP status code.
   final int status;
@@ -47,6 +48,6 @@ final class TJevResponseValidationFailure extends TJevFailure {
 
   @override
   String toString() =>
-      'TJevResponseValidationFailure{reason: $reason, status: $status, '
+      'TJevResponseValidationFailure{message: $message, status: $status, '
       'requestId: $requestId}';
 }

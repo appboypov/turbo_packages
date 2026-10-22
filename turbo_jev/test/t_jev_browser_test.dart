@@ -8,6 +8,7 @@ import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/services/fake_type_safe.dart';
+import 'support/utils/throws_t_jev_exception.dart';
 
 const _billing = TJevNoul(instructions: 'Is this message about billing?');
 
@@ -19,7 +20,7 @@ void main() {
       () {
         expect(
           () => TJev(apiKey: 'ts_test_key', environment: const {}),
-          throwsA(isA<TJevBrowserException>()),
+          throwsTJevException<TJevBrowserException>(),
         );
       },
     );

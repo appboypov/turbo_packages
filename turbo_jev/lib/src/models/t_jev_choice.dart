@@ -31,7 +31,7 @@ final class TJevChoice<T extends Object>
   TJevChoiceQuestionDto toDto({required String id}) {
     if (options.isEmpty || options.length > TJevLimits.maxOptions) {
       throw TJevInvalidQuestionException(
-        reason: TJevMessages.optionCount(id, options.length),
+        message: TJevMessages.optionCount(id, options.length),
       );
     }
     TJevQuestion.checkContent(
@@ -43,7 +43,7 @@ final class TJevChoice<T extends Object>
       final key = TJevQuestion._wireKey(option);
       if (criteria.containsKey(key)) {
         throw TJevInvalidQuestionException(
-          reason: TJevMessages.duplicateOptionKey(id, key),
+          message: TJevMessages.duplicateOptionKey(id, key),
         );
       }
       TJevQuestion.checkContent(

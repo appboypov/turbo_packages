@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe rejected the Request as invalid (400), for example because a
 /// Danger Zone feature was not opted in to or an Image was rejected.
