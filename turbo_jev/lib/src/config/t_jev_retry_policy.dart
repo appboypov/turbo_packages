@@ -15,11 +15,12 @@ import '../utils/retry_after.dart';
 final class TJevRetryPolicy {
   /// Creates a policy; every argument has the default of both official SDKs.
   ///
-  /// A failure is retried when its HTTP status is in [statuses], when it is
-  /// a [TJevConnectionFailure] and [retryConnectionFailures] is on, when it
-  /// is a [TJevTimeoutFailure] and [retryTimeouts] is on, or when
-  /// [predicate] returns `true` for it. A [TJevAbortedFailure] is never
-  /// retried.
+  /// A failure is retried by default when its HTTP status is in [statuses],
+  /// when it is a [TJevConnectionFailure] and [retryConnectionFailures] is
+  /// on, or when it is a [TJevTimeoutFailure] and [retryTimeouts] is on. A
+  /// [predicate] gets that default decision and its answer decides instead.
+  /// A [TJevAbortedFailure] is never retried, and [maxRetries] and [budget]
+  /// stop retries whatever [predicate] answers.
   ///
   /// Throws [TJevInvalidRetryPolicyException] when [maxRetries] or a delay
   /// is negative, [jitter] is outside 0 to 1, a status is outside 100 to 999
@@ -84,7 +85,8 @@ final class TJevRetryPolicy {
   /// Whether a [TJevTimeoutFailure] is retried.
   final bool retryTimeouts;
 
-  /// Retries a failure the other rules leave out when it returns `true`.
+  /// Decides whether a failure is retried, given what the other rules
+  /// decide; without it, the other rules decide.
   final TJevRetryPredicate? predicate;
 
   /// The total time of a call, its attempts and waits included, that no
@@ -94,10 +96,11 @@ final class TJevRetryPolicy {
 
   /// Whether [failure] is sent again, retries left aside.
   @internal
-  bool retries(TJevFailure failure) => switch (failure) {
-    TJevAbortedFailure() => false,
-    _ => _retriesByRule(failure) || (predicate?.call(failure) ?? false),
-  };
+  bool retries(TJevFailure failure) {
+    if (failure is TJevAbortedFailure) return false;
+    final retriesByDefault = _retriesByRule(failure);
+    return predicate?.call(failure, retriesByDefault) ?? retriesByDefault;
+  }
 
   /// How long to wait after [failure] of the zero-based [attempt] before the
   /// next attempt.

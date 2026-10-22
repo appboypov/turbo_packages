@@ -98,6 +98,17 @@ Future<void> retries(String message) async {
   // #enddocregion retry-call
   print(response.isSuccess);
 
+  // #docregion retry-predicate
+  final careful = TJevRetryPolicy(
+    predicate: (failure, retriesByDefault) => switch (failure) {
+      TJevHttpFailure(status: 409) => true,
+      TJevHttpFailure(status: 503) => false,
+      _ => retriesByDefault,
+    },
+  );
+  // #enddocregion retry-predicate
+  print(careful.maxRetries);
+
   // #docregion abort
   final stop = Completer<void>();
   final pending = jev.ask(

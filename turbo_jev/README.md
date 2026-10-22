@@ -336,7 +336,19 @@ final response = await jev.ask(
 );
 ```
 
-`TJevRetryPolicy` also takes the `statuses` to retry. Its `predicate` can retry any other failure.
+`TJevRetryPolicy` also takes the `statuses` to retry. Its `predicate` gets each failure with the decision of the built-in rules and has the final say. So you add or remove a single case and keep the rest:
+
+```dart
+final careful = TJevRetryPolicy(
+  predicate: (failure, retriesByDefault) => switch (failure) {
+    TJevHttpFailure(status: 409) => true,
+    TJevHttpFailure(status: 503) => false,
+    _ => retriesByDefault,
+  },
+);
+```
+
+An aborted call is never retried, and `maxRetries` and `budget` stop retries whatever the predicate says.
 
 Pass a future as `abortTrigger` to stop a call. Complete the future and the call stops at once. This works while the call waits for a retry too.
 
