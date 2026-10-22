@@ -1,3 +1,6 @@
+@TestOn('vm')
+library;
+
 import 'package:http_parser/http_parser.dart';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';

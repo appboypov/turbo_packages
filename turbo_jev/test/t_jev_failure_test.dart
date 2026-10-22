@@ -1,3 +1,6 @@
+@TestOn('vm')
+library;
+
 import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';

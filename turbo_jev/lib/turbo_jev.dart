@@ -9,6 +9,7 @@ export 'src/config/t_jev_retry_policy.dart';
 export 'src/enums/t_jev_image_format.dart';
 export 'src/enums/t_jev_log_level.dart';
 export 'src/exceptions/t_jev_api_key_exception.dart';
+export 'src/exceptions/t_jev_browser_exception.dart';
 export 'src/exceptions/t_jev_image_reference_exception.dart';
 export 'src/exceptions/t_jev_invalid_image_exception.dart';
 export 'src/exceptions/t_jev_invalid_question_exception.dart';
