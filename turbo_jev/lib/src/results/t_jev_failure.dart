@@ -16,6 +16,7 @@ part 't_jev_not_found_failure.dart';
 part 't_jev_other_status_failure.dart';
 part 't_jev_permission_denied_failure.dart';
 part 't_jev_rate_limit_failure.dart';
+part 't_jev_response_validation_failure.dart';
 part 't_jev_timeout_failure.dart';
 part 't_jev_unprocessable_entity_failure.dart';
 

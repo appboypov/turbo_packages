@@ -1,7 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:math' as math;
 
+part '../models/t_jev_choice_answer.dart';
 part '../models/t_jev_noul_answer.dart';
-part 't_jev_answer.g.dart';
+part '../models/t_jev_score_answer.dart';
 
 /// The typed result of one Question.
 ///

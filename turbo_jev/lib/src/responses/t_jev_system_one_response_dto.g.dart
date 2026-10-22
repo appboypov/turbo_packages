@@ -8,10 +8,19 @@ part of 't_jev_system_one_response_dto.dart';
 
 TJevSystemOneResponseDto _$TJevSystemOneResponseDtoFromJson(
   Map<String, dynamic> json,
-) => TJevSystemOneResponseDto(
-  model: json['model'] as String,
-  answers: (json['answers'] as Map<String, dynamic>).map(
-    (k, e) => MapEntry(k, e as Map<String, dynamic>),
-  ),
-  usage: TJevUsage.fromJson(json['usage'] as Map<String, dynamic>),
-);
+) => $checkedCreate('TJevSystemOneResponseDto', json, ($checkedConvert) {
+  final val = TJevSystemOneResponseDto(
+    model: $checkedConvert('model', (v) => v as String),
+    answers: $checkedConvert(
+      'answers',
+      (v) => (v as Map<String, dynamic>).map(
+        (k, e) => MapEntry(k, e as Map<String, dynamic>),
+      ),
+    ),
+    usage: $checkedConvert(
+      'usage',
+      (v) => TJevUsage.fromJson(v as Map<String, dynamic>),
+    ),
+  );
+  return val;
+});

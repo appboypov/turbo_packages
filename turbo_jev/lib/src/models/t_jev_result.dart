@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../abstracts/t_jev_answer.dart';
@@ -27,14 +28,20 @@ final class TJevResult {
   }) : _answers = answers;
 
   /// Parses a System One response to the Questions keyed by their ids.
+  ///
+  /// Throws a [FormatException] or a [CheckedFromJsonException] when the
+  /// body is no System One response or an Answer is missing or does not fit
+  /// its Question.
   @internal
   factory TJevResult.fromSystemOne({
     required Map<String, TJevQuestion> questions,
     required http.Response response,
   }) {
-    final dto = TJevSystemOneResponseDto.fromJson(
-      jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
-    );
+    final body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('The body is no JSON object.');
+    }
+    final dto = TJevSystemOneResponseDto.fromJson(body);
     return TJevResult(
       model: TJevModel(dto.model),
       usage: dto.usage,
@@ -42,7 +49,7 @@ final class TJevResult {
       httpResponse: response,
       answers: {
         for (final MapEntry(key: id, value: question) in questions.entries)
-          question: question.answerFromJson(dto.answers[id]!),
+          question: _answerFromJson(question, id, dto.answers[id]),
       },
     );
   }
@@ -74,5 +81,41 @@ final class TJevResult {
       );
     }
     return answer as A;
+  }
+
+  /// The Answer of every Noul of the Request, in Request order.
+  Map<TJevNoul, TJevNoulAnswer> get nouls => {
+    for (final MapEntry(key: question, value: answer) in _answers.entries)
+      if (question is TJevNoul) question: answer as TJevNoulAnswer,
+  };
+
+  /// The Answer of every Choice of the Request, in Request order.
+  Map<TJevChoice, TJevChoiceAnswer> get choices => {
+    for (final MapEntry(key: question, value: answer) in _answers.entries)
+      if (question is TJevChoice) question: answer as TJevChoiceAnswer,
+  };
+
+  /// The Answer of every Score of the Request, in Request order.
+  Map<TJevScore, TJevScoreAnswer> get scores => {
+    for (final MapEntry(key: question, value: answer) in _answers.entries)
+      if (question is TJevScore) question: answer as TJevScoreAnswer,
+  };
+
+  /// Parses [json], the Answer TypeSafe sent under [id], to [question].
+  static A _answerFromJson<A extends TJevAnswer>(
+    TJevQuestion<A> question,
+    String id,
+    Map<String, dynamic>? json,
+  ) {
+    if (json == null) {
+      throw FormatException('answers.$id: TypeSafe sent no Answer.');
+    }
+    try {
+      return question.answerFromJson(json);
+    } on CheckedFromJsonException catch (error) {
+      throw FormatException('answers.$id.${error.key}: ${error.message}');
+    } on FormatException catch (error) {
+      throw FormatException('answers.$id.${error.message}');
+    }
   }
 }

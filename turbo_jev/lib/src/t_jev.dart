@@ -123,11 +123,12 @@ final class TJev {
   /// Read each Answer with [TJevResult.answer]. A [timeout] replaces the
   /// client timeout for this call. A failed call returns a fail holding a
   /// [TJevFailure]: a [TJevHttpFailure] for a non-2xx response, a
-  /// [TJevConnectionFailure] or a [TJevTimeoutFailure].
+  /// [TJevResponseValidationFailure] for a 2xx response whose body does not
+  /// fit the Request, a [TJevConnectionFailure] or a [TJevTimeoutFailure].
   ///
   /// Throws [TJevInvalidQuestionException] before sending when [questions]
-  /// is empty or two Questions share an id, and [TJevInvalidTimeoutException]
-  /// when [timeout] is not positive.
+  /// is empty, two Questions share an id or a Question is invalid, and
+  /// [TJevInvalidTimeoutException] when [timeout] is not positive.
   Future<TurboResponse<TJevResult>> ask({
     required Object state,
     required List<TJevQuestion> questions,
@@ -152,7 +153,7 @@ final class TJev {
           questions: {
             for (final MapEntry(key: id, value: question)
                 in questionsById.entries)
-              id: question.toDto(),
+              id: question.toDto(id: id),
           },
         ).toJson(),
         ...?extraBody,

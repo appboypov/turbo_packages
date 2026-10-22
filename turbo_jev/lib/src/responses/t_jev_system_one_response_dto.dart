@@ -5,7 +5,7 @@ import '../models/t_jev_usage.dart';
 part 't_jev_system_one_response_dto.g.dart';
 
 /// The wire form of a System One response.
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: false, checked: true)
 final class TJevSystemOneResponseDto {
   const TJevSystemOneResponseDto({
     required this.model,
