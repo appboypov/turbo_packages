@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
+import 'support/services/fake_type_safe.dart';
 
 http.Response _modelsResponse(http.Request _) => http.Response(
   jsonEncode({
@@ -81,23 +81,24 @@ void main() {
     ('no JSON', 'not json'),
     ('a JSON object of the wrong shape', '{"models": 5}'),
   ]) {
-    test(
-      'Given a 2xx models response whose body is $what, when listed, '
-      'then it fails with a response validation failure',
-      () async {
-        final typeSafe = FakeTypeSafe(
-          respond: (_) => http.Response(body, 200),
-        );
-        final jev = TJev(
-          apiKey: 'ts_test_key',
-          httpClient: typeSafe.client,
-          environment: const {},
-        );
+    group('Given a 2xx models response whose body is $what', () {
+      test(
+        'When listed, then it fails with a response validation failure',
+        () async {
+          final typeSafe = FakeTypeSafe(
+            respond: (_) => http.Response(body, 200),
+          );
+          final jev = TJev(
+            apiKey: 'ts_test_key',
+            httpClient: typeSafe.client,
+            environment: const {},
+          );
 
-        final response = await jev.models();
+          final response = await jev.models();
 
-        expect(response.error, isA<TJevResponseValidationFailure>());
-      },
-    );
+          expect(response.error, isA<TJevResponseValidationFailure>());
+        },
+      );
+    });
   }
 }

@@ -9,7 +9,7 @@ import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/enums/severity.dart';
 import 'support/enums/team.dart';
-import 'support/fake_type_safe.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _department = TJevChoice<Team>(
   id: 'department',

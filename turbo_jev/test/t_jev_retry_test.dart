@@ -3,7 +3,6 @@ library;
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:http/http.dart' as http;
@@ -11,53 +10,20 @@ import 'package:http/testing.dart';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
-
-const _billing = TJevNoul(instructions: 'Is this about billing?');
+import 'support/services/fake_type_safe.dart';
+import 'support/utils/pending_ask.dart';
 
 final _success = FakeTypeSafe.noulResponse(nouls: {'q0': 0.9});
 
-/// A fake TypeSafe that answers the Requests in order with [responses] and
-/// every later Request with the last of them.
-FakeTypeSafe _answering(List<http.Response> responses) {
-  var next = 0;
-  return FakeTypeSafe(
-    respond: (_) => responses[min(next++, responses.length - 1)],
-  );
-}
-
 /// A fake TypeSafe that answers every Request with [status].
 FakeTypeSafe _failingWith(int status, {Map<String, String>? headers}) =>
-    _answering([http.Response('{}', status, headers: headers ?? const {})]);
+    FakeTypeSafe.answering([
+      http.Response('{}', status, headers: headers ?? const {}),
+    ]);
 
 /// A policy without jitter, so that each backoff is exact.
 TJevRetryPolicy _exactPolicy({int maxRetries = 2, Duration? budget}) =>
     TJevRetryPolicy(maxRetries: maxRetries, jitter: 0, budget: budget);
-
-/// A call to [TJev.ask] whose response is read under fake time.
-final class _Call {
-  _Call(
-    TJev jev, {
-    String state = 'I was charged twice.',
-    TJevRetryPolicy? retry,
-    Future<void>? abortTrigger,
-    Map<String, String>? headers,
-  }) {
-    jev
-        .ask(
-          state: state,
-          questions: [_billing],
-          retry: retry,
-          abortTrigger: abortTrigger,
-          headers: headers,
-        )
-        .then((value) => response = value);
-  }
-
-  TurboResponse<TJevResult>? response;
-
-  Object? get error => response?.error;
-}
 
 TJev _jevFor(http.Client client, {TJevRetryPolicy? retry}) => TJev(
   apiKey: 'ts_key',
@@ -73,8 +39,11 @@ void main() {
       'backoff and succeeds',
       () {
         fakeAsync((async) {
-          final typeSafe = _answering([http.Response('{}', 503), _success]);
-          final call = _Call(_jevFor(typeSafe.client));
+          final typeSafe = FakeTypeSafe.answering([
+            http.Response('{}', 503),
+            _success,
+          ]);
+          final call = PendingAsk(_jevFor(typeSafe.client));
 
           async.elapse(const Duration(milliseconds: 374));
           expect(typeSafe.requests, hasLength(1));
@@ -96,7 +65,7 @@ void main() {
         () {
           fakeAsync((async) {
             final typeSafe = _failingWith(status);
-            final call = _Call(_jevFor(typeSafe.client));
+            final call = PendingAsk(_jevFor(typeSafe.client));
 
             async.elapse(const Duration(seconds: 2));
 
@@ -116,7 +85,7 @@ void main() {
         () {
           fakeAsync((async) {
             final typeSafe = _failingWith(status);
-            final call = _Call(_jevFor(typeSafe.client));
+            final call = PendingAsk(_jevFor(typeSafe.client));
 
             async.elapse(const Duration(seconds: 30));
 
@@ -140,7 +109,7 @@ void main() {
             requests++;
             throw http.ClientException('Connection refused');
           });
-          final call = _Call(_jevFor(client));
+          final call = PendingAsk(_jevFor(client));
 
           async.elapse(const Duration(seconds: 2));
 
@@ -160,7 +129,7 @@ void main() {
             requests++;
             throw const HandshakeException('Handshake error in client');
           });
-          final call = _Call(_jevFor(client));
+          final call = PendingAsk(_jevFor(client));
 
           async.elapse(const Duration(seconds: 2));
 
@@ -187,7 +156,7 @@ void main() {
             requests++;
             return Completer<http.Response>().future;
           });
-          final call = _Call(_jevFor(client));
+          final call = PendingAsk(_jevFor(client));
 
           async.elapse(const Duration(seconds: 10));
           expect(requests, 1);
@@ -206,7 +175,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             headers: const {'X-TypeSafe-Retry-Count': '7'},
           );
@@ -229,7 +198,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(_jevFor(typeSafe.client), state: 'a' * 2000);
+          PendingAsk(_jevFor(typeSafe.client), state: 'a' * 2000);
 
           async.elapse(const Duration(seconds: 2));
 
@@ -250,7 +219,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: _exactPolicy(maxRetries: 6),
           );
@@ -282,7 +251,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(_jevFor(typeSafe.client));
+          PendingAsk(_jevFor(typeSafe.client));
 
           /// The fake time in ms at which TypeSafe has [count] Requests.
           int msUntilRequests(int count) {
@@ -312,7 +281,7 @@ void main() {
             503,
             headers: {'retry-after-ms': '1500'},
           );
-          _Call(_jevFor(typeSafe.client));
+          PendingAsk(_jevFor(typeSafe.client));
 
           async.elapse(const Duration(milliseconds: 1499));
           expect(typeSafe.requests, hasLength(1));
@@ -325,7 +294,7 @@ void main() {
     test('When a 429 holds Retry-After 60, then the retry waits 60 s', () {
       fakeAsync((async) {
         final typeSafe = _failingWith(429, headers: {'retry-after': '60'});
-        _Call(
+        PendingAsk(
           _jevFor(typeSafe.client),
           retry: TJevRetryPolicy(budget: null),
         );
@@ -343,7 +312,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(429, headers: {'retry-after': '61'});
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(jitter: 0, budget: null),
           );
@@ -361,7 +330,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503, headers: {'retry-after': '10'});
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(jitter: 0, respectRetryAfter: false),
           );
@@ -381,7 +350,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503, headers: {'retry-after': '20'});
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(maxRetries: 5),
           );
@@ -408,7 +377,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(typeSafe.client),
             retry: _exactPolicy(
               maxRetries: 5,
@@ -428,7 +397,7 @@ void main() {
     test('When the budget is off, then ask uses every retry', () {
       fakeAsync((async) {
         final typeSafe = _failingWith(503, headers: {'retry-after': '20'});
-        _Call(
+        PendingAsk(
           _jevFor(typeSafe.client),
           retry: TJevRetryPolicy(maxRetries: 5, budget: null),
         );
@@ -446,12 +415,12 @@ void main() {
       'retry it',
       () {
         fakeAsync((async) {
-          final typeSafe = _answering([
+          final typeSafe = FakeTypeSafe.answering([
             http.Response('{}', 503),
             http.Response('{}', 400),
           ]);
           final decisions = <(int, bool)>[];
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
               predicate: (failure, retriesByDefault) {
@@ -476,7 +445,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(400);
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
               predicate: (failure, retriesByDefault) =>
@@ -496,7 +465,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
               predicate: (failure, retriesByDefault) =>
@@ -523,7 +492,7 @@ void main() {
         () {
           fakeAsync((async) {
             final typeSafe = _failingWith(status);
-            _Call(
+            PendingAsk(
               _jevFor(typeSafe.client),
               retry: TJevRetryPolicy(
                 predicate: (_, retriesByDefault) => retriesByDefault,
@@ -542,11 +511,11 @@ void main() {
       'When it is the only rule, then only the failures it picks are retried',
       () {
         fakeAsync((async) {
-          final typeSafe = _answering([
+          final typeSafe = FakeTypeSafe.answering([
             http.Response('{}', 409),
             http.Response('{}', 503),
           ]);
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
               statuses: const {},
@@ -574,7 +543,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(400);
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(maxRetries: 1, predicate: (_, _) => true),
           );
@@ -592,7 +561,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(400);
-          _Call(
+          PendingAsk(
             _jevFor(typeSafe.client),
             retry: TJevRetryPolicy(
               maxRetries: 5,
@@ -618,7 +587,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
-          _Call(
+          PendingAsk(
             _jevFor(
               typeSafe.client,
               retry: TJevRetryPolicy(maxRetries: 0),
@@ -639,7 +608,7 @@ void main() {
       () {
         fakeAsync((async) {
           final typeSafe = _failingWith(400);
-          _Call(
+          PendingAsk(
             _jevFor(
               typeSafe.client,
               retry: TJevRetryPolicy(predicate: (_, _) => true),
@@ -657,7 +626,7 @@ void main() {
     test('When the call sets no policy, then the client policy applies', () {
       fakeAsync((async) {
         final typeSafe = _failingWith(503);
-        _Call(
+        PendingAsk(
           _jevFor(typeSafe.client, retry: TJevRetryPolicy(maxRetries: 0)),
         );
 
@@ -680,7 +649,7 @@ void main() {
             return Completer<http.Response>().future;
           });
           final abort = Completer<void>();
-          final call = _Call(_jevFor(client), abortTrigger: abort.future);
+          final call = PendingAsk(_jevFor(client), abortTrigger: abort.future);
 
           async.elapse(const Duration(seconds: 1));
           expect(call.response, isNull);
@@ -706,7 +675,7 @@ void main() {
             abort.complete();
             throw const HandshakeException('Handshake error in client');
           });
-          final call = _Call(_jevFor(client), abortTrigger: abort.future);
+          final call = PendingAsk(_jevFor(client), abortTrigger: abort.future);
 
           async.elapse(const Duration(minutes: 1));
 
@@ -723,7 +692,7 @@ void main() {
         fakeAsync((async) {
           final typeSafe = _failingWith(503);
           final abort = Completer<void>();
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(typeSafe.client),
             abortTrigger: abort.future,
           );
@@ -751,7 +720,7 @@ void main() {
             return Completer<http.Response>().future;
           });
           final abort = Completer<void>();
-          final call = _Call(
+          final call = PendingAsk(
             _jevFor(client, retry: TJevRetryPolicy(predicate: (_, _) => true)),
             abortTrigger: abort.future,
           );
@@ -790,8 +759,8 @@ void main() {
 
     test('When it never completes, then the call ends as usual', () {
       fakeAsync((async) {
-        final typeSafe = _answering([_success]);
-        final call = _Call(
+        final typeSafe = FakeTypeSafe.answering([_success]);
+        final call = PendingAsk(
           _jevFor(typeSafe.client),
           abortTrigger: Completer<void>().future,
         );

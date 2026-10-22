@@ -3,7 +3,6 @@ library;
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:http/http.dart' as http;
@@ -12,8 +11,8 @@ import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
-import 'support/images.dart';
+import 'support/constants/jpeg_bytes.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _billing = TJevNoul(instructions: 'Is this about billing?');
 
@@ -40,15 +39,6 @@ TJev _unredactedJevFor(http.Client client) => TJev(
   logLevel: TJevLogLevel.debug,
   redactLoggedBodies: false,
 );
-
-/// A fake TypeSafe that answers the Requests in order with [responses] and
-/// every later Request with the last of them.
-FakeTypeSafe _answering(List<http.Response> responses) {
-  var next = 0;
-  return FakeTypeSafe(
-    respond: (_) => responses[min(next++, responses.length - 1)],
-  );
-}
 
 void main() {
   late List<LogRecord> records;
@@ -156,7 +146,7 @@ void main() {
       'summary with the retry, the status and the request id',
       () {
         fakeAsync((async) {
-          final typeSafe = _answering([
+          final typeSafe = FakeTypeSafe.answering([
             http.Response('{}', 503),
             FakeTypeSafe.noulResponse(
               nouls: {'q0': 0.9},
@@ -373,7 +363,7 @@ void main() {
       'each response its status',
       () {
         fakeAsync((async) {
-          final typeSafe = _answering([
+          final typeSafe = FakeTypeSafe.answering([
             http.Response('{}', 503),
             FakeTypeSafe.noulResponse(nouls: {'q0': 0.9}),
           ]);

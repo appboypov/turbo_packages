@@ -7,7 +7,9 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/images.dart';
+import 'support/constants/gif_bytes.dart';
+import 'support/constants/jpeg_bytes.dart';
+import 'support/constants/png_bytes.dart';
 
 void main() {
   group('Given PNG bytes', () {
@@ -51,16 +53,17 @@ void main() {
     );
   });
 
-  test(
-    'Given JPEG bytes, when an Image is created from them, '
-    'then it is sniffed as JPEG',
-    () {
-      final image = TJevImage(jpegBytes);
+  group('Given JPEG bytes', () {
+    test(
+      'When an Image is created from them, then it is sniffed as JPEG',
+      () {
+        final image = TJevImage(jpegBytes);
 
-      expect(image.format, TJevImageFormat.jpeg);
-      expect(image.format.contentType, 'image/jpeg');
-    },
-  );
+        expect(image.format, TJevImageFormat.jpeg);
+        expect(image.format.contentType, 'image/jpeg');
+      },
+    );
+  });
 
   group('Given base64 text', () {
     test(
