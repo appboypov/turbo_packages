@@ -124,6 +124,14 @@ void logging() {
   final jev = TJev(logLevel: TJevLogLevel.info);
   // #enddocregion logging
   jev.close();
+
+  // #docregion logging-bodies
+  final unredacted = TJev(
+    logLevel: TJevLogLevel.debug,
+    redactLoggedBodies: false,
+  );
+  // #enddocregion logging-bodies
+  unredacted.close();
 }
 
 void web(String sessionToken) {

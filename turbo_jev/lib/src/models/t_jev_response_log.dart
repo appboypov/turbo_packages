@@ -26,7 +26,9 @@ final class TJevResponseLog {
   final Map<String, String> headers;
 
   /// The body as text, cut at [TJevLogging.maxLoggedBodyBytes] bytes, or
-  /// `null` when it is empty.
+  /// `null` when it is empty. With body redaction on, a JSON body has each
+  /// secret field value replaced by [TJevLogging.redactedValue] before the
+  /// cut.
   final String? body;
 
   /// How many bytes of the body [body] leaves out.

@@ -378,6 +378,15 @@ final jev = TJev(logLevel: TJevLogLevel.info);
 
 The `object` of a record holds the typed log. It is a `TJevRequestSummary` or a `TJevRequestLog` or a `TJevResponseLog`. A log never shows the API key or any other secret header value. The level of `package:logging` must let the records through as well.
 
+A debug record holds at most 4096 bytes of each body. Before the cut, a JSON body has the value of each field whose name holds `token`, `secret`, `password`, `api_key`, `api-key` or `apikey`, in any case and at any depth, replaced with `***`. Other bodies, such as the multipart body of a Request with Images, are logged as they are. `redactLoggedBodies: false` logs the bodies as sent and received. Secret header values stay hidden either way:
+
+```dart
+final unredacted = TJev(
+  logLevel: TJevLogLevel.debug,
+  redactLoggedBodies: false,
+);
+```
+
 ## Models
 
 `TJevModel.jevLatest` is the default model. `TJevModel.jevPreview` points to the next model. Pin a version with `TJevModel.jev1_14_0` or `TJevModel('jev-1.14.0')`. List the models your account can use:

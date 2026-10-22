@@ -183,6 +183,7 @@ final class TJevApi {
     }).ignore();
     final trace = TJevRequestTraceService(
       level: _config.logLevel,
+      redactBodies: _config.redactLoggedBodies,
       method: method,
       path: path,
       body: content?.bytes,

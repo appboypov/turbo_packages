@@ -27,7 +27,9 @@ final class TJevRequestLog {
   final Map<String, String> headers;
 
   /// The body before compression as text, cut at
-  /// [TJevLogging.maxLoggedBodyBytes] bytes, or `null` without a body.
+  /// [TJevLogging.maxLoggedBodyBytes] bytes, or `null` without a body. With
+  /// body redaction on, a JSON body has each secret field value replaced by
+  /// [TJevLogging.redactedValue] before the cut.
   final String? body;
 
   /// How many bytes of the body [body] leaves out.
