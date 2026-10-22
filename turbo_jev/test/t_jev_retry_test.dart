@@ -2,6 +2,7 @@
 library;
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:fake_async/fake_async.dart';
@@ -145,6 +146,33 @@ void main() {
 
           expect(requests, 3);
           expect(call.error, isA<TJevConnectionFailure>());
+        });
+      },
+    );
+
+    test(
+      'When the TLS handshake keeps failing, then ask sends the Request three '
+      'times and returns a connection failure',
+      () {
+        fakeAsync((async) {
+          var requests = 0;
+          final client = MockClient((_) {
+            requests++;
+            throw const HandshakeException('Handshake error in client');
+          });
+          final call = _Call(_jevFor(client));
+
+          async.elapse(const Duration(seconds: 2));
+
+          expect(requests, 3);
+          expect(
+            call.error,
+            isA<TJevConnectionFailure>().having(
+              (failure) => failure.message,
+              'message',
+              'Connection error: HandshakeException: Handshake error in client',
+            ),
+          );
         });
       },
     );
@@ -661,6 +689,28 @@ void main() {
 
           expect(call.error, isA<TJevAbortedFailure>());
           async.elapse(const Duration(minutes: 1));
+          expect(requests, 1);
+        });
+      },
+    );
+
+    test(
+      'When it completes as the TLS handshake fails, then ask returns an '
+      'aborted failure and sends nothing more',
+      () {
+        fakeAsync((async) {
+          var requests = 0;
+          final abort = Completer<void>();
+          final client = MockClient((_) {
+            requests++;
+            abort.complete();
+            throw const HandshakeException('Handshake error in client');
+          });
+          final call = _Call(_jevFor(client), abortTrigger: abort.future);
+
+          async.elapse(const Duration(minutes: 1));
+
+          expect(call.error, isA<TJevAbortedFailure>());
           expect(requests, 1);
         });
       },

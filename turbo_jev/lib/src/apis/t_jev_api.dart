@@ -71,13 +71,17 @@ final class TJevApi {
             ? const TJevAbortedFailure()
             : TJevTimeoutFailure(timeout: timeout),
       );
-    } on http.ClientException catch (error) {
+    } on Exception catch (error) {
+      final reason = switch (error) {
+        http.ClientException(:final message) => message,
+        _ when isUnwrappedConnectionError(error) => '$error',
+        _ => null,
+      };
+      if (reason == null) rethrow;
       return TurboResponse.fail(
         error: aborted.isCompleted
             ? const TJevAbortedFailure()
-            : TJevConnectionFailure(
-                message: 'Connection error: ${error.message}',
-              ),
+            : TJevConnectionFailure(message: 'Connection error: $reason'),
       );
     } finally {
       timer.cancel();

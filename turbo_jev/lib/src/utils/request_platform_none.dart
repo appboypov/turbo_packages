@@ -10,3 +10,7 @@ Map<String, String> retryHeaders(int retryCount) => const {};
 
 /// The body a browser sends for [bytes]: the bytes as they are.
 TJevEncodedBody encodeBody(List<int> bytes) => (bytes: bytes, encoding: null);
+
+/// Whether [error] is a connection error a browser client throws as it is:
+/// never, as it wraps each in a `ClientException`.
+bool isUnwrappedConnectionError(Exception error) => false;

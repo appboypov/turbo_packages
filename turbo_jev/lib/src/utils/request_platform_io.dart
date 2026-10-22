@@ -25,3 +25,8 @@ TJevEncodedBody encodeBody(List<int> bytes) =>
     bytes.length < TJevHttp.minCompressedBodyBytes
     ? (bytes: bytes, encoding: null)
     : (bytes: gzip.encode(bytes), encoding: TJevHttp.gzipEncoding);
+
+/// Whether [error] is a connection error the HTTP client throws as it is:
+/// an [IOException] such as a [HandshakeException], which `IOClient` does
+/// not wrap in a `ClientException`.
+bool isUnwrappedConnectionError(Exception error) => error is IOException;
