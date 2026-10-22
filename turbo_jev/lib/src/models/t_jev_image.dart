@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
+import '../constants/t_jev_http.dart';
+import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_image_format.dart';
 import '../exceptions/t_jev_invalid_image_exception.dart';
 import '../utils/image_file.dart';
@@ -37,7 +39,10 @@ final class TJevImage {
   TJevImage._(Uint8List bytes)
     : bytes = bytes.asUnmodifiableView(),
       format = _formatOf(bytes),
-      reference = '<image:${randomHex()}>';
+      reference =
+          '${TJevHttp.imageReferencePrefix}'
+          '${randomHex(TJevHttp.imageReferenceIdBytes)}'
+          '${TJevHttp.imageReferenceSuffix}';
 
   /// An Image of the file bytes that [text] encodes in base64, without a
   /// `data:` URL prefix. Whitespace in [text] is ignored.
@@ -50,7 +55,7 @@ final class TJevImage {
       bytes = base64.decode(text.replaceAll(_whitespace, ''));
     } on FormatException catch (error) {
       throw TJevInvalidImageException(
-        reason: 'The Image text is no base64: ${error.message}.',
+        reason: TJevMessages.invalidBase64(error.message),
       );
     }
     return TJevImage._(bytes);
@@ -63,10 +68,6 @@ final class TJevImage {
   /// a file needs `dart:io`; in a browser it throws an [UnsupportedError].
   static Future<TJevImage> fromFile(String path) async =>
       TJevImage(await readImageFile(path));
-
-  /// Matches an Image Reference.
-  @internal
-  static final referencePattern = RegExp('<image:[0-9a-f]{32}>');
 
   /// Runs [encode] and calls [onEncoded] with each Image whose [toJson] it
   /// calls, so encoding content finds every Image placed in it, also inside
@@ -116,7 +117,7 @@ final class TJevImage {
   /// no signature of a [TJevImageFormat].
   static TJevImageFormat _formatOf(Uint8List bytes) {
     if (bytes.isEmpty) {
-      throw const TJevInvalidImageException(reason: 'The Image data is empty.');
+      throw const TJevInvalidImageException(reason: TJevMessages.emptyImage);
     }
     for (final format in TJevImageFormat.values) {
       final signature = format.signature;
@@ -126,7 +127,7 @@ final class TJevImage {
       }
     }
     throw const TJevInvalidImageException(
-      reason: 'The Image data is no PNG or JPEG file.',
+      reason: TJevMessages.unknownImageFormat,
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:turbo_response/turbo_response.dart';
 import '../config/t_jev_config.dart';
 import '../config/t_jev_retry_policy.dart';
 import '../constants/t_jev_http.dart';
+import '../constants/t_jev_messages.dart';
 import '../models/t_jev_image.dart';
 import '../results/t_jev_failure.dart';
 import '../services/t_jev_request_trace_service.dart';
@@ -81,7 +82,9 @@ final class TJevApi {
       return TurboResponse.fail(
         error: aborted.isCompleted
             ? const TJevAbortedFailure()
-            : TJevConnectionFailure(message: 'Connection error: $reason'),
+            : TJevConnectionFailure(
+                message: TJevMessages.connectionError(reason),
+              ),
       );
     } finally {
       timer.cancel();
@@ -111,7 +114,8 @@ final class TJevApi {
     TJevResponseParser<T> onSuccess,
   ) {
     final status = response.statusCode;
-    if (status >= 200 && status < 300) {
+    if (status >= TJevHttp.minSuccessStatus &&
+        status <= TJevHttp.maxSuccessStatus) {
       try {
         return TurboResponse.success(result: onSuccess(response));
       } on FormatException catch (error) {
@@ -125,7 +129,7 @@ final class TJevApi {
         return TurboResponse.fail(
           error: TJevResponseValidationFailure.fromResponse(
             response,
-            reason: '${error.key}: ${error.message}',
+            reason: TJevMessages.fieldMessage(error.key, error.message),
           ),
         );
       }
@@ -174,7 +178,7 @@ final class TJevApi {
         : requestContent(json: json, images: images);
     final body = content == null ? null : encodeBody(content.bytes);
     final sdkHeaders = {
-      TJevHttp.authorizationHeader: 'Bearer ${_config.apiKey}',
+      TJevHttp.authorizationHeader: '${TJevHttp.bearerPrefix}${_config.apiKey}',
       TJevHttp.acceptHeader: TJevHttp.jsonMediaType,
       if (content != null) TJevHttp.contentTypeHeader: content.contentType,
       if (body?.encoding case final encoding?)
@@ -218,9 +222,11 @@ final class TJevApi {
         trace: trace,
         onSuccess: onSuccess,
       );
-      if (response case Fail(
-        error: final TJevFailure failure,
-      ) when attempt < retry.maxRetries && retry.retries(failure)) {
+      if (response
+          case Fail(
+            error: final TJevFailure failure,
+          )
+          when attempt < retry.maxRetries && retry.retries(failure)) {
         final delay = retry.delayAfter(
           attempt: attempt,
           failure: failure,

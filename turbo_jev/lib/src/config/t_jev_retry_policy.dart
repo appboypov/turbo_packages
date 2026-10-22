@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:meta/meta.dart';
 
+import '../constants/t_jev_defaults.dart';
+import '../constants/t_jev_limits.dart';
+import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_invalid_retry_policy_exception.dart';
 import '../results/t_jev_failure.dart';
 import '../typedefs/t_jev_retry_predicate.dart';
@@ -26,33 +29,34 @@ final class TJevRetryPolicy {
   /// is negative, [jitter] is outside 0 to 1, a status is outside 100 to 999
   /// or [budget] is not positive.
   TJevRetryPolicy({
-    this.maxRetries = 2,
-    this.initialBackoff = const Duration(milliseconds: 500),
-    this.maxBackoff = const Duration(seconds: 5),
-    this.jitter = 0.25,
+    this.maxRetries = TJevDefaults.maxRetries,
+    this.initialBackoff = TJevDefaults.initialBackoff,
+    this.maxBackoff = TJevDefaults.maxBackoff,
+    this.jitter = TJevDefaults.jitter,
     Set<int>? statuses,
-    this.respectRetryAfter = true,
-    this.maxRetryAfter = const Duration(seconds: 60),
-    this.retryConnectionFailures = true,
-    this.retryTimeouts = true,
+    this.respectRetryAfter = TJevDefaults.respectRetryAfter,
+    this.maxRetryAfter = TJevDefaults.maxRetryAfter,
+    this.retryConnectionFailures = TJevDefaults.retryConnectionFailures,
+    this.retryTimeouts = TJevDefaults.retryTimeouts,
     this.predicate,
-    this.budget = const Duration(seconds: 30),
-  }) : statuses = Set.unmodifiable(
-         statuses ??
-             {408, 429, for (var status = 500; status < 600; status++) status},
-       ) {
-    if (maxRetries < 0) _fail('maxRetries must not be negative.');
-    if (initialBackoff.isNegative) {
-      _fail('initialBackoff must not be negative.');
+    this.budget = TJevDefaults.retryBudget,
+  }) : statuses = Set.unmodifiable(statuses ?? TJevDefaults.retryStatuses) {
+    if (maxRetries < 0) _fail(TJevMessages.negativeMaxRetries);
+    if (initialBackoff.isNegative) _fail(TJevMessages.negativeInitialBackoff);
+    if (maxBackoff.isNegative) _fail(TJevMessages.negativeMaxBackoff);
+    if (maxRetryAfter.isNegative) _fail(TJevMessages.negativeMaxRetryAfter);
+    if (!(jitter >= TJevLimits.minJitter && jitter <= TJevLimits.maxJitter)) {
+      _fail(TJevMessages.jitterOutOfRange);
     }
-    if (maxBackoff.isNegative) _fail('maxBackoff must not be negative.');
-    if (maxRetryAfter.isNegative) _fail('maxRetryAfter must not be negative.');
-    if (!(jitter >= 0 && jitter <= 1)) _fail('jitter must be between 0 and 1.');
-    if (this.statuses.any((status) => status < 100 || status > 999)) {
-      _fail('statuses must be HTTP statuses from 100 to 999.');
+    if (this.statuses.any(
+      (status) =>
+          status < TJevLimits.minHttpStatus ||
+          status > TJevLimits.maxHttpStatus,
+    )) {
+      _fail(TJevMessages.statusOutOfRange);
     }
     if (budget case final budget? when budget <= Duration.zero) {
-      _fail('budget must be positive.');
+      _fail(TJevMessages.nonPositiveBudget);
     }
   }
 
@@ -136,7 +140,7 @@ final class TJevRetryPolicy {
   Duration _backoff(int attempt) {
     var backoff = initialBackoff;
     for (var step = 0; step < attempt && backoff < maxBackoff; step++) {
-      backoff *= 2;
+      backoff *= TJevDefaults.backoffMultiplier;
     }
     return backoff < maxBackoff ? backoff : maxBackoff;
   }

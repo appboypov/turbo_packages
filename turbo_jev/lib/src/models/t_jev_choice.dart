@@ -31,23 +31,24 @@ final class TJevChoice<T extends Object>
   TJevChoiceQuestionDto toDto({required String id}) {
     if (options.isEmpty || options.length > TJevLimits.maxOptions) {
       throw TJevInvalidQuestionException(
-        reason:
-            'Choice $id needs 1 to ${TJevLimits.maxOptions} Options, '
-            'not ${options.length}.',
+        reason: TJevMessages.optionCount(id, options.length),
       );
     }
-    TJevQuestion.checkContent(instructions, 'The Instructions of Choice $id');
+    TJevQuestion.checkContent(
+      instructions,
+      TJevMessages.choiceInstructionsLocation(id),
+    );
     final criteria = <String, Object?>{};
     for (final MapEntry(key: option, value: description) in options.entries) {
       final key = TJevQuestion._wireKey(option);
       if (criteria.containsKey(key)) {
         throw TJevInvalidQuestionException(
-          reason: 'Two Options of Choice $id have the wire key $key.',
+          reason: TJevMessages.duplicateOptionKey(id, key),
         );
       }
       TJevQuestion.checkContent(
         description,
-        'The description of Option $key of Choice $id',
+        TJevMessages.optionDescriptionLocation(id, key),
       );
       criteria[key] = description;
     }
@@ -65,13 +66,13 @@ final class TJevChoice<T extends Object>
       for (final option in options.keys) TJevQuestion._wireKey(option): option,
     };
     TJevQuestion._checkKeys(
-      'probabilities',
+      TJevHttp.probabilitiesKey,
       dto.probabilities.keys,
       optionsByKey.keys.toList(),
     );
     final choice = optionsByKey[dto.choice];
     if (choice == null) {
-      throw FormatException('choice: ${dto.choice} is not an Option.');
+      throw FormatException(TJevMessages.unknownOption(dto.choice));
     }
     return TJevChoiceAnswer(
       choice: choice,

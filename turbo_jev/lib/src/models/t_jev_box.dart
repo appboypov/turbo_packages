@@ -17,7 +17,10 @@ final class TJevBox extends TJevQuestion<TJevBoxAnswer> {
 
   @override
   TJevBoxQuestionDto toDto({required String id}) {
-    TJevQuestion.checkContent(instructions, 'The Instructions of Box $id');
+    TJevQuestion.checkContent(
+      instructions,
+      TJevMessages.boxInstructionsLocation(id),
+    );
     return TJevBoxQuestionDto(instructions: instructions);
   }
 

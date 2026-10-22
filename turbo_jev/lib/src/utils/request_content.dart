@@ -26,7 +26,8 @@ TJevRequestContent requestContent({
     );
   }
   // A random boundary, as browsers use, practically never occurs in a part.
-  final boundary = randomHex();
+  final boundary = randomHex(TJevHttp.boundaryBytes);
+  final delimiter = '${TJevHttp.boundaryDelimiter}$boundary';
   final bytes = BytesBuilder(copy: false);
 
   /// Adds a part holding [content] and returns the offset of its content.
@@ -37,34 +38,42 @@ TJevRequestContent requestContent({
   }) {
     bytes.add(
       utf8.encode(
-        '--$boundary\r\n'
-        'Content-Disposition: form-data; $disposition\r\n'
-        'Content-Type: $contentType\r\n\r\n',
+        '$delimiter${TJevHttp.lineBreak}'
+        '${TJevHttp.contentDispositionHeader}: '
+        '${TJevHttp.formDataDisposition}; $disposition${TJevHttp.lineBreak}'
+        '${TJevHttp.contentTypeHeader}: $contentType'
+        '${TJevHttp.lineBreak}${TJevHttp.lineBreak}',
       ),
     );
     final contentStart = bytes.length;
     bytes
       ..add(content)
-      ..add(utf8.encode('\r\n'));
+      ..add(utf8.encode(TJevHttp.lineBreak));
     return contentStart;
   }
 
   final jsonStart = addPart(
-    disposition: 'name="${TJevHttp.requestPartName}"',
+    disposition: '${TJevHttp.nameParameter}="${TJevHttp.requestPartName}"',
     contentType: TJevHttp.jsonMediaType,
     content: jsonBytes,
   );
   for (final MapEntry(key: name, value: image) in images.entries) {
     addPart(
-      disposition: 'name="$name"; filename="$name"',
+      disposition:
+          '${TJevHttp.nameParameter}="$name"; '
+          '${TJevHttp.filenameParameter}="$name"',
       contentType: image.format.contentType,
       content: image.bytes,
     );
   }
-  bytes.add(utf8.encode('--$boundary--\r\n'));
+  bytes.add(
+    utf8.encode('$delimiter${TJevHttp.boundaryDelimiter}${TJevHttp.lineBreak}'),
+  );
   return (
     bytes: bytes.takeBytes(),
-    contentType: '${TJevHttp.multipartMediaType}; boundary=$boundary',
+    contentType:
+        '${TJevHttp.multipartMediaType}; '
+        '${TJevHttp.boundaryParameter}=$boundary',
     jsonStart: jsonStart,
     jsonEnd: jsonStart + jsonBytes.length,
   );

@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 
 import '../constants/t_jev_defaults.dart';
 import '../constants/t_jev_environment_keys.dart';
+import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_log_level.dart';
 import '../exceptions/t_jev_api_key_exception.dart';
 import '../exceptions/t_jev_invalid_timeout_exception.dart';
@@ -114,7 +115,7 @@ final class TJevConfig {
   static Duration checkedTimeout(Duration timeout) {
     if (timeout <= Duration.zero) {
       throw TJevInvalidTimeoutException(
-        reason: 'A timeout must be positive, not $timeout.',
+        reason: TJevMessages.invalidTimeout(timeout),
         timeout: timeout,
       );
     }
@@ -124,16 +125,10 @@ final class TJevConfig {
   static String _checkedApiKey(String? apiKey) {
     final key = apiKey?.trim() ?? '';
     if (key.isEmpty) {
-      throw const TJevApiKeyException(
-        reason:
-            'No API key was provided. Pass apiKey or set the '
-            '${TJevEnvironmentKeys.apiKey} environment variable.',
-      );
+      throw const TJevApiKeyException(reason: TJevMessages.missingApiKey);
     }
     if (!_printableAsciiWithoutSpaces.hasMatch(key)) {
-      throw const TJevApiKeyException(
-        reason: 'The API key must hold only printable ASCII without spaces.',
-      );
+      throw const TJevApiKeyException(reason: TJevMessages.invalidApiKey);
     }
     return key;
   }

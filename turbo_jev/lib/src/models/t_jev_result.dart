@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../abstracts/t_jev_answer.dart';
 import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
+import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_unasked_question_exception.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
 import '../types/t_jev_model.dart';
@@ -73,9 +74,8 @@ final class TJevResult {
   A answer<A extends TJevAnswer>(TJevQuestion<A> question) {
     final answer = _answers[question];
     if (answer == null) {
-      final id = question.id == null ? '' : ' with id ${question.id}';
       throw TJevUnaskedQuestionException(
-        reason: 'The Request did not ask this ${question.runtimeType}$id.',
+        reason: TJevMessages.unaskedQuestion(question.runtimeType, question.id),
       );
     }
     return answer as A;
@@ -107,14 +107,19 @@ final class TJevResult {
     Map<String, dynamic>? json,
   ) {
     if (json == null) {
-      throw FormatException('answers.$id: TypeSafe sent no Answer.');
+      throw FormatException(TJevMessages.missingAnswer(id));
     }
     try {
       return question.answerFromJson(json);
     } on CheckedFromJsonException catch (error) {
-      throw FormatException('answers.$id.${error.key}: ${error.message}');
+      throw FormatException(
+        TJevMessages.invalidAnswer(
+          id,
+          TJevMessages.fieldMessage(error.key, error.message),
+        ),
+      );
     } on FormatException catch (error) {
-      throw FormatException('answers.$id.${error.message}');
+      throw FormatException(TJevMessages.invalidAnswer(id, error.message));
     }
   }
 }
