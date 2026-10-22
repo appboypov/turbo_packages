@@ -44,7 +44,8 @@ final class TJevScore<T extends Object>
   /// Each Level with its description, from the low end of the scale to the
   /// high end.
   ///
-  /// A Score needs 1 to 10 Levels.
+  /// A Score needs 1 to 10 Levels, each with its own wire key: the name of
+  /// an enum value, else its `toString`.
   Map<T, Object> get levels =>
       _levelMap ?? {for (final level in _levelList!) level: level};
 
@@ -62,15 +63,18 @@ final class TJevScore<T extends Object>
             'not ${descriptions.length}.',
       );
     }
-    final levelList = _levelList;
-    if (levelList != null && levelList.toSet().length != levelList.length) {
-      throw TJevInvalidQuestionException(
-        reason: 'Two Levels of Score $id are equal.',
-      );
+    final wireKeys = <String>{};
+    for (final level in _levels) {
+      final key = TJevQuestion._wireKey(level);
+      if (!wireKeys.add(key)) {
+        throw TJevInvalidQuestionException(
+          reason: 'Two Levels of Score $id have the wire key $key.',
+        );
+      }
     }
-    TJevQuestion._checkContent(instructions, 'The Instructions of Score $id');
+    TJevQuestion.checkContent(instructions, 'The Instructions of Score $id');
     for (final (number, description) in descriptions.indexed) {
-      TJevQuestion._checkContent(
+      TJevQuestion.checkContent(
         description,
         'The description of Level $number of Score $id',
       );

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -9,6 +7,7 @@ import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
 import '../exceptions/t_jev_unasked_question_exception.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
+import '../utils/response_json_object.dart';
 import 't_jev_model.dart';
 import 't_jev_usage.dart';
 
@@ -37,11 +36,7 @@ final class TJevResult {
     required Map<String, TJevQuestion> questions,
     required http.Response response,
   }) {
-    final body = jsonDecode(utf8.decode(response.bodyBytes));
-    if (body is! Map<String, dynamic>) {
-      throw const FormatException('The body is no JSON object.');
-    }
-    final dto = TJevSystemOneResponseDto.fromJson(body);
+    final dto = TJevSystemOneResponseDto.fromJson(responseJsonObject(response));
     return TJevResult(
       model: TJevModel(dto.model),
       usage: dto.usage,

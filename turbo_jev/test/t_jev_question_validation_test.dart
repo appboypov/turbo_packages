@@ -136,6 +136,20 @@ void main() {
         );
       },
     );
+
+    test(
+      'When two Levels share a wire key, then asking throws before sending',
+      () {
+        expectThrowsBeforeSending(
+          const TJevScore<Object>(
+            levels: {_Kind.single: 'One', 'single': 'Also one'},
+          ),
+        );
+        expectThrowsBeforeSending(
+          const TJevScore<Object>.list(levels: [1, '1']),
+        );
+      },
+    );
   });
 
   group('Given a Noul', () {
@@ -250,5 +264,27 @@ void main() {
         );
       },
     );
+  });
+
+  group('Given State', () {
+    const question = TJevNoul(instructions: 'Is this about billing?');
+
+    for (final (what, state) in <(String, Object)>[
+      ('a non-finite number', {'score': double.nan}),
+      ('a map key that is no String', {1: 'one'}),
+      ('an object without toJson', const _NoJson()),
+      (
+        'the toJson of an object with a non-finite number',
+        const _Rubric(double.infinity),
+      ),
+    ]) {
+      test('When it holds $what, then asking throws before sending', () {
+        expect(
+          () => jev.ask(state: state, questions: const [question]),
+          throwsA(isA<TJevInvalidQuestionException>()),
+        );
+        expect(typeSafe.requests, isEmpty);
+      });
+    }
   });
 }

@@ -75,4 +75,29 @@ void main() {
       ]);
     });
   });
+
+  for (final (what, body) in [
+    ('a JSON list', '[]'),
+    ('no JSON', 'not json'),
+    ('a JSON object of the wrong shape', '{"models": 5}'),
+  ]) {
+    test(
+      'Given a 2xx models response whose body is $what, when listed, '
+      'then it fails with a response validation failure',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(body, 200),
+        );
+        final jev = TJev(
+          apiKey: 'ts_test_key',
+          httpClient: typeSafe.client,
+          environment: const {},
+        );
+
+        final response = await jev.models();
+
+        expect(response.error, isA<TJevResponseValidationFailure>());
+      },
+    );
+  }
 }
