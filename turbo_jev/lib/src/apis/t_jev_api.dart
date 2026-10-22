@@ -31,10 +31,14 @@ final class TJevApi {
     required TJevConfig config,
     required http.Client httpClient,
     required TJevRequestTraceService trace,
+    required TJevRequestContentService contentService,
+    required TJevRequestPlatformService platformService,
     required Random random,
   }) : _config = config,
        _httpClient = httpClient,
        _trace = trace,
+       _contentService = contentService,
+       _platformService = platformService,
        _random = random;
 
   // 🧩 DEPENDENCIES
@@ -42,14 +46,11 @@ final class TJevApi {
   final TJevConfig _config;
   final http.Client _httpClient;
   final TJevRequestTraceService _trace;
+  final TJevRequestContentService _contentService;
+  final TJevRequestPlatformService _platformService;
 
   /// The source of the jitter in retry delays.
   final Random _random;
-
-  // 🛠 UTIL
-
-  static const _contentService = TJevRequestContentService();
-  static const _platformService = TJevRequestPlatformService();
 
   // 🏗️ HELPERS
 
@@ -275,6 +276,13 @@ final class TJevApi {
             when elapsed.elapsed + delay >= budget) {
           return ended(response, retries: attempt);
         }
+        _trace.retrying(
+          failure,
+          method: method.wireValue,
+          path: path,
+          attempt: attempt + 1,
+          delay: delay,
+        );
         if (await _waitUnlessAborted(delay, aborted)) {
           return ended(_fail(const TJevAbortedFailure()), retries: attempt);
         }

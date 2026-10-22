@@ -15,14 +15,18 @@ import 'constants/t_jev_logging.dart';
 import 'constants/t_jev_messages.dart';
 import 'enums/t_jev_http_method.dart';
 import 'enums/t_jev_log_level.dart';
+import 'models/t_jev_failure_log.dart';
 import 'models/t_jev_image.dart';
 import 'models/t_jev_model_card.dart';
 import 'models/t_jev_request_log.dart';
 import 'models/t_jev_request_summary.dart';
 import 'models/t_jev_response_log.dart';
 import 'models/t_jev_result.dart';
+import 'models/t_jev_retry_log.dart';
 import 'responses/t_jev_models_response_dto.dart';
 import 'responses/t_jev_system_one_response_dto.dart';
+import 'services/t_jev_request_content_service.dart';
+import 'services/t_jev_request_platform_service.dart';
 import 'services/t_jev_request_trace_service.dart';
 import 'services/t_jev_system_one_body_service.dart';
 import 'types/t_jev_model.dart';
@@ -70,19 +74,22 @@ final class TJev {
   /// the app decides where its records go. [logLevel] comes from this
   /// argument first, from `TYPESAFE_LOG_LEVEL` in [environment] second and
   /// is [TJevLogLevel.warning] without either; the client skips records
-  /// below it. At info it logs one [TJevRequestSummary] per Request, and at
-  /// debug a [TJevRequestLog] per attempt and a [TJevResponseLog] per
+  /// below it. At error it logs a [TJevFailureLog] when a Request ends in a
+  /// failure other than an abort, at warning also a [TJevRetryLog] for
+  /// each Retry, at info also one [TJevRequestSummary] per Request, and at
+  /// debug also a [TJevRequestLog] per attempt and a [TJevResponseLog] per
   /// response, with each secret header value replaced in full. The
   /// `package:logging` level must let these records through as well, such
   /// as `Logger.root.level = Level.ALL` for debug.
   ///
   /// With [redactLoggedBodies] on, the default, the JSON of a logged body,
-  /// the whole body or the `request` part of a multipart Request, has the
-  /// value of each object field whose name holds `token`, `secret`,
-  /// `password` or an API key spelling (`api_key`, `api-key`, `apikey`), in
-  /// any case and at any depth, replaced in full before the body is cut at
-  /// 4096 bytes. Image parts and bodies that are no JSON are logged as they
-  /// are. Turn it off to see the bodies as sent and received; secret header
+  /// the whole body or the `request` part of a multipart Request, and a
+  /// failure message taken from a JSON body have the value of each object
+  /// field whose name holds `token`, `secret`, `password` or an API key
+  /// spelling (`api_key`, `api-key`, `apikey`), in any case and at any
+  /// depth, replaced in full before the body is cut at 4096 bytes. Image
+  /// parts and bodies that are no JSON are logged as they are. Turn it off
+  /// to see the bodies and messages as sent and received; secret header
   /// values stay replaced either way.
   ///
   /// The client closes [httpClient] only when it created it.
@@ -141,6 +148,8 @@ final class TJev {
           level: config.logLevel,
           redactBodies: config.redactLoggedBodies,
         ),
+        contentService: const TJevRequestContentService(),
+        platformService: const TJevRequestPlatformService(),
         random: Random(),
       ),
       bodyService: const TJevSystemOneBodyService(),

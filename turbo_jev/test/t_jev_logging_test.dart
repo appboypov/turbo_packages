@@ -138,6 +138,340 @@ void main() {
 
       expect(records, isEmpty);
     });
+
+    test(
+      'When a Request is retried and then fails, then the client logs '
+      'nothing',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe(
+            respond: (_) => http.Response('{}', 500),
+          );
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.off).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 2));
+
+          expect(typeSafe.requests, hasLength(3));
+          expect(records, isEmpty);
+        });
+      },
+    );
+  });
+
+  group('Given the log level warning', () {
+    test(
+      'When TypeSafe answers 500 and then 200, then the client logs one '
+      'warning with the failed attempt, its failure and the delay',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe.answering([
+            http.Response(
+              jsonEncode({'error': 'overloaded'}),
+              500,
+              headers: const {'x-typesafe-request-id': 'req_500'},
+            ),
+            FakeTypeSafe.noulResponse(nouls: {'q0': 0.9}),
+          ]);
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.warning).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 1));
+
+          expect(levels(), {Level.WARNING});
+          expect(
+            objectsOf<TJevRetryLog>().single,
+            isA<TJevRetryLog>()
+                .having((l) => l.method, 'method', 'POST')
+                .having((l) => l.path, 'path', '/v1/systemone')
+                .having((l) => l.attempt, 'attempt', 1)
+                .having(
+                  (l) => l.failureType,
+                  'failureType',
+                  TJevInternalServerFailure,
+                )
+                .having((l) => l.message, 'message', 'overloaded')
+                .having((l) => l.status, 'status', 500)
+                .having((l) => l.requestId, 'requestId', 'req_500')
+                .having(
+                  (l) => l.delay,
+                  'delay',
+                  const Duration(milliseconds: 500),
+                ),
+          );
+        });
+      },
+    );
+
+    test(
+      'When TypeSafe answers 429 twice and then 200, then the client logs a '
+      'warning per Retry with the delay TypeSafe asks for',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe.answering([
+            http.Response(
+              '{}',
+              429,
+              headers: const {'retry-after-ms': '1500'},
+            ),
+            http.Response(
+              '{}',
+              429,
+              headers: const {'retry-after-ms': '1500'},
+            ),
+            FakeTypeSafe.noulResponse(nouls: {'q0': 0.9}),
+          ]);
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.warning).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 4));
+
+          final logs = objectsOf<TJevRetryLog>().toList();
+          expect(levels(), {Level.WARNING});
+          expect(logs.map((l) => l.attempt), [1, 2]);
+          expect(
+            logs.map((l) => l.failureType),
+            everyElement(TJevRateLimitFailure),
+          );
+          expect(logs.map((l) => l.status), everyElement(429));
+          expect(
+            logs.map((l) => l.delay),
+            everyElement(const Duration(milliseconds: 1500)),
+          );
+        });
+      },
+    );
+
+    test(
+      'When the first attempt times out and the Retry succeeds, then the '
+      'warning holds the timeout without a status',
+      () {
+        fakeAsync((async) {
+          var requests = 0;
+          final client = MockClient((request) {
+            if (requests++ == 0) return Completer<http.Response>().future;
+            return Future.value(
+              FakeTypeSafe.noulResponse(nouls: {'q0': 0.9}),
+            );
+          });
+          _jevFor(client, logLevel: TJevLogLevel.warning).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 11));
+
+          expect(
+            objectsOf<TJevRetryLog>().single,
+            isA<TJevRetryLog>()
+                .having((l) => l.attempt, 'attempt', 1)
+                .having(
+                  (l) => l.failureType,
+                  'failureType',
+                  TJevTimeoutFailure,
+                )
+                .having((l) => l.status, 'status', isNull)
+                .having((l) => l.requestId, 'requestId', isNull),
+          );
+          expect(objectsOf<TJevFailureLog>(), isEmpty);
+        });
+      },
+    );
+
+    test(
+      'When every attempt fails with 500, then the client logs a warning per '
+      'Retry and one error for the last attempt',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe(
+            respond: (_) => http.Response(
+              jsonEncode({'error': 'overloaded'}),
+              500,
+              headers: const {'x-typesafe-request-id': 'req_500'},
+            ),
+          );
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.warning).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 2));
+
+          expect(levels(), {Level.WARNING, Level.SEVERE});
+          expect(objectsOf<TJevRetryLog>().map((l) => l.attempt), [1, 2]);
+          expect(
+            records.where((r) => r.level == Level.SEVERE).single.object,
+            isA<TJevFailureLog>()
+                .having((l) => l.method, 'method', 'POST')
+                .having((l) => l.path, 'path', '/v1/systemone')
+                .having((l) => l.attempt, 'attempt', 3)
+                .having(
+                  (l) => l.failureType,
+                  'failureType',
+                  TJevInternalServerFailure,
+                )
+                .having((l) => l.message, 'message', 'overloaded')
+                .having((l) => l.status, 'status', 500)
+                .having((l) => l.requestId, 'requestId', 'req_500'),
+          );
+        });
+      },
+    );
+
+    test(
+      'When TypeSafe answers 400, then the client logs one error without a '
+      'warning',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response('{}', 400),
+        );
+
+        await _jevFor(
+          typeSafe.client,
+          logLevel: TJevLogLevel.warning,
+        ).models();
+
+        expect(levels(), {Level.SEVERE});
+        expect(
+          objectsOf<TJevFailureLog>().single,
+          isA<TJevFailureLog>()
+              .having((l) => l.method, 'method', 'GET')
+              .having((l) => l.path, 'path', '/v1/models')
+              .having((l) => l.attempt, 'attempt', 1)
+              .having(
+                (l) => l.failureType,
+                'failureType',
+                TJevBadRequestFailure,
+              )
+              .having((l) => l.status, 'status', 400),
+        );
+      },
+    );
+
+    test(
+      'When the Abort Trigger completes while the client waits to retry, '
+      'then the client logs the warning and no error',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe(
+            respond: (_) => http.Response('{}', 503),
+          );
+          final abort = Completer<void>();
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.warning).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+            abortTrigger: abort.future,
+          );
+
+          async.elapse(const Duration(milliseconds: 200));
+          abort.complete();
+          async.flushMicrotasks();
+
+          expect(objectsOf<TJevRetryLog>(), hasLength(1));
+          expect(objectsOf<TJevFailureLog>(), isEmpty);
+        });
+      },
+    );
+
+    test(
+      'When the failure body holds a secret field and no message, then the '
+      'error message has its value replaced',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(
+            jsonEncode({'token': 'secret-1', 'status': 'down'}),
+            500,
+          ),
+        );
+
+        await _jevFor(
+          typeSafe.client,
+          logLevel: TJevLogLevel.warning,
+        ).models(retry: TJevRetryPolicy(maxRetries: 0));
+
+        expect(
+          objectsOf<TJevFailureLog>().single.message,
+          '{"token":"***","status":"down"}',
+        );
+      },
+    );
+
+    test(
+      'When body redaction is off, then the error message is the message of '
+      'the failure',
+      () async {
+        final typeSafe = FakeTypeSafe(
+          respond: (_) => http.Response(
+            jsonEncode({'token': 'secret-1', 'status': 'down'}),
+            500,
+          ),
+        );
+
+        final response = await _unredactedJevFor(
+          typeSafe.client,
+        ).models(retry: TJevRetryPolicy(maxRetries: 0));
+
+        expect(
+          objectsOf<TJevFailureLog>().single.message,
+          ((response as Fail).error as TJevFailure).message,
+        );
+      },
+    );
+  });
+
+  group('Given the log level error', () {
+    test(
+      'When every attempt fails with 500, then the client logs only the '
+      'error',
+      () {
+        fakeAsync((async) {
+          final typeSafe = FakeTypeSafe(
+            respond: (_) => http.Response('{}', 500),
+          );
+          _jevFor(typeSafe.client, logLevel: TJevLogLevel.error).ask(
+            state: 'I was charged twice.',
+            questions: const [_billing],
+          );
+
+          async.elapse(const Duration(seconds: 2));
+
+          expect(levels(), {Level.SEVERE});
+          expect(
+            objectsOf<TJevFailureLog>().single,
+            isA<TJevFailureLog>()
+                .having((l) => l.attempt, 'attempt', 3)
+                .having(
+                  (l) => l.failureType,
+                  'failureType',
+                  TJevInternalServerFailure,
+                ),
+          );
+        });
+      },
+    );
+
+    test('When a Retry succeeds, then the client logs nothing', () {
+      fakeAsync((async) {
+        final typeSafe = FakeTypeSafe.answering([
+          http.Response('{}', 500),
+          FakeTypeSafe.noulResponse(nouls: {'q0': 0.9}),
+        ]);
+        _jevFor(typeSafe.client, logLevel: TJevLogLevel.error).ask(
+          state: 'I was charged twice.',
+          questions: const [_billing],
+        );
+
+        async.elapse(const Duration(seconds: 1));
+
+        expect(records, isEmpty);
+      });
+    });
   });
 
   group('Given the log level info', () {
@@ -160,7 +494,7 @@ void main() {
 
           async.elapse(const Duration(seconds: 1));
 
-          expect(levels(), {Level.INFO});
+          expect(levels(), {Level.WARNING, Level.INFO});
           expect(
             objectsOf<TJevRequestSummary>().single,
             isA<TJevRequestSummary>()

@@ -8,15 +8,19 @@ import 'package:turbo_response/turbo_response.dart';
 import '../abstracts/t_jev_failure.dart';
 import '../constants/t_jev_logging.dart';
 import '../enums/t_jev_log_level.dart';
+import '../models/t_jev_failure_log.dart';
 import '../models/t_jev_request_log.dart';
 import '../models/t_jev_request_summary.dart';
 import '../models/t_jev_response_log.dart';
+import '../models/t_jev_retry_log.dart';
 import '../records/t_jev_request_content.dart';
 import '../utils/t_jev_redacted_headers.dart';
 import '../utils/t_jev_redacted_json_body.dart';
 
-/// Logs Requests to its [Logger]: each attempt and response at debug and one
-/// [TJevRequestSummary] at info when a Request ends.
+/// Logs Requests to its [Logger]: each attempt and response at debug, one
+/// [TJevRequestSummary] at info when a Request ends, a [TJevRetryLog] at
+/// warning for each Retry and a [TJevFailureLog] at error when a Request
+/// ends in a failure other than an abort.
 ///
 /// It skips records below its [TJevLogLevel] and builds a record only when
 /// the logger takes it.
@@ -70,6 +74,36 @@ final class TJevRequestTraceService {
     );
   }
 
+  /// The message of [failure]. With body redaction on, a message taken from
+  /// the JSON body of a [TJevHttpFailure] comes from that body with each
+  /// secret field value replaced.
+  String _loggedMessageOf(TJevFailure failure) {
+    if (failure case TJevHttpFailure(
+      :final status,
+      :final headers,
+      body: (Map() || List()) && final body,
+    ) when _redactBodies) {
+      final redacted = redactedJsonBody(utf8.encode(jsonEncode(body)));
+      return TJevHttpFailure.fromResponse(
+        http.Response.bytes(redacted, status, headers: headers),
+      ).message;
+    }
+    return failure.message;
+  }
+
+  /// The HTTP status and the request id of the response [failure] came
+  /// from, both `null` when it came from none.
+  static ({int? status, String? requestId}) _responseOf(
+    TJevFailure failure,
+  ) => switch (failure) {
+    TJevHttpFailure(:final status, :final requestId) ||
+    TJevResponseValidationFailure(
+      :final status,
+      :final requestId,
+    ) => (status: status, requestId: requestId),
+    _ => (status: null, requestId: null),
+  };
+
   // 🪄 MUTATORS
 
   /// Logs [request], attempt number [attempt] of the [method] Request to
@@ -113,8 +147,31 @@ final class TJevRequestTraceService {
     );
   });
 
-  /// Logs the summary of the [method] Request to [path] that ends with
-  /// [response] at info and returns [response].
+  /// Logs at warning that attempt number [attempt] of the [method] Request
+  /// to [path] failed with [failure] and is retried after [delay].
+  void retrying(
+    TJevFailure failure, {
+    required String method,
+    required String path,
+    required int attempt,
+    required Duration delay,
+  }) => _log(TJevLogLevel.warning, () {
+    final (:status, :requestId) = _responseOf(failure);
+    return TJevRetryLog(
+      method: method,
+      path: path,
+      attempt: attempt,
+      failureType: failure.runtimeType,
+      message: _loggedMessageOf(failure),
+      status: status,
+      requestId: requestId,
+      delay: delay,
+    );
+  });
+
+  /// Logs the end of the [method] Request to [path] with [response] and
+  /// returns [response]: at error the failure it ends in, unless it was
+  /// aborted, and at info its summary.
   ///
   /// [status] and [requestId] come from the last response the Request
   /// received, if any; [retries] and [timeouts] count its attempts and
@@ -129,6 +186,22 @@ final class TJevRequestTraceService {
     required int timeouts,
     required Duration elapsed,
   }) {
+    if (response case Fail(
+      error: final TJevFailure failure,
+    ) when failure is! TJevAbortedFailure) {
+      _log(TJevLogLevel.error, () {
+        final failedResponse = _responseOf(failure);
+        return TJevFailureLog(
+          method: method,
+          path: path,
+          attempt: retries + 1,
+          failureType: failure.runtimeType,
+          message: _loggedMessageOf(failure),
+          status: failedResponse.status,
+          requestId: failedResponse.requestId,
+        );
+      });
+    }
     _log(
       TJevLogLevel.info,
       () => TJevRequestSummary(
