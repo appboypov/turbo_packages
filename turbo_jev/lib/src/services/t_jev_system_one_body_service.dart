@@ -6,13 +6,10 @@ import '../constants/t_jev_messages.dart';
 import '../exceptions/t_jev_image_reference_exception.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
+import '../records/t_jev_system_one_body.dart';
 import '../requests/t_jev_image_part_dto.dart';
 import '../requests/t_jev_system_one_assets_dto.dart';
 import '../requests/t_jev_system_one_request_dto.dart';
-
-/// The JSON text of a System One Request and the Images it sends, keyed by
-/// the name of the multipart part that holds each.
-typedef _SystemOneBody = ({String json, Map<String, TJevImage> images});
 
 /// Builds the body of a System One Request and checks its State and Image
 /// References.
@@ -33,7 +30,7 @@ final class TJevSystemOneBodyService {
   /// content or holds a non-finite number, and [TJevImageReferenceException]
   /// when the JSON holds an Image Reference of no placed or listed Image, or
   /// when it uses no Image in [listed].
-  _SystemOneBody build({
+  TJevSystemOneBody build({
     required TJevSystemOneRequestDto request,
     required Map<String, Object?>? extraBody,
     required List<TJevImage> listed,

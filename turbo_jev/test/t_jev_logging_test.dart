@@ -566,11 +566,9 @@ void main() {
       () async {
         final typeSafe = await askAtDebug();
 
-        final logged =
-            jsonDecode(
-                  objectsOf<TJevRequestLog>().single.body!,
-                )
-                as Map<String, Object?>;
+        final logged = jsonDecode(
+          objectsOf<TJevRequestLog>().single.body!,
+        ) as Map<String, Object?>;
         expect(logged['state'], {
           'user': {...redactedFields, 'name': 'Ann'},
           'sessions': [redactedFields, 'plain'],

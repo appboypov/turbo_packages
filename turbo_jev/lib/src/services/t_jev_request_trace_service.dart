@@ -14,8 +14,8 @@ import '../models/t_jev_request_summary.dart';
 import '../models/t_jev_response_log.dart';
 import '../records/t_jev_request_content.dart';
 import '../results/t_jev_failure.dart';
-import '../utils/redacted_headers.dart';
-import '../utils/redacted_json_body.dart';
+import '../utils/t_jev_redacted_headers.dart';
+import '../utils/t_jev_redacted_json_body.dart';
 
 /// Follows one Request from its first attempt to its end and logs it to the
 /// [TJevLogging.loggerName] logger: each attempt and response at debug and
