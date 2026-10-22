@@ -107,7 +107,7 @@ void main() {
     test('When the Image is created from the file, then it throws', () {
       expect(
         TJevImage.fromFile('photo.png'),
-        throwsA(isA<UnsupportedError>()),
+        throwsTJevException<TJevInvalidImageException>(),
       );
     });
   });

@@ -40,10 +40,19 @@ sealed class TJevQuestion<A extends TJevAnswer> {
       value is Enum ? value.name : value.toString();
 
   /// Whether [content] at [location] is JSON content without a non-finite
-  /// number: a success when it is, else a fail whose message names what it
-  /// holds.
+  /// number or a list or map that contains itself: a success when it is,
+  /// else a fail whose message names what it holds.
   @internal
-  static TurboResponse<void> checkContent(Object? content, String location) {
+  static TurboResponse<void> checkContent(Object? content, String location) =>
+      _checkContent(content, location, containers: Set.identity());
+
+  /// [checkContent] of [content] inside the lists and maps of [containers],
+  /// the path of containers from the outer content down to [content].
+  static TurboResponse<void> _checkContent(
+    Object? content,
+    String location, {
+    required Set<Object> containers,
+  }) {
     switch (content) {
       case null || String() || bool() || TJevImage():
         return const TurboResponse.successAsBool();
@@ -54,22 +63,21 @@ sealed class TJevQuestion<A extends TJevAnswer> {
       case num():
         return const TurboResponse.successAsBool();
       case List():
-        for (final item in content) {
-          final check = checkContent(item, location);
-          if (check.isFail) return check;
-        }
-        return const TurboResponse.successAsBool();
+        return _checkContainer(
+          content,
+          location,
+          containers: containers,
+          checkItems: () =>
+              _checkList(content, location, containers: containers),
+        );
       case Map():
-        for (final MapEntry(:key, :value) in content.entries) {
-          if (key is! String) {
-            return TurboResponse.failAsBool(
-              message: TJevMessages.nonStringMapKey(location, key),
-            );
-          }
-          final check = checkContent(value, location);
-          if (check.isFail) return check;
-        }
-        return const TurboResponse.successAsBool();
+        return _checkContainer(
+          content,
+          location,
+          containers: containers,
+          checkItems: () =>
+              _checkMap(content, location, containers: containers),
+        );
       default:
         try {
           jsonEncode(content);
@@ -83,6 +91,58 @@ sealed class TJevQuestion<A extends TJevAnswer> {
           );
         }
     }
+  }
+
+  /// [checkItems] of [container] with [container] added to the path of
+  /// [containers], else a fail when the path already holds [container],
+  /// which then contains itself.
+  static TurboResponse<void> _checkContainer(
+    Object container,
+    String location, {
+    required Set<Object> containers,
+    required TurboResponse<void> Function() checkItems,
+  }) {
+    if (!containers.add(container)) {
+      return TurboResponse.failAsBool(
+        message: TJevMessages.selfReferencingContent(location),
+      );
+    }
+    final check = checkItems();
+    containers.remove(container);
+    return check;
+  }
+
+  /// The first fail of [_checkContent] over the items of [list], else a
+  /// success.
+  static TurboResponse<void> _checkList(
+    List<Object?> list,
+    String location, {
+    required Set<Object> containers,
+  }) {
+    for (final item in list) {
+      final check = _checkContent(item, location, containers: containers);
+      if (check.isFail) return check;
+    }
+    return const TurboResponse.successAsBool();
+  }
+
+  /// The first fail over the keys of [map], each of which must be a String,
+  /// and [_checkContent] over its values, else a success.
+  static TurboResponse<void> _checkMap(
+    Map<Object?, Object?> map,
+    String location, {
+    required Set<Object> containers,
+  }) {
+    for (final MapEntry(:key, :value) in map.entries) {
+      if (key is! String) {
+        return TurboResponse.failAsBool(
+          message: TJevMessages.nonStringMapKey(location, key),
+        );
+      }
+      final check = _checkContent(value, location, containers: containers);
+      if (check.isFail) return check;
+    }
+    return const TurboResponse.successAsBool();
   }
 
   /// The first fail of [checkContent] over each content with its location in

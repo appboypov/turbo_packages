@@ -127,6 +127,13 @@ void main() {
         throwsA(isA<TJevInvalidImageException>()),
       );
     });
+
+    test('When it does not exist, then creating the Image throws', () async {
+      await expectLater(
+        TJevImage.fromFile('${directory.path}/missing.png'),
+        throwsA(isA<TJevInvalidImageException>()),
+      );
+    });
   });
 
   group('Given data that is no PNG or JPEG', () {
