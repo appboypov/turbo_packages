@@ -9,6 +9,16 @@ abstract final class TJevHttp {
   /// The media type of JSON bodies.
   static const jsonMediaType = 'application/json';
 
+  /// The media type of multipart bodies, which carry Images.
+  static const multipartMediaType = 'multipart/form-data';
+
+  /// The name of the multipart part that holds the JSON of a Request.
+  static const requestPartName = 'request';
+
+  /// The prefix of the name of each multipart part that holds an Image,
+  /// followed by its number from 0.
+  static const imagePartPrefix = 'asset-';
+
   /// The content encoding of compressed bodies.
   static const gzipEncoding = 'gzip';
 
@@ -52,6 +62,9 @@ abstract final class TJevHttp {
 
   /// The Danger Zone header that raises the context limits to 262k tokens.
   static const longContextHeader = 'TypeSafe-Danger-Zone-Long-Context';
+
+  /// The Danger Zone header that a Request with an Image or a Box sends.
+  static const imagesHeader = 'TypeSafe-Danger-Zone-Images';
 
   /// The lowercase names of the headers only the SDK sets.
   static const protectedHeaders = {

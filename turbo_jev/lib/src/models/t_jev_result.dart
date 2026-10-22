@@ -101,6 +101,12 @@ final class TJevResult {
       if (question is TJevScore) question: answer as TJevScoreAnswer,
   };
 
+  /// The Answer of every Box of the Request, in Request order.
+  Map<TJevBox, TJevBoxAnswer> get boxes => {
+    for (final MapEntry(key: question, value: answer) in _answers.entries)
+      if (question is TJevBox) question: answer as TJevBoxAnswer,
+  };
+
   /// Parses [json], the Answer TypeSafe sent under [id], to [question].
   static A _answerFromJson<A extends TJevAnswer>(
     TJevQuestion<A> question,

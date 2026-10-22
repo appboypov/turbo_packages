@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:clock/clock.dart';
@@ -10,7 +9,9 @@ import 'package:turbo_response/turbo_response.dart';
 import '../config/t_jev_config.dart';
 import '../config/t_jev_retry_policy.dart';
 import '../constants/t_jev_http.dart';
+import '../models/t_jev_image.dart';
 import '../results/t_jev_failure.dart';
+import '../utils/request_content.dart';
 import '../utils/request_platform.dart';
 
 /// Sends Requests to TypeSafe and turns each outcome into a `TurboResponse`:
@@ -31,9 +32,12 @@ final class TJevApi {
 
   // 🪄 MUTATORS
 
-  /// Sends [json], if any, to [path] and parses a 2xx response with
+  /// Sends the [json] text, if any, to [path] and parses a 2xx response with
   /// [onSuccess], which throws a [FormatException] or a
   /// [CheckedFromJsonException] when the body does not fit.
+  ///
+  /// With [images], the body is multipart: the [json] in its first part and
+  /// each Image in a part of the name it has in [images].
   ///
   /// The Request sends the config's default headers first and [headers]
   /// second; names are case-insensitive and the last value wins. The SDK
@@ -51,20 +55,22 @@ final class TJevApi {
   Future<TurboResponse<T>> send<T>({
     required String method,
     required String path,
-    Object? json,
+    String? json,
+    Map<String, TJevImage> images = const {},
     required Map<String, String> headers,
     required Duration timeout,
     required TJevRetryPolicy retry,
     Future<void>? abortTrigger,
     required T Function(http.Response response) onSuccess,
   }) async {
-    final body = json == null
+    final content = json == null
         ? null
-        : encodeBody(utf8.encode(jsonEncode(json)));
+        : requestContent(json: json, images: images);
+    final body = content == null ? null : encodeBody(content.bytes);
     final sdkHeaders = {
       TJevHttp.authorizationHeader: 'Bearer ${_config.apiKey}',
       TJevHttp.acceptHeader: TJevHttp.jsonMediaType,
-      if (body != null) TJevHttp.contentTypeHeader: TJevHttp.jsonMediaType,
+      if (content != null) TJevHttp.contentTypeHeader: content.contentType,
       if (body?.encoding case final encoding?)
         TJevHttp.contentEncodingHeader: encoding,
       ...platformHeaders,

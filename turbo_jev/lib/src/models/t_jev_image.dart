@@ -1,0 +1,110 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:meta/meta.dart';
+
+import '../enums/t_jev_image_format.dart';
+import '../exceptions/t_jev_invalid_image_exception.dart';
+import '../utils/image_file.dart';
+import '../utils/random_hex.dart';
+
+/// A PNG or JPEG picture sent with a Request.
+///
+/// Place an Image as a value anywhere in State, Instructions or Criteria and
+/// it is sent under its [reference]. An Image interpolated in a string is
+/// written as its [reference] and must be listed in the `images` of
+/// [TJev.ask].
+///
+/// ```dart
+/// final door = await TJevImage.fromFile('door-camera.jpg');
+/// final badge = TJevImage.fromBase64(upload.badgeBase64);
+///
+/// await jev.ask(
+///   state: {'door': door},
+///   questions: [TJevNoul(instructions: 'Is the person in `door` $badge?')],
+///   images: [badge],
+/// );
+/// ```
+final class TJevImage {
+  /// An Image of the file [bytes], copied now so later changes to [bytes]
+  /// are not sent.
+  ///
+  /// Throws [TJevInvalidImageException] when [bytes] are empty or no PNG or
+  /// JPEG file.
+  TJevImage(List<int> bytes) : this._(Uint8List.fromList(bytes));
+
+  TJevImage._(Uint8List bytes)
+    : bytes = bytes.asUnmodifiableView(),
+      format = _formatOf(bytes),
+      reference = '<image:${randomHex()}>';
+
+  /// An Image of the file bytes that [text] encodes in base64, without a
+  /// `data:` URL prefix. Whitespace in [text] is ignored.
+  ///
+  /// Throws [TJevInvalidImageException] when [text] is no base64 or decodes
+  /// to no PNG or JPEG file.
+  factory TJevImage.fromBase64(String text) {
+    final Uint8List bytes;
+    try {
+      bytes = base64.decode(text.replaceAll(_whitespace, ''));
+    } on FormatException catch (error) {
+      throw TJevInvalidImageException(
+        reason: 'The Image text is no base64: ${error.message}.',
+      );
+    }
+    return TJevImage._(bytes);
+  }
+
+  /// An Image of the file at [path].
+  ///
+  /// Throws [TJevInvalidImageException] when the file is empty or no PNG or
+  /// JPEG file, and a `FileSystemException` when it cannot be read. Reading
+  /// a file needs `dart:io`; in a browser it throws an [UnsupportedError].
+  static Future<TJevImage> fromFile(String path) async =>
+      TJevImage(await readImageFile(path));
+
+  /// Matches an Image Reference.
+  @internal
+  static final referencePattern = RegExp('<image:[0-9a-f]{32}>');
+
+  static final _whitespace = RegExp(r'\s');
+
+  /// The file bytes.
+  final Uint8List bytes;
+
+  /// The format sniffed from the signature [bytes] start with.
+  final TJevImageFormat format;
+
+  /// The Image Reference this Image is sent under: `<image:` with 32 random
+  /// lowercase hex digits and `>`.
+  final String reference;
+
+  /// The [reference], which `jsonEncode` writes wherever this Image is
+  /// placed.
+  String toJson() => reference;
+
+  /// The [reference], which string interpolation writes wherever this Image
+  /// is placed.
+  @override
+  String toString() => reference;
+
+  /// The format whose signature [bytes] start with.
+  ///
+  /// Throws [TJevInvalidImageException] when [bytes] are empty or start with
+  /// no signature of a [TJevImageFormat].
+  static TJevImageFormat _formatOf(Uint8List bytes) {
+    if (bytes.isEmpty) {
+      throw const TJevInvalidImageException(reason: 'The Image data is empty.');
+    }
+    for (final format in TJevImageFormat.values) {
+      final signature = format.signature;
+      if (bytes.length >= signature.length &&
+          signature.indexed.every((entry) => bytes[entry.$1] == entry.$2)) {
+        return format;
+      }
+    }
+    throw const TJevInvalidImageException(
+      reason: 'The Image data is no PNG or JPEG file.',
+    );
+  }
+}

@@ -3,6 +3,15 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:http_parser/http_parser.dart';
+
+/// One part of a multipart Request body.
+typedef FakePart = ({
+  String name,
+  String? filename,
+  String? contentType,
+  List<int> bytes,
+});
 
 /// A fake TypeSafe service that records each Request and answers with
 /// [respond], by default with a Noul Answer of 0.9 to every Question.
@@ -23,13 +32,62 @@ class FakeTypeSafe {
 
   Map<String, Object?> get lastBody => bodyOf(lastRequest);
 
-  /// The JSON body of [request], decompressed when it is gzip encoded.
+  /// The JSON body of [request], or of its `request` part when it is
+  /// multipart, decompressed when it is gzip encoded.
   static Map<String, Object?> bodyOf(http.Request request) {
-    final bytes = request.headers['Content-Encoding'] == 'gzip'
-        ? gzip.decode(request.bodyBytes)
-        : request.bodyBytes;
+    final bytes = isMultipart(request)
+        ? partsOf(request).firstWhere((part) => part.name == 'request').bytes
+        : _decodedBytes(request);
     return jsonDecode(utf8.decode(bytes)) as Map<String, Object?>;
   }
+
+  /// Whether [request] sends a multipart body.
+  static bool isMultipart(http.Request request) =>
+      MediaType.parse(request.headers['Content-Type']!).mimeType ==
+      'multipart/form-data';
+
+  /// The parts of the multipart body of [request], in body order.
+  static List<FakePart> partsOf(http.Request request) {
+    final boundary = MediaType.parse(
+      request.headers['Content-Type']!,
+    ).parameters['boundary']!;
+    // Latin-1 maps each byte to one character, so part bytes survive as is.
+    final body = latin1.decode(_decodedBytes(request));
+    final sections = body.split('--$boundary');
+    if (sections.first.isNotEmpty || sections.last != '--\r\n') {
+      throw FormatException('The body is no multipart body: $body');
+    }
+    return [
+      for (final section in sections.sublist(1, sections.length - 1))
+        _partOf(section),
+    ];
+  }
+
+  static FakePart _partOf(String section) {
+    final headerEnd = section.indexOf('\r\n\r\n');
+    final headers = {
+      for (final line in section.substring(2, headerEnd).split('\r\n'))
+        line.substring(0, line.indexOf(':')).toLowerCase(): line
+            .substring(line.indexOf(':') + 1)
+            .trim(),
+    };
+    final disposition = headers['content-disposition']!;
+    String? parameter(String name) =>
+        RegExp('$name="([^"]*)"').firstMatch(disposition)?.group(1);
+    return (
+      name: parameter('name')!,
+      filename: parameter('filename'),
+      contentType: headers['content-type'],
+      bytes: latin1.encode(
+        section.substring(headerEnd + 4, section.length - 2),
+      ),
+    );
+  }
+
+  static List<int> _decodedBytes(http.Request request) =>
+      request.headers['Content-Encoding'] == 'gzip'
+      ? gzip.decode(request.bodyBytes)
+      : request.bodyBytes;
 
   static http.Response _answerEveryQuestion(http.Request request) {
     final body = bodyOf(request);

@@ -16,4 +16,10 @@ extension type const TJevModel(String id) {
 
   /// Jev 1.14.0.
   static const jev1_14_0 = TJevModel('jev-1.14.0');
+
+  /// The models that answer a Box: those of Jev 1.14.
+  static const boxModels = {jevPreview, jev1_14_0};
+
+  /// Whether this model answers a Box.
+  bool get supportsBox => boxModels.contains(this);
 }
