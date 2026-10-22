@@ -4,16 +4,20 @@ import 'package:meta/meta.dart';
 
 import '../constants/t_jev_limits.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
+import '../models/t_jev_image.dart';
+import '../requests/t_jev_box_question_dto.dart';
 import '../requests/t_jev_choice_question_dto.dart';
 import '../requests/t_jev_noul_criteria_dto.dart';
 import '../requests/t_jev_noul_question_dto.dart';
 import '../requests/t_jev_score_question_dto.dart';
+import '../responses/t_jev_box_answer_dto.dart';
 import '../responses/t_jev_choice_answer_dto.dart';
 import '../responses/t_jev_noul_answer_dto.dart';
 import '../responses/t_jev_score_answer_dto.dart';
 import 't_jev_answer.dart';
 import 't_jev_question_dto.dart';
 
+part '../models/t_jev_box.dart';
 part '../models/t_jev_choice.dart';
 part '../models/t_jev_noul.dart';
 part '../models/t_jev_score.dart';
@@ -24,7 +28,7 @@ part '../models/t_jev_score.dart';
 /// [TJevResult.answer] returns an [A] for it.
 ///
 /// Instructions and descriptions are content: strings, numbers, booleans,
-/// maps with string keys, lists and objects with `toJson`.
+/// Images, maps with string keys, lists and objects with `toJson`.
 sealed class TJevQuestion<A extends TJevAnswer> {
   const TJevQuestion({this.id});
 
@@ -56,7 +60,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
   /// not JSON content or holds a non-finite number.
   static void _checkContent(Object? content, String location) {
     switch (content) {
-      case null || String() || bool():
+      case null || String() || bool() || TJevImage():
         return;
       case num() when !content.isFinite:
         throw TJevInvalidQuestionException(

@@ -9,8 +9,10 @@ import 'config/t_jev_config.dart';
 import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
+import 'exceptions/t_jev_image_reference_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
 import 'exceptions/t_jev_invalid_timeout_exception.dart';
+import 'models/t_jev_image.dart';
 import 'models/t_jev_model.dart';
 import 'models/t_jev_model_card.dart';
 import 'models/t_jev_result.dart';
@@ -18,6 +20,7 @@ import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
 import 'results/t_jev_failure.dart';
 import 'utils/process_environment.dart';
+import 'utils/system_one_body.dart';
 
 /// A client that asks Jev typed Questions about State.
 ///
@@ -119,6 +122,12 @@ final class TJev {
 
   /// Asks Jev [questions] about [state].
   ///
+  /// An Image placed as a value in [state], or in the maps and lists of
+  /// Instructions or Criteria, is sent on its own. An Image interpolated in
+  /// a string, or placed inside another object's `toJson`, is written as its
+  /// Image Reference and must be listed in [images]. A Request with an Image
+  /// is sent as multipart and opts in to the Images Danger Zone.
+  ///
   /// [model] overrides the client's default model for this Request.
   /// [extraBody] fields are merged into the Request body last, so a field of
   /// the same name sends the value in [extraBody].
@@ -136,12 +145,17 @@ final class TJev {
   /// whose body does not fit the Request, a [TJevConnectionFailure], a
   /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///
-  /// Throws [TJevInvalidQuestionException] before sending when [questions]
-  /// is empty, two Questions share an id or a Question is invalid, and
-  /// [TJevInvalidTimeoutException] when [timeout] is not positive.
+  /// Throws before sending: [TJevInvalidQuestionException] when [questions]
+  /// is empty, two Questions share an id, a Question is invalid or a
+  /// [TJevBox] is asked of a model not in [TJevModel.boxModels],
+  /// [TJevImageReferenceException] when the content holds the Image
+  /// Reference of an Image neither placed nor listed or no content uses an
+  /// Image in [images], and [TJevInvalidTimeoutException] when [timeout] is
+  /// not positive.
   Future<TurboResponse<TJevResult>> ask({
     required Object state,
     required List<TJevQuestion> questions,
+    List<TJevImage> images = const [],
     Duration? timeout,
     TJevRetryPolicy? retry,
     Future<void>? abortTrigger,
@@ -151,27 +165,43 @@ final class TJev {
     bool longContext = false,
   }) {
     final questionsById = _questionsById(questions);
+    final askedModel = model ?? _config.defaultModel;
+    final hasBox = questions.any((question) => question is TJevBox);
+    if (hasBox && !askedModel.supportsBox) {
+      throw TJevInvalidQuestionException(
+        reason:
+            'A Box needs a model of '
+            '${TJevModel.boxModels.map((model) => model.id).join(' or ')}, '
+            'not ${askedModel.id}.',
+      );
+    }
+    final body = systemOneBody(
+      request: TJevSystemOneRequestDto(
+        model: askedModel.id,
+        state: state,
+        questions: {
+          for (final MapEntry(key: id, value: question)
+              in questionsById.entries)
+            id: question.toDto(id: id),
+        },
+      ),
+      extraBody: extraBody,
+      listed: images,
+    );
     return _api.send(
       method: 'POST',
       path: TJevHttp.systemOnePath,
-      headers: _withLongContext(headers, longContext: longContext),
+      headers: {
+        ..._withLongContext(headers, longContext: longContext),
+        if (hasBox || body.images.isNotEmpty) TJevHttp.imagesHeader: 'true',
+      },
       timeout: timeout == null
           ? _config.timeout
           : TJevConfig.checkedTimeout(timeout),
       retry: retry ?? _config.retry,
       abortTrigger: abortTrigger,
-      json: {
-        ...TJevSystemOneRequestDto(
-          model: (model ?? _config.defaultModel).id,
-          state: state,
-          questions: {
-            for (final MapEntry(key: id, value: question)
-                in questionsById.entries)
-              id: question.toDto(id: id),
-          },
-        ).toJson(),
-        ...?extraBody,
-      },
+      json: body.json,
+      images: body.images,
       onSuccess: (response) => TJevResult.fromSystemOne(
         questions: questionsById,
         response: response,

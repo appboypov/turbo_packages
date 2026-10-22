@@ -12,4 +12,5 @@ Map<String, dynamic> _$TJevSystemOneRequestDtoToJson(
   'model': instance.model,
   'state': instance.state,
   'questions': instance.questions.map((k, e) => MapEntry(k, e.toJson())),
+  'assets': ?instance.assets?.map((k, e) => MapEntry(k, e.toJson())),
 };
