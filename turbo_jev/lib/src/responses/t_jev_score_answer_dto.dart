@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../enums/t_jev_question_type.dart';
+
 part 't_jev_score_answer_dto.g.dart';
 
 /// The wire form of the Answer of a Score.
@@ -16,7 +18,7 @@ final class TJevScoreAnswerDto {
   factory TJevScoreAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevScoreAnswerDtoFromJson(json);
 
-  final String type;
+  final TJevQuestionType type;
 
   final double score;
 

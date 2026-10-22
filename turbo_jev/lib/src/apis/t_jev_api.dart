@@ -10,6 +10,7 @@ import '../config/t_jev_config.dart';
 import '../config/t_jev_retry_policy.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
+import '../enums/t_jev_http_method.dart';
 import '../models/t_jev_image.dart';
 import '../results/t_jev_failure.dart';
 import '../services/t_jev_request_trace_service.dart';
@@ -163,7 +164,7 @@ final class TJevApi {
   /// [abortTrigger] completes, the running attempt or wait stops and the
   /// call ends with a [TJevAbortedFailure].
   Future<TurboResponse<T>> send<T>({
-    required String method,
+    required TJevHttpMethod method,
     required String path,
     String? json,
     Map<String, TJevImage> images = const {},
@@ -192,7 +193,7 @@ final class TJevApi {
     final trace = TJevRequestTraceService(
       level: _config.logLevel,
       redactBodies: _config.redactLoggedBodies,
-      method: method,
+      method: method.wireValue,
       path: path,
       content: content,
     );
@@ -201,7 +202,7 @@ final class TJevApi {
       final abortAttempt = Completer<void>();
       final request =
           http.AbortableRequest(
-              method,
+              method.wireValue,
               Uri.parse('${_config.baseUrl}$path'),
               abortTrigger: abortAttempt.future,
             )

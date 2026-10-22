@@ -27,7 +27,7 @@ final class TJevBox extends TJevQuestion<TJevBoxAnswer> {
   @override
   TJevBoxAnswer answerFromJson(Map<String, dynamic> json) {
     final dto = TJevBoxAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, 'box');
+    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.box);
     return TJevBoxAnswer(
       top: dto.box.top,
       bottom: dto.box.bottom,

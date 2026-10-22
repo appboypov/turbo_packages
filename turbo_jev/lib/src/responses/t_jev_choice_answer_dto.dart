@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../enums/t_jev_question_type.dart';
+
 part 't_jev_choice_answer_dto.g.dart';
 
 /// The wire form of the Answer of a Choice.
@@ -15,7 +17,7 @@ final class TJevChoiceAnswerDto {
   factory TJevChoiceAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevChoiceAnswerDtoFromJson(json);
 
-  final String type;
+  final TJevQuestionType type;
 
   /// The wire key of the chosen Option.
   final String choice;

@@ -7,6 +7,7 @@ import 'config/t_jev_config.dart';
 import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
 import 'constants/t_jev_messages.dart';
+import 'enums/t_jev_http_method.dart';
 import 'enums/t_jev_log_level.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
 import 'exceptions/t_jev_browser_exception.dart';
@@ -293,7 +294,7 @@ final class TJev {
       listed: images,
     );
     return _api.send(
-      method: 'POST',
+      method: TJevHttpMethod.post,
       path: TJevHttp.systemOnePath,
       headers: {
         ..._withLongContext(headers, longContext: longContext),
@@ -333,7 +334,7 @@ final class TJev {
     TJevRetryPolicy? retry,
     Future<void>? abortTrigger,
   }) => _api.send(
-    method: 'GET',
+    method: TJevHttpMethod.get,
     path: TJevHttp.modelsPath,
     headers: headers ?? const {},
     timeout: timeout == null

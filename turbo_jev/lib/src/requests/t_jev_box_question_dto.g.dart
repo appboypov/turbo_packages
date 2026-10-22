@@ -8,6 +8,13 @@ part of 't_jev_box_question_dto.dart';
 
 Map<String, dynamic> _$TJevBoxQuestionDtoToJson(TJevBoxQuestionDto instance) =>
     <String, dynamic>{
-      'type': instance.type,
+      'type': _$TJevQuestionTypeEnumMap[instance.type]!,
       'instructions': ?instance.instructions,
     };
+
+const _$TJevQuestionTypeEnumMap = {
+  TJevQuestionType.noul: 'noul',
+  TJevQuestionType.choice: 'choice',
+  TJevQuestionType.score: 'score',
+  TJevQuestionType.box: 'box',
+};

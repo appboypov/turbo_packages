@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../enums/t_jev_question_type.dart';
 import 't_jev_box_coordinates_dto.dart';
 
 part 't_jev_box_answer_dto.g.dart';
@@ -16,7 +17,7 @@ final class TJevBoxAnswerDto {
   factory TJevBoxAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevBoxAnswerDtoFromJson(json);
 
-  final String type;
+  final TJevQuestionType type;
 
   final TJevBoxCoordinatesDto box;
 
