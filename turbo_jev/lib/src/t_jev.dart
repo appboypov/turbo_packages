@@ -10,6 +10,7 @@ import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
 import 'enums/t_jev_log_level.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
+import 'exceptions/t_jev_browser_exception.dart';
 import 'exceptions/t_jev_image_reference_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
 import 'exceptions/t_jev_invalid_timeout_exception.dart';
@@ -76,9 +77,16 @@ final class TJev {
   ///
   /// The client closes [httpClient] only when it created it.
   ///
-  /// Throws [TJevApiKeyException] when no API key is found or the key is not
-  /// printable ASCII without spaces, and [TJevInvalidTimeoutException] when
-  /// [timeout] is not positive.
+  /// In a browser the API key is visible to anyone using the page, so the
+  /// client is built there only with [dangerouslyAllowBrowser] on, such as
+  /// behind a proxy that holds the real key. A browser Request leaves out
+  /// the `User-Agent` and `X-TypeSafe-*` headers, which TypeSafe's CORS
+  /// rules do not allow, and sends its body uncompressed.
+  ///
+  /// Throws [TJevBrowserException] in a browser without
+  /// [dangerouslyAllowBrowser], [TJevApiKeyException] when no API key is
+  /// found or the key is not printable ASCII without spaces, and
+  /// [TJevInvalidTimeoutException] when [timeout] is not positive.
   factory TJev({
     String? apiKey,
     String? baseUrl,
@@ -90,7 +98,16 @@ final class TJev {
     TJevLogLevel? logLevel,
     http.Client? httpClient,
     Map<String, String>? environment,
+    bool dangerouslyAllowBrowser = false,
   }) {
+    if (_isBrowser && !dangerouslyAllowBrowser) {
+      throw const TJevBrowserException(
+        reason:
+            'TJev runs in a browser, which shows the API key to anyone using '
+            'the page. Call TypeSafe from a server instead, or pass '
+            'dangerouslyAllowBrowser: true if you understand the risk.',
+      );
+    }
     final config = TJevConfig.resolve(
       apiKey: apiKey,
       baseUrl: baseUrl,
@@ -257,6 +274,9 @@ final class TJev {
   );
 
   // 🏗️ HELPERS
+
+  /// Whether the client runs in a browser.
+  static const _isBrowser = bool.fromEnvironment('dart.library.js_interop');
 
   /// [headers] with the long-context Danger Zone header when [longContext] is
   /// on.

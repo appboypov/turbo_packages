@@ -1,3 +1,6 @@
+@TestOn('vm')
+library;
+
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
