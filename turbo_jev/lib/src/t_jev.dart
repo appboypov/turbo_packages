@@ -7,6 +7,7 @@ import 'config/t_jev_config.dart';
 import 'constants/t_jev_http.dart';
 import 'exceptions/t_jev_api_key_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
+import 'exceptions/t_jev_invalid_timeout_exception.dart';
 import 'models/t_jev_model.dart';
 import 'models/t_jev_result.dart';
 import 'requests/t_jev_system_one_request_dto.dart';
@@ -39,14 +40,19 @@ final class TJev {
   /// back to [environment]. Trailing slashes on [baseUrl] are ignored. The
   /// default model is [TJevModel.jevLatest].
   ///
+  /// [timeout] limits each attempt of a Request, its whole response
+  /// included, and defaults to 10 seconds.
+  ///
   /// The client closes [httpClient] only when it created it.
   ///
   /// Throws [TJevApiKeyException] when no API key is found or the key is not
-  /// printable ASCII without spaces.
+  /// printable ASCII without spaces, and [TJevInvalidTimeoutException] when
+  /// [timeout] is not positive.
   factory TJev({
     String? apiKey,
     String? baseUrl,
     TJevModel? defaultModel,
+    Duration? timeout,
     http.Client? httpClient,
     Map<String, String>? environment,
   }) {
@@ -54,6 +60,7 @@ final class TJev {
       apiKey: apiKey,
       baseUrl: baseUrl,
       defaultModel: defaultModel,
+      timeout: timeout,
       environment: environment ?? processEnvironment,
     );
     return TJev._(
@@ -90,19 +97,26 @@ final class TJev {
 
   /// Asks Jev [questions] about [state].
   ///
-  /// Read each Answer with [TJevResult.answer]. A non-2xx response returns a
-  /// fail holding a [TJevHttpFailure].
+  /// Read each Answer with [TJevResult.answer]. A [timeout] replaces the
+  /// client timeout for this call. A failed call returns a fail holding a
+  /// [TJevFailure]: a [TJevHttpFailure] for a non-2xx response, a
+  /// [TJevConnectionFailure] or a [TJevTimeoutFailure].
   ///
   /// Throws [TJevInvalidQuestionException] before sending when [questions]
-  /// is empty or two Questions share an id.
+  /// is empty or two Questions share an id, and [TJevInvalidTimeoutException]
+  /// when [timeout] is not positive.
   Future<TurboResponse<TJevResult>> ask({
     required Object state,
     required List<TJevQuestion> questions,
+    Duration? timeout,
   }) {
     final questionsById = _questionsById(questions);
     return _api.send(
       method: 'POST',
       path: TJevHttp.systemOnePath,
+      timeout: timeout == null
+          ? _config.timeout
+          : TJevConfig.checkedTimeout(timeout),
       json: TJevSystemOneRequestDto(
         model: _config.defaultModel.id,
         state: state,
