@@ -35,14 +35,14 @@ final class TJevRequestLog {
   /// [TJevLogging.redactedValue].
   final Map<String, String> headers;
 
-  /// The body before compression as text, cut at
-  /// [TJevLogging.maxLoggedBodyBytes] bytes, or `null` without a body. With
-  /// body redaction on, a JSON body, or the `request` part of a multipart
-  /// body, has each secret field value replaced by [TJevLogging.redactedValue]
-  /// before the cut. The other parts of a multipart body stay as they are,
-  /// the bytes of its Images included.
+  /// The JSON of the body before compression as text, cut at
+  /// [TJevLogging.maxLoggedBodyBytes] bytes, or `null` without a body: the
+  /// whole body when it is JSON, its `request` part when it is multipart.
+  /// With body redaction on, each secret field value is replaced by
+  /// [TJevLogging.redactedValue] before the cut.
   final String? body;
 
-  /// How many bytes of the body [body] leaves out.
+  /// How many bytes of the body [body] leaves out: the bytes past the cut
+  /// and the other parts of a multipart body, its Images included.
   final int omittedBodyBytes;
 }

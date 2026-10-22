@@ -53,17 +53,10 @@ final class TJevRequestTraceService {
 
   /// [bytes] as text cut at [TJevLogging.maxLoggedBodyBytes] bytes, with the
   /// number of bytes it leaves out. With body redaction on, the values of
-  /// secret fields in the JSON at bytes [jsonStart] up to [jsonEnd] are
-  /// replaced before the cut.
-  ({String? body, int omittedBytes}) _loggedBodyOf(
-    List<int>? bytes, {
-    int jsonStart = 0,
-    int? jsonEnd,
-  }) {
+  /// secret fields in the JSON of [bytes] are replaced before the cut.
+  ({String? body, int omittedBytes}) _loggedBodyOf(List<int>? bytes) {
     if (bytes == null || bytes.isEmpty) return (body: null, omittedBytes: 0);
-    final logged = _redactBodies
-        ? redactedJsonBody(bytes, start: jsonStart, end: jsonEnd)
-        : bytes;
+    final logged = _redactBodies ? redactedJsonBody(bytes) : bytes;
     const maxBytes = TJevLogging.maxLoggedBodyBytes;
     return (
       body: utf8.decode(
@@ -107,7 +100,8 @@ final class TJevRequestTraceService {
   // 🪄 MUTATORS
 
   /// Logs [request], attempt number [attempt] of the [method] Request to
-  /// [path] with body [content], at debug.
+  /// [path] with body [content], at debug. Only the JSON of [content] is
+  /// logged, so the other parts of a multipart body count as left out.
   void sent(
     http.BaseRequest request, {
     required String method,
@@ -115,18 +109,18 @@ final class TJevRequestTraceService {
     required TJevRequestContent? content,
     required int attempt,
   }) => _log(TJevLogLevel.debug, () {
-    final (:body, :omittedBytes) = _loggedBodyOf(
-      content?.bytes,
-      jsonStart: content?.jsonStart ?? 0,
-      jsonEnd: content?.jsonEnd,
-    );
+    final json = content?.bytes.sublist(content.jsonStart, content.jsonEnd);
+    final (:body, :omittedBytes) = _loggedBodyOf(json);
+    final otherPartBytes = content == null
+        ? 0
+        : content.bytes.length - json!.length;
     return TJevRequestLog(
       method: method,
       path: path,
       attempt: attempt,
       headers: redactedHeaders(request.headers),
       body: body,
-      omittedBodyBytes: omittedBytes,
+      omittedBodyBytes: omittedBytes + otherPartBytes,
     );
   });
 

@@ -3,5 +3,5 @@ abstract final class TJevSdk {
   // 🧲 FETCHERS
 
   /// The SDK id with the package version, kept equal to `pubspec.yaml`.
-  static const id = 'turbo_jev/0.1.0';
+  static const id = 'turbo_jev/0.1.1';
 }

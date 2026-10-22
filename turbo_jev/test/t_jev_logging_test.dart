@@ -1039,12 +1039,9 @@ void main() {
     }
 
     /// The JSON of the `request` part of the logged multipart body.
-    Map<String, Object?> loggedRequestPart() {
-      final body = objectsOf<TJevRequestLog>().single.body!;
-      final part = body.split('\r\n--').first;
-      return jsonDecode(part.substring(part.indexOf('\r\n\r\n') + 4))
-          as Map<String, Object?>;
-    }
+    Map<String, Object?> loggedRequestPart() =>
+        jsonDecode(objectsOf<TJevRequestLog>().single.body!)
+            as Map<String, Object?>;
 
     test(
       'When the client logs at debug, then no record holds the secret and '
@@ -1065,22 +1062,22 @@ void main() {
     );
 
     test(
-      'When the client logs at debug, then the logged body is the body as '
-      'sent with only its request part redacted',
+      'When the client logs at debug, then the logged body is the redacted '
+      'request part only and counts the other parts as left out',
       () async {
         final typeSafe = await askAtDebug();
 
         final sent = typeSafe.lastRequest;
-        final sentJson = utf8.decode(FakeTypeSafe.partsOf(sent).first.bytes);
+        final sentJson = FakeTypeSafe.partsOf(sent).first.bytes;
         final redactedJson = jsonEncode({
           ...FakeTypeSafe.bodyOf(sent),
           'state': {'apiKey': '***', 'photo': photo.reference},
         });
+        final log = objectsOf<TJevRequestLog>().single;
+        expect(log.body, redactedJson);
         expect(
-          objectsOf<TJevRequestLog>().single.body,
-          utf8
-              .decode(sent.bodyBytes, allowMalformed: true)
-              .replaceFirst(sentJson, redactedJson),
+          log.omittedBodyBytes,
+          sent.bodyBytes.length - sentJson.length,
         );
       },
     );
