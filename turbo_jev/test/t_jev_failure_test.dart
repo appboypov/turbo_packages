@@ -513,8 +513,8 @@ void main() {
           isA<TJevInvalidTimeoutException>()
               .having((error) => error.timeout, 'timeout', Duration.zero)
               .having(
-                (error) => error.reason,
-                'reason',
+                (error) => error.message,
+                'message',
                 'A timeout must be positive, not 0:00:00.000000.',
               ),
         ),
@@ -530,5 +530,101 @@ void main() {
       );
       jev.close();
     });
+  });
+
+  group('Given a failed ask', () {
+    Future<TurboResponse<TJevResult>> askThrough(
+      http.Client client, {
+      Duration? timeout,
+      Future<void>? abortTrigger,
+    }) {
+      final jev = TJev(
+        apiKey: 'ts_key',
+        httpClient: client,
+        environment: const {},
+        retry: _noRetries,
+      );
+      return jev.ask(
+        state: 'I was charged twice.',
+        questions: [_billing],
+        timeout: timeout,
+        abortTrigger: abortTrigger,
+      );
+    }
+
+    void expectFailMessage(TurboResponse<TJevResult> response) {
+      final failure = response.error! as TJevFailure;
+      expect(failure.message, isNotEmpty);
+      expect(response.message, failure.message);
+    }
+
+    test(
+      'When TypeSafe answers a non-2xx status, then the fail has the message '
+      'of its HTTP failure',
+      () async {
+        final response = await askThrough(
+          MockClient(
+            (_) async => http.Response('{"error": "Unknown model"}', 400),
+          ),
+        );
+
+        expect(response.error, isA<TJevHttpFailure>());
+        expectFailMessage(response);
+      },
+    );
+
+    test(
+      'When a 2xx body does not fit the Request, then the fail has the '
+      'message of its response validation failure',
+      () async {
+        final response = await askThrough(
+          MockClient((_) async => http.Response('not json', 200)),
+        );
+
+        expect(response.error, isA<TJevResponseValidationFailure>());
+        expectFailMessage(response);
+      },
+    );
+
+    test(
+      'When the connection fails, then the fail has the message of its '
+      'connection failure',
+      () async {
+        final response = await askThrough(
+          MockClient((_) => throw http.ClientException('Connection refused')),
+        );
+
+        expect(response.error, isA<TJevConnectionFailure>());
+        expectFailMessage(response);
+      },
+    );
+
+    test(
+      'When the attempt times out, then the fail has the message of its '
+      'timeout failure',
+      () async {
+        final response = await askThrough(
+          MockClient((_) => Completer<http.Response>().future),
+          timeout: const Duration(milliseconds: 20),
+        );
+
+        expect(response.error, isA<TJevTimeoutFailure>());
+        expectFailMessage(response);
+      },
+    );
+
+    test(
+      'When the abort trigger completes, then the fail has the message of '
+      'its aborted failure',
+      () async {
+        final response = await askThrough(
+          MockClient((_) => Completer<http.Response>().future),
+          abortTrigger: Future<void>.value(),
+        );
+
+        expect(response.error, isA<TJevAbortedFailure>());
+        expectFailMessage(response);
+      },
+    );
   });
 }

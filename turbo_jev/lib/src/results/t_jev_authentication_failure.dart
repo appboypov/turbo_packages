@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe did not accept the API key (401).
 final class TJevAuthenticationFailure extends TJevHttpFailure {

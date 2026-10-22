@@ -6,7 +6,6 @@ import '../constants/t_jev_http.dart';
 import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_question_type.dart';
-import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
 import '../requests/t_jev_box_question_dto.dart';
 import '../requests/t_jev_choice_question_dto.dart';
@@ -18,6 +17,7 @@ import '../responses/t_jev_choice_answer_dto.dart';
 import '../responses/t_jev_noul_answer_dto.dart';
 import '../responses/t_jev_score_answer_dto.dart';
 import 't_jev_answer.dart';
+import 't_jev_exception.dart';
 import 't_jev_question_dto.dart';
 
 part '../models/t_jev_box.dart';
@@ -68,7 +68,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
         return;
       case num() when !content.isFinite:
         throw TJevInvalidQuestionException(
-          reason: TJevMessages.nonFiniteNumber(location, content),
+          message: TJevMessages.nonFiniteNumber(location, content),
         );
       case num():
         return;
@@ -80,7 +80,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
         for (final MapEntry(:key, :value) in content.entries) {
           if (key is! String) {
             throw TJevInvalidQuestionException(
-              reason: TJevMessages.nonStringMapKey(location, key),
+              message: TJevMessages.nonStringMapKey(location, key),
             );
           }
           checkContent(value, location);
@@ -90,7 +90,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
           jsonEncode(content);
         } on JsonUnsupportedObjectError {
           throw TJevInvalidQuestionException(
-            reason: TJevMessages.unencodableContent(
+            message: TJevMessages.unencodableContent(
               location,
               content.runtimeType,
             ),

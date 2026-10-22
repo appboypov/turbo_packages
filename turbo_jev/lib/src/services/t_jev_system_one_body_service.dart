@@ -1,10 +1,9 @@
 import 'dart:convert';
 
+import '../abstracts/t_jev_exception.dart';
 import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
-import '../exceptions/t_jev_image_reference_exception.dart';
-import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
 import '../records/t_jev_system_one_body.dart';
 import '../requests/t_jev_image_part_dto.dart';
@@ -57,7 +56,7 @@ final class TJevSystemOneBodyService {
     }
     if (unknown.isNotEmpty) {
       throw TJevImageReferenceException(
-        reason: TJevMessages.unknownImageReferences(unknown),
+        message: TJevMessages.unknownImageReferences(unknown),
       );
     }
     final unused = {
@@ -66,7 +65,7 @@ final class TJevSystemOneBodyService {
     };
     if (unused.isNotEmpty) {
       throw TJevImageReferenceException(
-        reason: TJevMessages.unusedImages(unused),
+        message: TJevMessages.unusedImages(unused),
       );
     }
     if (used.isEmpty) return (json: json, images: const {});

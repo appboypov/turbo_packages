@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// A failure TypeSafe answered with a non-2xx HTTP status.
 sealed class TJevHttpFailure extends TJevFailure {
@@ -19,35 +19,35 @@ sealed class TJevHttpFailure extends TJevFailure {
     final details = _validationDetailsOf(body);
     final message = _messageOf(body, details);
     return switch (status) {
-      400 => TJevBadRequestFailure._(
+      TJevHttp.badRequestStatus => TJevBadRequestFailure._(
         status: status,
         message: message,
         requestId: requestId,
         headers: headers,
         body: body,
       ),
-      401 => TJevAuthenticationFailure._(
+      TJevHttp.unauthorizedStatus => TJevAuthenticationFailure._(
         status: status,
         message: message,
         requestId: requestId,
         headers: headers,
         body: body,
       ),
-      403 => TJevPermissionDeniedFailure._(
+      TJevHttp.forbiddenStatus => TJevPermissionDeniedFailure._(
         status: status,
         message: message,
         requestId: requestId,
         headers: headers,
         body: body,
       ),
-      404 => TJevNotFoundFailure._(
+      TJevHttp.notFoundStatus => TJevNotFoundFailure._(
         status: status,
         message: message,
         requestId: requestId,
         headers: headers,
         body: body,
       ),
-      422 => TJevUnprocessableEntityFailure._(
+      TJevHttp.unprocessableEntityStatus => TJevUnprocessableEntityFailure._(
         status: status,
         message: message,
         requestId: requestId,
@@ -55,7 +55,7 @@ sealed class TJevHttpFailure extends TJevFailure {
         body: body,
         details: details,
       ),
-      429 => TJevRateLimitFailure._(
+      TJevHttp.tooManyRequestsStatus => TJevRateLimitFailure._(
         status: status,
         message: message,
         requestId: requestId,
@@ -63,7 +63,7 @@ sealed class TJevHttpFailure extends TJevFailure {
         body: body,
         retryAfter: const TJevRetryAfterService().delayOf(headers),
       ),
-      >= 500 => TJevInternalServerFailure._(
+      >= TJevHttp.minServerErrorStatus => TJevInternalServerFailure._(
         status: status,
         message: message,
         requestId: requestId,
@@ -89,6 +89,7 @@ sealed class TJevHttpFailure extends TJevFailure {
   /// `detail` string, `detail.message`, and the entries of a `detail` list
   /// as `path: message` joined with `; `. Without any of these it is the
   /// text of [body], cut at 200 characters.
+  @override
   final String message;
 
   /// The id TypeSafe gave the Request, if it sent one.
@@ -99,6 +100,25 @@ sealed class TJevHttpFailure extends TJevFailure {
 
   /// The response body: decoded JSON, else its text, or `null` when empty.
   final Object? body;
+
+  /// The fields of [response] every failure of a response holds.
+  static TJevResponseFields _responseFieldsOf(http.Response response) {
+    final text = utf8.decode(response.bodyBytes, allowMalformed: true);
+    Object? body;
+    if (text.isNotEmpty) {
+      try {
+        body = jsonDecode(text);
+      } on FormatException {
+        body = text;
+      }
+    }
+    return (
+      status: response.statusCode,
+      requestId: response.headers[TJevHttp.requestIdHeader],
+      headers: response.headers,
+      body: body,
+    );
+  }
 
   static String _messageOf(Object? body, List<TJevValidationDetail> details) {
     final message = switch (body) {

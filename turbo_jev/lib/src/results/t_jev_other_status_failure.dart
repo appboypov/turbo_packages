@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// A non-2xx status without a failure type of its own, such as 408, 413 or
 /// 415.

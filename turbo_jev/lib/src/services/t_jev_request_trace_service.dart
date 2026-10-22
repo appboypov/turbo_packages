@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:turbo_response/turbo_response.dart';
 
+import '../abstracts/t_jev_failure.dart';
 import '../constants/t_jev_logging.dart';
 import '../enums/t_jev_log_level.dart';
 import '../models/t_jev_request_log.dart';
 import '../models/t_jev_request_summary.dart';
 import '../models/t_jev_response_log.dart';
 import '../records/t_jev_request_content.dart';
-import '../results/t_jev_failure.dart';
 import '../utils/t_jev_redacted_headers.dart';
 import '../utils/t_jev_redacted_json_body.dart';
 

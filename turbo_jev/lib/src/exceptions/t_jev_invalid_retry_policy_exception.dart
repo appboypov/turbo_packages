@@ -1,10 +1,13 @@
+part of '../abstracts/t_jev_exception.dart';
+
 /// Thrown when a [TJevRetryPolicy] is created with an invalid value.
-final class TJevInvalidRetryPolicyException implements Exception {
-  const TJevInvalidRetryPolicyException({required this.reason});
+final class TJevInvalidRetryPolicyException extends TJevException {
+  const TJevInvalidRetryPolicyException({required this.message});
 
   /// What is wrong with the policy.
-  final String reason;
+  @override
+  final String message;
 
   @override
-  String toString() => 'TJevInvalidRetryPolicyException{reason: $reason}';
+  String toString() => 'TJevInvalidRetryPolicyException{message: $message}';
 }

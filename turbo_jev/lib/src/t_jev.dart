@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:turbo_response/turbo_response.dart';
 
+import 'abstracts/t_jev_exception.dart';
+import 'abstracts/t_jev_failure.dart';
 import 'abstracts/t_jev_question.dart';
 import 'apis/t_jev_api.dart';
 import 'config/t_jev_config.dart';
@@ -13,11 +15,6 @@ import 'constants/t_jev_logging.dart';
 import 'constants/t_jev_messages.dart';
 import 'enums/t_jev_http_method.dart';
 import 'enums/t_jev_log_level.dart';
-import 'exceptions/t_jev_api_key_exception.dart';
-import 'exceptions/t_jev_browser_exception.dart';
-import 'exceptions/t_jev_image_reference_exception.dart';
-import 'exceptions/t_jev_invalid_question_exception.dart';
-import 'exceptions/t_jev_invalid_timeout_exception.dart';
 import 'models/t_jev_image.dart';
 import 'models/t_jev_model_card.dart';
 import 'models/t_jev_request_log.dart';
@@ -26,7 +23,6 @@ import 'models/t_jev_response_log.dart';
 import 'models/t_jev_result.dart';
 import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
-import 'results/t_jev_failure.dart';
 import 'services/t_jev_request_trace_service.dart';
 import 'services/t_jev_system_one_body_service.dart';
 import 'types/t_jev_model.dart';
@@ -117,7 +113,7 @@ final class TJev {
     bool dangerouslyAllowBrowser = false,
   }) {
     if (_isBrowser && !dangerouslyAllowBrowser) {
-      throw const TJevBrowserException(reason: TJevMessages.browser);
+      throw const TJevBrowserException(message: TJevMessages.browser);
     }
     final config = TJevConfig.resolve(
       apiKey: apiKey,
@@ -205,7 +201,7 @@ final class TJev {
   ) {
     if (questions.isEmpty) {
       throw const TJevInvalidQuestionException(
-        reason: TJevMessages.noQuestions,
+        message: TJevMessages.noQuestions,
       );
     }
     var generatedIds = 0;
@@ -214,7 +210,7 @@ final class TJev {
       final id = question.id ?? 'q${generatedIds++}';
       if (questionsById.containsKey(id)) {
         throw TJevInvalidQuestionException(
-          reason: TJevMessages.duplicateQuestionId(id),
+          message: TJevMessages.duplicateQuestionId(id),
         );
       }
       questionsById[id] = question;
@@ -293,7 +289,7 @@ final class TJev {
     final hasBox = questions.any((question) => question is TJevBox);
     if (hasBox && !askedModel.supportsBox) {
       throw TJevInvalidQuestionException(
-        reason: TJevMessages.unsupportedBoxModel(
+        message: TJevMessages.unsupportedBoxModel(
           boxModelIds: TJevModel.boxModels.map((model) => model.id),
           modelId: askedModel.id,
         ),

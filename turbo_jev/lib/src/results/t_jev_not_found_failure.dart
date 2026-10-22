@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe did not find what the Request asks for (404).
 final class TJevNotFoundFailure extends TJevHttpFailure {

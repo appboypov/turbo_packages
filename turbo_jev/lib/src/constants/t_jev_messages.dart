@@ -201,6 +201,13 @@ abstract final class TJevMessages {
   /// A connection error, as [reason] says.
   static String connectionError(String reason) => 'Connection error: $reason';
 
+  /// The whole response did not arrive within [timeout].
+  static String timedOut(Duration timeout) =>
+      'The whole response did not arrive within $timeout.';
+
+  /// The caller's abort trigger stopped the Request.
+  static const aborted = 'The abort trigger stopped the Request.';
+
   /// The message of an HTTP failure without a body.
   static const noBody = 'status code (no body)';
 

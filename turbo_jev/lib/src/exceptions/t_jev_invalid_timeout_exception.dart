@@ -1,17 +1,20 @@
+part of '../abstracts/t_jev_exception.dart';
+
 /// Thrown when a timeout is zero or negative.
-final class TJevInvalidTimeoutException implements Exception {
+final class TJevInvalidTimeoutException extends TJevException {
   const TJevInvalidTimeoutException({
-    required this.reason,
+    required this.message,
     required this.timeout,
   });
 
   /// What is wrong with the timeout.
-  final String reason;
+  @override
+  final String message;
 
   /// The timeout that was given.
   final Duration timeout;
 
   @override
   String toString() =>
-      'TJevInvalidTimeoutException{reason: $reason, timeout: $timeout}';
+      'TJevInvalidTimeoutException{message: $message, timeout: $timeout}';
 }

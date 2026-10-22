@@ -14,7 +14,7 @@ Future<void> main() async {
     jev = TJev();
   } on TJevApiKeyException catch (exception) {
     stderr.writeln('Set TYPESAFE_API_KEY to run this example.');
-    stderr.writeln(exception.reason);
+    stderr.writeln(exception.message);
     exitCode = 64;
     return;
   }
@@ -135,8 +135,8 @@ String failureReason(TJevFailure failure) => switch (failure) {
     'The rate limit was reached. Try again after $retryAfter.',
   TJevHttpFailure(:final status, :final message) =>
     'TypeSafe answered $status: $message',
-  TJevResponseValidationFailure(:final reason) =>
-    'The response did not fit the Request: $reason',
+  TJevResponseValidationFailure(:final message) =>
+    'The response did not fit the Request: $message',
   TJevConnectionFailure(:final message) => 'No connection: $message',
   TJevTimeoutFailure(:final timeout) => 'No response within $timeout.',
   TJevAbortedFailure() => 'The Request was stopped.',

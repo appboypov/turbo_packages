@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../abstracts/t_jev_answer.dart';
+import '../abstracts/t_jev_exception.dart';
 import '../abstracts/t_jev_question.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
-import '../exceptions/t_jev_unasked_question_exception.dart';
 import '../responses/t_jev_system_one_response_dto.dart';
 import '../types/t_jev_model.dart';
 import '../utils/t_jev_response_json_object.dart';
@@ -75,7 +75,10 @@ final class TJevResult {
     final answer = _answers[question];
     if (answer == null) {
       throw TJevUnaskedQuestionException(
-        reason: TJevMessages.unaskedQuestion(question.runtimeType, question.id),
+        message: TJevMessages.unaskedQuestion(
+          question.runtimeType,
+          question.id,
+        ),
       );
     }
     return answer as A;

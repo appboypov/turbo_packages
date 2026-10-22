@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// The whole response did not arrive within the timeout of the attempt.
 final class TJevTimeoutFailure extends TJevFailure {
@@ -7,6 +7,9 @@ final class TJevTimeoutFailure extends TJevFailure {
 
   /// The timeout the attempt had.
   final Duration timeout;
+
+  @override
+  String get message => TJevMessages.timedOut(timeout);
 
   @override
   String toString() => 'TJevTimeoutFailure{timeout: $timeout}';

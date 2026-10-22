@@ -4,11 +4,11 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
+import '../abstracts/t_jev_exception.dart';
 import '../apis/t_jev_file_api.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_image_format.dart';
-import '../exceptions/t_jev_invalid_image_exception.dart';
 import '../utils/t_jev_random_hex.dart';
 
 /// A PNG or JPEG picture sent with a Request.
@@ -55,7 +55,7 @@ final class TJevImage {
       bytes = base64.decode(text.replaceAll(_whitespace, ''));
     } on FormatException catch (error) {
       throw TJevInvalidImageException(
-        reason: TJevMessages.invalidBase64(error.message),
+        message: TJevMessages.invalidBase64(error.message),
       );
     }
     return TJevImage._(bytes);
@@ -117,7 +117,7 @@ final class TJevImage {
   /// no signature of a [TJevImageFormat].
   static TJevImageFormat _formatOf(Uint8List bytes) {
     if (bytes.isEmpty) {
-      throw const TJevInvalidImageException(reason: TJevMessages.emptyImage);
+      throw const TJevInvalidImageException(message: TJevMessages.emptyImage);
     }
     for (final format in TJevImageFormat.values) {
       final signature = format.signature;
@@ -127,7 +127,7 @@ final class TJevImage {
       }
     }
     throw const TJevInvalidImageException(
-      reason: TJevMessages.unknownImageFormat,
+      message: TJevMessages.unknownImageFormat,
     );
   }
 }

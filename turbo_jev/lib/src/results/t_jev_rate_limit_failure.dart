@@ -1,4 +1,4 @@
-part of 't_jev_failure.dart';
+part of '../abstracts/t_jev_failure.dart';
 
 /// TypeSafe refused the Request because the rate limit was reached (429).
 final class TJevRateLimitFailure extends TJevHttpFailure {

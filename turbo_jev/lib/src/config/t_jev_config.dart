@@ -1,11 +1,10 @@
 import 'package:meta/meta.dart';
 
+import '../abstracts/t_jev_exception.dart';
 import '../constants/t_jev_defaults.dart';
 import '../constants/t_jev_environment_keys.dart';
 import '../constants/t_jev_messages.dart';
 import '../enums/t_jev_log_level.dart';
-import '../exceptions/t_jev_api_key_exception.dart';
-import '../exceptions/t_jev_invalid_timeout_exception.dart';
 import '../types/t_jev_model.dart';
 import 't_jev_retry_policy.dart';
 
@@ -115,7 +114,7 @@ final class TJevConfig {
   static Duration checkedTimeout(Duration timeout) {
     if (timeout <= Duration.zero) {
       throw TJevInvalidTimeoutException(
-        reason: TJevMessages.invalidTimeout(timeout),
+        message: TJevMessages.invalidTimeout(timeout),
         timeout: timeout,
       );
     }
@@ -125,10 +124,10 @@ final class TJevConfig {
   static String _checkedApiKey(String? apiKey) {
     final key = apiKey?.trim() ?? '';
     if (key.isEmpty) {
-      throw const TJevApiKeyException(reason: TJevMessages.missingApiKey);
+      throw const TJevApiKeyException(message: TJevMessages.missingApiKey);
     }
     if (!_printableAsciiWithoutSpaces.hasMatch(key)) {
-      throw const TJevApiKeyException(reason: TJevMessages.invalidApiKey);
+      throw const TJevApiKeyException(message: TJevMessages.invalidApiKey);
     }
     return key;
   }

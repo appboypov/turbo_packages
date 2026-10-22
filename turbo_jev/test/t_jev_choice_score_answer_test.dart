@@ -414,7 +414,8 @@ void main() {
       final failure = result.error! as TJevResponseValidationFailure;
       expect(failure.status, response.statusCode);
       expect(failure.requestId, response.headers['x-typesafe-request-id']);
-      expect(failure.reason, isNotEmpty);
+      expect(failure.message, isNotEmpty);
+      expect(result.message, failure.message);
     }
 
     test(
