@@ -133,6 +133,22 @@ void main() {
       },
     );
 
+    test(
+      'When a detail location holds body after its first entry, then that '
+      'body stays in the message',
+      () async {
+        expect(
+          await messageFor(
+            '{"detail": ['
+            '{"loc": ["body", "questions", "body", "options"], '
+            '"msg": "Field required"}'
+            ']}',
+          ),
+          'questions.body.options: Field required',
+        );
+      },
+    );
+
     test('When it is plain text, then the text is the message', () async {
       expect(await messageFor('Bad gateway'), 'Bad gateway');
     });
@@ -220,6 +236,33 @@ void main() {
         );
 
         expect((failure as TJevUnprocessableEntityFailure).details, isEmpty);
+      },
+    );
+
+    test(
+      'When a location holds body after its first entry, then the path keeps '
+      'that body and the location stays as TypeSafe sent it',
+      () async {
+        final failure = await failureFor(
+          http.Response(
+            '{"detail": ['
+            '{"loc": ["body", "questions", "body", "options"], '
+            '"msg": "Field required"}, '
+            '{"loc": ["questions", "body"], "msg": "Field required"}'
+            ']}',
+            422,
+          ),
+        );
+
+        final details = (failure as TJevUnprocessableEntityFailure).details;
+        expect(details.map((detail) => detail.location), [
+          ['body', 'questions', 'body', 'options'],
+          ['questions', 'body'],
+        ]);
+        expect(details.map((detail) => detail.path), [
+          'questions.body.options',
+          'questions.body',
+        ]);
       },
     );
   });
