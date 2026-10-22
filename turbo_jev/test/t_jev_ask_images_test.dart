@@ -189,6 +189,28 @@ void main() {
     },
   );
 
+  test(
+    'Given a State model whose toJson creates its Image, when asked, then '
+    'the Image the body names is the one sent, once',
+    () async {
+      await jev.ask(
+        state: const _Snapshot(),
+        questions: const [TJevNoul(instructions: 'Is the door open?')],
+      );
+
+      final [reference] = typeSafe.lastBody['state']! as List<Object?>;
+      expect(typeSafe.lastBody['assets'], {
+        reference: {'type': 'image', 'part': 'asset-0'},
+      });
+      final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+      expect(
+        [for (final part in parts) (part.name, part.contentType)],
+        [('request', 'application/json'), ('asset-0', 'image/jpeg')],
+      );
+      expect(parts.last.bytes, jpegBytes);
+    },
+  );
+
   group('Given an Image interpolated in a string', () {
     late TJevImage badge;
 
@@ -277,4 +299,11 @@ final class _Frames {
   final List<TJevImage> frames;
 
   List<TJevImage> toJson() => frames;
+}
+
+/// A model whose `toJson` creates a new Image each time it runs.
+final class _Snapshot {
+  const _Snapshot();
+
+  List<TJevImage> toJson() => [TJevImage(jpegBytes)];
 }
