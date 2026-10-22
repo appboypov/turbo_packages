@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../abstracts/t_jev_question_dto.dart';
+import '../enums/t_jev_question_type.dart';
 
 part 't_jev_score_question_dto.g.dart';
 
@@ -9,8 +10,9 @@ part 't_jev_score_question_dto.g.dart';
 final class TJevScoreQuestionDto implements TJevQuestionDto {
   const TJevScoreQuestionDto({this.instructions, required this.criteria});
 
+  @override
   @JsonKey(includeToJson: true)
-  String get type => 'score';
+  TJevQuestionType get type => TJevQuestionType.score;
 
   final Object? instructions;
 

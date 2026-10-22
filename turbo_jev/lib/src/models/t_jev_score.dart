@@ -89,7 +89,7 @@ final class TJevScore<T extends Object>
   @override
   TJevScoreAnswer<T> answerFromJson(Map<String, dynamic> json) {
     final dto = TJevScoreAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, 'score');
+    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.score);
     final levels = _levels;
     final levelNumbers = [
       for (var number = 0; number < levels.length; number++) '$number',

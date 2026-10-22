@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../constants/t_jev_http.dart';
 import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
+import '../enums/t_jev_question_type.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
 import '../requests/t_jev_box_question_dto.dart';
@@ -100,9 +101,14 @@ sealed class TJevQuestion<A extends TJevAnswer> {
 
   /// Throws a [FormatException] when an Answer of type [actual] answers a
   /// Question of type [expected].
-  static void _checkAnswerType(String actual, String expected) {
+  static void _checkAnswerType(
+    TJevQuestionType actual,
+    TJevQuestionType expected,
+  ) {
     if (actual != expected) {
-      throw FormatException(TJevMessages.answerTypeMismatch(actual, expected));
+      throw FormatException(
+        TJevMessages.answerTypeMismatch(actual.wireValue, expected.wireValue),
+      );
     }
   }
 

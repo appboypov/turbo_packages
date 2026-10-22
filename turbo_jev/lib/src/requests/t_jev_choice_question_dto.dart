@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../abstracts/t_jev_question_dto.dart';
+import '../enums/t_jev_question_type.dart';
 
 part 't_jev_choice_question_dto.g.dart';
 
@@ -9,8 +10,9 @@ part 't_jev_choice_question_dto.g.dart';
 final class TJevChoiceQuestionDto implements TJevQuestionDto {
   const TJevChoiceQuestionDto({this.instructions, required this.criteria});
 
+  @override
   @JsonKey(includeToJson: true)
-  String get type => 'choice';
+  TJevQuestionType get type => TJevQuestionType.choice;
 
   final Object? instructions;
 

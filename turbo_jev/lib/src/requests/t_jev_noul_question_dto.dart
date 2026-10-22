@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../abstracts/t_jev_question_dto.dart';
+import '../enums/t_jev_question_type.dart';
 import 't_jev_noul_criteria_dto.dart';
 
 part 't_jev_noul_question_dto.g.dart';
@@ -14,8 +15,9 @@ part 't_jev_noul_question_dto.g.dart';
 final class TJevNoulQuestionDto implements TJevQuestionDto {
   const TJevNoulQuestionDto({this.instructions, this.criteria});
 
+  @override
   @JsonKey(includeToJson: true)
-  String get type => 'noul';
+  TJevQuestionType get type => TJevQuestionType.noul;
 
   final Object? instructions;
 

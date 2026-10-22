@@ -52,7 +52,7 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   @override
   TJevNoulAnswer answerFromJson(Map<String, dynamic> json) {
     final dto = TJevNoulAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, 'noul');
+    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.noul);
     return TJevNoulAnswer(probability: dto.noul);
   }
 }

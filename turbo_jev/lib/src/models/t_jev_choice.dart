@@ -61,7 +61,7 @@ final class TJevChoice<T extends Object>
   @override
   TJevChoiceAnswer<T> answerFromJson(Map<String, dynamic> json) {
     final dto = TJevChoiceAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, 'choice');
+    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.choice);
     final optionsByKey = {
       for (final option in options.keys) TJevQuestion._wireKey(option): option,
     };

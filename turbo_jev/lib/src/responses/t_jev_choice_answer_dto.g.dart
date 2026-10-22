@@ -9,7 +9,10 @@ part of 't_jev_choice_answer_dto.dart';
 TJevChoiceAnswerDto _$TJevChoiceAnswerDtoFromJson(Map<String, dynamic> json) =>
     $checkedCreate('TJevChoiceAnswerDto', json, ($checkedConvert) {
       final val = TJevChoiceAnswerDto(
-        type: $checkedConvert('type', (v) => v as String),
+        type: $checkedConvert(
+          'type',
+          (v) => $enumDecode(_$TJevQuestionTypeEnumMap, v),
+        ),
         choice: $checkedConvert('choice', (v) => v as String),
         confidence: $checkedConvert('confidence', (v) => (v as num).toDouble()),
         probabilities: $checkedConvert(
@@ -21,3 +24,10 @@ TJevChoiceAnswerDto _$TJevChoiceAnswerDtoFromJson(Map<String, dynamic> json) =>
       );
       return val;
     });
+
+const _$TJevQuestionTypeEnumMap = {
+  TJevQuestionType.noul: 'noul',
+  TJevQuestionType.choice: 'choice',
+  TJevQuestionType.score: 'score',
+  TJevQuestionType.box: 'box',
+};
