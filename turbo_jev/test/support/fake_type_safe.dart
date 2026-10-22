@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -20,11 +21,18 @@ class FakeTypeSafe {
 
   http.Request get lastRequest => requests.last;
 
-  Map<String, Object?> get lastBody =>
-      jsonDecode(lastRequest.body) as Map<String, Object?>;
+  Map<String, Object?> get lastBody => bodyOf(lastRequest);
+
+  /// The JSON body of [request], decompressed when it is gzip encoded.
+  static Map<String, Object?> bodyOf(http.Request request) {
+    final bytes = request.headers['Content-Encoding'] == 'gzip'
+        ? gzip.decode(request.bodyBytes)
+        : request.bodyBytes;
+    return jsonDecode(utf8.decode(bytes)) as Map<String, Object?>;
+  }
 
   static http.Response _answerEveryQuestion(http.Request request) {
-    final body = jsonDecode(request.body) as Map<String, Object?>;
+    final body = bodyOf(request);
     final questions = body['questions']! as Map<String, Object?>;
     return noulResponse(nouls: {for (final id in questions.keys) id: 0.9});
   }

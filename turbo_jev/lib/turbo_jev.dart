@@ -10,6 +10,7 @@ export 'src/exceptions/t_jev_invalid_question_exception.dart';
 export 'src/exceptions/t_jev_invalid_timeout_exception.dart';
 export 'src/exceptions/t_jev_unasked_question_exception.dart';
 export 'src/models/t_jev_model.dart';
+export 'src/models/t_jev_model_card.dart';
 export 'src/models/t_jev_result.dart';
 export 'src/models/t_jev_usage.dart';
 export 'src/models/t_jev_validation_detail.dart';
