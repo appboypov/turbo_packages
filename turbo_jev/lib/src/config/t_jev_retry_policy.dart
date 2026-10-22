@@ -40,8 +40,9 @@ final class TJevRetryPolicy {
              {408, 429, for (var status = 500; status < 600; status++) status},
        ) {
     if (maxRetries < 0) _fail('maxRetries must not be negative.');
-    if (initialBackoff.isNegative)
+    if (initialBackoff.isNegative) {
       _fail('initialBackoff must not be negative.');
+    }
     if (maxBackoff.isNegative) _fail('maxBackoff must not be negative.');
     if (maxRetryAfter.isNegative) _fail('maxRetryAfter must not be negative.');
     if (!(jitter >= 0 && jitter <= 1)) _fail('jitter must be between 0 and 1.');
