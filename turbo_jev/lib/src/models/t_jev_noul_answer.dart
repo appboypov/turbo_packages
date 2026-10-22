@@ -13,8 +13,12 @@ final class TJevNoulAnswer extends TJevAnswer {
     return TJevNoulAnswer(probability: dto.noul);
   }
 
+  // 🎩 STATE
+
   /// The Probability that the statement is true, from 0 to 1.
   final double probability;
+
+  // 🧲 FETCHERS
 
   /// How decided the Answer is: `abs(2p - 1)`, from 0 at a Probability of 0.5
   /// to 1 at a Probability of 0 or 1.

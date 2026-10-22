@@ -17,6 +17,8 @@ final class TJevChoiceAnswerDto {
   factory TJevChoiceAnswerDto.fromJson(Map<String, dynamic> json) =>
       _$TJevChoiceAnswerDtoFromJson(json);
 
+  // 🎩 STATE
+
   final TJevQuestionType type;
 
   /// The wire key of the chosen Option.

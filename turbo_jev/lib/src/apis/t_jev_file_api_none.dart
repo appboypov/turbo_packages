@@ -5,6 +5,8 @@ import '../constants/t_jev_messages.dart';
 final class TJevFileApi {
   const TJevFileApi();
 
+  // 🪄 MUTATORS
+
   /// Throws [TJevInvalidImageException]: a browser has no file system to
   /// read the Image file at [path] from.
   Future<List<int>> readBytes(String path) async =>

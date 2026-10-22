@@ -21,6 +21,8 @@ final class TJevModelCardDto {
   factory TJevModelCardDto.fromJson(Map<String, dynamic> json) =>
       _$TJevModelCardDtoFromJson(json);
 
+  // 🎩 STATE
+
   @TJevModelConverter()
   final TJevModel name;
 

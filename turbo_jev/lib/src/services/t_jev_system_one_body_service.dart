@@ -24,6 +24,8 @@ import '../types/t_jev_model.dart';
 final class TJevSystemOneBodyService {
   const TJevSystemOneBodyService();
 
+  // 🧲 FETCHERS
+
   /// The body of a Request that asks [model] the [questions], keyed by
   /// their ids, about [state], with [extraBody] merged last, and the Images
   /// it sends.
@@ -118,6 +120,8 @@ final class TJevSystemOneBodyService {
       images: images,
     );
   }
+
+  // 🏗️ HELPERS
 
   /// The wire form of [question], which [id] keys in its Request.
   ///

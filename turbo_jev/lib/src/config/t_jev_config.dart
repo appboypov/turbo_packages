@@ -77,8 +77,7 @@ final class TJevConfig {
     );
   }
 
-  static final _trailingSlashes = RegExp(r'/+$');
-  static final _printableAsciiWithoutSpaces = RegExp(r'^[\x21-\x7E]+$');
+  // 🎩 STATE
 
   /// The API key sent as bearer auth.
   final String apiKey;
@@ -107,6 +106,8 @@ final class TJevConfig {
   /// full.
   final bool redactLoggedBodies;
 
+  // 🧲 FETCHERS
+
   /// Returns [timeout] when it is positive.
   ///
   /// Throws [TJevInvalidTimeoutException] when it is zero or negative.
@@ -120,6 +121,11 @@ final class TJevConfig {
     }
     return timeout;
   }
+
+  // 🏗️ HELPERS
+
+  static final _trailingSlashes = RegExp(r'/+$');
+  static final _printableAsciiWithoutSpaces = RegExp(r'^[\x21-\x7E]+$');
 
   static String _checkedApiKey(String? apiKey) {
     final key = apiKey?.trim() ?? '';

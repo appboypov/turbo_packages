@@ -52,6 +52,8 @@ final class TJevResult {
     },
   );
 
+  // 🎩 STATE
+
   /// The resolved model, which may differ from the Model Alias asked for.
   final TJevModel model;
 
@@ -65,6 +67,20 @@ final class TJevResult {
   final http.Response httpResponse;
 
   final Map<TJevQuestion, TJevAnswer> _answers;
+
+  // 🧲 FETCHERS
+
+  /// The Answer of every Noul of the Request, in Request order.
+  Map<TJevNoul, TJevNoulAnswer> get nouls => _answersOf();
+
+  /// The Answer of every Choice of the Request, in Request order.
+  Map<TJevChoice, TJevChoiceAnswer> get choices => _answersOf();
+
+  /// The Answer of every Score of the Request, in Request order.
+  Map<TJevScore, TJevScoreAnswer> get scores => _answersOf();
+
+  /// The Answer of every Box of the Request, in Request order.
+  Map<TJevBox, TJevBoxAnswer> get boxes => _answersOf();
 
   /// The Answer to [question].
   ///
@@ -83,17 +99,7 @@ final class TJevResult {
     return answer as A;
   }
 
-  /// The Answer of every Noul of the Request, in Request order.
-  Map<TJevNoul, TJevNoulAnswer> get nouls => _answersOf();
-
-  /// The Answer of every Choice of the Request, in Request order.
-  Map<TJevChoice, TJevChoiceAnswer> get choices => _answersOf();
-
-  /// The Answer of every Score of the Request, in Request order.
-  Map<TJevScore, TJevScoreAnswer> get scores => _answersOf();
-
-  /// The Answer of every Box of the Request, in Request order.
-  Map<TJevBox, TJevBoxAnswer> get boxes => _answersOf();
+  // 🏗️ HELPERS
 
   /// The Answer of every Question of type [Q] of the Request, in Request
   /// order.

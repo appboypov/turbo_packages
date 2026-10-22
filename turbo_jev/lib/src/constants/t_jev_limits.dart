@@ -1,5 +1,7 @@
 /// Limits on Questions, retry policies and failure messages.
 abstract final class TJevLimits {
+  // 🧲 FETCHERS
+
   /// The most Options a Choice can have.
   static const maxOptions = 255;
 

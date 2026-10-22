@@ -4,6 +4,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevUnaskedQuestionException extends TJevException {
   const TJevUnaskedQuestionException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// Which Question was not asked.
   @override
   final String message;

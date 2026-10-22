@@ -20,6 +20,8 @@ final class TJevSystemOneRequestDto {
     required this.questions,
   });
 
+  // 🎩 STATE
+
   @TJevModelConverter()
   final TJevModel model;
 
@@ -27,6 +29,8 @@ final class TJevSystemOneRequestDto {
 
   /// The Questions keyed by their ids.
   final Map<String, TJevQuestionDto> questions;
+
+  // 🧲 FETCHERS
 
   Map<String, dynamic> toJson() => _$TJevSystemOneRequestDtoToJson(this);
 }

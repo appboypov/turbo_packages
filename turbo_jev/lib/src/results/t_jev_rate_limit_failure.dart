@@ -11,6 +11,8 @@ final class TJevRateLimitFailure extends TJevHttpFailure {
     required this.retryAfter,
   });
 
+  // 🎩 STATE
+
   /// How long TypeSafe asks to wait before trying again, or `null` when it
   /// gave no valid delay.
   ///

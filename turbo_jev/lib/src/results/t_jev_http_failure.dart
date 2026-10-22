@@ -80,6 +80,15 @@ sealed class TJevHttpFailure extends TJevFailure {
     };
   }
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$runtimeType{status: $status, message: $message, '
+      'requestId: $requestId}';
+
+  // 🎩 STATE
+
   /// The HTTP status code.
   final int status;
 
@@ -100,6 +109,8 @@ sealed class TJevHttpFailure extends TJevFailure {
 
   /// The response body: decoded JSON, else its text, or `null` when empty.
   final Object? body;
+
+  // 🏗️ HELPERS
 
   /// The fields of [response] every failure of a response holds.
   static TJevResponseFields _responseFieldsOf(http.Response response) {
@@ -158,9 +169,4 @@ sealed class TJevHttpFailure extends TJevFailure {
       return const [];
     }
   }
-
-  @override
-  String toString() =>
-      '$runtimeType{status: $status, message: $message, '
-      'requestId: $requestId}';
 }

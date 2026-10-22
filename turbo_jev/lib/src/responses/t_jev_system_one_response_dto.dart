@@ -18,6 +18,8 @@ final class TJevSystemOneResponseDto {
   factory TJevSystemOneResponseDto.fromJson(Map<String, dynamic> json) =>
       _$TJevSystemOneResponseDtoFromJson(json);
 
+  // 🎩 STATE
+
   /// The resolved model, which may differ from the Model Alias sent.
   @TJevModelConverter()
   final TJevModel model;

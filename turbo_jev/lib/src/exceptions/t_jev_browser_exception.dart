@@ -7,6 +7,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevBrowserException extends TJevException {
   const TJevBrowserException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// Why the client refuses to run in the browser.
   @override
   final String message;

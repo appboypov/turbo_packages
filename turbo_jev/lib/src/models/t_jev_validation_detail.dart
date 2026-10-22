@@ -13,12 +13,22 @@ final class TJevValidationDetail {
   factory TJevValidationDetail.fromDto(TJevValidationErrorDetailDto dto) =>
       TJevValidationDetail(location: dto.loc, message: dto.msg);
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      path.isEmpty ? message : TJevMessages.fieldMessage(path, message);
+
+  // 🎩 STATE
+
   /// Where in the Request the problem is, as TypeSafe names it, such as
   /// `['body', 'questions', 'q0', 'criteria']`.
   final List<Object?> location;
 
   /// What is wrong at [location].
   final String message;
+
+  // 🧲 FETCHERS
 
   /// [location] without a leading `body` entry, joined with dots, such as
   /// `questions.q0.criteria`. A `body` further on, such as a Question id,
@@ -28,8 +38,4 @@ final class TJevValidationDetail {
     [TJevHttp.bodyLocation, ...final rest] => TJevMessages.fieldPath(rest),
     _ => TJevMessages.fieldPath(location),
   };
-
-  @override
-  String toString() =>
-      path.isEmpty ? message : TJevMessages.fieldMessage(path, message);
 }

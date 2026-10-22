@@ -7,6 +7,8 @@ part of '../abstracts/t_jev_exception.dart';
 final class TJevApiKeyException extends TJevException {
   const TJevApiKeyException({required this.message});
 
+  // ⚡️ OVERRIDES
+
   /// What is wrong with the API key.
   @override
   final String message;

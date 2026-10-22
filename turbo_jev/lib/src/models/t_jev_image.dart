@@ -61,27 +61,14 @@ final class TJevImage {
     return TJevImage._(bytes);
   }
 
-  /// An Image of the file at [path].
-  ///
-  /// Throws [TJevInvalidImageException] when the file cannot be read, is
-  /// empty or is no PNG or JPEG file. Reading a file needs `dart:io`; in a
-  /// browser it cannot be read.
-  static Future<TJevImage> fromFile(String path) async =>
-      TJevImage(await const TJevFileApi().readBytes(path));
+  // ⚡️ OVERRIDES
 
-  /// Runs [encode] and calls [onEncoded] with each Image whose [toJson] it
-  /// calls, so encoding content finds every Image placed in it, also inside
-  /// the `toJson` of another object.
-  @internal
-  static R collectEncoded<R>(
-    R Function() encode, {
-    required void Function(TJevImage image) onEncoded,
-  }) => runZoned(encode, zoneValues: {_onEncodedKey: onEncoded});
+  /// The [reference], which string interpolation writes wherever this Image
+  /// is placed.
+  @override
+  String toString() => reference;
 
-  /// The zone value that [collectEncoded] calls with each encoded Image.
-  static final _onEncodedKey = Object();
-
-  static final _whitespace = RegExp(r'\s');
+  // 🎩 STATE
 
   /// The file bytes.
   final Uint8List bytes;
@@ -93,23 +80,12 @@ final class TJevImage {
   /// lowercase hex digits and `>`.
   final String reference;
 
-  /// The [reference], which `jsonEncode` writes wherever this Image is
-  /// placed.
-  String toJson() {
-    if (Zone.current[_onEncodedKey]
-        case final void Function(
-              TJevImage image,
-            )
-            onEncoded) {
-      onEncoded(this);
-    }
-    return reference;
-  }
+  // 🏗️ HELPERS
 
-  /// The [reference], which string interpolation writes wherever this Image
-  /// is placed.
-  @override
-  String toString() => reference;
+  /// The zone value that [collectEncoded] calls with each encoded Image.
+  static final _onEncodedKey = Object();
+
+  static final _whitespace = RegExp(r'\s');
 
   /// The format whose signature [bytes] start with.
   ///
@@ -129,5 +105,37 @@ final class TJevImage {
     throw const TJevInvalidImageException(
       message: TJevMessages.unknownImageFormat,
     );
+  }
+
+  // 🪄 MUTATORS
+
+  /// An Image of the file at [path].
+  ///
+  /// Throws [TJevInvalidImageException] when the file cannot be read, is
+  /// empty or is no PNG or JPEG file. Reading a file needs `dart:io`; in a
+  /// browser it cannot be read.
+  static Future<TJevImage> fromFile(String path) async =>
+      TJevImage(await const TJevFileApi().readBytes(path));
+
+  /// Runs [encode] and calls [onEncoded] with each Image whose [toJson] it
+  /// calls, so encoding content finds every Image placed in it, also inside
+  /// the `toJson` of another object.
+  @internal
+  static R collectEncoded<R>(
+    R Function() encode, {
+    required void Function(TJevImage image) onEncoded,
+  }) => runZoned(encode, zoneValues: {_onEncodedKey: onEncoded});
+
+  /// The [reference], which `jsonEncode` writes wherever this Image is
+  /// placed.
+  String toJson() {
+    if (Zone.current[_onEncodedKey]
+        case final void Function(
+              TJevImage image,
+            )
+            onEncoded) {
+      onEncoded(this);
+    }
+    return reference;
   }
 }

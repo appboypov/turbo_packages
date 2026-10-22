@@ -14,16 +14,7 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
     this.falseMeans,
   });
 
-  /// The question or statement to judge.
-  ///
-  /// A Noul needs Instructions or a meaning of true or false.
-  final Object? instructions;
-
-  /// What counts as true.
-  final Object? trueMeans;
-
-  /// What counts as false.
-  final Object? falseMeans;
+  // ⚡️ OVERRIDES
 
   @override
   TurboResponse<void> validate() {
@@ -38,4 +29,17 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
       (falseMeans, TJevMessages.falseMeaningLocation),
     ]);
   }
+
+  // 🎩 STATE
+
+  /// The question or statement to judge.
+  ///
+  /// A Noul needs Instructions or a meaning of true or false.
+  final Object? instructions;
+
+  /// What counts as true.
+  final Object? trueMeans;
+
+  /// What counts as false.
+  final Object? falseMeans;
 }

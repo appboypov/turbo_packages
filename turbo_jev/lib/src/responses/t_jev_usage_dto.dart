@@ -14,6 +14,8 @@ final class TJevUsageDto {
   factory TJevUsageDto.fromJson(Map<String, dynamic> json) =>
       _$TJevUsageDtoFromJson(json);
 
+  // 🎩 STATE
+
   final int? inputTokens;
 
   final int? outputTokens;

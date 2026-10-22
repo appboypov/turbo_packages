@@ -13,6 +13,16 @@ final class TJevFailureLog {
     required this.requestId,
   });
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$method $path failed with $failureType '
+      '(${status ?? 'no response'}) after $attempt attempts: $message '
+      '(request ${requestId ?? '-'})';
+
+  // 🎩 STATE
+
   /// The HTTP method.
   final String method;
 
@@ -20,7 +30,7 @@ final class TJevFailureLog {
   final String path;
 
   /// The number of the last attempt: 1 for the first send, 2 for the first
-  /// Retry.
+  /// retry.
   final int attempt;
 
   /// The type of the [TJevFailure] the Request ended with.
@@ -36,10 +46,4 @@ final class TJevFailureLog {
 
   /// The id TypeSafe gave the last attempt, if it sent one.
   final String? requestId;
-
-  @override
-  String toString() =>
-      '$method $path failed with $failureType '
-      '(${status ?? 'no response'}) after $attempt attempts: $message '
-      '(request ${requestId ?? '-'})';
 }

@@ -5,6 +5,8 @@
 /// final pinned = TJevModel('jev-1.15.0');
 /// ```
 extension type const TJevModel(String id) {
+  // 🧲 FETCHERS
+
   /// The Model Alias of the current Jev model, the default model.
   static const jevLatest = TJevModel('jev-latest');
 

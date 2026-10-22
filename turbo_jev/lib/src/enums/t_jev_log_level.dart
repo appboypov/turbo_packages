@@ -9,7 +9,7 @@ enum TJevLogLevel {
   /// Also one summary per Request, logged at [Level.INFO].
   info(Level.INFO),
 
-  /// Also one warning per Retry, logged at [Level.WARNING].
+  /// Also one warning per retry, logged at [Level.WARNING].
   warning(Level.WARNING),
 
   /// Only one error per Request that ends in a failure other than an abort,
@@ -21,8 +21,12 @@ enum TJevLogLevel {
 
   const TJevLogLevel(this.level);
 
+  // 🎩 STATE
+
   /// The lowest `package:logging` level this level logs.
   final Level level;
+
+  // 🧲 FETCHERS
 
   /// The level named [name], case-insensitive, with `warn` for [warning], or
   /// `null` when no level has that name.

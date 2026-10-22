@@ -11,6 +11,8 @@ final class TJevUnprocessableEntityFailure extends TJevHttpFailure {
     required this.details,
   });
 
+  // 🎩 STATE
+
   /// Each problem TypeSafe found, with its location in the Request; empty
   /// when the body lists none.
   final List<TJevValidationDetail> details;

@@ -34,6 +34,8 @@ part '../results/t_jev_unprocessable_entity_failure.dart';
 sealed class TJevFailure {
   const TJevFailure();
 
+  // 🧲 FETCHERS
+
   /// What went wrong, in words.
   String get message;
 }

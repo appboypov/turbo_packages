@@ -76,7 +76,7 @@ final class TJev {
   /// is [TJevLogLevel.warning] without either; the client skips records
   /// below it. At error it logs a [TJevFailureLog] when a Request ends in a
   /// failure other than an abort, at warning also a [TJevRetryLog] for
-  /// each Retry, at info also one [TJevRequestSummary] per Request, and at
+  /// each retry, at info also one [TJevRequestSummary] per Request, and at
   /// debug also a [TJevRequestLog] per attempt and a [TJevResponseLog] per
   /// response, with each secret header value replaced in full. The
   /// `package:logging` level must let these records through as well, such
@@ -175,6 +175,9 @@ final class TJev {
   final TJevApi _api;
   final TJevSystemOneBodyService _bodyService;
 
+  /// Whether this client created [_httpClient] and so closes it.
+  final bool _ownsHttpClient;
+
   // 🎬 INIT & DISPOSE
 
   /// Frees the connections of the HTTP client this client created.
@@ -182,15 +185,12 @@ final class TJev {
     if (_ownsHttpClient) _httpClient.close();
   }
 
-  // 🎩 STATE
-
-  /// Whether this client created [_httpClient] and so closes it.
-  final bool _ownsHttpClient;
-
-  // 🏗️ HELPERS
+  // 🛠 UTIL
 
   /// Whether the client runs in a browser.
   static const _isBrowser = bool.fromEnvironment('dart.library.js_interop');
+
+  // 🏗️ HELPERS
 
   /// [headers] with the long-context Danger Zone header when [longContext] is
   /// on.
@@ -269,9 +269,10 @@ final class TJev {
   /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///
   /// Throws before sending: [TJevInvalidQuestionException] when [questions]
-  /// is empty, two Questions share an id, a Question is invalid, [state] is
-  /// no content or holds a non-finite number, or a [TJevBox] is asked of a
-  /// model not in [TJevModel.boxModels],
+  /// is empty, two Questions share an id, a Question is invalid, [state] or
+  /// [extraBody] is no content or holds a non-finite number, an object that
+  /// cannot be encoded or a list or map that holds itself, or a [TJevBox] is
+  /// asked of a model not in [TJevModel.boxModels],
   /// [TJevImageReferenceException] when the content holds the Image
   /// Reference of an Image neither placed nor listed or no content uses an
   /// Image in [images], and [TJevInvalidTimeoutException] when [timeout] is

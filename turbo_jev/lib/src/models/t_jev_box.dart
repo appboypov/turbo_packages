@@ -12,12 +12,16 @@ part of '../abstracts/t_jev_question.dart';
 final class TJevBox extends TJevQuestion<TJevBoxAnswer> {
   const TJevBox({super.id, this.instructions});
 
-  /// What to find, and in which Image.
-  final Object? instructions;
+  // ⚡️ OVERRIDES
 
   @override
   TurboResponse<void> validate() => TJevQuestion.checkContent(
     instructions,
     TJevMessages.instructionsLocation,
   );
+
+  // 🎩 STATE
+
+  /// What to find, and in which Image.
+  final Object? instructions;
 }

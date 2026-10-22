@@ -14,6 +14,16 @@ final class TJevRetryLog {
     required this.delay,
   });
 
+  // ⚡️ OVERRIDES
+
+  @override
+  String toString() =>
+      '$method $path attempt $attempt failed with $failureType '
+      '(${status ?? 'no response'}): $message; retrying in '
+      '${delay.inMilliseconds}ms (request ${requestId ?? '-'})';
+
+  // 🎩 STATE
+
   /// The HTTP method.
   final String method;
 
@@ -21,7 +31,7 @@ final class TJevRetryLog {
   final String path;
 
   /// The number of the attempt that failed: 1 for the first send, 2 for the
-  /// first Retry.
+  /// first retry.
   final int attempt;
 
   /// The type of the [TJevFailure] the attempt failed with.
@@ -40,10 +50,4 @@ final class TJevRetryLog {
 
   /// How long the client waits before the next attempt.
   final Duration delay;
-
-  @override
-  String toString() =>
-      '$method $path attempt $attempt failed with $failureType '
-      '(${status ?? 'no response'}): $message; retrying in '
-      '${delay.inMilliseconds}ms (request ${requestId ?? '-'})';
 }

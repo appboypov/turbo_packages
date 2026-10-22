@@ -2,6 +2,8 @@ import 't_jev_http.dart';
 
 /// How [TJev] logs and what it keeps out of its logs.
 abstract final class TJevLogging {
+  // 🧲 FETCHERS
+
   /// The name of the `package:logging` logger the client logs to.
   static const loggerName = 'turbo_jev';
 

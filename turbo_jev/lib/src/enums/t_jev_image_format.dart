@@ -12,6 +12,8 @@ enum TJevImageFormat {
 
   const TJevImageFormat({required this.contentType, required this.signature});
 
+  // 🎩 STATE
+
   /// The media type of the format, sent with an Image's multipart part.
   final String contentType;
 

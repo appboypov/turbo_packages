@@ -6,10 +6,14 @@ final class TJevConnectionFailure extends TJevFailure {
   @internal
   const TJevConnectionFailure({required this.message});
 
-  /// What went wrong with the connection.
-  @override
-  final String message;
+  // ⚡️ OVERRIDES
 
   @override
   String toString() => 'TJevConnectionFailure{message: $message}';
+
+  // 🎩 STATE
+
+  /// What went wrong with the connection.
+  @override
+  final String message;
 }

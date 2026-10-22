@@ -13,6 +13,8 @@ final class TJevUsage {
   factory TJevUsage.fromDto(TJevUsageDto dto) =>
       TJevUsage(inputTokens: dto.inputTokens, outputTokens: dto.outputTokens);
 
+  // 🎩 STATE
+
   /// The billable input tokens.
   final int? inputTokens;
 

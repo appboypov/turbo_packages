@@ -34,24 +34,7 @@ final class TJevScore<T extends Object>
   }) : _levelMap = null,
        _levelList = levels;
 
-  /// What to rate.
-  final Object? instructions;
-
-  final Map<T, Object>? _levelMap;
-
-  final List<T>? _levelList;
-
-  /// Each Level with its description, from the low end of the scale to the
-  /// high end.
-  ///
-  /// A Score needs 1 to 10 Levels, each with its own wire key: the name of
-  /// an enum value, else its `toString`.
-  Map<T, Object> get levels =>
-      _levelMap ?? {for (final level in _levelList!) level: level};
-
-  List<T> get _levels => _levelList ?? _levelMap!.keys.toList();
-
-  List<Object> get _descriptions => _levelList ?? _levelMap!.values.toList();
+  // ⚡️ OVERRIDES
 
   @override
   TurboResponse<void> validate() {
@@ -77,9 +60,34 @@ final class TJevScore<T extends Object>
     ]);
   }
 
+  // 🎩 STATE
+
+  /// What to rate.
+  final Object? instructions;
+
+  final Map<T, Object>? _levelMap;
+
+  final List<T>? _levelList;
+
+  // 🧲 FETCHERS
+
+  /// Each Level with its description, from the low end of the scale to the
+  /// high end.
+  ///
+  /// A Score needs 1 to 10 Levels, each with its own wire key: the name of
+  /// an enum value, else its `toString`.
+  Map<T, Object> get levels =>
+      _levelMap ?? {for (final level in _levelList!) level: level};
+
   /// The result of [open] called with this Score typed on its Level type
   /// [T], so what [open] builds keeps [T].
   @internal
   R withLevelType<R>(R Function<L extends Object>(TJevScore<L> score) open) =>
       open<T>(this);
+
+  // 🏗️ HELPERS
+
+  List<T> get _levels => _levelList ?? _levelMap!.keys.toList();
+
+  List<Object> get _descriptions => _levelList ?? _levelMap!.values.toList();
 }

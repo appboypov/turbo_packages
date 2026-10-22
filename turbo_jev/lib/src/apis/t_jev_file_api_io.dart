@@ -7,6 +7,8 @@ import '../constants/t_jev_messages.dart';
 final class TJevFileApi {
   const TJevFileApi();
 
+  // 🪄 MUTATORS
+
   /// The bytes of the Image file at [path].
   ///
   /// Throws [TJevInvalidImageException] when the file cannot be read.

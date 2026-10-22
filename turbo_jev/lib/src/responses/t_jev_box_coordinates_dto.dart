@@ -15,6 +15,8 @@ final class TJevBoxCoordinatesDto {
   factory TJevBoxCoordinatesDto.fromJson(Map<String, dynamic> json) =>
       _$TJevBoxCoordinatesDtoFromJson(json);
 
+  // 🎩 STATE
+
   final double top;
 
   final double bottom;

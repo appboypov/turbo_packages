@@ -14,8 +14,12 @@ part 't_jev_system_one_assets_dto.g.dart';
 final class TJevSystemOneAssetsDto {
   const TJevSystemOneAssetsDto({required this.assets});
 
+  // 🎩 STATE
+
   /// The Images the Request sends, keyed by their Image References.
   final Map<String, TJevImagePartDto> assets;
+
+  // 🧲 FETCHERS
 
   Map<String, dynamic> toJson() => _$TJevSystemOneAssetsDtoToJson(this);
 }
