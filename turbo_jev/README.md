@@ -371,8 +371,8 @@ The client logs to the `turbo_jev` logger of [package:logging](https://pub.dev/p
 | - | - |
 | `debug` | The headers and body of each attempt and each response. |
 | `info` | One `TJevRequestSummary` per Request. |
-| `warning` | Only warnings and errors. This is the default. |
-| `error` | Only errors. |
+| `warning` | One `TJevRetryLog` per Retry, at `Level.WARNING`, before the client waits: the method, the path, the number of the failed attempt, the type and message of its failure, its status and request id, and the delay. This is the default. |
+| `error` | One `TJevFailureLog`, at `Level.SEVERE`, when a Request ends in a failure other than an abort: the method, the path, the number of the last attempt, and the type, message, status and request id of the failure. |
 | `off` | Nothing. |
 
 Each level also logs what the levels below it in this table log. Add `logging` to your own dependencies to read the records:
@@ -388,9 +388,9 @@ Logger.root.onRecord.listen((record) {
 final jev = TJev(logLevel: TJevLogLevel.info);
 ```
 
-The `object` of a record holds the typed log. It is a `TJevRequestSummary` or a `TJevRequestLog` or a `TJevResponseLog`. A log never shows the API key or any other secret header value. The level of `package:logging` must let the records through as well.
+The `object` of a record holds the typed log. It is a `TJevFailureLog`, a `TJevRetryLog`, a `TJevRequestSummary`, a `TJevRequestLog` or a `TJevResponseLog`. A log never shows the API key or any other secret header value. The level of `package:logging` must let the records through as well.
 
-A debug record holds at most 4096 bytes of each body. Before the cut, the JSON of a body has the value of each field whose name holds `token`, `secret`, `password`, `api_key`, `api-key` or `apikey`, in any case and at any depth, replaced with `***`. That JSON is the whole body, or the `request` part of the multipart body of a Request with Images. Image parts and bodies that are no JSON are logged as they are. `redactLoggedBodies: false` logs the bodies as sent and received. Secret header values stay hidden either way:
+A debug record holds at most 4096 bytes of each body. Before the cut, the JSON of a body has the value of each field whose name holds `token`, `secret`, `password`, `api_key`, `api-key` or `apikey`, in any case and at any depth, replaced with `***`. That JSON is the whole body, or the `request` part of the multipart body of a Request with Images. A failure message in a warning or error record that comes from the JSON body of a response has those values replaced the same way. Image parts and bodies that are no JSON are logged as they are. `redactLoggedBodies: false` logs the bodies and messages as sent and received. Secret header values stay hidden either way:
 
 ```dart
 final unredacted = TJev(

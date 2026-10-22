@@ -9,10 +9,11 @@ enum TJevLogLevel {
   /// Also one summary per Request, logged at [Level.INFO].
   info(Level.INFO),
 
-  /// Only warnings and errors.
+  /// Also one warning per Retry, logged at [Level.WARNING].
   warning(Level.WARNING),
 
-  /// Only errors.
+  /// Only one error per Request that ends in a failure other than an abort,
+  /// logged at [Level.SEVERE].
   error(Level.SEVERE),
 
   /// Nothing.
