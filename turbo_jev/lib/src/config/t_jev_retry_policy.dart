@@ -93,7 +93,7 @@ final class TJevRetryPolicy {
   /// decide; without it, the other rules decide.
   final TJevRetryPredicate? predicate;
 
-  /// The total time of a call, its attempts and waits included, that no
+  /// The total time of a Request, its attempts and waits included, that no
   /// retry starts past: retries stop before a wait that would reach it.
   /// `null` turns the limit off.
   final Duration? budget;

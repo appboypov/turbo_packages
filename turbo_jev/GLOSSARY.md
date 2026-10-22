@@ -29,7 +29,7 @@ _Avoid_: cost, billing
 ### Requests
 
 **Request**:
-One call to Jev that holds State, Questions, Images and a model.
+One message to Jev that holds State, Questions, Images and a model.
 _Avoid_: prompt, query, call
 
 **State**:
@@ -43,22 +43,6 @@ _Avoid_: asset, attachment, file
 **Image Reference**:
 The token that stands for an Image wherever it appears in content.
 _Avoid_: placeholder, image tag
-
-**Retry**:
-Sending a failed Request again after a wait, with the same body.
-_Avoid_: resend, replay
-
-**Retry Policy**:
-The rules that decide which failures get a Retry, how long each wait lasts and when retries stop.
-_Avoid_: backoff config, retry options
-
-**Abort Trigger**:
-A future the caller completes to stop a Request, also while it waits for a Retry.
-_Avoid_: cancel token, signal
-
-**Request Summary**:
-The one info log record of a Request, with its status, request id, Retries, timeouts and whether its Abort Trigger stopped it.
-_Avoid_: access log, request report
 
 ### Questions
 

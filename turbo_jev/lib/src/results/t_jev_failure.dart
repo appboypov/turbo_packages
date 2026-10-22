@@ -23,7 +23,7 @@ part 't_jev_response_validation_failure.dart';
 part 't_jev_timeout_failure.dart';
 part 't_jev_unprocessable_entity_failure.dart';
 
-/// Why a call to Jev failed in normal use.
+/// Why a Request to Jev failed in normal use.
 ///
 /// [TJev] returns it as the error of a `TurboResponse` fail, so callers
 /// switch on its type instead of catching exceptions.

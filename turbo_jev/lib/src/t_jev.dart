@@ -241,10 +241,10 @@ final class TJev {
   /// opts in to the long-context Danger Zone.
   ///
   /// Read each Answer with [TJevResult.answer]. A [timeout] replaces the
-  /// client timeout for each attempt of this call and a [retry] policy
+  /// client timeout for each attempt of this Request and a [retry] policy
   /// replaces the client policy. When [abortTrigger] completes before the
-  /// call ends, the call stops, also while it waits to retry. A failed call
-  /// returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
+  /// Request ends, the Request stops, also while it waits to retry. A failed
+  /// Request returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
   /// non-2xx response, a [TJevResponseValidationFailure] for a 2xx response
   /// whose body does not fit the Request, a [TJevConnectionFailure], a
   /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
@@ -319,11 +319,12 @@ final class TJev {
   /// and release date.
   ///
   /// [headers] are sent after the client's default headers. A [timeout]
-  /// replaces the client timeout for each attempt of this call and a [retry]
-  /// policy replaces the client policy. When [abortTrigger] completes before
-  /// the call ends, the call stops, also while it waits to retry. A failed
-  /// call returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
-  /// non-2xx response, a [TJevResponseValidationFailure] for a 2xx response
+  /// replaces the client timeout for each attempt of this Request and a
+  /// [retry] policy replaces the client policy. When [abortTrigger] completes
+  /// before the Request ends, the Request stops, also while it waits to retry.
+  /// A failed Request returns a fail holding a [TJevFailure]: a
+  /// [TJevHttpFailure] for a non-2xx response, a
+  /// [TJevResponseValidationFailure] for a 2xx response
   /// whose body is no models list, a [TJevConnectionFailure], a
   /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///

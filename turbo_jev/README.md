@@ -10,7 +10,7 @@ It covers the features of the official JavaScript SDK 0.7.0 and Python SDK 0.7.5
 - Read each Answer with the type of its Question through `result.answer(question)`.
 - Send PNG and JPEG Images and find regions in them with a Box.
 - Get failures as a `TurboResponse` fail with a sealed `TJevFailure` instead of an exception.
-- Retry failed Requests with backoff and stop them with an Abort Trigger.
+- Retry failed Requests with backoff and stop them with an abort trigger.
 - Log each Request through `package:logging` without secrets.
 - Compress large Request bodies with gzip outside the browser.
 - Run on the Dart VM and in Flutter apps. Browsers go through your own proxy.
@@ -257,7 +257,7 @@ A Request with an Image goes out as multipart. It opts in to the Images Danger Z
 
 ## Failures
 
-Normal failures do not throw. A failed call returns a `TurboResponse` fail. Its `error` is a sealed `TJevFailure`. Switch on it to handle each case:
+Normal failures do not throw. A failed Request returns a `TurboResponse` fail. Its `error` is a sealed `TJevFailure`. Switch on it to handle each case:
 
 ```dart
 String describe(TurboResponse<TJevResult> response) => response.when(
@@ -291,7 +291,7 @@ String describe(TurboResponse<TJevResult> response) => response.when(
 | `TJevResponseValidationFailure` | A 2xx body does not fit the Request. |
 | `TJevConnectionFailure` | TypeSafe could not be reached. |
 | `TJevTimeoutFailure` | An attempt took longer than its timeout. |
-| `TJevAbortedFailure` | The Abort Trigger stopped the call. |
+| `TJevAbortedFailure` | The abort trigger stopped the Request. |
 
 The HTTP failures share the sealed `TJevHttpFailure`. It holds the `status` and `message` and `requestId` and `headers` and `body` of the response.
 
@@ -310,7 +310,7 @@ Mistakes in your own code throw before anything goes out:
 
 ## Retries and Timeouts
 
-Each attempt of a Request gets 10 seconds by default. A failed Request is retried twice by default. The client retries the statuses 408 and 429 and 500 to 599. It also retries connection failures and timeouts. Each wait starts at half a second and doubles up to 5 seconds with some random jitter. A wait that TypeSafe asks for in `Retry-After` wins when it is 60 seconds or less. No retry starts once a call has run for 30 seconds.
+Each attempt of a Request gets 10 seconds by default. A failed Request is retried twice by default. The client retries the statuses 408 and 429 and 500 to 599. It also retries connection failures and timeouts. Each wait starts at half a second and doubles up to 5 seconds with some random jitter. A wait that TypeSafe asks for in `Retry-After` wins when it is 60 seconds or less. No retry starts once a Request has run for 30 seconds.
 
 Set your own policy on the client:
 
@@ -325,7 +325,7 @@ final jev = TJev(
 );
 ```
 
-Or replace the timeout and the policy for one call:
+Or replace the timeout and the policy for one Request:
 
 ```dart
 final response = await jev.ask(
@@ -348,9 +348,9 @@ final careful = TJevRetryPolicy(
 );
 ```
 
-An aborted call is never retried, and `maxRetries` and `budget` stop retries whatever the predicate says.
+An aborted Request is never retried, and `maxRetries` and `budget` stop retries whatever the predicate says.
 
-Pass a future as `abortTrigger` to stop a call. Complete the future and the call stops at once. This works while the call waits for a retry too.
+Pass a future as `abortTrigger` to stop a Request. Complete the future and the Request stops at once. This works while the Request waits for a retry too.
 
 ```dart
 final stop = Completer<void>();

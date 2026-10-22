@@ -97,7 +97,7 @@ final class TJevConfig {
   /// The headers every Request sends before its own headers.
   final Map<String, String> defaultHeaders;
 
-  /// When a failed Request is sent again, unless a call sets its own policy.
+  /// When a failed Request is sent again, unless a Request sets its own policy.
   final TJevRetryPolicy retry;
 
   /// How much the client logs.

@@ -22,7 +22,7 @@ import '../utils/request_platform.dart';
 /// a 2xx response into a success, or into a [TJevResponseValidationFailure]
 /// when its body does not parse, any other into a [TJevHttpFailure], a
 /// connection error into a [TJevConnectionFailure], an attempt that runs
-/// out of time into a [TJevTimeoutFailure] and an aborted call into a
+/// out of time into a [TJevTimeoutFailure] and an aborted Request into a
 /// [TJevAbortedFailure]. It logs each Request through a
 /// [TJevRequestTraceService].
 final class TJevApi {
@@ -162,7 +162,7 @@ final class TJevApi {
   /// again after its delay, each retry numbered in
   /// [TJevHttp.retryCountHeader] where `dart:io` exists. When
   /// [abortTrigger] completes, the running attempt or wait stops and the
-  /// call ends with a [TJevAbortedFailure].
+  /// Request ends with a [TJevAbortedFailure].
   Future<TurboResponse<T>> send<T>({
     required TJevHttpMethod method,
     required String path,
