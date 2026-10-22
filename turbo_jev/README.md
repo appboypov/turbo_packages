@@ -204,6 +204,21 @@ final response = await jev.ask(
 
 A Question can have an `id`. Without one it gets `q0`, `q1` and so on in Request order. An id only makes logged JSON easier to read.
 
+### Checking a Question
+
+`ask` checks each Question before anything goes out. It throws a `TJevInvalidQuestionException` for a Question that breaks a rule. Run the same check yourself with `validate()`. It returns a `TurboResponse<void>`. A fail has a `message` that names the broken rule:
+
+```dart
+const colour = TJevChoice<String>(
+  instructions: 'Which colour is the car?',
+  options: {},
+);
+
+if (colour.validate() case Fail(:final message)) {
+  print(message); // A Choice needs 1 to 255 Options, not 0.
+}
+```
+
 ### Reading the Result
 
 `result.answer(question)` returns the Answer with the type of its Question. It throws a `TJevUnaskedQuestionException` for a Question the Request did not ask. The result also tells you more about the Request:
@@ -231,7 +246,7 @@ final response = await jev.ask(
 );
 ```
 
-`model` replaces the default model of the client. `headers` go after the default headers of the client. `extraBody` adds fields to the body for API features this package does not know yet.
+`model` replaces the default model of the client. `headers` go after the default headers of the client. `extraBody` adds fields to the body for API features this package does not know yet. The client checks `extraBody` like the State.
 
 ## Images
 
@@ -253,11 +268,11 @@ final response = await jev.ask(
 
 Place an Image as an object in State or Instructions or Criteria, also inside the `toJson` of your own model. The client then sends it for you. An Image inside a string turns into its Image Reference. List that Image in `images` so the client sends it too. The client throws a `TJevImageReferenceException` when a reference has no Image or a listed Image is not used.
 
-A Request with an Image goes out as multipart. It opts in to the Images Danger Zone for you. Each side of an Image must be 280 to 1568 pixels. `TJevImage.fromFile` needs `dart:io` and so does not work in a browser.
+A Request with an Image goes out as multipart. It opts in to the Images Danger Zone for you. Each side of an Image must be 280 to 1568 pixels. `TJevImage.fromFile` needs `dart:io`. In a browser it throws a `TJevInvalidImageException`.
 
 ## Failures
 
-Normal failures do not throw. A failed Request returns a `TurboResponse` fail. Its `error` is a sealed `TJevFailure`. Switch on it to handle each case:
+Normal failures do not throw. A failed Request returns a `TurboResponse` fail. Its `error` is a sealed `TJevFailure`. Every failure has a `message` that says what went wrong. The fail carries that text as its own `message` too. Switch on the failure to handle each case:
 
 ```dart
 String describe(TurboResponse<TJevResult> response) => response.when(
@@ -301,12 +316,27 @@ Mistakes in your own code throw before anything goes out:
 | - | - |
 | `TJevApiKeyException` | No API key is found or the key holds spaces or characters outside ASCII. |
 | `TJevBrowserException` | The client is built in a browser without `dangerouslyAllowBrowser`. |
-| `TJevInvalidQuestionException` | A Question is invalid or two Questions share an id. A Box for a model without Box throws it too. |
+| `TJevInvalidQuestionException` | A Question is invalid or two Questions share an id. A Box for a model without Box throws it too. So does State or `extraBody` that holds no JSON content. |
 | `TJevImageReferenceException` | A reference has no Image or a listed Image is not used. |
-| `TJevInvalidImageException` | Image data is empty or no PNG or JPEG file. |
+| `TJevInvalidImageException` | Image data is empty or no PNG or JPEG file. `TJevImage.fromFile` throws it too when it cannot read the file. |
 | `TJevInvalidTimeoutException` | A timeout is zero or negative. |
 | `TJevInvalidRetryPolicyException` | A retry setting is out of range. |
 | `TJevUnaskedQuestionException` | `result.answer` gets a Question the Request did not ask. |
+
+Each of them extends the sealed `TJevException` and has a `message`. So one `on TJevException catch` catches them all:
+
+```dart
+try {
+  final photo = await TJevImage.fromFile(path);
+  final response = await jev.ask(
+    state: {'photo': photo},
+    questions: [billing],
+  );
+  print(describe(response));
+} on TJevException catch (exception) {
+  print('Not sent: ${exception.message}');
+}
+```
 
 ## Retries and Timeouts
 
@@ -371,8 +401,8 @@ The client logs to the `turbo_jev` logger of [package:logging](https://pub.dev/p
 | - | - |
 | `debug` | The headers and body of each attempt and each response. |
 | `info` | One `TJevRequestSummary` per Request. |
-| `warning` | One `TJevRetryLog` per Retry, at `Level.WARNING`, before the client waits: the method, the path, the number of the failed attempt, the type and message of its failure, its status and request id, and the delay. This is the default. |
-| `error` | One `TJevFailureLog`, at `Level.SEVERE`, when a Request ends in a failure other than an abort: the method, the path, the number of the last attempt, and the type, message, status and request id of the failure. |
+| `warning` | One `TJevRetryLog` at `Level.WARNING` before each retry, such as after a rate limit. It holds the method and path and number of the failed attempt. It also holds the type and message and status and request id of its failure and the delay. This is the default. |
+| `error` | One `TJevFailureLog` at `Level.SEVERE` when a Request ends in a failure other than an abort. It holds the method and path and number of the last attempt. It also holds the type and message and status and request id of the failure. |
 | `off` | Nothing. |
 
 Each level also logs what the levels below it in this table log. Add `logging` to your own dependencies to read the records:
@@ -414,7 +444,7 @@ for (final card in response.result ?? const <TJevModelCard>[]) {
 
 ## Web Use Through a Proxy
 
-In a browser anyone who opens the page can read the API key. So `TJev` throws a `TJevBrowserException` on the web by default. Keep your TypeSafe key on a server you control and let the browser call that server:
+In a browser anyone who opens the page can read the API key. So `TJev` throws a `TJevBrowserException` on the web by default. Keep your TypeSafe key on a server you control and let the browser send its Requests to that server:
 
 ```dart
 final jev = TJev(

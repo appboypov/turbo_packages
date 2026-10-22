@@ -56,6 +56,19 @@ Future<void> askAll(TJev jev, String message) async {
   print(response.isSuccess);
 }
 
+void checkQuestion() {
+  // #docregion validate
+  const colour = TJevChoice<String>(
+    instructions: 'Which colour is the car?',
+    options: {},
+  );
+
+  if (colour.validate() case Fail(:final message)) {
+    print(message); // A Choice needs 1 to 255 Options, not 0.
+  }
+  // #enddocregion validate
+}
+
 void readNoul(TJevResult result) {
   // #docregion noul-answer
   final answer = result.answer(refund);
