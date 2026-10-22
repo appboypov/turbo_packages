@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/fake_type_safe.dart';
+import 'support/images.dart';
 
 const _billing = TJevNoul(instructions: 'Is this about billing?');
 
@@ -688,6 +689,86 @@ void main() {
           objectsOf<TJevResponseLog>().single.headers['x-refresh-token'],
           '***',
         );
+      },
+    );
+  });
+
+  group('Given a Request with an Image and a secret field in its State', () {
+    const secret = 'synthetic-secret';
+    late TJevImage photo;
+
+    setUp(() => photo = TJevImage(jpegBytes));
+
+    Future<FakeTypeSafe> askAtDebug({bool redactionOff = false}) async {
+      final typeSafe = FakeTypeSafe(respond: (_) => http.Response('{}', 500));
+      final jev = redactionOff
+          ? _unredactedJevFor(typeSafe.client)
+          : _jevFor(typeSafe.client, logLevel: TJevLogLevel.debug);
+      await jev.ask(
+        state: {'apiKey': secret, 'photo': photo},
+        questions: const [_billing],
+        retry: TJevRetryPolicy(maxRetries: 0),
+      );
+      return typeSafe;
+    }
+
+    /// The JSON of the `request` part of the logged multipart body.
+    Map<String, Object?> loggedRequestPart() {
+      final body = objectsOf<TJevRequestLog>().single.body!;
+      final part = body.split('\r\n--').first;
+      return jsonDecode(part.substring(part.indexOf('\r\n\r\n') + 4))
+          as Map<String, Object?>;
+    }
+
+    test(
+      'When the client logs at debug, then no record holds the secret and '
+      'the logged request part shows it redacted',
+      () async {
+        await askAtDebug();
+
+        expect(records, isNotEmpty);
+        for (final record in records) {
+          final logged = '${record.message} ${record.object} ${record.error}';
+          expect(logged, isNot(contains(secret)));
+        }
+        expect(loggedRequestPart()['state'], {
+          'apiKey': '***',
+          'photo': photo.reference,
+        });
+      },
+    );
+
+    test(
+      'When the client logs at debug, then the logged body is the body as '
+      'sent with only its request part redacted',
+      () async {
+        final typeSafe = await askAtDebug();
+
+        final sent = typeSafe.lastRequest;
+        final sentJson = utf8.decode(FakeTypeSafe.partsOf(sent).first.bytes);
+        final redactedJson = jsonEncode({
+          ...FakeTypeSafe.bodyOf(sent),
+          'state': {'apiKey': '***', 'photo': photo.reference},
+        });
+        expect(
+          objectsOf<TJevRequestLog>().single.body,
+          utf8
+              .decode(sent.bodyBytes, allowMalformed: true)
+              .replaceFirst(sentJson, redactedJson),
+        );
+      },
+    );
+
+    test(
+      'When body redaction is off, then the logged request part holds the '
+      'secret as sent',
+      () async {
+        await askAtDebug(redactionOff: true);
+
+        expect(loggedRequestPart()['state'], {
+          'apiKey': secret,
+          'photo': photo.reference,
+        });
       },
     );
   });

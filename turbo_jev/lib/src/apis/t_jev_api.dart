@@ -190,7 +190,7 @@ final class TJevApi {
       redactBodies: _config.redactLoggedBodies,
       method: method,
       path: path,
-      body: content?.bytes,
+      content: content,
     );
     final elapsed = clock.stopwatch()..start();
     for (var attempt = 0; ; attempt++) {
