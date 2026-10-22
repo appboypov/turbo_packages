@@ -43,20 +43,21 @@ final class TJevConfig {
     required bool redactLoggedBodies,
     required Map<String, String> environment,
   }) {
-    String? fromEnvironment(String key) {
-      final value = environment[key]?.trim();
-      return value == null || value.isEmpty ? null : value;
-    }
-
-    final environmentModel = fromEnvironment(TJevEnvironmentKeys.defaultModel);
-    final environmentLogLevel = fromEnvironment(TJevEnvironmentKeys.logLevel);
+    final environmentModel = _environmentValue(
+      environment,
+      TJevEnvironmentKeys.defaultModel,
+    );
+    final environmentLogLevel = _environmentValue(
+      environment,
+      TJevEnvironmentKeys.logLevel,
+    );
     return TJevConfig._(
       apiKey: _checkedApiKey(
-        apiKey ?? fromEnvironment(TJevEnvironmentKeys.apiKey),
+        apiKey ?? _environmentValue(environment, TJevEnvironmentKeys.apiKey),
       ),
       baseUrl:
           (baseUrl ??
-                  fromEnvironment(TJevEnvironmentKeys.baseUrl) ??
+                  _environmentValue(environment, TJevEnvironmentKeys.baseUrl) ??
                   TJevDefaults.baseUrl)
               .replaceFirst(_trailingSlashes, ''),
       defaultModel:
@@ -136,5 +137,15 @@ final class TJevConfig {
       throw const TJevApiKeyException(message: TJevMessages.invalidApiKey);
     }
     return key;
+  }
+
+  /// Returns the trimmed value of [key] in [environment], or null when it is
+  /// unset or blank.
+  static String? _environmentValue(
+    Map<String, String> environment,
+    String key,
+  ) {
+    final value = environment[key]?.trim();
+    return value == null || value.isEmpty ? null : value;
   }
 }
