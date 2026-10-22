@@ -5,7 +5,11 @@ part 't_jev_usage.g.dart';
 /// The input and output tokens TypeSafe counted for one Request.
 ///
 /// TypeSafe may leave a count out, so both are nullable.
-@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
+@JsonSerializable(
+  createToJson: false,
+  checked: true,
+  fieldRename: FieldRename.snake,
+)
 final class TJevUsage {
   const TJevUsage({this.inputTokens, this.outputTokens});
 

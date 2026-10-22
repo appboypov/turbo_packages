@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:turbo_response/turbo_response.dart';
 
 import '../config/t_jev_config.dart';
@@ -10,7 +11,8 @@ import '../results/t_jev_failure.dart';
 import '../utils/request_platform.dart';
 
 /// Sends Requests to TypeSafe and turns each outcome into a `TurboResponse`:
-/// a 2xx response into a success, any other into a [TJevHttpFailure], a
+/// a 2xx response into a success, or into a [TJevResponseValidationFailure]
+/// when its body does not parse, any other into a [TJevHttpFailure], a
 /// connection error into a [TJevConnectionFailure] and an attempt that runs
 /// out of time into a [TJevTimeoutFailure].
 final class TJevApi {
@@ -26,7 +28,8 @@ final class TJevApi {
   // 🪄 MUTATORS
 
   /// Sends [json], if any, to [path] and parses a 2xx response with
-  /// [onSuccess].
+  /// [onSuccess], which throws a [FormatException] or a
+  /// [CheckedFromJsonException] when the body does not fit.
   ///
   /// The Request sends the config's default headers first and [headers]
   /// second; names are case-insensitive and the last value wins. The SDK
@@ -102,7 +105,23 @@ final class TJevApi {
   ) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
-      return TurboResponse.success(result: onSuccess(response));
+      try {
+        return TurboResponse.success(result: onSuccess(response));
+      } on FormatException catch (error) {
+        return TurboResponse.fail(
+          error: TJevResponseValidationFailure.fromResponse(
+            response,
+            reason: error.message,
+          ),
+        );
+      } on CheckedFromJsonException catch (error) {
+        return TurboResponse.fail(
+          error: TJevResponseValidationFailure.fromResponse(
+            response,
+            reason: '${error.key}: ${error.message}',
+          ),
+        );
+      }
     }
     return TurboResponse.fail(error: TJevHttpFailure.fromResponse(response));
   }

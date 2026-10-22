@@ -6,7 +6,21 @@ part of 't_jev_usage.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TJevUsage _$TJevUsageFromJson(Map<String, dynamic> json) => TJevUsage(
-  inputTokens: (json['input_tokens'] as num?)?.toInt(),
-  outputTokens: (json['output_tokens'] as num?)?.toInt(),
+TJevUsage _$TJevUsageFromJson(Map<String, dynamic> json) => $checkedCreate(
+  'TJevUsage',
+  json,
+  ($checkedConvert) {
+    final val = TJevUsage(
+      inputTokens: $checkedConvert('input_tokens', (v) => (v as num?)?.toInt()),
+      outputTokens: $checkedConvert(
+        'output_tokens',
+        (v) => (v as num?)?.toInt(),
+      ),
+    );
+    return val;
+  },
+  fieldKeyMap: const {
+    'inputTokens': 'input_tokens',
+    'outputTokens': 'output_tokens',
+  },
 );

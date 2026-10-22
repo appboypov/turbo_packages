@@ -1,15 +1,10 @@
 part of '../abstracts/t_jev_answer.dart';
 
 /// The Answer of a Noul: the Probability that its statement is true.
-@JsonSerializable(createToJson: false)
 final class TJevNoulAnswer extends TJevAnswer {
   const TJevNoulAnswer({required this.probability});
 
-  factory TJevNoulAnswer.fromJson(Map<String, dynamic> json) =>
-      _$TJevNoulAnswerFromJson(json);
-
   /// The Probability that the statement is true, from 0 to 1.
-  @JsonKey(name: 'noul')
   final double probability;
 
   /// How decided the Answer is: `abs(2p - 1)`, from 0 at a Probability of 0.5

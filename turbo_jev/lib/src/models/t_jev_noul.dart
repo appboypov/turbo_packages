@@ -15,6 +15,8 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   });
 
   /// The question or statement to judge.
+  ///
+  /// A Noul needs Instructions or a meaning of true or false.
   final Object? instructions;
 
   /// What counts as true.
@@ -24,14 +26,27 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
   final Object? falseMeans;
 
   @override
-  TJevNoulQuestionDto toDto() => TJevNoulQuestionDto(
-    instructions: instructions,
-    criteria: trueMeans == null && falseMeans == null
-        ? null
-        : TJevNoulCriteriaDto(trueMeans: trueMeans, falseMeans: falseMeans),
-  );
+  TJevNoulQuestionDto toDto({required String id}) {
+    if (instructions == null && trueMeans == null && falseMeans == null) {
+      throw TJevInvalidQuestionException(
+        reason: 'Noul $id needs Instructions or a meaning of true or false.',
+      );
+    }
+    TJevQuestion._checkContent(instructions, 'The Instructions of Noul $id');
+    TJevQuestion._checkContent(trueMeans, 'The meaning of true of Noul $id');
+    TJevQuestion._checkContent(falseMeans, 'The meaning of false of Noul $id');
+    return TJevNoulQuestionDto(
+      instructions: instructions,
+      criteria: trueMeans == null && falseMeans == null
+          ? null
+          : TJevNoulCriteriaDto(trueMeans: trueMeans, falseMeans: falseMeans),
+    );
+  }
 
   @override
-  TJevNoulAnswer answerFromJson(Map<String, dynamic> json) =>
-      TJevNoulAnswer.fromJson(json);
+  TJevNoulAnswer answerFromJson(Map<String, dynamic> json) {
+    final dto = TJevNoulAnswerDto.fromJson(json);
+    TJevQuestion._checkAnswerType(dto.type, 'noul');
+    return TJevNoulAnswer(probability: dto.noul);
+  }
 }
