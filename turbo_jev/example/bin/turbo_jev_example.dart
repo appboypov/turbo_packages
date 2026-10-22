@@ -1,13 +1,9 @@
 import 'dart:io';
 
 import 'package:turbo_jev/turbo_jev.dart';
+import 'package:turbo_jev_example/severity.dart';
 import 'package:turbo_jev_example/shapes_photo.dart';
-
-/// The teams a support message can go to.
-enum Team { returns, billing, shipping }
-
-/// How badly a reported bug hurts its user, from low to high.
-enum Severity { cosmetic, annoying, blocking }
+import 'package:turbo_jev_example/team.dart';
 
 /// Asks Jev one Request of each Question type and prints each Answer.
 ///
