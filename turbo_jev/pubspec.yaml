@@ -1,6 +1,6 @@
 name: turbo_jev
 description: A typed Dart client for Jev, TypeSafe's System One model. Ask typed Questions about State and read typed Answers.
-version: 0.1.0
+version: 0.1.1
 resolution: workspace
 repository: https://github.com/appboypov/turbo_packages/tree/main/turbo_jev
 homepage: https://github.com/appboypov/turbo_packages
