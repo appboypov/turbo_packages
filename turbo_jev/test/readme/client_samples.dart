@@ -76,6 +76,21 @@ String describe(TurboResponse<TJevResult> response) => response.when(
 );
 // #enddocregion failures
 
+Future<void> catchMisuse(TJev jev, String path) async {
+  // #docregion exceptions
+  try {
+    final photo = await TJevImage.fromFile(path);
+    final response = await jev.ask(
+      state: {'photo': photo},
+      questions: [billing],
+    );
+    print(describe(response));
+  } on TJevException catch (exception) {
+    print('Not sent: ${exception.message}');
+  }
+  // #enddocregion exceptions
+}
+
 Future<void> retries(String message) async {
   // #docregion retry-client
   final jev = TJev(
@@ -88,14 +103,14 @@ Future<void> retries(String message) async {
   );
   // #enddocregion retry-client
 
-  // #docregion retry-call
+  // #docregion retry-request
   final response = await jev.ask(
     state: message,
     questions: [billing],
     timeout: const Duration(seconds: 5),
     retry: TJevRetryPolicy(maxRetries: 0),
   );
-  // #enddocregion retry-call
+  // #enddocregion retry-request
   print(response.isSuccess);
 
   // #docregion retry-predicate
