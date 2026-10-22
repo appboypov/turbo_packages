@@ -13,13 +13,14 @@ import '../models/t_jev_image.dart';
 import '../results/t_jev_failure.dart';
 import '../utils/request_content.dart';
 import '../utils/request_platform.dart';
+import '../utils/t_jev_request_trace.dart';
 
 /// Sends Requests to TypeSafe and turns each outcome into a `TurboResponse`:
 /// a 2xx response into a success, or into a [TJevResponseValidationFailure]
 /// when its body does not parse, any other into a [TJevHttpFailure], a
 /// connection error into a [TJevConnectionFailure], an attempt that runs
 /// out of time into a [TJevTimeoutFailure] and an aborted call into a
-/// [TJevAbortedFailure].
+/// [TJevAbortedFailure]. It logs each Request through a [TJevRequestTrace].
 final class TJevApi {
   const TJevApi({required TJevConfig config, required http.Client httpClient})
     : _config = config,
@@ -79,6 +80,12 @@ final class TJevApi {
     abortTrigger?.whenComplete(() {
       if (!aborted.isCompleted) aborted.complete();
     }).ignore();
+    final trace = TJevRequestTrace(
+      level: _config.logLevel,
+      method: method,
+      path: path,
+      body: content?.bytes,
+    );
     final elapsed = clock.stopwatch()..start();
     for (var attempt = 0; ; attempt++) {
       final abortAttempt = Completer<void>();
@@ -102,6 +109,7 @@ final class TJevApi {
         abortAttempt: abortAttempt,
         timeout: timeout,
         aborted: aborted,
+        trace: trace,
         onSuccess: onSuccess,
       );
       if (response case Fail(
@@ -114,14 +122,16 @@ final class TJevApi {
         );
         if (retry.budget case final budget?
             when elapsed.elapsed + delay >= budget) {
-          return response;
+          return trace.ended(response);
         }
         if (await _waitUnlessAborted(delay, aborted)) {
-          return TurboResponse.fail(error: const TJevAbortedFailure());
+          return trace.ended(
+            TurboResponse.fail(error: const TJevAbortedFailure()),
+          );
         }
         continue;
       }
-      return response;
+      return trace.ended(response);
     }
   }
 
@@ -132,14 +142,16 @@ final class TJevApi {
   /// Sends [request] once and reads its whole response within [timeout].
   ///
   /// When [timeout] passes or [aborted] completes first, it completes
-  /// [abortAttempt] to abort [request].
+  /// [abortAttempt] to abort [request]. It tells [trace] what happens.
   Future<TurboResponse<T>> _attempt<T>(
     http.BaseRequest request, {
     required Completer<void> abortAttempt,
     required Duration timeout,
     required Completer<void> aborted,
+    required TJevRequestTrace trace,
     required T Function(http.Response response) onSuccess,
   }) async {
+    trace.sent(request);
     final timedOut = Completer<void>();
     final timer = Timer(timeout, timedOut.complete);
     try {
@@ -148,8 +160,12 @@ final class TJevApi {
         timedOut.future.then((_) => null),
         aborted.future.then((_) => null),
       ]);
-      if (response != null) return _toTurboResponse(response, onSuccess);
+      if (response != null) {
+        trace.received(response);
+        return _toTurboResponse(response, onSuccess);
+      }
       abortAttempt.complete();
+      if (!aborted.isCompleted) trace.timedOut();
       return TurboResponse.fail(
         error: aborted.isCompleted
             ? const TJevAbortedFailure()

@@ -8,4 +8,8 @@ abstract final class TJevEnvironmentKeys {
 
   /// The model a Request uses when it names none.
   static const defaultModel = 'TYPESAFE_DEFAULT_MODEL';
+
+  /// How much the client logs: `debug`, `info`, `warn`, `warning`, `error`
+  /// or `off`.
+  static const logLevel = 'TYPESAFE_LOG_LEVEL';
 }
