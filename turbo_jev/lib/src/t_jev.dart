@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:turbo_response/turbo_response.dart';
 
 import 'abstracts/t_jev_question.dart';
@@ -6,6 +9,7 @@ import 'apis/t_jev_api.dart';
 import 'config/t_jev_config.dart';
 import 'config/t_jev_retry_policy.dart';
 import 'constants/t_jev_http.dart';
+import 'constants/t_jev_logging.dart';
 import 'constants/t_jev_messages.dart';
 import 'enums/t_jev_http_method.dart';
 import 'enums/t_jev_log_level.dart';
@@ -23,6 +27,7 @@ import 'models/t_jev_result.dart';
 import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
 import 'results/t_jev_failure.dart';
+import 'services/t_jev_request_trace_service.dart';
 import 'services/t_jev_system_one_body_service.dart';
 import 'types/t_jev_model.dart';
 import 'utils/t_jev_process_environment.dart';
@@ -128,10 +133,22 @@ final class TJev {
       redactLoggedBodies: redactLoggedBodies,
       environment: environment ?? processEnvironment,
     );
+    final client = httpClient ?? http.Client();
     return TJev._(
       config: config,
-      httpClient: httpClient ?? http.Client(),
+      httpClient: client,
       ownsHttpClient: httpClient == null,
+      api: TJevApi(
+        config: config,
+        httpClient: client,
+        trace: TJevRequestTraceService(
+          logger: Logger(TJevLogging.loggerName),
+          level: config.logLevel,
+          redactBodies: config.redactLoggedBodies,
+        ),
+        random: Random(),
+      ),
+      bodyService: const TJevSystemOneBodyService(),
     );
   }
 
@@ -139,10 +156,12 @@ final class TJev {
     required TJevConfig config,
     required http.Client httpClient,
     required bool ownsHttpClient,
+    required TJevApi api,
+    required TJevSystemOneBodyService bodyService,
   }) : _config = config,
        _httpClient = httpClient,
-       _api = TJevApi(config: config, httpClient: httpClient),
-       _bodyService = const TJevSystemOneBodyService(),
+       _api = api,
+       _bodyService = bodyService,
        _ownsHttpClient = ownsHttpClient;
 
   // 🧩 DEPENDENCIES

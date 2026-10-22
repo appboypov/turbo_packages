@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:clock/clock.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:turbo_response/turbo_response.dart';
 
-import '../constants/t_jev_http.dart';
 import '../constants/t_jev_logging.dart';
 import '../enums/t_jev_log_level.dart';
 import '../models/t_jev_request_log.dart';
@@ -17,51 +15,32 @@ import '../results/t_jev_failure.dart';
 import '../utils/t_jev_redacted_headers.dart';
 import '../utils/t_jev_redacted_json_body.dart';
 
-/// Follows one Request from its first attempt to its end and logs it to the
-/// [TJevLogging.loggerName] logger: each attempt and response at debug and
-/// one [TJevRequestSummary] at info when it ends.
+/// Logs Requests to its [Logger]: each attempt and response at debug and one
+/// [TJevRequestSummary] at info when a Request ends.
 ///
 /// It skips records below its [TJevLogLevel] and builds a record only when
 /// the logger takes it.
 final class TJevRequestTraceService {
-  TJevRequestTraceService({
+  const TJevRequestTraceService({
+    required Logger logger,
     required TJevLogLevel level,
     required bool redactBodies,
-    required String method,
-    required String path,
-    required TJevRequestContent? content,
-  }) : _level = level,
-       _redactBodies = redactBodies,
-       _method = method,
-       _path = path,
-       _content = content;
+  }) : _logger = logger,
+       _level = level,
+       _redactBodies = redactBodies;
 
-  // 🎩 STATE
+  // 🧩 DEPENDENCIES
 
+  final Logger _logger;
   final TJevLogLevel _level;
 
   /// Whether a logged body has the values of the secret fields in its JSON
   /// replaced.
   final bool _redactBodies;
-  final String _method;
-  final String _path;
-
-  /// The content of the Request body, if any.
-  final TJevRequestContent? _content;
-
-  final _elapsed = clock.stopwatch()..start();
-  var _attempts = 0;
-  var _timeouts = 0;
-  int? _status;
-  String? _requestId;
-
-  // 🛠 UTIL
-
-  static final _logger = Logger(TJevLogging.loggerName);
 
   // 🏗️ HELPERS
 
-  /// Logs the record [build] makes at [level], unless the trace or the
+  /// Logs the record [build] makes at [level], unless the service or the
   /// logger skips [level].
   void _log(TJevLogLevel level, Object Function() build) {
     if (level.level < _level.level) return;
@@ -93,60 +72,74 @@ final class TJevRequestTraceService {
 
   // 🪄 MUTATORS
 
-  /// Counts the attempt that sends [request] and logs it at debug.
-  void sent(http.BaseRequest request) {
-    final attempt = ++_attempts;
-    _log(TJevLogLevel.debug, () {
-      final (:body, :omittedBytes) = _loggedBodyOf(
-        _content?.bytes,
-        jsonStart: _content?.jsonStart ?? 0,
-        jsonEnd: _content?.jsonEnd,
-      );
-      return TJevRequestLog(
-        method: _method,
-        path: _path,
-        attempt: attempt,
-        headers: redactedHeaders(request.headers),
-        body: body,
-        omittedBodyBytes: omittedBytes,
-      );
-    });
-  }
+  /// Logs [request], attempt number [attempt] of the [method] Request to
+  /// [path] with body [content], at debug.
+  void sent(
+    http.BaseRequest request, {
+    required String method,
+    required String path,
+    required TJevRequestContent? content,
+    required int attempt,
+  }) => _log(TJevLogLevel.debug, () {
+    final (:body, :omittedBytes) = _loggedBodyOf(
+      content?.bytes,
+      jsonStart: content?.jsonStart ?? 0,
+      jsonEnd: content?.jsonEnd,
+    );
+    return TJevRequestLog(
+      method: method,
+      path: path,
+      attempt: attempt,
+      headers: redactedHeaders(request.headers),
+      body: body,
+      omittedBodyBytes: omittedBytes,
+    );
+  });
 
-  /// Keeps the status and request id of [response] and logs it at debug.
-  void received(http.Response response) {
-    _status = response.statusCode;
-    _requestId = response.headers[TJevHttp.requestIdHeader];
-    _log(TJevLogLevel.debug, () {
-      final (:body, :omittedBytes) = _loggedBodyOf(response.bodyBytes);
-      return TJevResponseLog(
-        method: _method,
-        path: _path,
-        status: response.statusCode,
-        headers: redactedHeaders(response.headers),
-        body: body,
-        omittedBodyBytes: omittedBytes,
-      );
-    });
-  }
+  /// Logs [response] to the [method] Request to [path] at debug.
+  void received(
+    http.Response response, {
+    required String method,
+    required String path,
+  }) => _log(TJevLogLevel.debug, () {
+    final (:body, :omittedBytes) = _loggedBodyOf(response.bodyBytes);
+    return TJevResponseLog(
+      method: method,
+      path: path,
+      status: response.statusCode,
+      headers: redactedHeaders(response.headers),
+      body: body,
+      omittedBodyBytes: omittedBytes,
+    );
+  });
 
-  /// Counts an attempt that ran out of time.
-  void timedOut() => _timeouts++;
-
-  /// Logs the summary of the Request that ends with [response] at info and
-  /// returns [response].
-  TurboResponse<T> ended<T>(TurboResponse<T> response) {
+  /// Logs the summary of the [method] Request to [path] that ends with
+  /// [response] at info and returns [response].
+  ///
+  /// [status] and [requestId] come from the last response the Request
+  /// received, if any; [retries] and [timeouts] count its attempts and
+  /// [elapsed] is the time since its first attempt.
+  TurboResponse<T> ended<T>(
+    TurboResponse<T> response, {
+    required String method,
+    required String path,
+    required int? status,
+    required String? requestId,
+    required int retries,
+    required int timeouts,
+    required Duration elapsed,
+  }) {
     _log(
       TJevLogLevel.info,
       () => TJevRequestSummary(
-        method: _method,
-        path: _path,
-        status: _status,
-        requestId: _requestId,
-        retries: max(_attempts - 1, 0),
-        timeouts: _timeouts,
+        method: method,
+        path: path,
+        status: status,
+        requestId: requestId,
+        retries: retries,
+        timeouts: timeouts,
         aborted: response.error is TJevAbortedFailure,
-        elapsed: _elapsed.elapsed,
+        elapsed: elapsed,
       ),
     );
     return response;
