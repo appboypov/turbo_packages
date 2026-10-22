@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:turbo_response/turbo_response.dart';
 
@@ -25,6 +23,7 @@ import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
 import 'results/t_jev_failure.dart';
 import 'utils/process_environment.dart';
+import 'utils/response_json_object.dart';
 import 'utils/system_one_body.dart';
 
 /// A client that asks Jev typed Questions about State.
@@ -155,11 +154,15 @@ final class TJev {
 
   /// Asks Jev [questions] about [state].
   ///
-  /// An Image placed as a value in [state], or in the maps and lists of
-  /// Instructions or Criteria, is sent on its own. An Image interpolated in
-  /// a string, or placed inside another object's `toJson`, is written as its
-  /// Image Reference and must be listed in [images]. A Request with an Image
-  /// is sent as multipart and opts in to the Images Danger Zone.
+  /// [state] is content, the same as Instructions and Criteria: strings,
+  /// numbers, booleans, Images, maps with string keys, lists and objects
+  /// with `toJson`.
+  ///
+  /// An Image placed as an object anywhere in [state], Instructions or
+  /// Criteria, also inside the `toJson` of another object, is sent on its
+  /// own. An Image interpolated in a string is written as its Image
+  /// Reference and must be listed in [images]. A Request with an Image is
+  /// sent as multipart and opts in to the Images Danger Zone.
   ///
   /// [model] overrides the client's default model for this Request.
   /// [extraBody] fields are merged into the Request body last, so a field of
@@ -179,8 +182,9 @@ final class TJev {
   /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///
   /// Throws before sending: [TJevInvalidQuestionException] when [questions]
-  /// is empty, two Questions share an id, a Question is invalid or a
-  /// [TJevBox] is asked of a model not in [TJevModel.boxModels],
+  /// is empty, two Questions share an id, a Question is invalid, [state] is
+  /// no content or holds a non-finite number, or a [TJevBox] is asked of a
+  /// model not in [TJevModel.boxModels],
   /// [TJevImageReferenceException] when the content holds the Image
   /// Reference of an Image neither placed nor listed or no content uses an
   /// Image in [images], and [TJevInvalidTimeoutException] when [timeout] is
@@ -250,8 +254,9 @@ final class TJev {
   /// policy replaces the client policy. When [abortTrigger] completes before
   /// the call ends, the call stops, also while it waits to retry. A failed
   /// call returns a fail holding a [TJevFailure]: a [TJevHttpFailure] for a
-  /// non-2xx response, a [TJevConnectionFailure], a [TJevTimeoutFailure] or
-  /// a [TJevAbortedFailure].
+  /// non-2xx response, a [TJevResponseValidationFailure] for a 2xx response
+  /// whose body is no models list, a [TJevConnectionFailure], a
+  /// [TJevTimeoutFailure] or a [TJevAbortedFailure].
   ///
   /// Throws [TJevInvalidTimeoutException] when [timeout] is not positive.
   Future<TurboResponse<List<TJevModelCard>>> models({
@@ -268,9 +273,8 @@ final class TJev {
         : TJevConfig.checkedTimeout(timeout),
     retry: retry ?? _config.retry,
     abortTrigger: abortTrigger,
-    onSuccess: (response) => TJevModelsResponseDto.fromJson(
-      jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
-    ).models,
+    onSuccess: (response) =>
+        TJevModelsResponseDto.fromJson(responseJsonObject(response)).models,
   );
 
   // 🏗️ HELPERS

@@ -36,7 +36,7 @@ final class TJevChoice<T extends Object>
             'not ${options.length}.',
       );
     }
-    TJevQuestion._checkContent(instructions, 'The Instructions of Choice $id');
+    TJevQuestion.checkContent(instructions, 'The Instructions of Choice $id');
     final criteria = <String, Object?>{};
     for (final MapEntry(key: option, value: description) in options.entries) {
       final key = TJevQuestion._wireKey(option);
@@ -45,7 +45,7 @@ final class TJevChoice<T extends Object>
           reason: 'Two Options of Choice $id have the wire key $key.',
         );
       }
-      TJevQuestion._checkContent(
+      TJevQuestion.checkContent(
         description,
         'The description of Option $key of Choice $id',
       );

@@ -32,9 +32,9 @@ final class TJevNoul extends TJevQuestion<TJevNoulAnswer> {
         reason: 'Noul $id needs Instructions or a meaning of true or false.',
       );
     }
-    TJevQuestion._checkContent(instructions, 'The Instructions of Noul $id');
-    TJevQuestion._checkContent(trueMeans, 'The meaning of true of Noul $id');
-    TJevQuestion._checkContent(falseMeans, 'The meaning of false of Noul $id');
+    TJevQuestion.checkContent(instructions, 'The Instructions of Noul $id');
+    TJevQuestion.checkContent(trueMeans, 'The meaning of true of Noul $id');
+    TJevQuestion.checkContent(falseMeans, 'The meaning of false of Noul $id');
     return TJevNoulQuestionDto(
       instructions: instructions,
       criteria: trueMeans == null && falseMeans == null

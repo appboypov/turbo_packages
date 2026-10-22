@@ -58,7 +58,8 @@ sealed class TJevQuestion<A extends TJevAnswer> {
 
   /// Throws [TJevInvalidQuestionException] when [content] at [location] is
   /// not JSON content or holds a non-finite number.
-  static void _checkContent(Object? content, String location) {
+  @internal
+  static void checkContent(Object? content, String location) {
     switch (content) {
       case null || String() || bool() || TJevImage():
         return;
@@ -70,7 +71,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
         return;
       case List():
         for (final item in content) {
-          _checkContent(item, location);
+          checkContent(item, location);
         }
       case Map():
         for (final MapEntry(:key, :value) in content.entries) {
@@ -79,7 +80,7 @@ sealed class TJevQuestion<A extends TJevAnswer> {
               reason: '$location holds the map key $key, which is no String.',
             );
           }
-          _checkContent(value, location);
+          checkContent(value, location);
         }
       default:
         try {

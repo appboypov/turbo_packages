@@ -251,7 +251,7 @@ final response = await jev.ask(
 );
 ```
 
-Place an Image as a value in State or Instructions or Criteria. The client then sends it for you. An Image inside a string turns into its Image Reference. List that Image in `images` so the client sends it too. The client throws a `TJevImageReferenceException` when a reference has no Image or a listed Image is not used.
+Place an Image as an object in State or Instructions or Criteria, also inside the `toJson` of your own model. The client then sends it for you. An Image inside a string turns into its Image Reference. List that Image in `images` so the client sends it too. The client throws a `TJevImageReferenceException` when a reference has no Image or a listed Image is not used.
 
 A Request with an Image goes out as multipart. It opts in to the Images Danger Zone for you. Each side of an Image must be 280 to 1568 pixels. `TJevImage.fromFile` needs `dart:io` and so does not work in a browser.
 

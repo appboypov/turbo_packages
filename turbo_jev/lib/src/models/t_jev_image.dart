@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -67,6 +68,18 @@ final class TJevImage {
   @internal
   static final referencePattern = RegExp('<image:[0-9a-f]{32}>');
 
+  /// Runs [encode] and calls [onEncoded] with each Image whose [toJson] it
+  /// calls, so encoding content finds every Image placed in it, also inside
+  /// the `toJson` of another object.
+  @internal
+  static R collectEncoded<R>(
+    R Function() encode, {
+    required void Function(TJevImage image) onEncoded,
+  }) => runZoned(encode, zoneValues: {_onEncodedKey: onEncoded});
+
+  /// The zone value that [collectEncoded] calls with each encoded Image.
+  static final _onEncodedKey = Object();
+
   static final _whitespace = RegExp(r'\s');
 
   /// The file bytes.
@@ -81,7 +94,16 @@ final class TJevImage {
 
   /// The [reference], which `jsonEncode` writes wherever this Image is
   /// placed.
-  String toJson() => reference;
+  String toJson() {
+    if (Zone.current[_onEncodedKey]
+        case final void Function(
+              TJevImage image,
+            )
+            onEncoded) {
+      onEncoded(this);
+    }
+    return reference;
+  }
 
   /// The [reference], which string interpolation writes wherever this Image
   /// is placed.

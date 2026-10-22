@@ -162,6 +162,33 @@ void main() {
     },
   );
 
+  test(
+    'Given Images placed inside the toJson of objects in the State and the '
+    'Criteria, when asked without images, then each is found and sent',
+    () async {
+      final front = TJevImage(jpegBytes);
+      final example = TJevImage(pngBytes);
+
+      await jev.ask(
+        state: _Frames([front]),
+        questions: [
+          TJevNoul(
+            instructions: 'Is it the same car?',
+            trueMeans: _Frames([example]),
+          ),
+        ],
+      );
+
+      expect(typeSafe.lastBody['state'], [front.reference]);
+      expect(typeSafe.lastBody['assets'], {
+        front.reference: {'type': 'image', 'part': 'asset-0'},
+        example.reference: {'type': 'image', 'part': 'asset-1'},
+      });
+      final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+      expect(parts.map((part) => part.bytes), [anything, jpegBytes, pngBytes]);
+    },
+  );
+
   group('Given an Image interpolated in a string', () {
     late TJevImage badge;
 
@@ -241,4 +268,13 @@ void main() {
       expect(typeSafe.lastBody.containsKey('assets'), isFalse);
     },
   );
+}
+
+/// A model whose `toJson` holds Images.
+final class _Frames {
+  const _Frames(this.frames);
+
+  final List<TJevImage> frames;
+
+  List<TJevImage> toJson() => frames;
 }
