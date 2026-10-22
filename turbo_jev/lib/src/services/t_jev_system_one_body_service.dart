@@ -6,6 +6,7 @@ import '../exceptions/t_jev_image_reference_exception.dart';
 import '../exceptions/t_jev_invalid_question_exception.dart';
 import '../models/t_jev_image.dart';
 import '../requests/t_jev_image_part_dto.dart';
+import '../requests/t_jev_system_one_assets_dto.dart';
 import '../requests/t_jev_system_one_request_dto.dart';
 
 /// The JSON text of a System One Request and the Images it sends, keyed by
@@ -24,7 +25,8 @@ final class TJevSystemOneBodyService {
   /// inside the `toJson` of another object, and those in [listed], each
   /// sent once for every Image Reference the JSON holds, in order of first
   /// use. Each gets the part name [TJevHttp.imagePartPrefix] with its number
-  /// and an entry in `assets`.
+  /// and an entry in `assets`. The body is encoded from the content once,
+  /// so its `assets` name the very Images each `toJson` returned.
   ///
   /// Throws [TJevInvalidQuestionException] when the State is no JSON
   /// content or holds a non-finite number, and [TJevImageReferenceException]
@@ -80,17 +82,18 @@ final class TJevSystemOneBodyService {
       for (final (number, image) in used.values.indexed)
         '${TJevHttp.imagePartPrefix}$number': image,
     };
-    final withAssets = TJevSystemOneRequestDto(
-      model: request.model,
-      state: request.state,
-      questions: request.questions,
+    final assets = TJevSystemOneAssetsDto(
       assets: {
         for (final MapEntry(key: part, value: image) in images.entries)
           image.reference: TJevImagePartDto(part: part),
       },
     );
     return (
-      json: jsonEncode({...withAssets.toJson(), ...?extraBody}),
+      // The encoded body goes last, so an `assets` field in extraBody wins.
+      json: jsonEncode({
+        ...assets.toJson(),
+        ...jsonDecode(json) as Map<String, Object?>,
+      }),
       images: images,
     );
   }
