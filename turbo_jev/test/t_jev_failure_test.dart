@@ -466,7 +466,15 @@ void main() {
           environment: const {},
           timeout: Duration.zero,
         ),
-        throwsA(isA<TJevInvalidTimeoutException>()),
+        throwsA(
+          isA<TJevInvalidTimeoutException>()
+              .having((error) => error.timeout, 'timeout', Duration.zero)
+              .having(
+                (error) => error.reason,
+                'reason',
+                'A timeout must be positive, not 0:00:00.000000.',
+              ),
+        ),
       );
       final jev = TJev(apiKey: 'ts_key', environment: const {});
       expect(
