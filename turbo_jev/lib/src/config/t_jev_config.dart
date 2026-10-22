@@ -102,8 +102,9 @@ final class TJevConfig {
   /// How much the client logs.
   final TJevLogLevel logLevel;
 
-  /// Whether a JSON body logged at debug has the values of its secret
-  /// fields replaced in full.
+  /// Whether the JSON of a body logged at debug, also the `request` part of
+  /// a multipart Request, has the values of its secret fields replaced in
+  /// full.
   final bool redactLoggedBodies;
 
   /// Returns [timeout] when it is positive.

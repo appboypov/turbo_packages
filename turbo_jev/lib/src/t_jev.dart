@@ -74,11 +74,12 @@ final class TJev {
   /// `package:logging` level must let these records through as well, such
   /// as `Logger.root.level = Level.ALL` for debug.
   ///
-  /// With [redactLoggedBodies] on, the default, a logged body that is JSON
-  /// has the value of each object field whose name holds `token`, `secret`,
+  /// With [redactLoggedBodies] on, the default, the JSON of a logged body,
+  /// the whole body or the `request` part of a multipart Request, has the
+  /// value of each object field whose name holds `token`, `secret`,
   /// `password` or an API key spelling (`api_key`, `api-key`, `apikey`), in
   /// any case and at any depth, replaced in full before the body is cut at
-  /// 4096 bytes. Other bodies, such as multipart ones, are logged as they
+  /// 4096 bytes. Image parts and bodies that are no JSON are logged as they
   /// are. Turn it off to see the bodies as sent and received; secret header
   /// values stay replaced either way.
   ///
