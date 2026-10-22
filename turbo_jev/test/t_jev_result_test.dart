@@ -23,6 +23,7 @@ void main() {
       apiKey: 'ts_key',
       httpClient: typeSafe.client,
       environment: const {},
+      retry: TJevRetryPolicy(maxRetries: 0),
     );
     return jev.ask(state: 'I was charged twice.', questions: questions);
   }

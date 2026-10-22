@@ -62,7 +62,7 @@ sealed class TJevHttpFailure extends TJevFailure {
         requestId: requestId,
         headers: headers,
         body: body,
-        retryAfter: TJevRateLimitFailure._retryAfterOf(headers),
+        retryAfter: retryAfterOf(headers),
       ),
       >= 500 => TJevInternalServerFailure._(
         status: status,

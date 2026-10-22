@@ -14,6 +14,11 @@ final Map<String, String> platformHeaders = Map.unmodifiable({
       '(${Platform.operatingSystem}; ${Abi.current().toString().split('_').last})',
 });
 
+/// The headers that number retry [retryCount] of a Request.
+Map<String, String> retryHeaders(int retryCount) => {
+  TJevHttp.retryCountHeader: '$retryCount',
+};
+
 /// The body sent for [bytes]: gzip compressed from
 /// [TJevHttp.minCompressedBodyBytes] bytes on, else the bytes as they are.
 TJevEncodedBody encodeBody(List<int> bytes) =>
