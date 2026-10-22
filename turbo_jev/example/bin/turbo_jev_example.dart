@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:turbo_jev/turbo_jev.dart';
-import 'package:turbo_jev_example/severity.dart';
-import 'package:turbo_jev_example/shapes_photo.dart';
-import 'package:turbo_jev_example/team.dart';
+import 'package:turbo_jev_example/constants/shapes_photo_base64.dart';
+import 'package:turbo_jev_example/enums/severity.dart';
+import 'package:turbo_jev_example/enums/team.dart';
 
 /// Asks Jev one Request of each Question type and prints each Answer.
 ///

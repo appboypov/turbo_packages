@@ -9,3 +9,6 @@ resolution: workspace
 
 dependencies:
   turbo_jev: ^0.1.0
+
+dev_dependencies:
+  lints: ^6.0.0
