@@ -17,6 +17,7 @@ import '../services/t_jev_request_content_service.dart';
 import '../services/t_jev_request_platform_service.dart';
 import '../services/t_jev_request_trace_service.dart';
 import '../typedefs/t_jev_response_parser.dart';
+import '../utils/t_jev_response_json_object.dart';
 
 /// Sends Requests to TypeSafe and turns each outcome into a `TurboResponse`:
 /// a 2xx response into a success, or into a [TJevResponseValidationFailure]
@@ -130,7 +131,9 @@ final class TJevApi {
     if (status >= TJevHttp.minSuccessStatus &&
         status <= TJevHttp.maxSuccessStatus) {
       try {
-        return TurboResponse.success(result: onSuccess(response));
+        return TurboResponse.success(
+          result: onSuccess(responseJsonObject(response), response),
+        );
       } on FormatException catch (error) {
         return _fail(
           TJevResponseValidationFailure.fromResponse(
@@ -155,9 +158,10 @@ final class TJevApi {
 
   // 🪄 MUTATORS
 
-  /// Sends the [json] text, if any, to [path] and parses a 2xx response with
-  /// [onSuccess], which throws a [FormatException] or a
-  /// [CheckedFromJsonException] when the body does not fit.
+  /// Sends the [json] text, if any, to [path] and parses the JSON object of
+  /// a 2xx response with [onSuccess], which throws a [FormatException] or a
+  /// [CheckedFromJsonException] when the object does not fit. A body that is
+  /// no JSON object fails like a body that does not fit.
   ///
   /// With [images], the body is multipart: the [json] in its first part and
   /// each Image in a part of the name it has in [images].

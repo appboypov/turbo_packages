@@ -61,62 +61,52 @@ abstract final class TJevMessages {
     required String modelId,
   }) => 'A Box needs a model of ${boxModelIds.join(' or ')}, not $modelId.';
 
-  /// Noul [id] has no Instructions and no meaning of true or false.
-  static String meaninglessNoul(String id) =>
-      'Noul $id needs Instructions or a meaning of true or false.';
+  /// The Question of [type] with [id] in a Request breaks the rule [reason]
+  /// says.
+  static String invalidQuestion(Type type, String id, String reason) =>
+      'The $type with id $id is invalid: $reason';
 
-  /// Choice [id] has [count] Options, outside the allowed range.
-  static String optionCount(String id, int count) =>
-      'Choice $id needs 1 to ${TJevLimits.maxOptions} Options, not $count.';
+  /// A Noul has no Instructions and no meaning of true or false.
+  static const meaninglessNoul =
+      'A Noul needs Instructions or a meaning of true or false.';
 
-  /// Two Options of Choice [id] have the wire key [key].
-  static String duplicateOptionKey(String id, String key) =>
-      'Two Options of Choice $id have the wire key $key.';
+  /// A Choice has [count] Options, outside the allowed range.
+  static String optionCount(int count) =>
+      'A Choice needs 1 to ${TJevLimits.maxOptions} Options, not $count.';
 
-  /// Score [id] has [count] Levels, outside the allowed range.
-  static String levelCount(String id, int count) =>
-      'Score $id needs 1 to ${TJevLimits.maxLevels} Levels, not $count.';
+  /// Two Options of a Choice have the wire key [key].
+  static String duplicateOptionKey(String key) =>
+      'Two Options have the wire key $key.';
 
-  /// Two Levels of Score [id] have the wire key [key].
-  static String duplicateLevelKey(String id, String key) =>
-      'Two Levels of Score $id have the wire key $key.';
+  /// A Score has [count] Levels, outside the allowed range.
+  static String levelCount(int count) =>
+      'A Score needs 1 to ${TJevLimits.maxLevels} Levels, not $count.';
+
+  /// Two Levels of a Score have the wire key [key].
+  static String duplicateLevelKey(String key) =>
+      'Two Levels have the wire key $key.';
 
   /// The location of the State in a content text.
   static const stateLocation = 'The State';
 
-  /// The location of the Instructions of Box [id] in a content text.
-  static String boxInstructionsLocation(String id) =>
-      'The Instructions of Box $id';
+  /// The location of the Instructions of a Question in a content text.
+  static const instructionsLocation = 'The Instructions';
 
-  /// The location of the Instructions of Choice [id] in a content text.
-  static String choiceInstructionsLocation(String id) =>
-      'The Instructions of Choice $id';
-
-  /// The location of the description of Option [key] of Choice [id] in a
+  /// The location of the description of Option [key] of a Choice in a
   /// content text.
-  static String optionDescriptionLocation(String id, String key) =>
-      'The description of Option $key of Choice $id';
+  static String optionDescriptionLocation(String key) =>
+      'The description of Option $key';
 
-  /// The location of the Instructions of Noul [id] in a content text.
-  static String noulInstructionsLocation(String id) =>
-      'The Instructions of Noul $id';
+  /// The location of the meaning of true of a Noul in a content text.
+  static const trueMeaningLocation = 'The meaning of true';
 
-  /// The location of the meaning of true of Noul [id] in a content text.
-  static String trueMeaningLocation(String id) =>
-      'The meaning of true of Noul $id';
+  /// The location of the meaning of false of a Noul in a content text.
+  static const falseMeaningLocation = 'The meaning of false';
 
-  /// The location of the meaning of false of Noul [id] in a content text.
-  static String falseMeaningLocation(String id) =>
-      'The meaning of false of Noul $id';
-
-  /// The location of the Instructions of Score [id] in a content text.
-  static String scoreInstructionsLocation(String id) =>
-      'The Instructions of Score $id';
-
-  /// The location of the description of Level [number] of Score [id] in a
+  /// The location of the description of Level [number] of a Score in a
   /// content text.
-  static String levelDescriptionLocation(String id, int number) =>
-      'The description of Level $number of Score $id';
+  static String levelDescriptionLocation(int number) =>
+      'The description of Level $number';
 
   /// The content at [location] holds the non-finite number [content].
   static String nonFiniteNumber(String location, num content) =>

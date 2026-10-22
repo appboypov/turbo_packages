@@ -6,7 +6,11 @@ part 't_jev_system_one_assets_dto.g.dart';
 
 /// The wire form of the Images a System One Request sends, merged into its
 /// body.
-@JsonSerializable(createFactory: false, explicitToJson: true)
+@JsonSerializable(
+  createFactory: false,
+  includeIfNull: false,
+  explicitToJson: true,
+)
 final class TJevSystemOneAssetsDto {
   const TJevSystemOneAssetsDto({required this.assets});
 

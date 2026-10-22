@@ -10,6 +10,40 @@ final class TJevScoreAnswer<T extends Object> extends TJevAnswer {
     required this.legend,
   });
 
+  /// The Answer of [dto] to a Score of [levels], from the low end of the
+  /// scale to the high end.
+  ///
+  /// Throws a [FormatException] when [dto] is no Score Answer or its legend
+  /// or Probabilities are not keyed by exactly the Level numbers.
+  @internal
+  factory TJevScoreAnswer.fromDto(
+    TJevScoreAnswerDto dto, {
+    required List<T> levels,
+  }) {
+    TJevAnswer._checkType(dto.type, TJevQuestionType.score);
+    final levelNumbers = [
+      for (var number = 0; number < levels.length; number++) '$number',
+    ];
+    TJevAnswer._checkKeys(TJevHttp.legendKey, dto.legend.keys, levelNumbers);
+    TJevAnswer._checkKeys(
+      TJevHttp.probabilitiesKey,
+      dto.probabilities.keys,
+      levelNumbers,
+    );
+    return TJevScoreAnswer(
+      score: dto.score,
+      confidence: dto.confidence,
+      probabilities: {
+        for (final (number, level) in levels.indexed)
+          level: dto.probabilities['$number']!,
+      },
+      legend: {
+        for (final (number, level) in levels.indexed)
+          level: dto.legend['$number'],
+      },
+    );
+  }
+
   /// The Probability-weighted mean of the Level numbers, from 0 to the top
   /// Level number. It can fall between two Levels.
   final double score;

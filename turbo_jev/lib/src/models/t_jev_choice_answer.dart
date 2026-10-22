@@ -9,6 +9,37 @@ final class TJevChoiceAnswer<T extends Object> extends TJevAnswer {
     required this.confidence,
   });
 
+  /// The Answer of [dto] to a Choice whose Options [options] keys by their
+  /// wire keys, in Option order.
+  ///
+  /// Throws a [FormatException] when [dto] is no Choice Answer, its
+  /// Probabilities are not keyed by exactly the keys of [options] or it
+  /// chooses none of them.
+  @internal
+  factory TJevChoiceAnswer.fromDto(
+    TJevChoiceAnswerDto dto, {
+    required Map<String, T> options,
+  }) {
+    TJevAnswer._checkType(dto.type, TJevQuestionType.choice);
+    TJevAnswer._checkKeys(
+      TJevHttp.probabilitiesKey,
+      dto.probabilities.keys,
+      options.keys.toList(),
+    );
+    final choice = options[dto.choice];
+    if (choice == null) {
+      throw FormatException(TJevMessages.unknownOption(dto.choice));
+    }
+    return TJevChoiceAnswer(
+      choice: choice,
+      confidence: dto.confidence,
+      probabilities: {
+        for (final MapEntry(:key, value: option) in options.entries)
+          option: dto.probabilities[key]!,
+      },
+    );
+  }
+
   /// The Option with the highest Probability.
   final T choice;
 

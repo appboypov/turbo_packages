@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../constants/t_jev_http.dart';
@@ -8,6 +9,7 @@ import '../constants/t_jev_limits.dart';
 import '../constants/t_jev_messages.dart';
 import '../models/t_jev_validation_detail.dart';
 import '../records/t_jev_response_fields.dart';
+import '../responses/t_jev_validation_error_dto.dart';
 import '../services/t_jev_retry_after_service.dart';
 
 part '../results/t_jev_aborted_failure.dart';

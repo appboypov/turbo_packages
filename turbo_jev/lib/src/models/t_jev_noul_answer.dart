@@ -4,6 +4,15 @@ part of '../abstracts/t_jev_answer.dart';
 final class TJevNoulAnswer extends TJevAnswer {
   const TJevNoulAnswer({required this.probability});
 
+  /// The Answer of [dto].
+  ///
+  /// Throws a [FormatException] when [dto] is no Noul Answer.
+  @internal
+  factory TJevNoulAnswer.fromDto(TJevNoulAnswerDto dto) {
+    TJevAnswer._checkType(dto.type, TJevQuestionType.noul);
+    return TJevNoulAnswer(probability: dto.noul);
+  }
+
   /// The Probability that the statement is true, from 0 to 1.
   final double probability;
 

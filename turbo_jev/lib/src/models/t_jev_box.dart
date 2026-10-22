@@ -16,24 +16,8 @@ final class TJevBox extends TJevQuestion<TJevBoxAnswer> {
   final Object? instructions;
 
   @override
-  TJevBoxQuestionDto toDto({required String id}) {
-    TJevQuestion.checkContent(
-      instructions,
-      TJevMessages.boxInstructionsLocation(id),
-    );
-    return TJevBoxQuestionDto(instructions: instructions);
-  }
-
-  @override
-  TJevBoxAnswer answerFromJson(Map<String, dynamic> json) {
-    final dto = TJevBoxAnswerDto.fromJson(json);
-    TJevQuestion._checkAnswerType(dto.type, TJevQuestionType.box);
-    return TJevBoxAnswer(
-      top: dto.box.top,
-      bottom: dto.box.bottom,
-      left: dto.box.left,
-      right: dto.box.right,
-      confidence: dto.confidence,
-    );
-  }
+  TurboResponse<void> validate() => TJevQuestion.checkContent(
+    instructions,
+    TJevMessages.instructionsLocation,
+  );
 }
