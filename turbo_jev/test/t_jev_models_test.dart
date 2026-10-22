@@ -74,6 +74,26 @@ void main() {
         '2026-10-14',
       ]);
     });
+
+    for (final timeout in [Duration.zero, const Duration(milliseconds: -1)]) {
+      test(
+        'When listed with the timeout $timeout, which is not positive, then '
+        'it throws before sending',
+        () {
+          expect(
+            () => jev.models(timeout: timeout),
+            throwsA(
+              isA<TJevInvalidTimeoutException>().having(
+                (exception) => exception.timeout,
+                'timeout',
+                timeout,
+              ),
+            ),
+          );
+          expect(typeSafe.requests, isEmpty);
+        },
+      );
+    }
   });
 
   for (final (what, body) in [

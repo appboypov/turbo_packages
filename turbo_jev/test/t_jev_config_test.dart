@@ -1,9 +1,11 @@
 @TestOn('vm')
 library;
 
+import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
+import 'support/services/closing_http_client.dart';
 import 'support/services/fake_type_safe.dart';
 
 const _billing = TJevNoul(instructions: 'Is this message about billing?');
@@ -190,5 +192,40 @@ void main() {
 
       expect(typeSafe.lastBody['model'], 'jev-1.15.0');
     });
+  });
+
+  group('Given an HTTP client', () {
+    test(
+      'When the caller passes it in and the client is closed, then it stays '
+      'open',
+      () {
+        final httpClient = ClosingHttpClient();
+        final jev = TJev(
+          apiKey: 'ts_key',
+          httpClient: httpClient,
+          environment: const {},
+        );
+
+        jev.close();
+
+        expect(httpClient.isClosed, isFalse);
+      },
+    );
+
+    test(
+      'When the client creates it and the client is closed, then it is '
+      'closed',
+      () {
+        final httpClient = ClosingHttpClient();
+        final jev = http.runWithClient(
+          () => TJev(apiKey: 'ts_key', environment: const {}),
+          () => httpClient,
+        );
+
+        jev.close();
+
+        expect(httpClient.isClosed, isTrue);
+      },
+    );
   });
 }
