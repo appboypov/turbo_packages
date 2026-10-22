@@ -1,6 +1,9 @@
+import 'package:meta/meta.dart';
+
 import '../constants/t_jev_defaults.dart';
 import '../constants/t_jev_environment_keys.dart';
 import '../exceptions/t_jev_api_key_exception.dart';
+import '../exceptions/t_jev_invalid_timeout_exception.dart';
 import '../models/t_jev_model.dart';
 
 /// The resolved config of a [TJev] client.
@@ -12,18 +15,21 @@ final class TJevConfig {
     required this.apiKey,
     required this.baseUrl,
     required this.defaultModel,
+    required this.timeout,
   });
 
-  /// Resolves the config and checks its API key.
+  /// Resolves the config and checks its API key and timeout.
   ///
   /// An explicit empty [apiKey] does not fall back to the environment.
   ///
   /// Throws [TJevApiKeyException] when no key is found or the key is not
-  /// printable ASCII without spaces.
+  /// printable ASCII without spaces, and [TJevInvalidTimeoutException] when
+  /// [timeout] is not positive.
   factory TJevConfig.resolve({
     required String? apiKey,
     required String? baseUrl,
     required TJevModel? defaultModel,
+    required Duration? timeout,
     required Map<String, String> environment,
   }) {
     String? fromEnvironment(String key) {
@@ -46,6 +52,7 @@ final class TJevConfig {
           (environmentModel == null
               ? TJevDefaults.model
               : TJevModel(environmentModel)),
+      timeout: checkedTimeout(timeout ?? TJevDefaults.timeout),
     );
   }
 
@@ -60,6 +67,21 @@ final class TJevConfig {
 
   /// The model a Request uses when it names none.
   final TJevModel defaultModel;
+
+  /// How long one attempt of a Request may take, its whole response
+  /// included.
+  final Duration timeout;
+
+  /// Returns [timeout] when it is positive.
+  ///
+  /// Throws [TJevInvalidTimeoutException] when it is zero or negative.
+  @internal
+  static Duration checkedTimeout(Duration timeout) {
+    if (timeout <= Duration.zero) {
+      throw TJevInvalidTimeoutException(timeout: timeout);
+    }
+    return timeout;
+  }
 
   static String _checkedApiKey(String? apiKey) {
     final key = apiKey?.trim() ?? '';

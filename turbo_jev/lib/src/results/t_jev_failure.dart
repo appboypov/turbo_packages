@@ -1,12 +1,23 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 
 import '../constants/t_jev_http.dart';
+import '../models/t_jev_validation_detail.dart';
 
-part 't_jev_api_status_failure.dart';
+part 't_jev_authentication_failure.dart';
+part 't_jev_bad_request_failure.dart';
+part 't_jev_connection_failure.dart';
 part 't_jev_http_failure.dart';
+part 't_jev_internal_server_failure.dart';
+part 't_jev_not_found_failure.dart';
+part 't_jev_other_status_failure.dart';
+part 't_jev_permission_denied_failure.dart';
+part 't_jev_rate_limit_failure.dart';
+part 't_jev_timeout_failure.dart';
+part 't_jev_unprocessable_entity_failure.dart';
 
 /// Why a call to Jev failed in normal use.
 ///

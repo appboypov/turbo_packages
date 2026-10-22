@@ -7,4 +7,8 @@ abstract final class TJevDefaults {
 
   /// The model a Request uses when it names none.
   static const model = TJevModel.jevLatest;
+
+  /// How long one attempt of a Request may take, its whole response
+  /// included.
+  static const timeout = Duration(seconds: 10);
 }
