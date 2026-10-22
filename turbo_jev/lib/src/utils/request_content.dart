@@ -3,8 +3,10 @@ import 'dart:typed_data';
 
 import '../constants/t_jev_http.dart';
 import '../models/t_jev_image.dart';
-import '../records/t_jev_request_content.dart';
 import 'random_hex.dart';
+
+/// The bytes of a Request body before compression and their media type.
+typedef _RequestContent = ({List<int> bytes, String contentType});
 
 /// The content of a Request body: the [json] text as is, or a multipart body
 /// (RFC 7578) when there are [images].
@@ -12,7 +14,7 @@ import 'random_hex.dart';
 /// A multipart body holds the [json] in its first part, named
 /// [TJevHttp.requestPartName], and then each Image in a part of the name it
 /// has in [images], with its sniffed content type.
-TJevRequestContent requestContent({
+_RequestContent requestContent({
   required String json,
   required Map<String, TJevImage> images,
 }) {

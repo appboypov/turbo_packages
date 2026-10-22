@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 't_jev_model_card.dart';
+part of 't_jev_model_card_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TJevModelCard _$TJevModelCardFromJson(Map<String, dynamic> json) =>
-    $checkedCreate('TJevModelCard', json, ($checkedConvert) {
-      final val = TJevModelCard(
+TJevModelCardDto _$TJevModelCardDtoFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('TJevModelCardDto', json, ($checkedConvert) {
+      final val = TJevModelCardDto(
         name: $checkedConvert(
           'name',
           (v) => const TJevModelConverter().fromJson(v as String),

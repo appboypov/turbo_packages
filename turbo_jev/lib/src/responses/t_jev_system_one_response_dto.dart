@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../models/t_jev_usage.dart';
+import 't_jev_usage_dto.dart';
 
 part 't_jev_system_one_response_dto.g.dart';
 
@@ -22,5 +22,5 @@ final class TJevSystemOneResponseDto {
   /// The wire form of each Answer, keyed by its Question id.
   final Map<String, Map<String, dynamic>> answers;
 
-  final TJevUsage usage;
+  final TJevUsageDto usage;
 }

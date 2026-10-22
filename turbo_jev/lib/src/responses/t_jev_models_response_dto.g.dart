@@ -13,7 +13,7 @@ TJevModelsResponseDto _$TJevModelsResponseDtoFromJson(
     models: $checkedConvert(
       'models',
       (v) => (v as List<dynamic>)
-          .map((e) => TJevModelCard.fromJson(e as Map<String, dynamic>))
+          .map((e) => TJevModelCardDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     ),
   );

@@ -1,5 +1,5 @@
 import '../enums/t_jev_log_level.dart';
-import '../models/t_jev_model.dart';
+import '../types/t_jev_model.dart';
 
 /// Config values [TJev] uses when neither config nor environment sets them.
 abstract final class TJevDefaults {

@@ -13,7 +13,6 @@ import 'exceptions/t_jev_image_reference_exception.dart';
 import 'exceptions/t_jev_invalid_question_exception.dart';
 import 'exceptions/t_jev_invalid_timeout_exception.dart';
 import 'models/t_jev_image.dart';
-import 'models/t_jev_model.dart';
 import 'models/t_jev_model_card.dart';
 import 'models/t_jev_request_log.dart';
 import 'models/t_jev_request_summary.dart';
@@ -22,9 +21,10 @@ import 'models/t_jev_result.dart';
 import 'requests/t_jev_system_one_request_dto.dart';
 import 'responses/t_jev_models_response_dto.dart';
 import 'results/t_jev_failure.dart';
+import 'services/t_jev_system_one_body_service.dart';
+import 'types/t_jev_model.dart';
 import 'utils/process_environment.dart';
 import 'utils/response_json_object.dart';
-import 'utils/system_one_body.dart';
 
 /// A client that asks Jev typed Questions about State.
 ///
@@ -133,15 +133,16 @@ final class TJev {
     required bool ownsHttpClient,
   }) : _config = config,
        _httpClient = httpClient,
-       _ownsHttpClient = ownsHttpClient,
-       _api = TJevApi(config: config, httpClient: httpClient);
+       _api = TJevApi(config: config, httpClient: httpClient),
+       _bodyService = const TJevSystemOneBodyService(),
+       _ownsHttpClient = ownsHttpClient;
 
   // 🧩 DEPENDENCIES
 
   final TJevConfig _config;
   final http.Client _httpClient;
-  final bool _ownsHttpClient;
   final TJevApi _api;
+  final TJevSystemOneBodyService _bodyService;
 
   // 🎬 INIT & DISPOSE
 
@@ -149,6 +150,62 @@ final class TJev {
   void close() {
     if (_ownsHttpClient) _httpClient.close();
   }
+
+  // 🎩 STATE
+
+  /// Whether this client created [_httpClient] and so closes it.
+  final bool _ownsHttpClient;
+
+  // 🏗️ HELPERS
+
+  /// Whether the client runs in a browser.
+  static const _isBrowser = bool.fromEnvironment('dart.library.js_interop');
+
+  /// [headers] with the long-context Danger Zone header when [longContext] is
+  /// on.
+  static Map<String, String> _withLongContext(
+    Map<String, String>? headers, {
+    required bool longContext,
+  }) => {...?headers, if (longContext) TJevHttp.longContextHeader: 'true'};
+
+  /// Keys [questions] by their ids; missing ids become `q0`, `q1` and so on
+  /// in Request order.
+  static Map<String, TJevQuestion> _questionsById(
+    List<TJevQuestion> questions,
+  ) {
+    if (questions.isEmpty) {
+      throw const TJevInvalidQuestionException(
+        reason: 'A Request needs at least one Question.',
+      );
+    }
+    var generatedIds = 0;
+    final questionsById = <String, TJevQuestion>{};
+    for (final question in questions) {
+      final id = question.id ?? 'q${generatedIds++}';
+      if (questionsById.containsKey(id)) {
+        throw TJevInvalidQuestionException(
+          reason: 'Two Questions share the id $id.',
+        );
+      }
+      questionsById[id] = question;
+    }
+    return questionsById;
+  }
+
+  /// The model cards of a 2xx models [response].
+  ///
+  /// Throws a [FormatException] or a `CheckedFromJsonException` when the
+  /// body is no models list.
+  static List<TJevModelCard> _modelCardsOf(http.Response response) => [
+    for (final card in TJevModelsResponseDto.fromJson(
+      responseJsonObject(response),
+    ).models)
+      TJevModelCard(
+        name: card.name,
+        description: card.description,
+        releaseDate: card.releaseDate,
+      ),
+  ];
 
   // 🪄 MUTATORS
 
@@ -212,7 +269,7 @@ final class TJev {
             'not ${askedModel.id}.',
       );
     }
-    final body = systemOneBody(
+    final body = _bodyService.build(
       request: TJevSystemOneRequestDto(
         model: askedModel.id,
         state: state,
@@ -273,43 +330,6 @@ final class TJev {
         : TJevConfig.checkedTimeout(timeout),
     retry: retry ?? _config.retry,
     abortTrigger: abortTrigger,
-    onSuccess: (response) =>
-        TJevModelsResponseDto.fromJson(responseJsonObject(response)).models,
+    onSuccess: _modelCardsOf,
   );
-
-  // 🏗️ HELPERS
-
-  /// Whether the client runs in a browser.
-  static const _isBrowser = bool.fromEnvironment('dart.library.js_interop');
-
-  /// [headers] with the long-context Danger Zone header when [longContext] is
-  /// on.
-  static Map<String, String> _withLongContext(
-    Map<String, String>? headers, {
-    required bool longContext,
-  }) => {...?headers, if (longContext) TJevHttp.longContextHeader: 'true'};
-
-  /// Keys [questions] by their ids; missing ids become `q0`, `q1` and so on
-  /// in Request order.
-  static Map<String, TJevQuestion> _questionsById(
-    List<TJevQuestion> questions,
-  ) {
-    if (questions.isEmpty) {
-      throw const TJevInvalidQuestionException(
-        reason: 'A Request needs at least one Question.',
-      );
-    }
-    var generatedIds = 0;
-    final questionsById = <String, TJevQuestion>{};
-    for (final question in questions) {
-      final id = question.id ?? 'q${generatedIds++}';
-      if (questionsById.containsKey(id)) {
-        throw TJevInvalidQuestionException(
-          reason: 'Two Questions share the id $id.',
-        );
-      }
-      questionsById[id] = question;
-    }
-    return questionsById;
-  }
 }

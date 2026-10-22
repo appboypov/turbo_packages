@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../exceptions/t_jev_invalid_retry_policy_exception.dart';
 import '../results/t_jev_failure.dart';
+import '../typedefs/t_jev_retry_predicate.dart';
 import '../utils/retry_after.dart';
 
 /// When a client sends a failed Request again and how long it waits first.
@@ -84,7 +85,7 @@ final class TJevRetryPolicy {
   final bool retryTimeouts;
 
   /// Retries a failure the other rules leave out when it returns `true`.
-  final bool Function(TJevFailure failure)? predicate;
+  final TJevRetryPredicate? predicate;
 
   /// The total time of a call, its attempts and waits included, that no
   /// retry starts past: retries stop before a wait that would reach it.

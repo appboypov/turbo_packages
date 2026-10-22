@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../models/t_jev_model.dart';
+import '../types/t_jev_model.dart';
 
 /// Maps a model id on the wire to a [TJevModel].
 final class TJevModelConverter implements JsonConverter<TJevModel, String> {
