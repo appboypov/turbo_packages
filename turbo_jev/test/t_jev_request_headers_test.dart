@@ -4,8 +4,8 @@ library;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
-import 'support/package_version.dart';
+import 'support/constants/package_version.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _billing = TJevNoul(instructions: 'Is this message about billing?');
 

@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
-import 'support/images.dart';
+import 'support/constants/jpeg_bytes.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _mug = TJevBox(id: 'mug', instructions: 'the coffee mug in `photo`');
 

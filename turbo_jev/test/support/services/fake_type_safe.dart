@@ -1,23 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:http_parser/http_parser.dart';
 
-/// One part of a multipart Request body.
-typedef FakePart = ({
-  String name,
-  String? filename,
-  String? contentType,
-  List<int> bytes,
-});
+import '../records/fake_part.dart';
 
 /// A fake TypeSafe service that records each Request and answers with
 /// [respond], by default with a Noul Answer of 0.9 to every Question.
 class FakeTypeSafe {
   FakeTypeSafe({http.Response Function(http.Request request)? respond})
     : _respond = respond ?? _answerEveryQuestion;
+
+  /// A fake TypeSafe service that answers the Requests in order with
+  /// [responses] and every later Request with the last of them.
+  factory FakeTypeSafe.answering(List<http.Response> responses) {
+    var next = 0;
+    return FakeTypeSafe(
+      respond: (_) => responses[min(next++, responses.length - 1)],
+    );
+  }
 
   final http.Response Function(http.Request request) _respond;
 

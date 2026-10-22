@@ -10,7 +10,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _billing = TJevNoul(instructions: 'Is this about billing?');
 

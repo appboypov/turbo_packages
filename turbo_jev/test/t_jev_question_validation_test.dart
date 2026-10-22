@@ -5,30 +5,10 @@ import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/enums/kind.dart';
-import 'support/fake_type_safe.dart';
-
-final class _Tag {
-  const _Tag(this.name, this.id);
-
-  final String name;
-
-  final int id;
-
-  @override
-  String toString() => name;
-}
-
-final class _Rubric {
-  const _Rubric(this.weight);
-
-  final double weight;
-
-  Map<String, Object?> toJson() => {'weight': weight};
-}
-
-final class _NoJson {
-  const _NoJson();
-}
+import 'support/models/no_json.dart';
+import 'support/models/rubric.dart';
+import 'support/models/tag.dart';
+import 'support/services/fake_type_safe.dart';
 
 void main() {
   late FakeTypeSafe typeSafe;
@@ -80,8 +60,8 @@ void main() {
       'When two Options share a wire key, then asking throws before sending',
       () {
         expectThrowsBeforeSending(
-          const TJevChoice<_Tag>(
-            options: {_Tag('urgent', 1): 'Now', _Tag('urgent', 2): 'Today'},
+          const TJevChoice<Tag>(
+            options: {Tag('urgent', 1): 'Now', Tag('urgent', 2): 'Today'},
           ),
         );
       },
@@ -188,7 +168,7 @@ void main() {
                 'Pick one',
                 {'strict': true, 'max': 3},
               ],
-              options: {'a': _Rubric(0.5), 'b': 7, 'c': false},
+              options: {'a': Rubric(0.5), 'b': 7, 'c': false},
             ),
           ],
         );
@@ -234,7 +214,7 @@ void main() {
       ),
       (
         'the toJson of an object',
-        const TJevChoice<String>(options: {'a': _Rubric(double.nan)}),
+        const TJevChoice<String>(options: {'a': Rubric(double.nan)}),
       ),
     ]) {
       test(
@@ -250,7 +230,7 @@ void main() {
       'When it holds an object without toJson, '
       'then asking throws before sending',
       () {
-        expectThrowsBeforeSending(const TJevNoul(instructions: _NoJson()));
+        expectThrowsBeforeSending(const TJevNoul(instructions: NoJson()));
       },
     );
 
@@ -271,10 +251,10 @@ void main() {
     for (final (what, state) in <(String, Object)>[
       ('a non-finite number', {'score': double.nan}),
       ('a map key that is no String', {1: 'one'}),
-      ('an object without toJson', const _NoJson()),
+      ('an object without toJson', const NoJson()),
       (
         'the toJson of an object with a non-finite number',
-        const _Rubric(double.infinity),
+        const Rubric(double.infinity),
       ),
     ]) {
       test('When it holds $what, then asking throws before sending', () {

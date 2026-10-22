@@ -6,16 +6,8 @@ import 'package:turbo_jev/turbo_jev.dart';
 
 import 'support/enums/severity.dart';
 import 'support/enums/team.dart';
-import 'support/fake_type_safe.dart';
-
-final class _Candidate {
-  const _Candidate(this.id);
-
-  final int id;
-
-  @override
-  String toString() => 'candidate_$id';
-}
+import 'support/models/candidate.dart';
+import 'support/services/fake_type_safe.dart';
 
 void main() {
   late FakeTypeSafe typeSafe;
@@ -70,8 +62,8 @@ void main() {
       'When its Options are runtime values, '
       'then each Option goes on the wire under its toString',
       () async {
-        final candidates = [const _Candidate(7), const _Candidate(12)];
-        final hire = TJevChoice<_Candidate>(
+        final candidates = [const Candidate(7), const Candidate(12)];
+        final hire = TJevChoice<Candidate>(
           instructions: 'Who fits the role best?',
           options: {
             for (final candidate in candidates)
@@ -149,8 +141,8 @@ void main() {
       'When its Levels are runtime values, '
       'then only their descriptions go on the wire',
       () async {
-        final candidates = [const _Candidate(3), const _Candidate(9)];
-        final fit = TJevScore<_Candidate>(
+        final candidates = [const Candidate(3), const Candidate(9)];
+        final fit = TJevScore<Candidate>(
           levels: {
             for (final candidate in candidates)
               candidate: {
@@ -196,25 +188,26 @@ void main() {
     );
   });
 
-  test(
-    'Given a Choice, a Score and a Noul, '
-    'when asked in one Request, then each goes on the wire under its id',
-    () async {
-      await jev.ask(
-        state: 'Wrong size, third time.',
-        questions: const [
-          TJevChoice<Team>(options: {Team.returns: 'Returns'}),
-          TJevScore.list(levels: ['Calm', 'Angry']),
-          TJevNoul(instructions: 'Is this about billing?'),
-        ],
-      );
+  group('Given a Choice, a Score and a Noul', () {
+    test(
+      'When asked in one Request, then each goes on the wire under its id',
+      () async {
+        await jev.ask(
+          state: 'Wrong size, third time.',
+          questions: const [
+            TJevChoice<Team>(options: {Team.returns: 'Returns'}),
+            TJevScore.list(levels: ['Calm', 'Angry']),
+            TJevNoul(instructions: 'Is this about billing?'),
+          ],
+        );
 
-      final questions = typeSafe.lastBody['questions']! as Map;
-      expect(
-        [for (final question in questions.values) (question as Map)['type']],
-        ['choice', 'score', 'noul'],
-      );
-      expect(questions.keys, ['q0', 'q1', 'q2']);
-    },
-  );
+        final questions = typeSafe.lastBody['questions']! as Map;
+        expect(
+          [for (final question in questions.values) (question as Map)['type']],
+          ['choice', 'score', 'noul'],
+        );
+        expect(questions.keys, ['q0', 'q1', 'q2']);
+      },
+    );
+  });
 }

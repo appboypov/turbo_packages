@@ -5,8 +5,11 @@ import 'package:http_parser/http_parser.dart';
 import 'package:test/test.dart';
 import 'package:turbo_jev/turbo_jev.dart';
 
-import 'support/fake_type_safe.dart';
-import 'support/images.dart';
+import 'support/constants/jpeg_bytes.dart';
+import 'support/constants/png_bytes.dart';
+import 'support/models/frames.dart';
+import 'support/models/snapshot.dart';
+import 'support/services/fake_type_safe.dart';
 
 const _imagesHeader = 'TypeSafe-Danger-Zone-Images';
 
@@ -88,10 +91,8 @@ void main() {
     );
   });
 
-  test(
-    'Given an Image placed in Instructions, when asked, '
-    'then it is found and sent',
-    () async {
+  group('Given an Image placed in Instructions', () {
+    test('When asked, then it is found and sent', () async {
       final badge = TJevImage(pngBytes);
 
       await jev.ask(
@@ -113,103 +114,113 @@ void main() {
         badge.reference: {'type': 'image', 'part': 'asset-0'},
       });
       expect(typeSafe.lastRequest.headers[_imagesHeader], 'true');
+    });
+  });
+
+  group(
+    'Given Images placed in the Criteria of a Choice, a Score and a Noul',
+    () {
+      test(
+        'When asked, then each is sent in its own part in order of first use',
+        () async {
+          final thumbsUp = TJevImage(pngBytes);
+          final openPalm = TJevImage(jpegBytes);
+          final calm = TJevImage(pngBytes);
+          final yes = TJevImage(jpegBytes);
+
+          await jev.ask(
+            state: 'A hand in front of the camera.',
+            questions: [
+              TJevChoice<String>(
+                options: {
+                  'thumbs_up': thumbsUp,
+                  'open_palm': {
+                    'description': 'A hand held up',
+                    'examples': [openPalm],
+                  },
+                },
+              ),
+              TJevScore.list(levels: [calm, 'Agitated']),
+              TJevNoul(instructions: 'Is it waving?', trueMeans: yes),
+            ],
+          );
+
+          final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+          expect(
+            [for (final part in parts) (part.name, part.contentType)],
+            [
+              ('request', 'application/json'),
+              ('asset-0', 'image/png'),
+              ('asset-1', 'image/jpeg'),
+              ('asset-2', 'image/png'),
+              ('asset-3', 'image/jpeg'),
+            ],
+          );
+          expect(typeSafe.lastBody['assets'], {
+            thumbsUp.reference: {'type': 'image', 'part': 'asset-0'},
+            openPalm.reference: {'type': 'image', 'part': 'asset-1'},
+            calm.reference: {'type': 'image', 'part': 'asset-2'},
+            yes.reference: {'type': 'image', 'part': 'asset-3'},
+          });
+        },
+      );
     },
   );
 
-  test(
-    'Given Images placed in the Criteria of a Choice, a Score and a Noul, '
-    'when asked, then each is sent in its own part in order of first use',
-    () async {
-      final thumbsUp = TJevImage(pngBytes);
-      final openPalm = TJevImage(jpegBytes);
-      final calm = TJevImage(pngBytes);
-      final yes = TJevImage(jpegBytes);
-
-      await jev.ask(
-        state: 'A hand in front of the camera.',
-        questions: [
-          TJevChoice<String>(
-            options: {
-              'thumbs_up': thumbsUp,
-              'open_palm': {
-                'description': 'A hand held up',
-                'examples': [openPalm],
-              },
-            },
-          ),
-          TJevScore.list(levels: [calm, 'Agitated']),
-          TJevNoul(instructions: 'Is it waving?', trueMeans: yes),
-        ],
-      );
-
-      final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
-      expect(
-        [for (final part in parts) (part.name, part.contentType)],
-        [
-          ('request', 'application/json'),
-          ('asset-0', 'image/png'),
-          ('asset-1', 'image/jpeg'),
-          ('asset-2', 'image/png'),
-          ('asset-3', 'image/jpeg'),
-        ],
-      );
-      expect(typeSafe.lastBody['assets'], {
-        thumbsUp.reference: {'type': 'image', 'part': 'asset-0'},
-        openPalm.reference: {'type': 'image', 'part': 'asset-1'},
-        calm.reference: {'type': 'image', 'part': 'asset-2'},
-        yes.reference: {'type': 'image', 'part': 'asset-3'},
-      });
-    },
-  );
-
-  test(
+  group(
     'Given Images placed inside the toJson of objects in the State and the '
-    'Criteria, when asked without images, then each is found and sent',
-    () async {
-      final front = TJevImage(jpegBytes);
-      final example = TJevImage(pngBytes);
+    'Criteria',
+    () {
+      test('When asked without images, then each is found and sent', () async {
+        final front = TJevImage(jpegBytes);
+        final example = TJevImage(pngBytes);
 
-      await jev.ask(
-        state: _Frames([front]),
-        questions: [
-          TJevNoul(
-            instructions: 'Is it the same car?',
-            trueMeans: _Frames([example]),
-          ),
-        ],
-      );
+        await jev.ask(
+          state: Frames([front]),
+          questions: [
+            TJevNoul(
+              instructions: 'Is it the same car?',
+              trueMeans: Frames([example]),
+            ),
+          ],
+        );
 
-      expect(typeSafe.lastBody['state'], [front.reference]);
-      expect(typeSafe.lastBody['assets'], {
-        front.reference: {'type': 'image', 'part': 'asset-0'},
-        example.reference: {'type': 'image', 'part': 'asset-1'},
+        expect(typeSafe.lastBody['state'], [front.reference]);
+        expect(typeSafe.lastBody['assets'], {
+          front.reference: {'type': 'image', 'part': 'asset-0'},
+          example.reference: {'type': 'image', 'part': 'asset-1'},
+        });
+        final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+        expect(
+          parts.map((part) => part.bytes),
+          [anything, jpegBytes, pngBytes],
+        );
       });
-      final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
-      expect(parts.map((part) => part.bytes), [anything, jpegBytes, pngBytes]);
     },
   );
 
-  test(
-    'Given a State model whose toJson creates its Image, when asked, then '
-    'the Image the body names is the one sent, once',
-    () async {
-      await jev.ask(
-        state: const _Snapshot(),
-        questions: const [TJevNoul(instructions: 'Is the door open?')],
-      );
+  group('Given a State model whose toJson creates its Image', () {
+    test(
+      'When asked, then the Image the body names is the one sent, once',
+      () async {
+        await jev.ask(
+          state: const Snapshot(),
+          questions: const [TJevNoul(instructions: 'Is the door open?')],
+        );
 
-      final [reference] = typeSafe.lastBody['state']! as List<Object?>;
-      expect(typeSafe.lastBody['assets'], {
-        reference: {'type': 'image', 'part': 'asset-0'},
-      });
-      final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
-      expect(
-        [for (final part in parts) (part.name, part.contentType)],
-        [('request', 'application/json'), ('asset-0', 'image/jpeg')],
-      );
-      expect(parts.last.bytes, jpegBytes);
-    },
-  );
+        final [reference] = typeSafe.lastBody['state']! as List<Object?>;
+        expect(typeSafe.lastBody['assets'], {
+          reference: {'type': 'image', 'part': 'asset-0'},
+        });
+        final parts = FakeTypeSafe.partsOf(typeSafe.lastRequest);
+        expect(
+          [for (final part in parts) (part.name, part.contentType)],
+          [('request', 'application/json'), ('asset-0', 'image/jpeg')],
+        );
+        expect(parts.last.bytes, jpegBytes);
+      },
+    );
+  });
 
   group('Given an Image interpolated in a string', () {
     late TJevImage badge;
@@ -257,10 +268,8 @@ void main() {
     );
   });
 
-  test(
-    'Given an Image listed in images, when no content uses it, '
-    'then asking throws before sending',
-    () {
+  group('Given an Image listed in images', () {
+    test('When no content uses it, then asking throws before sending', () {
       final unused = TJevImage(pngBytes);
 
       expect(
@@ -272,38 +281,24 @@ void main() {
         throwsA(isA<TJevImageReferenceException>()),
       );
       expect(typeSafe.requests, isEmpty);
-    },
-  );
+    });
+  });
 
-  test(
-    'Given a Request without Images or Boxes, when asked, '
-    'then it is sent as JSON without the Images Danger Zone header',
-    () async {
-      await jev.ask(
-        state: 'I was charged twice.',
-        questions: const [TJevNoul(instructions: 'About billing?')],
-      );
+  group('Given a Request without Images or Boxes', () {
+    test(
+      'When asked, '
+      'then it is sent as JSON without the Images Danger Zone header',
+      () async {
+        await jev.ask(
+          state: 'I was charged twice.',
+          questions: const [TJevNoul(instructions: 'About billing?')],
+        );
 
-      final request = typeSafe.lastRequest;
-      expect(request.headers['Content-Type'], 'application/json');
-      expect(request.headers.containsKey(_imagesHeader), isFalse);
-      expect(typeSafe.lastBody.containsKey('assets'), isFalse);
-    },
-  );
-}
-
-/// A model whose `toJson` holds Images.
-final class _Frames {
-  const _Frames(this.frames);
-
-  final List<TJevImage> frames;
-
-  List<TJevImage> toJson() => frames;
-}
-
-/// A model whose `toJson` creates a new Image each time it runs.
-final class _Snapshot {
-  const _Snapshot();
-
-  List<TJevImage> toJson() => [TJevImage(jpegBytes)];
+        final request = typeSafe.lastRequest;
+        expect(request.headers['Content-Type'], 'application/json');
+        expect(request.headers.containsKey(_imagesHeader), isFalse);
+        expect(typeSafe.lastBody.containsKey('assets'), isFalse);
+      },
+    );
+  });
 }
