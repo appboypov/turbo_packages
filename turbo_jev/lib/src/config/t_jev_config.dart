@@ -16,6 +16,7 @@ final class TJevConfig {
     required this.baseUrl,
     required this.defaultModel,
     required this.timeout,
+    required this.defaultHeaders,
   });
 
   /// Resolves the config and checks its API key and timeout.
@@ -30,6 +31,7 @@ final class TJevConfig {
     required String? baseUrl,
     required TJevModel? defaultModel,
     required Duration? timeout,
+    required Map<String, String> defaultHeaders,
     required Map<String, String> environment,
   }) {
     String? fromEnvironment(String key) {
@@ -53,6 +55,7 @@ final class TJevConfig {
               ? TJevDefaults.model
               : TJevModel(environmentModel)),
       timeout: checkedTimeout(timeout ?? TJevDefaults.timeout),
+      defaultHeaders: Map.unmodifiable(defaultHeaders),
     );
   }
 
@@ -71,6 +74,9 @@ final class TJevConfig {
   /// How long one attempt of a Request may take, its whole response
   /// included.
   final Duration timeout;
+
+  /// The headers every Request sends before its own headers.
+  final Map<String, String> defaultHeaders;
 
   /// Returns [timeout] when it is positive.
   ///
