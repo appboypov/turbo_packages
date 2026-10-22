@@ -9,9 +9,14 @@ final class TJevValidationDetail {
   /// What is wrong at [location].
   final String message;
 
-  /// [location] without its `body` entries, joined with dots, such as
-  /// `questions.q0.criteria`.
-  String get path => location.where((entry) => entry != 'body').join('.');
+  /// [location] without a leading `body` entry, joined with dots, such as
+  /// `questions.q0.criteria`. A `body` further on, such as a Question id,
+  /// stays: `['body', 'questions', 'body', 'options']` gives
+  /// `questions.body.options`.
+  String get path => switch (location) {
+    ['body', ...final rest] => rest.join('.'),
+    _ => location.join('.'),
+  };
 
   @override
   String toString() => path.isEmpty ? message : '$path: $message';
