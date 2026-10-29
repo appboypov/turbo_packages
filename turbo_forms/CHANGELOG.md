@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+### Changed
+- Require shadcn_ui ^0.57.3.
+
 ## 1.1.0
 
 ### Added

@@ -1,6 +1,6 @@
 name: turbo_firestore_api
 description: A clean and efficient approach to dealing with data from Firestore.
-version: 0.13.0
+version: 0.14.0
 resolution: workspace
 repository: https://github.com/appboypov/turbo_packages/tree/main/turbo_firestore_api
 homepage: https://github.com/appboypov/turbo_packages
@@ -10,9 +10,9 @@ environment:
   sdk: ^3.10.4
 
 dependencies:
-  cloud_firestore: ^6.1.2
+  cloud_firestore: ^7.1.0
   collection: ^1.18.0
-  firebase_auth: ^6.1.4
+  firebase_auth: ^7.0.1
   flutter:
     sdk: flutter
   json_annotation: ^4.11.0

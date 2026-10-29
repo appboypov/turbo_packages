@@ -1,6 +1,6 @@
 name: turbo_forms
 description: Type-safe form field configuration and validation for Flutter with ShadCN UI integration.
-version: 1.1.0
+version: 1.1.1
 resolution: workspace
 repository: https://github.com/appboypov/turbo_packages/tree/main/turbo_forms
 homepage: https://github.com/appboypov/turbo_packages
@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.5
-  shadcn_ui: ^0.54.0
+  shadcn_ui: ^0.57.3
   turbo_notifiers: ^1.1.0
   turbolytics: ^1.1.0
 

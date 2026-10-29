@@ -92,13 +92,13 @@ class _RecordingDocumentReference
 class _RecordingWriteBatch implements WriteBatch {
   _RecordingWriteBatch();
 
-  Map<Object, Object?>? capturedUpdate;
+  Object? capturedUpdate;
   int updateCallCount = 0;
 
   @override
-  void update(DocumentReference<Object?> document, Map<Object, Object?> data) {
+  void update<T>(DocumentReference<T> document, T data) {
     updateCallCount++;
-    capturedUpdate = Map<Object, Object?>.from(data);
+    capturedUpdate = data;
   }
 
   @override
