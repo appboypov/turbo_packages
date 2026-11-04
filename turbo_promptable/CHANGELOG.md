@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `TSessionApp.herdrApp`: plx opens a spawned session in a terminal of the Herdr app
+
+### Changed
+- `TSpawnSettings.sessionApp` defaults to `TSessionApp.herdrApp`
+
 ## [0.9.0] - 2026-09-28
 
 ### Added

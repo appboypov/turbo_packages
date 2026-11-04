@@ -22,5 +22,5 @@ abstract class TSpawnSettings {
   String get defaultWorkingFolder;
 
   /// App the session opens in.
-  TSessionApp get sessionApp => TSessionApp.herdr;
+  TSessionApp get sessionApp => TSessionApp.herdrApp;
 }

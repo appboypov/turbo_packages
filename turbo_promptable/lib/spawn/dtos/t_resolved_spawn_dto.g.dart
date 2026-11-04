@@ -33,4 +33,7 @@ const _$TSpawnConceptEnumMap = {
   TSpawnConcept.issue: 'issue',
 };
 
-const _$TSessionAppEnumMap = {TSessionApp.herdr: 'herdr'};
+const _$TSessionAppEnumMap = {
+  TSessionApp.herdr: 'herdr',
+  TSessionApp.herdrApp: 'herdrApp',
+};
