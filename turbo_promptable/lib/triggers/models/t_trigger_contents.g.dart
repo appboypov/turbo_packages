@@ -12,7 +12,6 @@ TTriggerContents _$TTriggerContentsFromJson(Map<String, dynamic> json) =>
       hits: (json['hits'] as List<dynamic>)
           .map((e) => TTriggerHitDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-      context: json['context'] as String? ?? '',
       instructions: json['instructions'] as String?,
     );
 
@@ -20,6 +19,5 @@ Map<String, dynamic> _$TTriggerContentsToJson(TTriggerContents instance) =>
     <String, dynamic>{
       'kind': instance.kind,
       'hits': instance.hits.map((e) => e.toJson()).toList(),
-      'context': instance.context,
       'instructions': instance.instructions,
     };
