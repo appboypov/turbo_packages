@@ -96,7 +96,7 @@ Tool subclasses (`TApi`, `TCli`, `TScript`, `TMcp`) extend the shared `TTool` ba
 - `TStreamTriggerKind` has no command. Agents claim it with `plx claim trigger --id <id>`, and every claim that holds it receives its fired triggers.
 - `THerdrTriggerKind` has no command and needs no claim. Its `contains` prefix defaults to `#`; the text right after it up to the first space is the target name. The plx server sends the fired trigger as a normal message to every agent pane in the herdr panes, tabs and workspaces whose label contains that name (case-sensitive). A line that also matches a command or stream kind is not a herdr trigger.
 
-A fired trigger is a `TTriggerContents`: the kind, every hit of that kind in the watched folders (`TTriggerHitDto`, finished or open) and the rendered file tree with codemaps of the hit files. Its `toString` is the whole body in `<trigger>` tags.
+A fired trigger is a `TTriggerContents`: the kind and every hit of that kind in the watched folders (`TTriggerHitDto`, finished or open). Its `toString` is the whole body in `<trigger>` tags.
 
 ```dart
 class MyTriggerSettings extends TTriggerSettings {

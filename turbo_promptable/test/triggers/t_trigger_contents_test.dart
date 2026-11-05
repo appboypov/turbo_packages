@@ -17,13 +17,12 @@ void main() {
         text: '// #TASK rename this',
       ),
     ],
-    context: '<relevant_context>tree and codemaps</relevant_context>',
   );
 
   group('TTriggerContents.toString', () {
     test(
       'Given a finished and an open hit, Then the text is one trigger element '
-      'with both hits, the open one marked, and the context after the hits',
+      'with both hits and the open one marked',
       () {
         expect(
           contents.toString(),
@@ -33,13 +32,12 @@ void main() {
           "<hit file='/abs/b.dart' line='4' open='true'>"
           '// #TASK rename this</hit>\n'
           '</hits>\n'
-          '<relevant_context>tree and codemaps</relevant_context>\n'
           '</trigger>',
         );
       },
     );
 
-    test('Given an empty context, Then the hits close the trigger', () {
+    test('Given hits, Then the hits close the trigger', () {
       const bare = TTriggerContents(
         kind: 'note',
         hits: [

@@ -3,8 +3,7 @@ import 'package:turbo_promptable/triggers/dtos/t_trigger_hit_dto.dart';
 
 part 't_trigger_contents.g.dart';
 
-/// A fired trigger: every hit of one kind in the watched folders and the
-/// rendered context of the files that hold them.
+/// A fired trigger: every hit of one kind in the watched folders.
 ///
 /// [toString] is the whole trigger body in `<trigger>` tags.
 @JsonSerializable(explicitToJson: true)
@@ -12,7 +11,6 @@ class TTriggerContents {
   const TTriggerContents({
     required this.kind,
     required this.hits,
-    this.context = '',
     this.instructions,
   });
 
@@ -24,10 +22,6 @@ class TTriggerContents {
 
   /// Finished and open hits of [kind].
   final List<TTriggerHitDto> hits;
-
-  /// File tree and codemaps of the hit files, as rendered by the context
-  /// engine. Empty when rendering failed.
-  final String context;
 
   /// Instructions of the fired kind, rendered in `<user_instructions>` right
   /// after the opening tag. None when null.
@@ -48,7 +42,6 @@ class TTriggerContents {
       buffer.writeln('>${hit.text}</hit>');
     }
     buffer.writeln('</hits>');
-    if (context.isNotEmpty) buffer.writeln(context.trimRight());
     buffer.write('</trigger>');
     return buffer.toString();
   }
