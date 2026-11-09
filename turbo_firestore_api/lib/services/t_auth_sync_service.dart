@@ -355,10 +355,10 @@ abstract class TAuthSyncService<StreamValue> with TExceptionHandler {
       );
       _retryTimer = Timer(
         const Duration(seconds: 10),
-        () {
+        () async {
           _nrOfRetry++;
-          _clearStream();
-          tryInitialiseStream();
+          await _clearStream();
+          await tryInitialiseStream();
           _retryTimer = null;
         },
       );

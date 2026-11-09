@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Require cloud_firestore ^7.1.0 and firebase_auth ^7.0.1.
 
+## [0.13.1] - 2026-11-09
+
+### Fixed
+- `TAuthSyncService` keeps listening to auth changes after a stream retry, so a user who signs in again after a stream error gets a new stream
+
 ## [0.13.0] - 2026-06-04
 
 ### Added
