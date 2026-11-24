@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:meta/meta.dart';
+
 import 't_analytics.dart';
 
 /// Used to register analytics objects via the [Turbolytics.setUp] method.

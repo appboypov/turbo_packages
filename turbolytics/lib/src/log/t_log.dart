@@ -31,6 +31,16 @@ class TLog {
   /// Used to toggle broadcasting logs on or off.
   static bool broadcastLogs = false;
 
+  /// Receives each [TLogLine] that a [TLog] writes. The process sets it once at its start, such
+  /// as to write lines to a file. It is [printLine] when nothing is set.
+  static void Function(TLogLine line) output = printLine;
+
+  /// Prints [line] as text to standard output, after its time when [logTime] is true.
+  static void printLine(TLogLine line) =>
+      // Standard output is the default sink of a log line.
+      // ignore: avoid_print
+      print('${logTime ? '${timeOf(line.time)} ' : ''}$line');
+
   /// Used to expose all crash reports logs.
   static final StreamController<String> crashReportsObserver =
       StreamController.broadcast();
@@ -41,7 +51,7 @@ class TLog {
 
   // --------------- REGULAR --------------- REGULAR --------------- REGULAR --------------- \\
 
-  /// Logs a trace [message] with [TLogLevel.trace] default as [debugPrint].
+  /// Logs a trace [message] with [TLogLevel.trace] to [TLog.output].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -62,7 +72,7 @@ class TLog {
     );
   }
 
-  /// Logs a debug [message] with [TLogLevel.debug] as [debugPrint].
+  /// Logs a debug [message] with [TLogLevel.debug] to [TLog.output].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -82,7 +92,7 @@ class TLog {
     );
   }
 
-  /// Logs an info [message] with [TLogLevel.info] default as [debugPrint].
+  /// Logs an info [message] with [TLogLevel.info] to [TLog.output].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -103,7 +113,7 @@ class TLog {
     );
   }
 
-  /// Logs an analytic [name] with [TLogLevel.analytic] as [debugPrint].
+  /// Logs an analytic [name] with [TLogLevel.analytic] to [TLog.output].
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
   /// configured one with the [Turbolytics.setUp] method.
@@ -130,12 +140,15 @@ class TLog {
     if (broadcastLogs) analyticsObserver.add(message);
   }
 
-  /// Logs a warning [message] with [TLogLevel.warning] as [debugPrint].
+  /// Logs a warning [message] with [TLogLevel.warning] to [TLog.output], with the [error] and
+  /// [stackTrace] of a failure that the program recovers from.
   ///
   /// Also tries to send the log to your [CrashReportsInterface] implementation should you have
-  /// configured one with the [Turbolytics.setUp] method.
+  /// configured one with the [Turbolytics.setUp] method. A warning records no error there.
   void warning(
     String message, {
+    Object? error,
+    StackTrace? stackTrace,
     bool addToCrashReports = true,
     String? location,
     String? tag,
@@ -148,10 +161,14 @@ class TLog {
       addToCrashReports: addToCrashReports,
       location: location,
       tag: tag,
+      error: error,
+      stackTrace: stackTrace,
+      stackLinesInText: _maxLinesStackTrace,
     );
   }
 
-  /// Logs an error [message] with [TLogLevel.error] as [debugPrint].
+  /// Logs an error [message] with [TLogLevel.error] to [TLog.output], with its [error] and its
+  /// stack trace when [printStack] is true.
   ///
   /// Also tries to send the log with optional [error], [stackTrace] and [fatal] boolean to your
   /// [CrashReportsInterface] implementation should you have configured one with the
@@ -179,8 +196,17 @@ class TLog {
     } catch (error) {
       localStackTrace = StackTrace.current;
     }
-    final hasError = error != null;
-    if (hasError || forceRecordError) {
+    _logMessage(
+      message: message,
+      logLevel: logLevel,
+      addToCrashReports: addToCrashReports,
+      location: location,
+      tag: tag,
+      error: error,
+      stackTrace: localStackTrace,
+      stackLinesInText: printStack ? _maxLinesStackTrace : 0,
+    );
+    if (error != null || forceRecordError) {
       _eventBus.tryAddCrashReport(
         Turbolytics._crashReportsInterface?.recordError(
           error,
@@ -189,31 +215,9 @@ class TLog {
         ),
       );
     }
-    _logMessage(
-      message: message,
-      logLevel: logLevel,
-      addToCrashReports: addToCrashReports,
-      location: location,
-      tag: tag,
-    );
-    if (hasError) {
-      _logMessage(
-        message: error.toString(),
-        logLevel: logLevel,
-        addToCrashReports: false,
-        location: location,
-        tag: tag,
-      );
-    }
-    if (printStack) {
-      debugPrintStack(
-        stackTrace: stackTrace,
-        maxFrames: _maxLinesStackTrace,
-      );
-    }
   }
 
-  /// Logs a fatal [message] with [TLogLevel.fatal] as [debugPrint].
+  /// Logs a fatal [message] with [TLogLevel.fatal] to [TLog.output].
   ///
   /// Also tries to send the log with optional [error], [stackTrace] and [fatal] boolean to your
   /// [CrashReportsInterface] implementation should you have configured one with the
@@ -251,19 +255,30 @@ class TLog {
     bool addToCrashReports = true,
     String? location,
     String? tag,
+    Object? error,
+    StackTrace? stackTrace,
+    int? stackLinesInText,
   }) {
     final localTag = tag ?? _tag;
     if (addToCrashReports) {
       _tryLogCrashReportMessage(message, logLevel, localTag);
     }
-    final localMessage =
-        '${TLog.logTime ? '$time ' : ''}'
-        '${logLevel.iconTag} '
-        '${'[${location ?? _location}]'} '
-        '${localTag != null ? '[$localTag] ' : ''}'
-        '$message';
-    if (broadcastLogs) crashReportsObserver.add(localMessage);
-    debugPrint(localMessage);
+    final line = TLogLine(
+      time: DateTime.now().toUtc(),
+      level: logLevel,
+      location: location ?? _location,
+      message: message,
+      tag: localTag,
+      error: error,
+      stackTrace: stackTrace,
+      stackLinesInText: stackLinesInText,
+    );
+    if (broadcastLogs) {
+      final time = TLog.logTime ? '${timeOf(line.time)} ' : '';
+      crashReportsObserver.add('$time${line._prefix}$message');
+      if (error != null) crashReportsObserver.add('$time${line._prefix}$error');
+    }
+    output(line);
   }
 
   // --------------- CRASH REPORTS --------------- CRASH REPORTS --------------- CRASH REPORTS --------------- \\

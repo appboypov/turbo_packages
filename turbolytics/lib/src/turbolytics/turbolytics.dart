@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:turbolytics/turbolytics.dart';
 
@@ -9,6 +7,7 @@ import '../extensions/date_time_extensions.dart';
 
 part '../analytics/t_analytics_service.dart';
 part '../log/t_log.dart';
+part '../log/t_log_line.dart';
 part 't_analytics_event_bus.dart';
 
 /// Used to provide all logging, analytics and crashlytics functionality to a class of your choosing.
