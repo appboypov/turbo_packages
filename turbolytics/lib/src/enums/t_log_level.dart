@@ -8,8 +8,7 @@ enum TLogLevel {
   analytic,
   warning,
   error,
-  fatal
-  ;
+  fatal;
 
   /// Decides whether to show the log based on the [index] of the [TLogLevel].
   bool skipLog(TLogLevel logLevel) => index > logLevel.index;

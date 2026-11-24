@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-24
+
+### Added
+- `TLogLine`: each line a `TLog` writes, with its UTC time, level, location, tag, error and stack trace
+- `TLog.output`: the sink of each line, `TLog.printLine` by default, so a program can write lines to a file
+- `warning` takes an optional `error` and `stackTrace` for a recovered failure
+
+### Changed
+- Works in any Dart program: the package no longer depends on Flutter
+- An error line keeps its whole stack trace, and a crash reporter that fails no longer stops the program
+
 ## [1.1.0] - 2026-01-15
 
 ### Changed
