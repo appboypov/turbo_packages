@@ -1,5 +1,1 @@
-import 'package:turbo_firestore_api/typedefs/t_filter_predicate.dart';
-
-abstract class TFilterOption<MODEL> {
-  TFilterPredicate<MODEL> get predicate;
-}
+export 'package:turbo_collections/abstracts/t_filter_option.dart';

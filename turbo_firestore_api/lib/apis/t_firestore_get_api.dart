@@ -230,7 +230,7 @@ mixin TurboFirestoreGetApi<DTO> on _TFirestoreApiBase<DTO> {
         tryCache: false,
         forceCacheRefresh: forceCacheRefresh,
       );
-      return response.mapSuccess(_fromJson!);
+      return await response.mapSuccess(_fromJson!);
     } catch (error, stackTrace) {
       final path = _pPath(collectionPathOverride);
       final fullPath = _buildFullPath(path, id);

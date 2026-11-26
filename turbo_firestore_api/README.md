@@ -1401,6 +1401,10 @@ class UsersService extends TurboCollectionService<User, UsersApi> {
 }
 ```
 
+## Models and Lists
+
+`TModel`, `TModelDocs`, `TList`, `TFilterInput`, `TFilterOption`, `TSortOption` and the typedefs `TModelBuilderDef`, `TFilterPredicate`, `TIdMapDef`, `TIdListDef` and `TIdListsMap` live in the pure Dart package [`turbo_collections`](https://pub.dev/packages/turbo_collections). Turbo Firestore API depends on it and exports it, so the old imports keep working and a service on another backend uses the same models. The service builders `TCollectionModelBuilderDef` and `TDocModelBuilderDef` stay in this package.
+
 ## Sync Services
 
 Turbo Firestore API provides three types of sync services for documents:

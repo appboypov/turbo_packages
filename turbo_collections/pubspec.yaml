@@ -1,0 +1,25 @@
+name: turbo_collections
+description: Models, sorted and filtered lists and id maps of documents for the turbo ecosystem, in pure Dart.
+version: 0.1.0
+resolution: workspace
+repository: https://github.com/appboypov/turbo_packages/tree/main/turbo_collections
+homepage: https://github.com/appboypov/turbo_packages
+issue_tracker: https://github.com/appboypov/turbo_packages/issues
+
+topics:
+  - collections
+  - models
+  - filtering
+  - sorting
+  - dart
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  turbo_serializable: ^0.6.1
+
+dev_dependencies:
+  test: ^1.26.3
+  lints: ^6.1.0
+  coverage: ^1.15.0

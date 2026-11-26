@@ -1,3 +1,1 @@
-abstract class TSortOption<VALUE> {
-  int compare(VALUE a, VALUE b);
-}
+export 'package:turbo_collections/abstracts/t_sort_option.dart';

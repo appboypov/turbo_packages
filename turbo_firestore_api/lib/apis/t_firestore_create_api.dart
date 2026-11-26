@@ -132,7 +132,7 @@ mixin TFirestoreCreateApi<DTO> on _TFirestoreApiBase<DTO> {
           message: 'Checking if batchCreate was successful..',
           sensitiveData: null,
         );
-        return _handleBatchOperation(lastBatchResponse);
+        return await _handleBatchOperation(lastBatchResponse);
       } else {
         _log.debug(
           message: 'WriteBatch was null! Creating without batch..',
