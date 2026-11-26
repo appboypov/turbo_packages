@@ -499,7 +499,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(
@@ -548,7 +548,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(
@@ -604,7 +604,7 @@ class TDocService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(

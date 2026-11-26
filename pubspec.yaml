@@ -5,6 +5,7 @@ environment:
   sdk: ^3.10.4
 
 workspace:
+  - turbo_collections
   - turbo_firestore_api
   - turbo_firestore_api/example
   - turbo_forms

@@ -134,7 +134,7 @@ mixin TFirestoreUpdateApi<DTO> on _TFirestoreApiBase<DTO> {
           message: 'Checking if batchUpdate was successful..',
           sensitiveData: null,
         );
-        return _handleBatchOperation(lastBatchResponse);
+        return await _handleBatchOperation(lastBatchResponse);
       } else {
         _log.debug(
           message: 'WriteBatch was null! Updating without batch..',

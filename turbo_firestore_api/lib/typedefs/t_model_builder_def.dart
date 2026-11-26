@@ -1,12 +1,9 @@
-import 'package:turbo_firestore_api/abstracts/t_model.dart';
+import 'package:turbo_collections/abstracts/t_model.dart';
 import 'package:turbo_firestore_api/services/t_collection_service.dart';
 import 'package:turbo_firestore_api/services/t_doc_service.dart';
 import 'package:turbo_serializable/abstracts/t_writeable_id.dart';
 
-typedef TModelBuilderDef<DTO extends TWriteableId, MODEL extends TModel<DTO>> =
-    MODEL Function(
-      DTO dto,
-    );
+export 'package:turbo_collections/typedefs/t_model_builder_def.dart';
 
 typedef TCollectionModelBuilderDef<
   DTO extends TWriteableId,

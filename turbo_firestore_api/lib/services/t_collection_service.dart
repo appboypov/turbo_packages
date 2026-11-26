@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Type;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:turbo_firestore_api/models/t_filter_input.dart';
 import 'package:turbo_firestore_api/turbo_firestore_api.dart';
 import 'package:turbo_notifiers/turbo_notifiers.dart';
 import 'package:turbo_response/turbo_response.dart';
@@ -595,7 +594,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(
@@ -760,7 +759,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(
@@ -806,7 +805,7 @@ class TCollectionService<DTO extends TWriteableId, MODEL extends TModel<DTO>>
       if (transaction != null) {
         turboResponse.throwWhenFail();
       }
-      return turboResponse.mapSuccess((_) => pDoc);
+      return await turboResponse.mapSuccess((_) => pDoc);
     } catch (error, stackTrace) {
       if (transaction != null) rethrow;
       log.error(
